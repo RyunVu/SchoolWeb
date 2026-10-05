@@ -1,0 +1,16 @@
+permit-page {
+  agm-map {
+    height: 700px;
+  }
+  .btn-icon{
+    position: absolute;
+    bottom: 200px;
+    right: 15px;
+  }
+  .btn-icon a{
+    cursor: pointer;
+  }
+  .btn-icon a img{
+    max-width: 50px;
+  }
+}

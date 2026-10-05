@@ -1,0 +1,111 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h4 class="m-0 text-dark">Quản lý tham số hệ thống</h4>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Tham số hệ thống</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div *ngIf="isSuperAdminSystem" class="col-md-3">
+                <div class="form-group">
+                  <label for="Name">Đơn vị</label>
+                  <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+                    filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="Name">Code</label>
+                  <p-dropdown optionLabel="Code" optionValue="Code" [(ngModel)]="code" placeholder="Chọn code"
+                    [options]="codes" appendTo="body" [filter]="true" filterBy="Code">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
+                <div class="form-group">
+                  <label for="Name">Từ khóa tìm kiếm</label>
+                  <input type="text" class="form-control" [(ngModel)]="keywordInput" placeholder="Từ khóa tìm kiếm" />
+                </div>
+              </div>
+              <div class="col-md-2" style="padding-top: 37px;">
+                <button (click)="search()" type="button" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                  <i class="fa fa-filter"></i> Tìm kiếm
+                </button>
+                <button (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
+                  <i class="fas fa-plus"></i> Thêm mới
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <p-table #dt [responsive]="true" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+            [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading"
+            responsiveLayout="scroll" [value]="items">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="headerTable">Code</th>
+                <th class="headerTable">Id</th>
+                <th class="headerTable">Khu vực</th>
+                <th class="headerTable">Mô tả</th>
+                <th class="headerTable" style="width: 10rem">Thao tác</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>
+                  {{ item.Code }}
+                </td>
+                <td>
+                  {{ item.Id }}
+                </td>
+                <td>
+                  {{ item.UnitCode }}
+                </td>
+                <td>
+                  {{ item.Description }}
+                </td>
+                <td style="text-align: center;">
+                  <button pbutton="" pripple="" icon="pi pi-pencil" (click)="edit(item)"
+                      class="p-element p-button-rounded p-button-success mr-2 p-button p-component p-button-icon-only">
+                      <span class="p-button-icon pi pi-pencil" aria-hidden="true"></span>
+                  </button>
+                  <button pbutton="" pripple="" icon="pi pi-trash" (click)="delete(item)"
+                      class="p-element p-button-rounded p-button-warning p-button p-component p-button-icon-only">
+                      <span class="p-button-icon pi pi-trash" aria-hidden="true"></span>
+                  </button>
+              </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3">No items found.</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft" let-state>
+              <span>Tổng cộng: {{state.totalRecords}}</span>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

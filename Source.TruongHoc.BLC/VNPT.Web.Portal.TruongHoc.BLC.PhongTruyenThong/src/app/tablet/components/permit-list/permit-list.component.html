@@ -1,0 +1,55 @@
+<p-table [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục" [value]="list" [loading]="loading" [paginator]="true" [lazy]="true" [rows]="10" [totalRecords]="totalRecords" (onLazyLoad)="pageChange($event)">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>
+                {{ 'Tên Người Nộp' }}
+            </th>
+            <th width="10%">
+                {{ 'Số Giấy Phép' }}
+            </th>
+            <th width="10%">
+                {{ 'Ngày Cấp Phép' }}
+            </th>
+            <th>
+                {{ 'Địa Chỉ' }}
+            </th>
+            <th>
+                Thông số
+            </th>
+            <th width="10%">
+                {{ 'Trạng Thái Xây' }}
+            </th>
+            <th width="10%">
+                {{ 'Trạng Thái Nộp Thuế' }}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td>
+                <a [routerLink]="['/public/permit-detail', item.Id]" href="javascript:void(0)">
+          {{ item.NguoiNop }}</a
+        >
+      </td>
+      <td>
+        {{ item.SoGp }}
+      </td>
+      <td>
+        {{ item.NgayGiayPhep | date: 'dd/MM/yyyy' }}
+      </td>
+      <td>
+        {{ populatePermitFullAddress(item) }}
+      </td>
+      <td>
+          <span><b>DT sàn:</b> {{item.DTSan}} &#13217; </span>
+      </td>
+      <td>
+        <span class="badge" [ngClass]="calculateConstructionStatusBadge(item.TrangThaiXayText)">{{ item.TrangThaiXayText }}
+        </span>
+      </td>
+      <td>
+        <span class="badge" *ngIf="item.TrangThaiNopThueText" [ngClass]="calculatePermitFeeStatusBadge(item.TrangThaiNopThueText)">{{ item.TrangThaiNopThueText }}</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

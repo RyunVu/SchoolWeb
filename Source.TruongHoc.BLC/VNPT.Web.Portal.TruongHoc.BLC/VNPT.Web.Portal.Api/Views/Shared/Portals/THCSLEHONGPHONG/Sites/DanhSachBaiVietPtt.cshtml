@@ -1,0 +1,463 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@{
+    var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    string lang = "vi";
+
+    if (cookie != null)
+    {
+        lang = cookie.Value;
+    }
+
+    var menuSite = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper());
+
+    var codename = menuSite?.Name;
+    var codesite = menuSite?.Value;
+
+    if (lang != "vi")
+    {
+        codename = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+    }
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+    <style>
+        .flipbook {
+            width: 100%!important;
+            height: 700px;
+        }
+
+            .flipbook .hard {
+                background: #c0392b !important;
+                color: #fff;
+                font-weight: bold;
+                border: none;
+            }
+
+                .flipbook .hard small {
+                    font-style: italic;
+                    font-weight: lighter;
+                    opacity: 0.7;
+                    font-size: 14px;
+                }
+
+            .flipbook .page {
+                background: white;
+                position: relative;
+                border: 1px solid rgba(0, 0, 0, 0.11);
+            }
+
+        .page img {
+            width: 70%;
+            object-fit: cover;
+            margin: auto;
+        }
+
+        .flipbook .page small {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .unitname {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .bottom {
+            position: absolute;
+            bottom: 64px;
+            width: 100%;
+            text-align: center;
+        }
+        .center {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .top {
+            position: absolute;
+            top: 64px;
+            width: 100%;
+            text-align: center;
+        }
+        .fsz-30 {
+            font-size: 30px !important;
+        }
+        .fsz-24 {
+            font-size: 24px !important;
+        }
+        .text-bold {
+            font-weight: bold;
+        }
+        .p-16 {
+            padding: 16px;
+        }
+        .text-type {
+            padding: 8px;
+            background: #5651ab;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .d-inline-block {
+            display: inline-block;
+        }
+        .text-transform-uppercase {
+            text-transform: uppercase;
+        }
+    </style>
+}
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+
+<div class="body-content">
+    <div class="container">
+        <div class="content-title text-center">
+            <div class="c-title">
+                <span>@codename</span>
+            </div>
+        </div>
+
+        <div class="row content-gd content-media" id="listNews">
+
+        </div>
+
+        <div class="row not-list">
+            <div class="col-12">
+                <div class="flipbook">
+                    <div class="hard center fsz-30">HÌNH ẢNH, VIDEO</div>
+                    <div class="hard"></div>
+
+                    <div class="hard"></div>
+                    <small class="unitname unitname2 fsz-30"></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="pagination-primary" id="paginationholder">
+                <ul class="pagination" id="pagination"></ul>
+            </div>
+        </div>
+
+
+        @*@Html.Action("DanhSachBaiVietPtt", "PhongTruyenThong", new { area = "Modules", Code = codesite })*@
+
+        @*//shotcontent -> video
+        //Descript -> hình ảnh
+        //còn lại -> bài viết*@
+    </div>
+</div>
+
+
+
+@section scripts {
+
+
+    <script id="htmlNews" type="x-tmpl-mustache">
+    {{#dataList}}
+    <div class="col-sm-3">
+        <div class="itemgd">
+            {{#isImagePost}}
+                <!-- Nếu là bài viết hình ảnh -->
+                <a href="{{imageGallery.0.url}}" class="link_item" data-fancybox="gallery-{{Id}}">
+                    <img class="img_hover thanhtich" src="{{imageGallery.0.thumb}}">
+                </a>
+                {{#imageGallery}}
+                <a href="{{url}}" data-fancybox="gallery-{{Id}}" style="display: none;"></a>
+                {{/imageGallery}}
+            {{/isImagePost}}
+
+            {{#isVideoPost}}
+                <!-- Nếu là bài viết video -->
+                <a href="{{videoUrl}}" class="link_item" data-fancybox="video">
+                    <img class="img_hover thanhtich" src="/Images/ptt/video-placeholder.jpg">
+                </a>
+            {{/isVideoPost}}
+
+            {{^isImagePost}}
+            {{^isVideoPost}}
+                <!-- Nếu là bài viết thường -->
+                <a href="{{UrlBaiViet}}" class="link_item">
+                    <img class="img_hover thanhtich" src="{{ImageUrlNew}}">
+                </a>
+            {{/isVideoPost}}
+            {{/isImagePost}}
+
+            <div class="itemgd-body" style="background-color: #EFB338;">
+                <a href="" class="gd-title" style="color: #fff;">{{Title}}</a>
+            </div>
+        </div>
+    </div>
+    {{/dataList}}
+    </script>
+    
+    <script id="htmlNews-2" type="x-tmpl-mustache">
+        <div class="hard center fsz-30">HÌNH ẢNH, VIDEO</div>
+
+        <div class="hard"></div>
+        <div class="center">
+            <div class="top">
+                <small class="unitname fsz-24"></small>
+            </div>
+            <div class="bottom">
+                <small>HÌNH ẢNH, VIDEO</small>
+            </div>
+        </div>
+        {{#dataList}}
+            <div>
+                <div class="p-16 center">
+                    {{#isImagePost}}
+                        <!-- Nếu là bài viết hình ảnh -->
+                        <a href="{{imageGallery.0.url}}" class="link_item" data-fancybox="gallery-{{Id}}">
+                            <img class="img_hover thanhtich" src="{{imageGallery.0.thumb}}">
+                        </a>
+                        {{#imageGallery}}
+                        <a href="{{url}}" data-fancybox="gallery-{{Id}}" style="display: none;"></a>
+                        {{/imageGallery}}
+                    {{/isImagePost}}
+
+                    {{#isVideoPost}}
+                        <!-- Nếu là bài viết video -->
+                        <a href="{{videoUrl}}" class="link_item" data-fancybox="video">
+                            <img class="img_hover thanhtich" src="/Images/ptt/video-placeholder.jpg">
+                        </a>
+                    {{/isVideoPost}}
+
+                    {{^isImagePost}}
+                    {{^isVideoPost}}
+                        <!-- Nếu là bài viết thường -->
+                        <a href="{{UrlBaiViet}}" class="link_item">
+                            <img class="img_hover thanhtich" src="{{ImageUrlNew}}">
+                        </a>
+                    {{/isVideoPost}}
+                    {{/isImagePost}}
+
+                    <div class="bottom">
+                        <div class="p-16">
+                            <small class="text-bold text-transform-uppercase"> {{Title}} </small>
+                        </div>
+                        <div class="text-type d-inline-block">
+                            {{#isImagePost}}
+                                <small class="text-bold">Tài liệu dạng hình ảnh</small>
+                            {{/isImagePost}}
+
+                            {{#isVideoPost}}
+                                <small class="text-bold text-type">Tài liệu dạng video</small>
+                            {{/isVideoPost}}
+
+                            {{^isImagePost}}
+                            {{^isVideoPost}}
+                                <small class="text-bold text-type">Tài liệu dạng bài viết</small>
+                            {{/isVideoPost}}
+                            {{/isImagePost}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {{/dataList}}
+
+        <div class="hard"></div>
+
+        <div class="hard">
+            <div class="bottom fsz-30">HÌNH ẢNH VÀ VIDEO</div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+        var urlTemplate = "@Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = "__value__" })";
+        const template = $("#listNews").html();
+
+        var commonConfig = {
+            pageSize: 12,
+            page: 1,
+            isClear: 0,
+        }
+
+        var codeAlias = '@code'.split('.')[0];
+
+        var obj = {
+            PageIndex: commonConfig.page,
+            PageSize: commonConfig.pageSize,
+            UnitCode: "@information.PortalCode",
+            Code: codeAlias ? codeAlias : ''
+        };
+
+        if (codeAlias == "hinh-anh-video-ptt") {
+            obj = {
+                PageIndex: 1,
+                PageSize: 100,
+                UnitCode: "@information.PortalCode",
+                Code: codeAlias ? codeAlias : ''
+            };
+        } else {
+            $("#paginationholder").show();
+            $(".not-list").hide();
+        }
+
+        var main = {
+            loadListNews: function () {
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: '/api/NewGuest/GetList',
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+                        if (res.Result.length > 0) {
+                            console.log(JSON.stringify(res));
+
+                            const regExp = /^(http|https|ftp):\/\//i;
+
+                            const processedData = res.Result.map(item => {
+                                let imageUrl = item.ImageUrl && regExp.test(item.ImageUrl) ? item.ImageUrl : item.ImageUrl;
+
+                                if (item.ImageUrl && item.ImageUrl !== 'null') {
+                                    imageUrl = domainMedia + imageUrl;
+                                } else {
+                                    imageUrl = "/Images/NoImage400x266.png";
+                                }
+
+                                // Kiểm tra xem Description có dữ liệu hình ảnh không
+                                let isImagePost = false;
+                                let imageGallery = [];
+
+                                if (item.Description) {
+                                    try {
+                                        const images = JSON.parse(item.Description);
+                                        if (Array.isArray(images) && images.length > 0) {
+                                            isImagePost = true;
+                                            imageGallery = images.map(img => ({
+                                                url: domainMedia + img.Url,
+                                                thumb: domainMedia + img.ThumbUrl
+                                            }));
+                                        }
+                                    } catch (e) {
+                                        console.error("Lỗi parse JSON Description:", e);
+                                    }
+                                }
+
+                                // Kiểm tra xem bài viết có phải là video không
+                                let isVideoPost = false;
+                                let videoUrl = "";
+
+                                if (!isImagePost && item.ShortContent && regExp.test(item.ShortContent)) {
+                                    isVideoPost = true;
+                                    videoUrl = item.ShortContent;
+                                }
+
+                                return {
+                                    ...item,
+                                    ImageUrlNew: imageUrl,
+                                    UrlBaiViet: urlTemplate.replace("__value__", item.Alias).replace("__code__", item.Code),
+                                    isImagePost,
+                                    imageGallery,
+                                    isVideoPost,
+                                    videoUrl
+                                };
+                            });
+
+                            let template = $("#htmlNews").html();
+                            let rendered = Mustache.render(template, { dataList: processedData });
+                            $("#paginationholder").show();
+                            $(".not-list").hide();
+                            $("#listNews").html(rendered);
+
+                            if (codeAlias == "hinh-anh-video-ptt") {
+                                $("#listNews").hide();
+                                $(".not-list").show();
+                                $("#paginationholder").hide();
+
+                                template = $("#htmlNews-2").html();
+                                rendered = Mustache.render(template, { dataList: processedData });
+
+                                $(".flipbook").html(rendered);
+                                $(".flipbook").turn();
+
+                                console.log(processedData);
+                                $(".unitname").html(processedData[0].UnitName);
+                            }
+
+                            main.pagingPage(res.TotalRow, commonConfig.isClear, function () {
+                                main.loadListNews();
+                            });
+
+                        } else {
+                            $("#listNews").html('<h2 class="text-center">Không có dữ liệu</h2>');
+                        }
+                    }
+                });
+            },
+
+            //NgaySinhString: cbcv.NgaySinh
+            //    ? new Date(cbcv.NgaySinh).toLocaleDateString("vi-VN")
+            //    : "N/A",
+            //UrlCanBo: urlTemplate.replace("__value__", cbcv.TieuSuId),
+            //offsetClass: item.CBCVNKlst.length == 1 ? "col-sm-offset-3" : "",
+            pagingPage: function (totalRow, isClear, callback) {
+                var totalRowP = parseInt(totalRow);
+                var totalPage = Math.ceil(totalRowP / commonConfig.pageSize);
+                if (totalPage >= 0 && commonConfig.isClear == 0) {
+                    if (totalPage == 0) {
+                        totalPage = 1;
+                    }
+                    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+                }
+
+                $('#paginationholder #pagination').twbsPagination({
+                    totalPages: totalPage,
+                    visiblePages: 4,
+                    first: '<i class="fa fa-caret-left"></i><i class="fa fa-caret-left"></i>',
+                    next: '<i class="fa fa-caret-right"></i>',
+                    last: '<i class="fa fa-caret-right"></i><i class="fa fa-caret-right"></i>',
+                    prev: '<i class="fa fa-caret-left"></i>',
+                    initiateStartPageClick: false,
+                    onPageClick: function (event, page) {
+                        commonConfig.page = page;
+                        commonConfig.isClear = 1
+                        obj = {
+                            Code: "@code",
+                            PageIndex: commonConfig.page,
+                            PageSize: commonConfig.pageSize,
+                            UnitCode: "@information.PortalCode",
+                        };
+                        setTimeout(callback, 200);
+                    }
+                });
+
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadListNews();
+        });
+
+    </script>
+}

@@ -1,0 +1,72 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="content-title text-center">
+    <div class="c-title"></div>
+  </div>
+
+  <div class="container">
+    <div class="col-sm-12">
+      <div class="search-content">
+        <div class="header-search">
+          <h1 class="text-title">{{baiviet?.Title}}</h1>
+          <div class="info_content">
+            <div class="info_bv">
+              <span class="time"><i class="fa fa-clock"></i>{{baiviet?.CreateDate | date: 'dd/MM/yyyy'}}</span>
+              <span class="count-views"><i class="fa fa-eye"></i><b>{{baiviet?.CountView}} </b> đã xem</span>
+            </div>
+            <div class="action_bv">
+            </div>
+          </div>
+        </div>
+        <div class="content_baiviet" [innerHTML]="baiviet?.Content">
+        </div>
+
+        <div class="info_content">
+          <div class=""></div>
+          <div class="action_bv">
+            <!-- <button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-print" aria-hidden="true"></i>
+              In</button> -->
+
+            <!-- <button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-volume-up" aria-hidden="true"></i>
+              Đọc</button> -->
+
+            <!-- <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+              like</button>
+
+            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-share" aria-hidden="true"></i>
+              share</button> -->
+          </div>
+        </div>
+
+        <h3 class="cungchuyenmuc">Cùng chuyên mục</h3>
+
+        <div class="row content-gd content-media">
+
+          <div class="col-sm-3" *ngFor="let i of lstLQ">
+            <div class="itemgd" (click)="clickChTietBV(i.Code,i.Id,i.Alias)">
+              <a class="link_item">
+                <img class="img_hover"
+                  src="{{i.ImageUrl}}" onerror="onerror=null;src='assets/img/Noimage.jpg';"
+                  alt="">
+              </a>
+              <div class="itemgd-body">
+                <a class="gd-title">{{i.Title}}</a>
+                <div class="itemgd-time text-right">{{i.CreateDate | date: 'dd/MM/yyyy'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

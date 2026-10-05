@@ -1,0 +1,96 @@
+<div class="permit-left-panel-container h-100">
+    <div *ngIf="!permitDetail" class="default-panel h-100">
+        <div *ngIf="loading" class="pt-5 px-3">
+            <ngx-content-loading [width]="180" [height]="250">
+                <svg:g ngx-rect width="180" height="40" y="0" x="0"></svg:g>
+                <svg:g ngx-rect width="180" height="40" y="50" x="0"></svg:g>
+                <svg:g ngx-rect width="180" height="40" y="100" x="0"></svg:g>
+                <svg:g ngx-rect width="180" height="40" y="150" x="0"></svg:g>
+            </ngx-content-loading>
+        </div>
+
+        <div *ngIf="!items && !loading" class="search-bg h-100">
+            <img width="300" class="m-auto" src="assets/Images/search_bg.png" />
+        </div>
+
+        <div *ngIf="items && !items.length && !loading" class="search-bg h-100">
+            <h3 class="m-auto">Không có dữ liệu!</h3>
+        </div>
+
+        <div class="permit-list">
+            <div *ngFor="let permit of items" class="card permit">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="javascript:void(0)" (click)="viewDetail(permit)">{{permit.NguoiNop}}</a>
+                    </h5>
+                    <br />
+                    <hr />
+                    <p class="card-text">
+                        <b>Số giấy phép: </b> {{ permit.SoGp }}<br />
+                        <b>Loại nhà: </b> {{ permit.LoaiNha }} - <b>DT sàn: </b> {{ permit.DTSan | number }} m2<br />
+                        <b>Địa chỉ: </b>
+                        <span style="text-transform: capitalize">{{populatePermitFullAddress(permit)}}</span><br />
+                        <span class="float-left"><strong>Tình trạng xây dựng: </strong>
+                          <span class="badge" [ngClass]="calculateConstructionStatusBadge(permit.TrangThaiXayText)">{{ permit.TrangThaiXayText }}</span></span>
+                        <span class="float-right" *ngIf="permit.TrangThaiNopThueText"><strong>Nộp thuế: </strong>
+                          <span class="badge" *ngIf="permit.TrangThaiNopThueText" [ngClass]="calculatePermitFeeStatusBadge(permit.TrangThaiNopThueText)">{{ permit.TrangThaiNopThueText }}</span></span>
+                    </p>
+                    <!-- <a *ngIf="isLogin" href="javascript:void(0)" (click)="goToTaxUpdate(permit)" class="btn btn-primary float-right">Cập nhật thuế</a>
+                    <a *ngIf="isLogin" href="javascript:void(0)" (click)="goToTaxCollect(permit)" class="btn btn-primary float-right mr-3">Thu thuế</a> -->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="permitDetail" class="permit-detail">
+        <div class="card permit-detail">
+            <div class="card-body">
+                <img class="card-img-top" src="assets/Images/default-banner.jpg" alt="" />
+                <h5 class="card-title mt-3">
+                    <a href="javascript:void(0)" (click)="closeDetail()"><i class="fa fa-chevron-left mr-3"></i></a> {{ permitDetail.NguoiNop }} - {{ permitDetail.SoGp }}
+                </h5>
+                <div class="clearfix"></div>
+                <hr />
+                <p class="card-text">
+                    <strong>Địa chỉ:</strong> {{ populatePermitFullAddress(permitDetail) }}
+                </p>
+                <p class="card-text">
+                    <strong>Ngày cấp giấy phép:</strong> {{ permitDetail.NgayGiayPhep | date: 'dd/MM/yyyy' }}
+                </p>
+                <p class="card-text">
+                    <strong>Diện tích xây dựng:</strong> {{ permitDetail.DTXD }} m2
+                    <br />
+                    <strong>Tổng diện tích:</strong> {{ permitDetail.DTSan }} m2
+                    <br />
+                    <strong>Tầng hầm:</strong> {{ permitDetail.TangHam }}
+                    <br />
+                    <strong>Bán hầm:</strong> {{ permitDetail.BanHam }}
+                    <br />
+                    <strong>Tầng trệt:</strong> {{ permitDetail.TangTret }}
+                    <br />
+                    <strong>Tầng Lầu:</strong> {{ permitDetail.TangLau }}
+                    <br />
+                    <strong>Tầng Lửng:</strong> {{ permitDetail.TangLung }}
+                    <br />
+                    <strong>Áp mái:</strong> {{ permitDetail.ApMai }}
+                    <br />
+                    <strong>Số tầng:</strong> {{ permitDetail.SoTang }}
+                </p>
+                <!-- <p *ngIf="permitDetail.NgayNopHo" class="card-text">
+                    <strong>Ngày nộp thuế:</strong> {{ permitDetail.NgayNopHo | date: 'dd/MM/yyyy' }}
+                </p>
+                <p *ngIf="permitDetail.SoTienThueCanNop" class="card-text">
+                    <strong>Số tiền thuế cần nộp:</strong> {{ permitDetail.SoTienThueCanNop | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="permitDetail.SoTienDaNop" class="card-text">
+                    <strong>Số tiền thuế đã nộp:</strong> {{ permitDetail.SoTienDaNop | currency: 'VND':'symbol':undefined:'vi' }}
+                </p> -->
+                <span class="float-left"><strong>Tình trạng xây dựng: </strong>
+          <span class="badge" [ngClass]="calculateConstructionStatusBadge(permitDetail.TrangThaiXayText)">{{ permitDetail.TrangThaiXayText }}</span></span>
+                <span class="float-right"><strong>Nộp thuế: </strong>
+          <span class="badge" [ngClass]="calculatePermitFeeStatusBadge(permitDetail.TrangThaiNopThueText)">{{ permitDetail.TrangThaiNopThueText }}</span></span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

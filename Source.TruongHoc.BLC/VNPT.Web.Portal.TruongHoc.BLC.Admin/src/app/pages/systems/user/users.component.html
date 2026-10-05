@@ -1,0 +1,131 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 class="m-0 text-dark">Quản lý người dùng</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Users</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="Name">Đơn vị</label>
+                                    <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput"
+                                        placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true"
+                                        filterBy="Name">
+                                    </p-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Name">Từ khóa tìm kiếm</label>
+                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
+                                        placeholder="Từ khóa tìm kiếm" />
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="padding-top: 37px;">
+                                <button (click)="search()" type="button" class="btn btn-info btn-sm  mr-3">
+                                    <i class="fa fa-filter"></i> Tìm kiếm
+                                </button>
+                                <button (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
+                                    <i class="fas fa-plus"></i> Thêm mới
+                                </button>
+                                <button (click)="viewOtpQr({Id: 'PortalAdmin'})" type="button"
+                                    class="btn btn-warning btn-sm">
+                                    <i class="fa fa-filter"></i> Admin F2A
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+                        [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow"
+                        [loading]="loading">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="headerTable">Tên
+                                </th>
+                                <th class="headerTable">Thông tin liên hệ
+                                </th>
+                                <th class="headerTable">Đơn vị</th>
+                                <th class="headerTable" style="width: 10rem;">Thao tác</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
+                                <td>{{item.FullName}}</td>
+                                <td>
+                                    <span *ngIf="item.UserName">Tên đăng nhập: {{item.UserName }}<br></span>
+                                    <span *ngIf="item.PhoneNumber">Số ĐT: {{item.PhoneNumber }}<br></span>
+                                    <span *ngIf="item.Email">Email: {{item.Email }}</span>
+
+                                </td>
+                                <td>
+                                    <span *ngIf="item.UnitName">Phòng/ban: {{item.UnitName }}<br></span>
+                                    <span *ngIf="item.PositionName">Chức vụ: {{item.PositionName }}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-info dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Thao tác
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a *ngIf="checkPermission('Edit')" class="dropdown-item"
+                                                (click)="edit(item)">Cập nhật</a>
+                                            <a *ngIf="checkPermission('Edit')" class="dropdown-item"
+                                                (click)="resetpwd(item)">Reset mật khẩu</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('Edit')" class="dropdown-item"
+                                                (click)="viewOtpQr(item)">Xem mã xác minh 2 bước</a>
+                                            <a *ngIf="checkPermission('Edit')" class="dropdown-item"
+                                                (click)="viewOtp(item)">Xem mã OTP</a>
+                                            <a *ngIf="checkPermission('Edit') && !item.EnableOtp" class="dropdown-item"
+                                                (click)="turnOnOtp(item)">Bật OTP</a>
+                                            <a *ngIf="checkPermission('Edit') && item.EnableOtp" class="dropdown-item"
+                                                (click)="turnOffOtp(item)">Tắt OTP</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('Delete')" class="dropdown-item"
+                                                (click)="delete(item)">Xoá</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                (click)="history(item)">Lịch sử thay đổi</a>
+                                            <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                (click)="historyEdit(item)">Lịch sử người dùng</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="3">No items found.</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft" let-state>
+                            <span>Tổng cộng: {{state.totalRecords}}</span>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,131 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 class="m-0 text-dark">Quản lý tin tức {{ titlePage }}</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#/home">Home</a></li>
+                    <li class="breadcrumb-item active">{{ titlePage }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <div class="row">
+                          
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="d-block" for="Name">Từ ngày: </label>
+                                    <p-calendar [(ngModel)]="TuNgay" [showIcon]="false" dateFormat="dd/mm/yy"
+                                        appendTo="body">
+                                    </p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="d-block" for="Name">Đến ngày: </label>
+                                    <p-calendar [(ngModel)]="DenNgay" [showIcon]="false" dateFormat="dd/mm/yy"
+                                        appendTo="body">
+                                    </p-calendar>
+                                </div>
+                            </div>
+                            <div [ngClass]="'col-md-6'">
+                                <div class="form-group">
+                                    <label for="Name">Từ khóa tìm kiếm</label>
+                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
+                                        placeholder="Từ khóa tìm kiếm" />
+                                </div>
+                            </div>
+                            <div class="col-12" style="padding-top: 37px;">
+                                <button (click)="add()" type="button" class="btn btn-success btn-sm float-right mr-3">
+                                    <i class="fas fa-plus"></i> Thêm mới
+                                </button>
+                                <button (click)="search()" type="button" class="btn btn-info btn-sm float-right"
+                                    style="margin-right: 5px;">
+                                    <i class="fa fa-filter"></i> Tìm kiếm
+                                </button>
+                                <button (click)="clearfilter()" type="button" class="btn btn-warning btn-sm float-right mr-3"
+                                    style="margin-right: 5px;">
+                                    <i class="fa fa-retweet"></i> Bỏ lọc
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    [paginator]="true" [rows]="pageSize"
+                    [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading" appendTo="body"
+                    paginatorDropdownAppendTo="body">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="headerTable" style="width: 5%; text-align: center;">STT</th>
+                                <th class="headerTable" width="10%">Hình ảnh</th>
+                                <th class="headerTable" width="50%">Thông tin tin tức</th>
+                                <th class="headerTable" width="20%">Thời gian</th>
+                                <th class="headerTable" width="10%">Thao tác</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+                            <tr>
+                                <td style="text-align: center;">{{i+1}}</td>
+                                <td class="text-center">
+                                    <img *ngIf="rowData.ImageUrl" alt="{{rowData.ImageUrl|imageUrlPipe}}"
+                                        [src]="rowData.ImageUrl|imageUrlPipe"
+                                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"
+                                        class="img-responsive" style="width: 100px; height: 100px;"
+                                        onerror="onerror=null;src='/assets/img/noimage.png';" />
+                                    <img *ngIf="!rowData.ImageUrl" src="/assets/img/noimage.png" class="img-responsive"
+                                        style="width: 100px; height: 100px;" />
+                                </td>
+                                <td class="text-left">
+                                    <!-- <b>Loại tin tức:</b> {{ rowData.NewTypeName }}<br> -->
+                                    <b>Tiêu đề:</b> {{ rowData.Title }}
+                                </td>
+                                <td style="text-align: center;">{{ rowData.CreateDateString }}</td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-info" *ngIf="checkPermission('Edit')" (click)="edit(rowData)">Cập nhật</button>
+                                        <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                            <span class="sr-only"></span>
+                                            </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" (click)="edit(rowData)" *ngIf="checkPermission('Edit')">Cập nhật</a>
+                                            <a class="dropdown-item" (click)="delete(rowData)" *ngIf="checkPermission('Delete')">Xóa</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('View')" class="dropdown-item" (click)="history(rowData)">Lịch sử thay đổi</a>
+                                        </div>
+                                        <!-- <button class="btn btn-info dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Thao tác
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <a class="dropdown-item" (click)="edit(rowData)"
+                                                *ngIf="checkPermission('Edit')">Cập nhật</a>
+                                            <a class="dropdown-item" (click)="delete(rowData)"
+                                                *ngIf="checkPermission('Delete')">Xóa</a>
+                                        </div> -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft" let-state>
+                            <span>Tổng cộng: {{state.totalRecords}} tin tức</span>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

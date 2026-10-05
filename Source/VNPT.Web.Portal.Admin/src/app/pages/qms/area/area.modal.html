@@ -1,0 +1,40 @@
+<!-- <p-toast></p-toast> -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Tên <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Name" placeholder="Tên">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Mã</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Code" placeholder="Mã">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Số điện thoại</label>
+            <input type="tel" class="form-control" [(ngModel)]="item.PhoneNo" placeholder="Số điện thoại">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Địa chỉ</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Address" placeholder="Địa chỉ">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Cấu hình</label>
+            <textarea class="form-control" [(ngModel)]="item.Setting" rows="5" placeholder="Cấu hình"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

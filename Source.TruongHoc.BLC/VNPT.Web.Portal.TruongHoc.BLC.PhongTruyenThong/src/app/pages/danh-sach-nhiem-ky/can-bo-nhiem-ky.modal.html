@@ -1,0 +1,52 @@
+<div class="row">
+    <div *ngFor="let prop of item.CVNKlst" class="col-lg-12">
+        <fieldset style=" min-height: 100px">
+            <legend><b>{{prop.Name}} &nbsp; &nbsp; &nbsp; &nbsp;<button class="btn btn-sm btn-info" (click)="addTieuSu(prop.ChucVuId)"><i
+                            class="fa fa-plus"></i>
+                        Thêm cán bộ </button></b></legend>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <th width="20%">Thứ tự</th>
+                        <th width="60%">Cán bộ</th>
+                        <th width="20%">Xóa</th>
+                    </tr>
+                    <tr *ngFor="let propCBCV of prop.CBCVNKlst">
+                        <td>
+                            <div class="form-group">
+                                <input type="number" min="1" class="form-control" [(ngModel)]="propCBCV.ThuTu"
+                                    placeholder="Thứ tự" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <p-dropdown [options]="itemCanBos" [(ngModel)]="propCBCV.TieuSuId" optionLabel="HoTen"
+                                    optionValue="Id" [filter]="true" filterBy="HoTen" appendTo="body"
+                                    placeholder="Chọn cán bộ">
+                                </p-dropdown>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-danger" (click)="minusTieuSu(propCBCV,prop.ChucVuId)"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

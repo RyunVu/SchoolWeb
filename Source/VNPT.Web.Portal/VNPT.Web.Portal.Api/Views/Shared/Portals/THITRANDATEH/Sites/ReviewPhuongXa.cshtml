@@ -1,0 +1,87 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.DTO
+
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+}
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="heading-direct">
+                <h3><i class="fa fa-star"></i>Đánh giá</h3>
+            </div>
+            <section class="wrap-page-primary feedback-details">
+                <div class="form-send-feedback bg-white" id="rate">
+                    <div class="contact-form">
+                        <form id="submit_contact_form">
+                            <div id="contact_html">
+                            </div>
+                            @Html.AntiForgeryToken()
+                            <div class="form-group fg-full text-center">
+                                <input type="hidden" class="rating" id="submit-rate" data-filled="fa fa-star fa-4x active-color" data-empty="fa fa-star fa-4x inactive-color" value="5"/>
+                            </div>
+                            <div class="form-group fg-full">
+                                <input name="Name" id="id-name" type="text" class="form-control" placeholder="Họ tên">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="form-group fg-full">
+                                <textarea id="id-content" name="Content" rows="2" class="form-control" placeholder="Bài viết đánh giá"></textarea>
+                                <i class="fa fa-align-left"></i>
+                            </div>
+                            <div class="form-group fg-full btn-direct text-right">
+                                <button id="submit-contact" type="submit">Gửi đánh giá</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="reviews_list">
+                    @Html.Action("GetListReviews", "CongDoan", new { area = "Modules" })                   
+                </div>                              
+            </section>
+        </div>
+        <div class="col-md-3">
+            @Html.Partial("~/Views/Shared/Portals/Layouts/PhuongXaTheme/_SidebarMenu.cshtml")
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $('#submit_contact_form').validate({
+            rules: {
+                //Content: {
+                //    required: true
+                //},
+            },
+            messages: {
+                //Content: {
+                //    required: "Nội dung không được để trống"
+                //},
+            },
+            submitHandler: function (form) {
+                var rate = $("#submit-rate").val();
+                var name = $("#id-name").val();
+                var content = $("#id-content").val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("InsertReviews", "CongDoan", new { area = "Modules" })',
+                    data: {
+                        Content: content,
+                        Name: name,
+                        Rate: rate
+                    },
+                    success: function (response) {
+                        location.reload()
+                    }
+                });
+            }
+        });        
+    </script>
+}

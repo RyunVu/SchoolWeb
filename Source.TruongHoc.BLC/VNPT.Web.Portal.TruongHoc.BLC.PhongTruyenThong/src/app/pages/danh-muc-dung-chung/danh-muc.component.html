@@ -1,0 +1,86 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Danh mục {{ this.titlePage }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">{{ this.titlePage }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-primary card-outline">
+                  
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="Name">Từ khóa tìm kiếm</label>
+                                        <input type="text" class="form-control" [(ngModel)]="keywordInput" placeholder="Từ khóa tìm kiếm" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <button *ngIf="checkPermission('Add')" (click)="add()" type="button" class="btn btn-info float-right">
+                                        <i class="fas fa-plus"></i> Thêm mới
+                                    </button>
+                                    <button (click)="search()" type="button" class="btn btn-info float-right mr-3" style="margin-right: 3px;"><i class="fa fa-filter"></i> Tìm kiếm</button>
+                                    
+                                    <button (click)="clearfilter()" type="button" class="btn btn-warning float-right mr-3">
+                                        <i class="fa fa-retweet"></i> Bỏ lọc
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="5%">STT</th>
+                                    <th>Tên</th>
+                                    <th *ngFor="let col of setting">{{col.Label}}</th>
+                                    <th width="140px">Thao tác</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item let-i="rowIndex">
+                                <tr>
+                                    <td>{{i + 1}}</td>
+                                    <td>
+                                        {{ item.Name }}
+                                    </td>
+                                    <td *ngFor="let col of setting">{{ getValue(item,col) }}</td>
+
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info" *ngIf="checkPermission('Edit')" (click)="edit(item)">Cập nhật</button>
+                                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                <span class="sr-only"></span>
+                                                </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" (click)="edit(item)" *ngIf="checkPermission('Edit')">Cập nhật</a>
+                                                <a class="dropdown-item" (click)="delete(item)" *ngIf="checkPermission('Delete')">Xóa</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item" (click)="history(item)">Lịch sử thay đổi</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,756 @@
+<div id="slider-img">
+  <p-carousel [value]="products" [numVisible]="1" [showIndicators]="false" [showNavigators]="false"
+    [autoplayInterval]="3500" [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+    <ng-template let-product pTemplate="item">
+      <div class="border-1 surface-border border-round text-center">
+        <div>
+          <img src="{{product.img}}" />
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
+
+<div class="section" id="gioithieu">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 text-left">
+        <div class="info-title">Phòng truyền thông - UBKT tỉnh lâm đồng</div>
+        <div class="info-des">
+
+          <p>Ở Nam Tây Nguyên, ngày 18/10/1977 Ban Bí thư Trung ương Đảng đã ban hành Nghị quyết số 283-NQNS/TW do đồng
+            chí Nguyễn Duy Trinh ký chuẩn y danh sách Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng khóa I. Cùng với cả nước tiến
+            hành công cuộc đổi mới, 46 năm qua, Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng đã không ngừng phát triển, lớn mạnh
+            cùng Đảng bộ tỉnh, đóng góp quan trọng, tích cực vào sự nghiệp xây dựng và bảo vệ Tổ quốc, để lại những dấu
+            ấn thành tựu, giá trị truyền thống tốt đẹp mà các thế hệ cán bộ, công chức, người lao động đã dày công xây
+            dựng, vun đắp và trao truyền qua nhiều thế hệ....</p>
+
+        </div>
+        <a routerLink="/public/chitiet-baiviet" [queryParams]="{baiviet:0}" class="c-xemthem"><span>Xem thêm</span> <i
+            class="fa fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+
+      <div class="col-sm-6 text-right">
+        <img class="hidden-xs-down" width="80%" src="assets/template/images/info-img.png" />
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="canbo">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="content-title text-center">
+          <div class="c-title">trưởng ban chủ nhiệm uỷ ban kiểm tra tỉnh uỷ qua các thời kỳ</div>
+        </div>
+
+        <div id="slider-pp">
+          <p-carousel [value]="lanhdaos" [numVisible]="5" [showNavigators]="false" [autoplayInterval]="3500"
+            [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+            <ng-template let-product pTemplate="item">
+              <div class="content-pp" (click)="openTieuSu(product.id)">
+                <div class="pp-img">
+                  <img class="img_hover" src="{{product.img}}" />
+                </div>
+                <div class="pp-name text-center">{{product.name}}</div>
+                <div class="pp-nhiemky text-center">Năm sinh: {{product.birthday}}</div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section content-col">
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">giáo dục truyền thống</div>
+    </div>
+
+    <div class="col-sm-12 row content-gd">
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn1.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn2.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn3.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn4.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="itemgd">
+          <a class="link_item">
+            <img class="img_hover" src="assets/template/images/nn6.jpg" />
+          </a>
+          <div class="itemgd-body">
+            <div class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</div>
+            <div class="gd-des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp phó
+              tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy
+              điện Thác Bà - đứa con đầu lòng của ngành Thủy điện miền Bắc xã hội chủ</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center">
+      <a href="#" class="c-xemthem"><span>Xem thêm</span> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="hoatdong">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="content-title text-center">
+        <div class="c-title">các hoạt động phong trào</div>
+      </div>
+
+      <div id="slider-hd">
+        <p-carousel [value]="hoatdongs" [numVisible]="3" [showNavigators]="false" [autoplayInterval]="3500"
+          [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+          <ng-template let-product pTemplate="item">
+
+            <div class="box_content">
+
+              <div class="box_img">
+                <a href="#/public/chitiet-baiviet">
+                  <img class="img_hover" src="{{product.img}}" />
+                </a>
+              </div>
+
+              <div class="box_text">
+                <div class="box_text_tt">{{product.title}}</div>
+                <div class="is-divider"></div>
+                <!-- <div class="box_text_des">Năm 1964, khi ông Thái Phụng Nê, nguyên Bộ trưởng Bộ Năng lượng mới tốt nghiệp
+                  phó tiến sĩ ở Liên Xô về, được điều động lên xây dựng thủy điện Thác Bà - đứa co</div> -->
+              </div>
+
+            </div>
+
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section content-col">
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">Hình ảnh</div>
+    </div>
+
+    <div class="col-sm-12 row content-gd content-media">
+      <p-carousel [value]="Images" [numVisible]="3" [showNavigators]="false" [autoplayInterval]="4000"
+      [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+      <ng-template let-product pTemplate="item">
+        <div class="">
+          <div class="itemgd">
+            <a class="link_item" href="">
+              <img class="img_hover" src="{{product.img}}" />
+              <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+            </a>
+            <div class="itemgd-body">
+              <a class="gd-title">{{product.title}}</a>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      </p-carousel>
+      <!-- <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn7.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn6.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn4.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn3.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn3.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div> -->
+
+
+    </div>
+  </div>
+</div>
+<div class="section content-col">
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">Video</div>
+    </div>
+
+    <div class="col-sm-12 row content-gd content-media">
+      <p-carousel [value]="Videos" [numVisible]="3" [showNavigators]="false" [autoplayInterval]="4000"
+      [numScroll]="1" [circular]="false" [responsiveOptions]="responsiveOptions">
+      <ng-template let-product pTemplate="item">
+        <div class="">
+          <div class="itemgd">
+            <a class="link_item" href="{{product.link}}" target="_blank">
+              <img class="img_hover" src="{{product.img}}" />
+              <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+            </a>
+            <div class="itemgd-body">
+              <a class="gd-title">{{product.title}}</a>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      </p-carousel>
+      <!-- <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn7.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn6.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn4.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn3.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn3.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-sm-3">
+        <div class="itemgd">
+          <a href="#" class="link_item">
+            <img class="img_hover" src="assets/template/images/nn5.jpg" />
+            <span class="icon_item"><i class="fa fa-file-image" aria-hidden="true"></i></span>
+          </a>
+          <div class="itemgd-body">
+            <a href="#" class="gd-title">Nguyên Bộ trưởng Thái Phụng Nê và bản hùng ca trên những dòng sông</a>
+          </div>
+        </div>
+      </div> -->
+
+
+    </div>
+
+    <div class="text-center">
+      <a href="#" class="c-xemthem"><span>Xem thêm</span> <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="form-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="text-center text-white">
+          <h1 class="texth1">Tra cứu thông tin </h1>
+          <p class="texth2">Tra cứu thông tin cơ sở sản xuất, kinh doanh và sản phẩm thực phẩm</p>
+        </div>
+
+        <div class="item-search">
+          <form class="form-home">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <input class="form-control" placeholder="Nhập từ khóa..." type="text" />
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <select class="form-control">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <select class="form-control">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-sm-12 text-right">
+                <button class="btn green-steel" style="padding: 9px 16px; margin-right: 14px;"><i class="fa fa-refresh"
+                    aria-hidden="true"></i> Đặt lại</button>
+                <button class="btn btn-submit"><i class="fa fa-search" aria-hidden="true"></i> Tìm
+                  kiếm</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="body-content">
+  <div class="text-center">
+    <h1 class="text-title">Tình hình an toàn thực phẩm tại địa phương</h1>
+  </div>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="search-content">
+
+        <ul class="nav nav-tabs nav-custom" id="custom-content-below-tab" role="tablist">
+          <li class="nav-item active">
+            <a class="nav-link active" id="nav1-tab" data-toggle="pill" href="#nav1">
+
+              <div class="nav-icon">
+                <img class="img_hover" width="30px" src="assets/template/images/icons/nav1.svg">
+              </div>
+
+              <span>Cơ sở đủ điều kiện</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav2-tab" data-toggle="pill" href="#nav2" role="tab">
+
+              <div class="nav-icon">
+                <img class="img_hover" width="30px" alt="" src="assets/template/images/icons/nav2.svg">
+              </div>
+
+              <span>Sản phẩm tự công bố</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="nav3-tab" data-toggle="pill" href="#nav3" role="tab">
+              <div class="nav-icon">
+                <img class="img_hover" width="30px" src="assets/template/images/icons/nav3.svg">
+              </div>
+
+              <span>Sản phẩm đăng ký công bố</span>
+            </a>
+          </li>
+
+        </ul>
+
+        <div class="tab-content" id="custom-content-below-tabContent">
+          <div class="tab-pane active in" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
+            <div class="col-md-12">
+              <section class="wrap-page-primary">
+                <div class="search-item search-add">
+                  <form>
+                    <div class="form-group">
+                      <div class="input-item">
+                        <input value="" id="keyword" class="input-field form-control" type="text"
+                          placeholder="Tìm kiếm..." name="keyword">
+                        <i class="fa fa-search icon"></i>
+                      </div>
+                    </div>
+                  </form>
+
+                  <h4>Có 1 cơ sở được cấp giấy chứng nhận đủ điều kiện</h4>
+                </div>
+                <div class="table-text-system table-responsive">
+                  <table class="table table-bordered">
+                    <colgroup>
+                      <col width="6%">
+                      <col width="60%">
+                      <col width="15%">
+                      <col width="15%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col">Số TT</th>
+                        <th scope="col">Tên cơ sở</th>
+                        <th scope="col">Số giấy chứng nhận</th>
+                        <th scope="col">Ngày cấp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td>
+                          <h5 class="fs-16"><b>Cửa hàng kinh doanh bánh Trung
+                              thu</b></h5>
+                          <p> Số 01 đường Đại Nài, phường Đại Nài, thành phố Hà
+                            Tĩnh,
+                            tỉnh Hà Tĩnh</p>
+                        </td>
+                        <td><b class="text-info">1851/BC– KHĐT</b></td>
+                        <td>01/01/2018</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pagination-primary">
+                  <ul class="pagination">
+                    <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+                    <li><a class="active" href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+
+          </div>
+          <div class="tab-pane fade" id="nav2" role="tabpanel" aria-labelledby="nav2-tab">
+            <div class="col-md-12">
+              <section class="wrap-page-primary">
+                <div class="search-item search-add">
+                  <form>
+                    <div class="form-group">
+                      <div class="input-item">
+                        <input value="" id="keyword" class="input-field form-control" type="text"
+                          placeholder="Tìm kiếm..." name="keyword">
+                        <i class="fa fa-search icon"></i>
+                      </div>
+                    </div>
+                  </form>
+
+                  <h4>Có 1 cơ sở được cấp giấy chứng nhận đủ điều kiện</h4>
+                </div>
+                <div class="table-text-system table-responsive">
+                  <table class="table table-bordered">
+                    <colgroup>
+                      <col width="6%">
+                      <col width="60%">
+                      <col width="15%">
+                      <col width="15%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col">Số TT</th>
+                        <th scope="col">Tên cơ sở</th>
+                        <th scope="col">Số giấy chứng nhận</th>
+                        <th scope="col">Ngày cấp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td>
+                          <h5 class="fs-16"><b>Cửa hàng kinh doanh bánh Trung
+                              thu</b></h5>
+                          <p> Số 01 đường Đại Nài, phường Đại Nài, thành phố Hà
+                            Tĩnh,
+                            tỉnh Hà Tĩnh</p>
+                        </td>
+                        <td><b class="text-info">1851/BC– KHĐT</b></td>
+                        <td>01/01/2018</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pagination-primary">
+                  <ul class="pagination">
+                    <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+                    <li><a class="active" href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav3" role="tabpanel" aria-labelledby="nav3-tab">
+            <div class="col-md-12">
+              <section class="wrap-page-primary">
+                <div class="search-item search-add">
+                  <form>
+                    <div class="form-group">
+                      <div class="input-item">
+                        <input value="" id="keyword" class="input-field form-control" type="text"
+                          placeholder="Tìm kiếm..." name="keyword">
+                        <i class="fa fa-search icon"></i>
+                      </div>
+                    </div>
+                  </form>
+
+                  <h4>Có 1 cơ sở được cấp giấy chứng nhận đủ điều kiện</h4>
+                </div>
+                <div class="table-text-system table-responsive">
+                  <table class="table table-bordered">
+                    <colgroup>
+                      <col width="6%">
+                      <col width="55%">
+                      <col width="20%">
+                      <col width="15%">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th scope="col">Số TT</th>
+                        <th scope="col">Tên cơ sở</th>
+                        <th scope="col">Số giấy chứng nhận</th>
+                        <th scope="col">Ngày cấp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">1</td>
+                        <td>
+                          <h5 class="fs-16"><b>Cửa hàng kinh doanh bánh Trung
+                              thu</b></h5>
+                          <p> Số 01 đường Đại Nài, phường Đại Nài, thành phố Hà
+                            Tĩnh,
+                            tỉnh Hà Tĩnh</p>
+                        </td>
+                        <td><b class="text-info">1851/BC– KHĐT</b></td>
+                        <td>01/01/2018</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pagination-primary">
+                  <ul class="pagination">
+                    <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+                    <li><a class="active" href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div> -->

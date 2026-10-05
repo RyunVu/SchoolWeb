@@ -1,0 +1,93 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var linkBanner = SystemParameterDto.GetParameters("BANNER_HEADER", infomation.PortalCode.ToUpper()).ToList();
+    var portname = SystemParameterDto.GetParameter("NAMEPORTANT", "NAMEPORTANT", infomation.PortalCode.ToUpper()).Value2;
+}
+
+<nav id="menu-mobile" class="mm-menu mm-offcanvas mm-pagedim-black">
+    <ul>
+        <li class="active"><a href="/" title="">Trang chủ</a></li>
+        @Html.Action("GetMenu", "PhongGDDT_NewsHome", new { area = "Modules" })
+    </ul>
+</nav>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="sub_login">
+                    <div class="col-sm-12 col-xs-12">
+                        <a href="/admin"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a>
+                    </div>
+                </div>
+                <div class="sub_menu" style="position: relative;">
+                    <div class="col-sm-9 col-xs-12" style="display: flex;">
+                        <marquee direction="left">@portname</marquee>
+                    </div>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="timesystem"><i class="timeWeb"><i class="fa fa-clock-o"></i><span class="time_count" id="timeCurrent"></span></i></div>
+                    </div>
+                    @*<ul>
+            <li><i class="timeWeb"><i class="fa fa-clock-o"></i><span class="time_count" id="timeCurrent">Thứ sáu, 11/09/2020, 16:16:24</span></i></li>
+
+            <li style="float: right; padding: 5px;">
+                <a id="changeEn" title="Tiếng Anh" style="cursor: pointer;">
+                    <img class="wpml-ls-flag" src="~/Images/en.png" alt="Tiếng Anh">
+                </a>
+            </li>
+
+            <li style="float: right; padding: 5px;">
+                <a id="changeVn" title="Tiếng Việt" style="cursor: pointer;">
+                    <img class="wpml-ls-flag" src="~/Images/vi.png" alt="Tiếng Việt">
+                </a>
+            </li>
+        </ul>
+        <div class="search-item search-doc" id="form_global_search" style="position: absolute;">
+            <div class="input-container form-group fg-right" style="margin: 0;width: 30%;">
+                <input value="" id="keyword" class="input-field form-control" type="text" placeholder="Tìm kiếm" name="keyword" style="">
+                <i id="searchBtn" class="fa fa-search icon" style=""></i>
+            </div>
+        </div>*@
+                </div>
+                <div id="slider_banner" class="owl-carousel">
+                    @foreach (var link in linkBanner)
+                    {
+                        <div class="item">
+                            <img src="@Url.Image(link.Value2)" />
+                        </div>
+                    }
+                    @*<div class="item">
+                            <img src="https://i.upanh.org/2024/03/01/banner1-3982e81f6290f55ad.jpeg" />
+                        </div>*@
+
+                </div>
+
+                <div class="top-header">
+                    <div class="logo">
+                        <a class="img-logo" href="/" title="">
+
+                            <img src="@Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", infomation.PortalCode.ToUpper()).Value2)">
+
+                        </a>
+                    </div>
+                    <a href="#menu-mobile" class="icon-reponsive">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                </div>
+                <nav class="menu" id="menu-pc">
+                    <ul>
+                        <li class="active isHomePc"><a class=" menu-a" href="/" title=""><i class="fa fa-home"></i></a></li>
+                        @Html.Action("GetMenu", "PhongGDDT_NewsHome", new { area = "Modules" })
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</header>

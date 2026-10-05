@@ -1,0 +1,32 @@
+<!-- <p-toast></p-toast> -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-content">
+        <span>Vui lòng đợi...</span>
+        <i class="fa fa-spinner fa-spin"></i> <!-- Icon loading -->
+    </div>
+</div>
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <label for="Name">Chọn file <span class="text-danger">(*)</span></label>
+            </div>
+            <div class="col-md-12">
+                <input type="text" class="form-control" [(ngModel)]="defaultFileName" style="float: left; width: 89%;"
+                    placeholder="Tên File" readonly>
+                <label class="custom-file-upload" title="Chọn File"
+                    style="padding-top: 8px; float: right; width: 10%; text-align: center; margin: 0;">
+                    <input type="file" (change)="chooseFile($event)" />
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

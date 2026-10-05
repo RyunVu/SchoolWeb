@@ -1,0 +1,27 @@
+<div class="table-preview-wrapper">
+    <table *ngIf="tableHeader?.length" class="table table-striped table-hover table-bordered">
+        <thead class="table-primary">
+            <tr *ngFor="let header of tableHeader">
+                <th *ngFor="let th of header" scope="col" [attr.colspan]="th.ColSpan" [attr.rowspan]="th.RowSpan"
+                    (mouseenter)="showContextMenu($event, th)" (mouseleave)="hideContextMenu($event)"
+                    class="text-center align-middle">
+                    {{th.Name}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of tableRows">
+                <td *ngFor="let col of tableColumns" (mouseenter)="showContextMenu($event, row[col.Id])"
+                    (mouseleave)="hideContextMenu($event)">
+                    <span>{{ row[col.Id]?.Value }}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p *ngIf="!tableHeader?.length" class="text-center py-5">Thêm cột và ô để cấu hình bảng</p>
+    <div id="contextMenu" (mouseleave)="hideContextMenu($event)">
+        <!-- Add your context menu items here -->
+        <div (click)="updateItem()" class="context-menu-item"><i class="fas fa-edit"></i> Cập nhật</div>
+        <div (click)="deleteItem()" class="context-menu-item"><i class="fas fa-trash"></i> Xóa</div>
+    </div>
+</div>

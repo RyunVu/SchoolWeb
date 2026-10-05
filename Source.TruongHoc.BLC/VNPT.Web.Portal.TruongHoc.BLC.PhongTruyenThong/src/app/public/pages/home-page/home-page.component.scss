@@ -1,0 +1,244 @@
+app-home-page {
+    #gioithieu {
+        padding-top: 30px;
+
+        .info-title {
+            font-size: 16pt;
+            font-weight: 600;
+            text-transform: capitalize;
+            padding-bottom: 10px;
+            color: #b01116;
+        }
+
+        .info-des {
+            font-weight: 400;
+            line-height: 1.5;
+            font-size: 17px;
+            text-align: justify;
+
+            p {
+                text-align: justify;
+            }
+        }
+    }
+
+    #slider-img .p-carousel-item {
+        flex: none !important;
+    }
+
+    // .content-title {
+    //     margin: 25px 0 20px;
+    //     .c-title {
+    //         margin: 0 15px;
+    //         text-transform: uppercase;
+    //         font-size: 28px;
+    //         color: #b01116 !important;
+    //         font-weight: bold;
+    //     }
+    //     .c-title::after {
+    //         content: "";
+    //         display: table;
+    //         clear: both;
+    //         background: url(../../../../assets/template/images/line.png);
+    //         width: 100%;
+    //         height: 30px;
+    //         background-repeat: no-repeat;
+    //         background-position-x: center;
+    //         background-position-y: bottom;
+    //         padding-top: 0px;
+    //     }
+    // }
+
+    #canbo {
+        background: url(../../../../assets/template/images/bg.png) no-repeat left bottom;
+    }
+
+    #slider-pp {
+        .content-pp {
+            cursor: pointer;
+            .pp-img {
+                // width: 88%;
+                // margin: 0 auto;
+                // border-radius: 100%;
+                // overflow: hidden;
+                // position: relative;
+                // border: 4px solid #efb338 !important;
+
+                width: 189px;
+                margin: 0 auto;
+                overflow: hidden;
+                position: relative;
+                text-align: center;
+                background: #ddd;
+                border-radius: 50%;
+                img {
+                    height: 189px;
+                    -o-object-fit: cover;
+                    object-fit: cover;
+                    transition: 0.5s;
+                }
+            }
+
+            .pp-name {
+                text-transform: uppercase;
+                font-size: 19px;
+                color: #b01116 !important;
+                font-weight: 600;
+                margin: 15px 0 5px;
+            }
+            .pp-nhiemky {
+                font-size: 16px;
+                color: #000;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .content-col {
+        background: url(../../../../assets/template/images/bg2.png) no-repeat left top;
+    }
+
+    .content-gd .itemgd {
+        box-shadow: 2px 2px 20px #00000017;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0 11px 23px 0;
+
+        img {
+            height: 227px;
+            width: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .icon_item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            i {
+                font-size: 50px;
+                opacity: 0.65;
+                color: #fff;
+            }
+        }
+    }
+
+    .content-media {
+        img {
+            height: 150px !important;
+        }
+
+        .gd-title {
+            font-size: 16px !important;
+            line-height: 25px !important;
+            margin-bottom: 0 !important;
+            font-weight: 500 !important;
+            color: #000;
+        }
+    }
+
+    .content-gd .itemgd-body {
+        padding: 14px 20px !important;
+        background-color: #fff;
+    }
+
+    .content-gd .gd-title {
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 25px;
+    }
+
+    .content-gd .gd-des {
+        font-size: 16px;
+        text-align: justify;
+        max-height: 80px;
+        min-height: 80px;
+        overflow: hidden;
+    }
+
+    #hoatdong {
+        padding: 0 30px;
+        margin-top: 30px;
+    }
+
+    #hoatdong .box_img {
+        float: left;
+        width: 52%;
+        overflow: hidden;
+    }
+
+    #hoatdong .box_text {
+        float: right;
+        width: 48%;
+        padding-left: 15px;
+        display: inline-block;
+
+        .box_text_tt {
+            width: 100%;
+            display: inline-block;
+            text-align: justify;
+            /* font-size: 16pt; */
+            font-size: 20px;
+            font-weight: bold;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 24px;
+        }
+    }
+
+    #hoatdong .box_content {
+        border: 2px solid #efefef;
+        background: white;
+        padding: 20px;
+        /* box-shadow: 2px 2px 27px #0000000f; */
+        border-radius: 5px;
+        display: inline-block;
+        margin: 0 15px;
+    }
+
+    #hoatdong .box_img img {
+        height: 189px;
+        -o-object-fit: cover;
+        object-fit: cover;
+        border-radius: 5px;
+        transition: 0.5s;
+        width: 100%;
+    }
+
+    #hoatdong .box_content:hover {
+        border: 2px solid orange;
+        background-image: linear-gradient(-70deg, #fff, #fff 70%, #ffaa00);
+        transition: 0.2s;
+    }
+
+    #hoatdong .box_content:hover .box_text_tt {
+        color: #b01116 !important;
+    }
+
+    #hoatdong .box_text_des {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        line-height: 22px;
+    }
+
+    @media (max-width: 575px) {
+        .content-media img {
+            height: 220px !important;
+        }
+    }
+}

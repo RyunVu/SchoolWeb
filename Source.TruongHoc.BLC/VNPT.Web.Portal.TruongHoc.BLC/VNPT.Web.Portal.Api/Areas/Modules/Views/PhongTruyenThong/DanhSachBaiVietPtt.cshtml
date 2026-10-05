@@ -1,0 +1,26 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Base
+
+@model List<News>
+
+<div class="row content-gd content-media">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-3">
+            <div class="itemgd">
+                <a href="@Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = item.Alias, code = item.Code })" class="link_item">
+                    <img class="img_hover thanhtich" src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))">
+                </a>
+                <div class="itemgd-body" style="background-color: #EFB338;">
+                    <a href="@Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = item.Alias, code = item.Code })" class="gd-title" style="color: #fff;">@item.Title</a>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+

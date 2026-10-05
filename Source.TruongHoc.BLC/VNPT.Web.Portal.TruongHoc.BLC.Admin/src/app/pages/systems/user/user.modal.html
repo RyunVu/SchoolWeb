@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="LastName">Họ <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.LastName" placeholder="Họ" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="FirstName">Tên <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.FirstName" placeholder="Tên" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="item.Email" placeholder="Email" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại</label>
+            <input type="text" class="form-control" [(ngModel)]="item.PhoneNumber" placeholder="Số điện thoại" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="Username">Tài khoản <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.UserName" [readOnly]="item.Id != null"
+                placeholder="Tên đăng nhập" autoComplete="new-password" />
+        </div>
+
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="LastName">Mật khẩu</label>
+            <input type="password" class="form-control" [(ngModel)]="pwd" placeholder="Mật khẩu"
+                autoComplete="new-password" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="PositionId">Chức vụ</label>
+            <p-dropdown [options]="positions" [(ngModel)]="position" optionLabel="Name" optionValue="Id" [filter]="true"
+                filterBy="Name" placeholder="Chọn chức vụ" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-xs-6">
+        <div class="form-group">
+            <label for="PositionId">Tên chức vụ</label>
+            <input type="text" class="form-control" [(ngModel)]="item.OtherPositionName" placeholder="Tên chức vụ" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-lg-6">
+        <label for="PositionId">Quyền <span class="text-danger">(*)</span></label>
+        <p-multiSelect [options]="roles" [(ngModel)]="selectedRoles" optionValue="Id" optionLabel="Name"
+            appendTo="body"></p-multiSelect>
+    </div>
+    <div class="form-group col-lg-6">
+        <label for="PositionId">Đơn vị <span class="text-danger">(*)</span></label>
+        <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Id" [filter]="true"
+            filterBy="Name" placeholder="Chọn đơn vị" appendTo="body" (onChange)="selectUnit($event)">
+        </p-dropdown>
+    </div>
+    <!-- <div class="form-group">
+            <label for="PositionId">Lĩnh vực</label>
+            <p-multiSelect [options]="fields" [(ngModel)]="selectedFields" optionValue="Id" optionLabel="Name" appendTo="body"></p-multiSelect>
+        </div> -->
+    <!--  <div class="col-lg-6">
+      <div class="row mb-2">
+            <div class="col-lg-12">
+                <b>Khu vực</b>
+                <div class="float-right">
+                    <button class="btn btn-xs btn-primary" (click)="addUnit()">Thêm</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <p-table [value]="locations">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 25%">Tỉnh/Tp</th>
+                        <th style="width: 40%">Quận/Huyện</th>
+                        <th style="width: 25%">Phường/Xã</th>
+                        <th style="width: 10%"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.ProvinceName}}</td>
+                        <td>{{item.DistrictName}}</td>
+                        <td>{{item.WardName}}</td>
+                        <td>
+                            <button class="btn-btn-danger" (click)="removeUnit(item)">
+                x
+              </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4">Chưa chọn đơn vị.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div> 
+    </div>-->
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

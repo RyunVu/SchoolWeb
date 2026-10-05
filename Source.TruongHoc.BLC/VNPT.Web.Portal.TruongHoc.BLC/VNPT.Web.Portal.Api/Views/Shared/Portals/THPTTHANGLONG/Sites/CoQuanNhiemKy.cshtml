@@ -1,0 +1,271 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@{
+    var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+    //var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    //HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    //string lang = "vi";
+
+    //if (cookie != null)
+    //{
+    //    lang = cookie.Value;
+    //}
+
+    //var menuSite = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper());
+
+    //var codename = menuSite?.Name;
+    //var codesite = menuSite?.Value;
+
+    //if (lang != "vi")
+    //{
+    //    codename = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+    //}
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+
+}
+
+<style>
+    .dsnhiemky {
+        margin-top: 30px;
+        position: relative;
+        margin: 0 auto;
+    }
+
+        .dsnhiemky .nhiemky_item {
+            padding: 10px 40px !important;
+            position: relative;
+            background-color: inherit;
+            width: 50% !important;
+            cursor: pointer;
+        }
+
+            .dsnhiemky .nhiemky_item img {
+                width: 160px;
+                float: left;
+            }
+
+            .dsnhiemky .nhiemky_item .nhiemky_right {
+                float: left;
+                padding-left: 10px;
+            }
+
+                .dsnhiemky .nhiemky_item .nhiemky_right .nhiemky_title {
+                    font-size: 15px;
+                    padding-top: 10px;
+                    color: #000
+                }
+
+                .dsnhiemky .nhiemky_item .nhiemky_right .nhiemky_info {
+                    font-size: 16px;
+                    color: #007ade;
+                    display: block;
+                    font-weight: 600;
+                    margin-top: 10px;
+                }
+
+            .dsnhiemky .nhiemky_item .nk_content {
+                padding: 20px 30px;
+                position: relative;
+                border-radius: 6px;
+                border: 2px solid #efefef;
+                display: inline-block;
+                width: 100%;
+                background-color: #f6f6f6;
+            }
+
+            .dsnhiemky .nhiemky_item::after {
+                content: "";
+                position: absolute;
+                width: 25px;
+                height: 25px;
+                right: -12px;
+                background-color: red;
+                border: 4px solid #ff9f55;
+                top: 15px;
+                border-radius: 50%;
+                z-index: 2221;
+            }
+
+        /* Định vị trí container bên trái */
+        .dsnhiemky .nk_left {
+            left: 0;
+        }
+
+        /* Định vị trí container bên phải */
+        .dsnhiemky .nk_right {
+            left: 50%;
+        }
+
+        .dsnhiemky .nk_left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 22221;
+            right: 30px;
+            border: medium solid #efefef;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent #efefef;
+        }
+
+        .dsnhiemky .nk_right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid #efefef;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #efefef transparent transparent;
+        }
+
+        .dsnhiemky .nk_right::after {
+            left: -13px;
+        }
+
+        .dsnhiemky .nk_content:hover,
+        .dsnhiemky .nk_content:active {
+            border: 2px solid orange;
+            background-image: linear-gradient(-70deg, #fff, #fff 70%, #ffaa00);
+            transition: 0.2s;
+        }
+
+        .dsnhiemky .nk_left:hover::before:active {
+            border-color: transparent transparent transparent #ffaa00;
+        }
+
+        .dsnhiemky .nk_right:hover::before:active {
+            border-color: transparent #ffaa00 transparent transparent;
+        }
+
+        .dsnhiemky::after {
+            content: "";
+            position: absolute;
+            width: 6px;
+            background-color: #ff9f55;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+    .nhiemky_scroll {
+        /* max-height: 800px; */
+        /* overflow-y: scroll; */
+    }
+
+    .topItemChuNhiem {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+
+<div class="body-content">
+    <div class="container">
+        <div class="content-title text-center">
+            <div class="c-title">
+                <span>Nhiệm kỳ</span>
+            </div>
+        </div>
+
+        <div class="nhiemky_scroll">
+            <div class="dsnhiemky" id="htmlNhiemKy">
+
+            </div>
+        </div>
+
+        @*@Html.Action("DanhSachBaiVietPtt", "PhongTruyenThong", new { area = "Modules", Code = codesite })*@
+    </div>
+</div>
+
+<script id="itemNhiemKy" type="x-tmpl-mustache">
+    {{#dataList}}
+        <div class="nhiemky_item {{positionClass}}">
+            <a href="{{UrlNhiemKy}}">
+                <div class="nk_content">
+                    <img class="hidden-sm-down" src="/Images/ptt/nhiemky.png" />
+                    <div class="nhiemky_right">
+                        <span class="nhiemky_title">{{Ten}}</span>
+                        <div class="is-divider hidden-sm-down"></div>
+                        <span class="nhiemky_info hidden-sm-down">
+                            ({{TuNam}} {{#DenNam}} - {{DenNam}}{{/DenNam}})
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {{/dataList}}
+</script>
+@*href="@Url.Site("phong-truyen-thong/chi-tiet-tin-tuc", parameter: new { param = item.Alias, code = item.Code })"*@
+
+@section scripts {
+    <script type="text/javascript">
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+        var urlTemplate = "@Url.Site("phong-truyen-thong/ds-canbo", parameter: new { nhiemky = "__value__" })";
+        const template = $("#itemNhiemKy").html();
+
+        var main = {
+            loadNhiemKys: function () {
+                var obj = {
+                    Code: "@code",
+                    UnitCode: "@information.PortalCode"
+                }
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    url: '/api/NhiemKy/ListFull',
+                    contentType: "application/json", 
+                    dataType: "json",
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+
+                        const processedData = res.Result.map((item, index) => ({
+                            ...item,
+                            positionClass: index % 2 === 0 ? "nk_left" : "nk_right",
+                            UrlNhiemKy: urlTemplate.replace("__value__", item.Id)
+                        }));
+
+                        const template = $("#itemNhiemKy").html();
+
+                        const rendered = Mustache.render(template, { dataList: processedData });
+
+                        $("#htmlNhiemKy").html(rendered);
+                    },
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadNhiemKys();
+        })
+    </script>
+}

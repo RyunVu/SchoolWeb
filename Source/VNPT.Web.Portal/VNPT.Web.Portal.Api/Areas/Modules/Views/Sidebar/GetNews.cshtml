@@ -1,0 +1,12 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@model List<VNPT.Web.Portal.Base.News>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" target="_blank">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            @item.Title
+        </a>
+    </li>
+}

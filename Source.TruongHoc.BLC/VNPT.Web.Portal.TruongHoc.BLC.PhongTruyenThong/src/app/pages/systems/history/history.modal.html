@@ -1,0 +1,137 @@
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Ngày cập nhật</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.CreateDate" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Người thao tác</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.UserName" readonly>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Mô tả</label>
+                    <textarea class="form-control" [(ngModel)]="item.Note.Description" rows="3" readonly></textarea>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="changes && changes.length > 0">
+                <div class="form-group">
+                    <label for="Name">Thông tin thay đổi</label>
+                    <p-table [value]="changes" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Thuộc tính</th>
+                                <th>Trước</th>
+                                <th>Sau</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-position>
+                            <tr>
+                                <td>
+                                    {{position.Name}}
+                                </td>
+                                <td>
+                                    {{position.Old}}
+                                </td>
+                                <td>
+                                    {{position.New}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="3">Không tìm thấy dữ liệu</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="childChanges && childChanges.length > 0">
+                <div class="form-group">
+                    <label for="Name">Thông tin liên quan</label>
+                    <p-table [value]="childChanges" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Thuộc tính</th>
+                                <th>Cũ</th>
+                                <th>Mới</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-position>
+                            <tr>
+                                <td>
+                                    {{position.Name}}
+                                </td>
+                                <td>
+                                    {{position.Old}}
+                                </td>
+                                <td>
+                                    {{position.New}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="3">Không tìm thấy dữ liệu</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="childDesciption && childDesciption.length > 0">
+                <div class="form-group">
+                    <label for="Name">Mô tả thông tin liên quan</label>
+                    <p-table [value]="childDesciption" [autoLayout]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Thuộc tính</th>
+                                <th>Cũ</th>
+                                <th>Mới</th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-position>
+                            <tr>
+                                <td>
+                                    {{position.Name}}
+                                </td>
+                                <td>
+                                    {{position.Old}}
+                                </td>
+                                <td>
+                                    {{position.New}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="3">Không tìm thấy dữ liệu</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div> -->
+<div class="p-footer">
+    <div class="f-contains">
+
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+        Thoát
+      </button>
+    </div>
+</div>

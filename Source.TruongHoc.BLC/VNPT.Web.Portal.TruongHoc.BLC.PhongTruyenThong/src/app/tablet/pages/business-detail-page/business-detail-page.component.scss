@@ -1,0 +1,19 @@
+.business-detail-wrapper {
+  min-height: 500px;
+  position: relative;
+
+  agm-map {
+    height: 500px;
+  }
+  .btn-icon a{
+    cursor: pointer;
+  }
+  .btn-icon a img{
+    max-width: 50px;
+  }
+  .btn-icon{
+    position: absolute;
+    bottom: 200px;
+    right: 15px;
+  }
+}

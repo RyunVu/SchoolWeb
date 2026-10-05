@@ -1,0 +1,4 @@
+<router-outlet *ngIf="Role!='AdminPage' && Role!='HomePage' && Role!='TabletPage'"></router-outlet>
+<app-main *ngIf="Role == 'AdminPage'"></app-main>
+<app-home-main *ngIf="Role == 'HomePage'"></app-home-main>
+<app-tablet-main *ngIf="Role == 'TabletPage'"></app-tablet-main>

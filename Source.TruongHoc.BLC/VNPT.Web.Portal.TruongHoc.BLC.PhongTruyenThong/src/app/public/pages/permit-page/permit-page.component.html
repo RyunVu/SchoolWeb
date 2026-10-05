@@ -1,0 +1,35 @@
+<div class="container w-100 mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h4>Giấy Phép Xây Dựng</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <search-form [showConstructionStatus]="true" [showFeeStatus]="true" (search)="search($event)" (paramsChange)="searchFormChange($event)"></search-form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-3 mb-5 mb-md-0 col-12 position-relative">
+            <permit-left-panel [loading]="loading" [items]="permitList" (viewPermit)="viewPermit($event)"></permit-left-panel>
+        </div>
+        <div class="col-md-9 col-12">
+            <!-- this creates a google map on the page with the given lat/lng from -->
+            <!-- the component as the initial center of the map: -->
+            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId">
+                <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="mapOptions.iconHome">
+                    <agm-info-window [isOpen]="viewedPermit?.Id === marker?.entity?.Id">
+                        <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-map>
+            <div class="btn-icon">
+                <div class="a-icon" (click)="changeMapType()">
+                    <a title="Thay đổi chế độ bản đồ" target="_blank"><img src="assets/img/{{mapTypeId=='roadmap'?'btnMapTypeStreet.png':'btnMapType.png'}}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-toast></p-toast>

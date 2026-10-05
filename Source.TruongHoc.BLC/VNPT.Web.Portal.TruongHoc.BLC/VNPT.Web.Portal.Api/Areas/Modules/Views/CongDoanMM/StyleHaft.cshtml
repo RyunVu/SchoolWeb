@@ -1,0 +1,69 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Base
+
+@model List<News>
+
+@*<div class="box-news-home">
+    <div class="box-news-home_left item col-md-5 col-sm-6 pd-l-0 mg-r-0">
+
+        @foreach (var item in Model.Take(1))
+        {
+            <a class="img" href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title" >
+				<img class="first-item-img" src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))" alt="@item.Title">
+			</a>
+            <div class="title">
+                <h4><a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">@item.Title</a></h4>
+                <span class="time"><i class="fa fa-clock-o"></i>@item.CreateDate</span>
+            </div>
+        }
+
+    </div>
+
+    <div class="box-news-home_right item col-md-7 col-sm-6 pd-r-0 mg-r-0 mg-l-am8 pd-l-15">
+        <ul>
+            @foreach (var item in Model.Skip(1).Take(4))
+            {
+                <li>
+                    <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">
+                        @item.Title
+                    </a>
+                </li>
+
+            }
+        </ul>
+    </div>
+
+</div>*@
+
+
+<div class="box-news-haft">
+	<div class="item_box_img">
+		@foreach (var item in Model.Take(1))
+		{
+			<a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">
+				<img src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))" alt="@item.Title" style="object-position: center; object-fit: cover">
+			</a>
+			<div class="title_box">
+				<a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">@item.Title</a>
+
+			</div>
+		}
+	</div>
+	<div class="item_box_text">
+		<ul>
+			@foreach (var item in Model.Skip(1).Take(4))
+			{
+				<li>
+					<a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">
+						@item.Title
+					</a>
+				</li>
+
+			}
+		</ul>
+	</div>
+</div>
+

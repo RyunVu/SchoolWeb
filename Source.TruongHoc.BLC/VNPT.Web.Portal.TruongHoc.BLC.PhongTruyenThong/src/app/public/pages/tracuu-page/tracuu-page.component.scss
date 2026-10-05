@@ -1,0 +1,29 @@
+app-tracuu-page {
+    .title {
+        a {
+            color: #d65e85 !important;
+        }
+    }
+
+    .nav-custom .nav-item .nav-link {
+        position: relative;
+    }
+
+    .badge.badge-info.number_ {
+        position: absolute;
+        bottom: 8px;
+        font-size: 16px;
+        right: 10px;
+        color: #fff !important;
+    }
+
+    .nav-custom > li {
+        margin: 0 8px !important;
+    }
+
+    @media (max-width: 568px) {
+        .nav-custom > li {
+            min-width: 200px;
+        }
+    }
+}

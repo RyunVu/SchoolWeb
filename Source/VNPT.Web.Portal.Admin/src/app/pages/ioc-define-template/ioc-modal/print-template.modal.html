@@ -1,0 +1,297 @@
+
+<div class="progress-spinner" *ngIf='isDisabled'>
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
+
+<div class="col-lg-12 col-12 row">
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <p-checkbox [(ngModel)]="selectedIsNotSingle" [binary]="true" (onChange)="onChangeSingle()"
+                label="B/c nhiều đơn vị">
+            </p-checkbox>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label for="frequencyId" class="control-label">Loại biểu mẫu:</label>
+            <p-dropdown id="frequency_type_id" [options]="frequencies" optionLabel="Name" dataKey="Id"
+                [disabled]="selectedIsNotSingle" [filter]="true" [style]="{'width':'100%'}"
+                (onChange)="onChangeFrequency($event)" [(ngModel)]="defaultFrequency">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label for="input-date" class="control-label">Năm:</label>
+            <!-- <input [disabled]="selectedYear" type='text' class="form-control" id="input-date" (blur)="onChangeDate()" /> -->
+            <p-calendar id="input-date" [disabled]="selectedYear" [style]="{'width':'100%'}" [(ngModel)]="inputYear"
+                view="year" dateFormat="yy">
+            </p-calendar>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label for="timeId" class="control-label">Thời gian:</label>
+            <!-- <p-multiSelect [options]="times" optionLabel="Name" dataKey="Id" [(ngModel)]="defaultTime" [style]="{'width':'100%'}"></p-multiSelect> -->
+            <p-multiSelect *ngIf="!selectedIsNotSingle" [options]="times" [(ngModel)]="defaultTime"
+                [style]="{'width':'100%'}" optionLabel="Name" dataKey="Id">
+                <ng-template let-value pTemplate="selectedItems">
+                    <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+                        <span>{{val.Name}}</span>
+                    </div>
+                    <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Chọn
+                        thời gian</span>
+                </ng-template>
+                <ng-template let-car pTemplate="item">
+                    <div style="font-size:14px;float:right;margin-top:4px">{{car.Name}}</div>
+                </ng-template>
+            </p-multiSelect>
+            <span *ngIf="!selectedIsNotSingle" class="help-block required-color" id="timesError">
+            </span>
+            <p-dropdown *ngIf="selectedIsNotSingle" [options]="times" optionLabel="Name" dataKey="Id" [filter]="true"
+                [(ngModel)]="defaultSelectTime" [style]="{'width':'100%'}" (onChange)="onChange($event)">
+            </p-dropdown>
+            <span *ngIf="selectedIsNotSingle" class="help-block required-color" id="selectTimesError">
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="customDiv" [ngStyle]="showCustom()" class="col-lg-12 col-12 row">
+    <div class="col-lg-4 col-md-4 pull-right">
+        <!-- <input type='text' class="form-control" id="FROM_DATE" (blur)="onChangeCustomFromDate()" />
+        <input type='text' class="form-control" id="TO_DATE" (blur)="onChangeCustomToDate()" /> -->
+        <p-calendar [(ngModel)]="fromDate" (onBlur)="onChangeCustomFromDate()" dateFormat="ddMMyyyy"></p-calendar>
+        <p-calendar [(ngModel)]="toDate" (onBlur)="onChangeCustomFromDate()" dateFormat="ddMMyyyy"></p-calendar>
+
+    </div>
+</div>
+
+
+
+<div class="col-lg-12 col-12 row">
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <p-checkbox [(ngModel)]="selectedGroupProperty" [binary]="true" label="Nhóm chỉ số">
+            </p-checkbox>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3" *ngIf="!selectedIsNotSingle">
+        <div class="form-group">
+            <label class="control-label">Đơn vị:</label>
+            <p-dropdown [disabled]="listTongHopDocument.length <= 0" id="organization_id" [options]="organizations"
+                optionLabel="Name" dataKey="Id" [filter]="true" [(ngModel)]="defaultOrganization"
+                [style]="{'width':'100%'}" (onChange)="onChangeOrganizations($event)">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4" *ngIf="!selectedIsNotSingle">
+        <div class="form-group">
+            <label for="timeId" class="control-label">Tiêu đề:</label>
+            <input id="headerTongHopId" [(ngModel)]="header" type="text" class="form-control" (keyup)="changeHeader()"
+                placeholder="Nhập tiêu đề">
+            <span class="help-block required-color" id="headerTongHopIdError">
+            </span>
+        </div>
+    </div>
+
+    <div class="col-lg-7 col-md-7" *ngIf="selectedIsNotSingle">
+        <div class="form-group">
+            <label for="timeId" class="control-label">Tiêu đề:</label>
+            <div class="col-sm-8">
+                <input id="headerTongHopId" [(ngModel)]="header" type="text" class="form-control"
+                    (keyup)="changeHeader()" placeholder="Nhập tiêu đề">
+                <span class="help-block required-color" id="headerTongHopIdError">
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2 col-md-2">
+        <div class="form-group">
+            <button type="button" class="btn btn-info pull-right" (click)="review()">{{'Xem trước'}}</button>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-12 row">
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <span class="help-block required-color" id="listDocumentError">
+            </span>
+        </div>
+        <div id="viewAllDocument" class="col-md-12" style="margin-bottom: 10px; padding: 0;">
+            <p-checkbox [(ngModel)]="selectedAllDocument" [binary]="true" (onChange)="onChangeViewAllDocument()"
+                label="Xem tất cả biểu mẫu">
+            </p-checkbox>
+        </div>
+        <div id="danh-sach-bieu-mau" class="col-md-12 allow-overflow" style="overflow-y: scroll; padding: 0;">
+            <p-listbox [options]="listDocument" [style]="{'width':'100%'}" [multiple]="true" [checkbox]="true"
+                [filter]="true" optionLabel="Header" dataKey="Id" (onChange)="onChangeDocument($event)"
+                [(ngModel)]="listSelectedDocument">
+                <ng-template let-document pTemplate="item">
+                    <span *ngIf="document.IsNotSingle" style="font-weight: bold;">
+                        {{document.Header}}
+                    </span>
+                    <span *ngIf="!document.IsNotSingle">
+                        {{document.Header}}
+                    </span>
+                </ng-template>
+            </p-listbox>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-9" id="danh-sach-xem-truoc">
+        <div class="box-body with-border" id="ioc-input-modal" style="overflow: auto;">
+            <div id="parent">
+                <ul class="list-group" style="margin-bottom: 5px;">
+                    <li class="list-group-item" *ngFor="let item of listTongHopDocument; let j = index">{{j + 1}}.
+                        {{item.Header}}<span class="close" (click)="removeLi($event,item.Id)">&times;</span></li>
+                </ul>
+                <p style="margin-bottom: 5px;">XEM TRƯỚC</p>
+                <h3 style="text-align: center; margin-bottom: 5px;margin-top: 5px;">{{headerPrint}}</h3>
+                <table class="table table-condensed" id="tableContent" [ngStyle]="setMaxWidth()">
+                    <thead>
+                        <tr>
+                            <!-- <th [ngStyle]="setPercentWidthSTT()">#</th> hong dong ngày 30/08/2021 do tốn diện tích-->
+                            <th class="zix-max" [ngStyle]="setPercentWidthChiSo()">Tên chỉ số</th>
+                            <th class="zix-max" *ngFor="let col of listCol">
+                                <div class="col-sm-12">
+                                    <div style="text-align: center;">
+                                        {{col}}
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- Thêm dòng chứa tên Tiêu chí 2 -->
+                        <tr *ngIf="listPropertyCols.length > 1">
+                            <!-- <th [ngStyle]="setPercentWidthSTT()"></th> hong dong ngày 30/08/2021 do tốn diện tích-->
+                            <th class="zix-max" [ngStyle]="setPercentWidthChiSo()"></th>
+                            <th class="zix-max" *ngFor="let col of listCol">
+                                <ng-container *ngFor="let col of listPropertyCols">
+                                    <div style="float: left;" [ngStyle]="setWidthPropertyCols()">
+                                        <div style="text-align: center;">
+                                            {{col}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let mValue of values; let j = index">
+                            <!-- <tr  *ngIf="mValue.IsDocumentTemplate">
+                            <td class="zix-max" [attr.colspan]="listCol.length + 2">
+                                <strong>{{mValue.DocumentTemplateName}}</strong>
+                            </td>
+                        </tr> -->
+                            <tr *ngIf="!mValue.IsDocumentTemplate">
+                                <!-- <td *ngIf="indexList">
+                                {{j + 1}}
+                            </td>
+                            <td *ngIf="!indexList">
+                                <i>{{mValue.CodeId}}</i>
+                            </td> hong dong ngày 30/08/2021 do tốn diện tích-->
+                                <td class="zix-max">
+                                    <strong>{{mValue.PropertyName}}</strong>
+                                    <ng-container *ngIf="listPropertyCols.length <= 1">
+                                        <i> ({{mValue.UnitName}})</i>
+                                    </ng-container>
+                                    <ng-container *ngIf="listPropertyCols.length > 1">
+                                        <i> ({{mValue.UnitName[0]}})</i>
+                                    </ng-container>
+                                </td>
+                                <td *ngFor="let col1 of mValue.ListMonth; let i = index">
+                                    <!-- Tiêu chí 2 -->
+                                    <ng-container *ngIf="listPropertyCols.length > 1">
+                                        <ng-container *ngFor="let col of listPropertyCols">
+                                            <ng-container *ngFor="let col2 of col1.ListMapValueId; let k = index">
+                                                <ng-container *ngIf="col == col2.PropertyName2">
+                                                    <div style="float: left;" [ngStyle]="setWidthPropertyCols()">
+                                                        <div style="text-align: center;">
+                                                            <ng-container *ngIf="col2.DataType == '0'">
+                                                                <strong>{{col2.NumberValue |
+                                                                    number:'1.0-20'}}</strong>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="col2.DataType == '1'">
+                                                                <strong>{{col2.StringValue}}</strong>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="col2.DataType == 2">
+                                                                <label>{{col2.NumberValue |
+                                                                    number:'1.0-20'}}</label>
+                                                            </ng-container>
+
+                                                            <ng-container *ngIf="col2.DataType == 3">
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                    <!-- Xem theo kiểu 1 tiêu chí 1 và 1 tiêu chí 2 -->
+                                    <ng-container *ngIf="listPropertyCols.length <= 1">
+                                        <ng-container *ngFor="let col2 of col1.ListMapValueId; let k = index">
+                                            <div class="col-sm-12">
+                                                <div style="text-align: center;">
+                                                    <ng-container *ngIf="col2.DataType == '0'">
+                                                        <strong>{{col2.NumberValue | number:'1.0-20'}}</strong>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="col2.DataType == '1'">
+                                                        <strong>{{col2.StringValue}}</strong>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="col2.DataType == 2">
+                                                        <label>{{col2.NumberValue | number:'1.0-20'}}</label>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="col2.DataType == 3">
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </td>
+                                <!-- Luỹ kế nếu có nhiều tiêu chí 2 -->
+                                <td *ngIf="listPropertyCols.length > 1" style="text-align: center;">
+                                    <ng-container *ngFor="let col1 of mValue.TotalValueLuyKe; let i = index">
+                                        <ng-container *ngFor="let col of listPropertyCols">
+                                            <ng-container *ngIf="col == col1.PropertyName2">
+                                                <div style="float: left;" [ngStyle]="setWidthPropertyCols()">
+                                                    <div style="text-align: center;">
+                                                        <span
+                                                            style="text-align: center; font-weight:bold; display: inline-block;">{{col1.TotalValue
+                                                            | number:'1.0-20'}}</span>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </td>
+                                <!-- Luỹ kế chỉ có 1 tiêu chí 2 -->
+                                <td *ngIf="listPropertyCols.length <= 1" style="text-align: center;">
+                                    <span style="text-align: center; font-weight:bold">{{mValue.TotalValue |
+                                        number:'1.0-20'}}</span>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-lg-12 col-12 row p-footer" style="margin: 0px;">
+    <div class="col-lg-6 col-6">
+        <label>Tổng biểu mẫu: {{lengthDocument}}</label>
+    </div>
+    <div class="col-lg-6 col-6 text-right">
+        <button type="button" class="btn btn-danger pull-right mLeft2" (click)="cancel()">{{'Đóng'}}</button>
+        <button type="button" class="btn btn-info pull-right" (click)="generateExcel()">{{'Xuất
+            Excel'}}</button>
+    </div>
+</div>

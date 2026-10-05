@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="card-body p-0">
+    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+      [rows]="10" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tên thiết bị</th>
+          <th>Ngày đăng nhập</th>
+          <th>Trạng thái</th>
+          <th>Hạn sử dụng</th>
+          <th style="width: 10rem; text-align: center">
+            <button *ngIf="logoutCount!='0'" (click)="logoutAll(items[0])" type="button" class="btn btn-warning btn-sm">
+              Đăng xuất tất cả
+            </button>
+            <p *ngIf="logoutCount=='0'">Đăng xuất tất cả</p>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item.DeviceId}}</td>
+          <td>{{item.CreateDateString }}</td>
+          <td>
+            {{item.Status == 1?'Đang đăng nhập':item.Status == -1?'Đã đăng xuất':'' }}
+          </td>
+          <td>{{item.ExpiredDateString }}</td>
+          <td style="text-align: center">
+            <button *ngIf="item.Status!=-1" (click)="logout(item)" type="button"
+              class="btn btn-info btn-sm horizontal-center">
+              Đăng xuất
+            </button>
+            <p *ngIf="item.Status==-1">Đã đăng xuất</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div class="p-footer">
+  <div class="f-contains">
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

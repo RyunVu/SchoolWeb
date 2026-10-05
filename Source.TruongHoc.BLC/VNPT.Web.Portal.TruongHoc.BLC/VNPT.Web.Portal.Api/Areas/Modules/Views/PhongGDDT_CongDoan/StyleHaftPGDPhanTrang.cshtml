@@ -1,0 +1,238 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Base
+@{
+    var information = Session["PortalInformation"] as PortalInformation;
+    //var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    string[] tempCode = ViewBag.NewsInput.Code.Split('.'); // Tách chuỗi thành mảng bằng dấu '.'
+    string tempCodeSecond = tempCode.Length > 1 ? tempCode[1] : null; // Lấy phần tử thứ 2, nếu tồn tại
+
+}
+
+<style>
+    .loading-spinner {
+        position: absolute; /* Overlay chỉ hiển thị trong block-news-home */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1); /* Làm mờ nền */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10; /* Đảm bảo nó nằm trên nội dung */
+    }
+
+        .loading-spinner img {
+            width: 50px;
+            height: 50px;
+        }
+</style>
+@model List<News>
+
+<script id="template_stylehaftpgdbaolam" type="x-tmpl-mustache">
+        <!-- Phần tử chính -->
+        <div class="item_box_img">
+            <a href="{{main.URL_LINK}}" title="{{main.TITLE}}">
+                <img src="{{main.URL_IMG_NEW}}" alt="{{main.TITLE}}" style="object-position: center; object-fit: cover;">
+            </a>
+            <div class="title_box">
+                <a href="{{main.URL_LINK}}">{{main.TITLE}}</a>
+            </div>
+        </div>
+
+        <!-- Danh sách các phần tử còn lại -->
+        <div class="item_box_text">
+            <ul>
+                {{#list}}
+                <li>
+                    <a href="{{URL_LINK}}" title="{{TITLE}}">{{TITLE}}</a>
+                </li>
+                {{/list}}
+            </ul>
+        </div>
+</script>
+
+<div class="box-news-haft">
+    <div id="@tempCodeSecond" data-code="@ViewBag.NewsInput.Code">
+
+    </div>
+
+    <div id="paginationholder-@tempCodeSecond" class="pagination-holder pagination-primary" data-code="@tempCodeSecond">
+        <ul class="pagination"></ul>
+    </div>
+</div>
+
+<script>
+
+    if (typeof pagingConfigs === "undefined") {
+        var pagingConfigs = {}; // Lưu trữ cấu hình phân trang cho tất cả khối
+    }
+
+    // Hàm khởi tạo cấu hình phân trang cho từng khối
+    function initPagingConfig(code) {
+        if (!pagingConfigs[code]) {
+            pagingConfigs[code] = {
+                pageSize: 5,     // Số lượng tin tức trên mỗi trang
+                page: 1,         // Trang hiện tại
+                isClear: 0,      // Kiểm tra khởi tạo phân trang
+                number: 100000   // Giới hạn số lượng tối đa
+            };
+        }
+    }
+
+    var pagingConfigs = {};
+    pagingConfigs["@ViewBag.NewsInput.Code"] = {
+        pageSize: 5,     // Số lượng tin tức trên mỗi trang
+        page: 1,         // Trang hiện tại
+        isClear: 0,      // Kiểm tra khởi tạo phân trang
+        number: 100000   // Giới hạn số lượng tối đa
+    };
+
+    var Code1 = '@ViewBag.NewsInput.Code';
+    var linkImg = '@linkImg';
+    var url_api = '';
+    if (Code1 == "CM_TINTUYENTRUYEN".toLowerCase()) {
+        url_api = '@Url.Action("GetNewsList2", "PhongGDDT_CongDoan", new { area = "Modules", type = 2 })';
+    }else{
+        url_api = '@Url.Action("GetNewsList2", "PhongGDDT_CongDoan", new { area = "Modules", type = 1 })';
+    }
+
+    var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+    var urlTemplate = "@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "__alias__" })";
+
+    var mainPgdBl = {
+        loadListNews: function (code) {
+
+            initPagingConfig(code);
+
+            var config = pagingConfigs[code];
+
+            var obj = {
+                page: config.page,
+                pageSize: config.pageSize,
+                Code: code,
+                number: config.number
+            };
+
+            // Tìm phần tử loading tương ứng với code
+            var temmmpCode = code.split(".")[1];
+            var blockNewsHome = $("#" + temmmpCode).closest(".block-news-home");
+            var loadingElement = blockNewsHome.find(".loading-spinner");
+
+            // Hiển thị hiệu ứng loading
+            loadingElement.show();
+
+            $.ajax({
+                type: "POST",
+                data: obj,
+                async: true,
+                url: url_api,
+                success: function (res) {
+                    //console.log(res)
+                    if (res.length > 0) {
+                        const processedData = res.map(item => {
+                            const regExp = /^(http|https|ftp):\/\//i;
+                            return {
+                                ...item,
+                                URL_IMG_NEW: regExp.test(item.URL_IMG) ? item.URL_IMG : domainMedia + item.URL_IMG,
+                                URL_LINK: urlTemplate.replace("__alias__", item.ALIAS)
+                            };
+                        });
+
+                        const mainItem = processedData[0];
+                        const listItems = processedData.slice(1);
+                        const templateData = {
+                            main: mainItem,
+                            list: listItems
+                        };
+
+                        const template = $("#template_stylehaftpgdbaolam").html();
+                        const rendered = Mustache.render(template, templateData);
+
+                        //var temmmpCode = code.split(".")[1];
+
+                        $("#" + temmmpCode).html(rendered);
+
+                        // Gọi phân trang cho khối hiện tại
+                        mainPgdBl.pagingPage(res[0].TOTALPAGE, config.isClear, function () {
+                            mainPgdBl.loadListNews(code); // Gọi lại chính khối này
+                        }, code, temmmpCode);
+                    } else {
+                        $("#" + temmmpCode).html('<div>Không có dữ liệu</div>');
+                    }
+                },
+                complete: function () {
+                    loadingElement.hide();
+                },
+                error: function () {
+                    loadingElement.hide();
+                },
+                timeout: 10000
+            });
+        },
+        pagingPage: function (totalRow, isClear, callback, code, tempCode) {
+            var config = pagingConfigs[code];
+            if (!config) return;
+
+            var totalPage = Math.ceil(totalRow / config.pageSize);
+
+            if (isClear === 0) {
+
+                if (totalPage >= 0 && isClear == 0) {
+                    if (totalPage == 0) {
+                        totalPage = 1;
+                    }
+                    var paginationHolder = $('.pagination-holder[data-code="' + tempCode + '"]');
+                    paginationHolder.html('<ul class="pagination"></ul>');
+                }
+
+                // Gắn sự kiện phân trang cho khối cụ thể
+                $('.pagination-holder[data-code="' + tempCode + '"] .pagination').twbsPagination({
+                    totalPages: totalPage,
+                    visiblePages: 4,
+                    first: '<i class="fa fa-caret-left"></i><i class="fa fa-caret-left"></i>',
+                    next: '<i class="fa fa-caret-right"></i>',
+                    last: '<i class="fa fa-caret-right"></i><i class="fa fa-caret-right"></i>',
+                    prev: '<i class="fa fa-caret-left"></i>',
+                    initiateStartPageClick: false, // Không tự động click trang đầu tiên
+                    onPageClick: function (event, page) {
+                        config.page = page;
+                        setTimeout(callback, 200);
+                        callback(code);
+                    }
+                });
+
+                config.isClear = 1;
+            }
+        }
+    }
+
+    function initializePaging() {
+        $(".box-news-haft").each(function () {
+            var code = $(this).find("div[data-code]").data("code");
+
+            if (code) {
+                mainPgdBl.loadListNews(code);
+            } else {
+                console.warn("Không tìm thấy mã code trong box-news-haft.");
+            }
+        });
+    }
+
+    // Gọi hàm khởi tạo khi trang sẵn sàng
+    $(document).ready(function () {
+        initializePaging();
+    });
+
+    // Nếu Partial View được tải lại (qua AJAX), gọi lại hàm này
+    function reinitializePaging() {
+        initializePaging();
+    }
+
+
+</script>

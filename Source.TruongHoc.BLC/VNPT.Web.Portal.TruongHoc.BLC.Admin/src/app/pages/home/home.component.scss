@@ -1,0 +1,34 @@
+.error-message {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-radius: 0.25rem;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    z-index: 50;
+    .text-message{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+}
+.exp-body {
+    background: #36a2eb;
+    float: right;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.exp-body .exp-item {
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.exp-body:hover {
+    background: #ffce56;
+}

@@ -1,0 +1,72 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Quản lý quyền</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Roles</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card  card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách quyền</h3>
+                        <button *ngIf="checkPermission('Add')" (click)="add()" type="button" class="btn btn-info btn-sm float-right"><i class="fas fa-plus"></i> Thêm mới</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <p-treeTable [value]="treeNodes" [autoLayout]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Tên</th>
+                                    <!-- <th>Level</th> -->
+                                    <th style="width: 10%">Thao tác</th>
+                                </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                                <tr>
+                                    <td>
+                                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                        {{rowData.Name}}
+                                    </td>
+                                    <td>{{rowData.Description}}</td>
+                                    <!-- <td>{{rowData.RoleLevel}}</td> -->
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info" *ngIf="checkPermission('Edit')" (click)="menu(rowData)">Menu</button>
+                                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                <span class="sr-only"></span>
+                                                </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a *ngIf="checkPermission('Edit')" class="dropdown-item" (click)="edit(rowData)">Cập nhật</a>
+                                                <a *ngIf="checkPermission('Edit')" class="dropdown-item" (click)="menu(rowData)">Menu</a>
+                                                <a *ngIf="checkPermission('Delete')" class="dropdown-item" (click)="delete(rowData)">Xoá</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item" (click)="history(rowData)">Lịch sử thay đổi</a>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-treeTable>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>

@@ -1,0 +1,18 @@
+app-ho-kinh-doanh {
+    .p-column-filter-menu-button {
+        display: none;
+    }
+    .p-dropdown {
+        width: 100%;
+    }
+    .p-dialog.p-dynamic-dialog {
+        padding-bottom: 0px !important;
+    }
+    .p-paginator .p-paginator-current {
+        border: 0px !important;
+        color: #6c757d !important;
+    }
+    .p-calendar {
+        width: 100%;
+    }
+}

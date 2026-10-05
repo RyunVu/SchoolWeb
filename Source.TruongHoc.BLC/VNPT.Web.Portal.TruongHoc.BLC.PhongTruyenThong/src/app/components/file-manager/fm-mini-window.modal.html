@@ -1,0 +1,28 @@
+<!-- <p-toast></p-toast> -->
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row" *ngIf="objectType=='folder'">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Tên thư mục</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.Name">
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="objectType=='file'">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Tên tập tin</label>
+                    <input type="file" class="form-control" id="file-upload" (change)="changeImage($event)" multiple />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="submit()">Tạo</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

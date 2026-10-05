@@ -1,0 +1,37 @@
+<!-- <p-toast></p-toast> -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Khu vực <span class="text-danger">(*)</span></label>
+            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="UnitCode" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
+            <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Lĩnh vực <span class="text-danger">(*)</span></label>
+            <p-dropdown [options]="fields" [(ngModel)]="field" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn lĩnh vực" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Nội dung chia sẻ <span class="text-danger">(*)</span></label>
+            <textarea class="form-control" [(ngModel)]="command" rows="5" placeholder="Nội dung"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="save()">Lưu</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

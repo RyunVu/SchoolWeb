@@ -1,0 +1,84 @@
+<div class="container permit-detail-wrapper w-100 mt-4">
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="javascript:void(0)" (click)="back()"><i class="fa fa-2x fa-chevron-left mr-2"></i
+      ></a>
+            <h4 class="d-inline">
+                Chi tiết Giấy Phép {{ permitDetail ? '-' : '' }} {{ permitDetail?.SoGp }}
+            </h4>
+        </div>
+    </div>
+    <div *ngIf="loading; then loadingTemp; else detailTemp"></div>
+</div>
+
+<ng-template #loadingTemp>
+    <div class="spinner">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+</ng-template>
+
+<ng-template #detailTemp>
+    <div class=" card col-10 offset-1">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><b>Tên Người Nộp:</b> {{ permitDetail?.NguoiNop }}</p>
+                    <p><b>Địa Chỉ:</b> {{ populatePermitFullAddress(permitDetail) }}</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p><b>Số Giấy Phép:</b> {{ permitDetail?.SoGp }}</p>
+                    <p>
+                        <b>Ngày Cấp:</b> {{ permitDetail?.NgayGiayPhep | date: 'dd/MM/yyyy' }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><b>Diện Tích XD:</b> {{ permitDetail?.DTXD }} m2</p>
+                    <p><b>Tầng Hầm:</b> {{ permitDetail?.TangHam }}</p>
+                    <p><b>Tầng Lửng:</b> {{ permitDetail?.TangLung }}</p>
+                    <p><b>Bán Hầm:</b> {{ permitDetail?.BanHam }}</p>
+                    <p><b>Số Tầng:</b> {{ permitDetail?.SoTang }}</p>
+                    <p><b>Số Tờ:</b> {{ permitDetail?.SoTo }}</p>
+                    <p>
+                        <b>Trạng Thái Xây:</b>
+                        <span class="badge ml-1" [ngClass]="
+                calculateConstructionStatusBadge(permitDetail?.TrangThaiXayText)
+              ">{{ permitDetail?.TrangThaiXayText }}</span
+            >
+          </p>
+        </div>
+        <div class="col-12 col-md-6">
+          <p><b>Diện Tích Sàn:</b> {{ permitDetail?.DTSan }} m2</p>
+          <p><b>Tầng Trệt:</b> {{ permitDetail?.TangTret }}</p>
+          <p><b>Tầng Lầu:</b> {{ permitDetail?.TangLau }}</p>
+          <p><b>Áp Mái:</b> {{ permitDetail?.ApMai }}</p>
+          <p><b>Số Thửa:</b> {{ permitDetail?.SoThua }}</p>
+          <p><b>Mô Tả:</b> {{ permitDetail?.Description }}</p>
+          <p>
+            <b>Trạng Thái Nộp Thuế:</b>
+            <span *ngIf="permitDetail.TrangThaiNopThueText"
+              class="badge ml-1"
+              [ngClass]="calculatePermitFeeStatusBadge(permitDetail?.TrangThaiNopThueText)">{{ permitDetail?.TrangThaiNopThueText }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10 offset-1">
+            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles">
+                <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="mapOptions.iconHome">
+                    <agm-info-window [isOpen]="true">
+                        <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-map>
+        </div>
+    </div>
+</ng-template>

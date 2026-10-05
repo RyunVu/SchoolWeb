@@ -1,0 +1,79 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using System.Web
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var sologan = SystemParameterDto.GetParameter("SOLOGAN", null, infomation.PortalCode.ToUpper()).Value6;
+    var linkBanner = SystemParameterDto.GetParameters("BANNER_HEADER", infomation.PortalCode.ToUpper()).ToList();
+    var enableThongBao = SystemParameterDto.GetParameter("EnableThongBao", "EnableThongBao", infomation.PortalCode.ToUpper()).Value5;
+}
+
+<nav id="menu-mobile" class="mm-menu mm-offcanvas mm-pagedim-black">
+    <ul>
+        <li class="active"><a href="/" title="">Trang chủ</a></li>
+        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+    </ul>
+</nav>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="slider_banner" class="owl-carousel">
+                    @foreach (var link in linkBanner)
+                    {
+                        <div class="item">
+                            <img src="@Url.Image(link.Value2)" />
+                        </div>
+                    }
+                </div>
+
+                <div class="top-header">
+                    <div class="logo">
+                        <a class="img-logo" href="/" title=""><img src="@Url.Image(SystemParameterDto.GetParameter("SGD_LOGO", null, infomation.PortalCode.ToUpper()).Value2)" alt=""></a>
+                    </div>
+                    <a href="#menu-mobile" class="icon-reponsive">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                </div>
+                <nav class="menu" id="menu-pc">
+                    <ul>
+                        <li class="active isHomePc"><a href="/" title=""><i class="fa fa-home"></i></a></li>
+                        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+                    </ul>
+                </nav>
+                <div class="sub_menu">
+                    <ul>
+                        <li><i class="timeWeb"><i class="fa fa-clock-o"></i><span class="time_count" id="timeCurrent">Thứ sáu, 11/09/2020, 16:16:24</span></i></li>
+
+                        <li style="float: right; padding: 5px;">
+                            <a id="changeEn" title="Tiếng Anh" style="cursor: pointer;">
+                                <img class="wpml-ls-flag" src="~/Images/en.png" alt="Tiếng Anh">
+                            </a>
+                        </li>
+
+                        <li style="float: right; padding: 5px;">
+                            <a id="changeVn" title="Tiếng Việt" style="cursor: pointer;">
+                                <img class="wpml-ls-flag" src="~/Images/vi.png" alt="Tiếng Việt">
+                            </a>
+                        </li>
+
+                        @if (enableThongBao != null && enableThongBao.Value)
+                        {
+                            <li class="marquee_item">
+                                <span>
+                                    @Html.Action("GetNewsNoti", "Sidebar", new { area = "Modules", Code = "thong-bao-chay-header" })
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

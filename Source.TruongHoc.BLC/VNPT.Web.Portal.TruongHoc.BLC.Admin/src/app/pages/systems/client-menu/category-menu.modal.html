@@ -1,0 +1,44 @@
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Title">Tiêu đề <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title" (keyup)="changeTitle($event)">
+        </div>
+    </div>   
+     <div class="col-md-12">
+        <div class="form-group">
+            <label for="Parameter">Alias <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Parameter" [readonly]="true">
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="OrderNo">Thứ tự</label>
+            <input type="number" class="form-control" [(ngModel)]="item.OrderNo">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Menu cha</label>
+            <p-dropdown optionLabel="Title_En" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"
+                appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Parameter">Mở ra trang mới</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsOpenBlankPage"></p-checkbox>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()" [disabled]="isSaving">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

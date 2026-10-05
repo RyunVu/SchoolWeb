@@ -1,0 +1,154 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.DTO
+
+@{
+	Layout = ViewBag.Layout;
+	var information = Session["PortalInformation"] as PortalInformation;
+}
+@section MetaData {
+	@Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+<div class="container">
+	<div class="row">
+        <div class="col-md-9">
+            @*<div class="heading-direct">
+                <h3><i class="fa fa-question"></i>Gửi câu hỏi</h3>
+                <a href="@Url.Site("hoi-dap-truc-tuyen").ToString()" title="" class="btn-question">Danh sách</a>
+            </div>*@
+
+            <div class="th_top_menu">
+                <div class="wap_th_menu">
+                    <div class="th_top_menu_rhead color-mm-1">
+                        <ul>
+                            <li>
+                                <a>
+                                    <img class="one" src="/Images/question1.png">
+                                    <i class="fa fa-chevron-right icon" aria-hidden="true"></i>
+                                    <span class="border-color-mm-1 span">Gửi câu hỏi</span>
+                                </a>
+                                <a href="@Url.Site("hoi-dap-truc-tuyen").ToString()" title="" class="btn-question butDatCauHoi">Danh sách</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <section class="wrap-page-primary feedback-details">
+                <div class="form-send-feedback bg-white" id="send-question">
+                    <span class="note-form">(*) là những nội dung bắt buộc nhập</span>
+                    <div class="contact-form">
+                        <form id="submit_contact_form">
+                            <div id="contact_html">
+                            </div>
+                            @Html.AntiForgeryToken()
+                            <div class="form-group height-1 fg-left">
+                                <input name="Name" id="id-name" type="text" class="form-control" placeholder="Họ tên">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="form-group height-1 fg-right">
+                                <input name="Address" id="id-address" type="text" class="form-control" placeholder="Địa chỉ">
+                                <i class="fa fa-map-marker"></i>
+                            </div>
+                            <div class="form-group height-1 fg-left">
+                                <input name="Email" id="id-email" type="email" class="form-control" placeholder="Địa chỉ email">
+                                <i class="fa fa-envelope"></i>
+                            </div>
+                            <div class="form-group height-1 fg-right">
+                                <input name="PhoneNo" id="id-phone" type="tel" class="form-control" placeholder="Số điện thoại">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="form-group fg-full height-1 style_i">
+                                <input name="Subject" id="id-subject" type="text" class="form-control" placeholder="Chủ đề">
+                                <i class="fa fa-paragraph"></i>
+                            </div>
+                            <div class="form-group fg-full">
+                                <textarea id="id-content" name="Content" rows="8" class="form-control" placeholder="Nội dung*"></textarea>
+                                <i class="fa fa-align-left"></i>
+                            </div>
+                            <div class="form-group fg-left">
+                                @*<label for="">Mã xác minh*</label>
+                            <div id="captcha-area"></div>
+                            <div class="cls-message" id="captcha-area_err"></div>*@
+                            </div>
+
+                            <div class="form-group fg-right btn-direct text-right">
+                                <button id="submit-contact" type="submit">Gửi câu hỏi</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+		<div class="col-md-3">
+			@Html.Partial("~/Views/Shared/Portals/Layouts/MauGiaoTheme/_SidebarMenu.cshtml")
+		</div>
+	</div>
+</div>
+@section scripts {
+	<script type="text/javascript">
+                @*var captcha_response = "";
+                var verifyCallback = function (response) {
+                    captcha_response = response;
+                };
+                var onloadCallback = function () {
+                    grecaptcha.render('captcha-area', {
+                        'sitekey': '@SystemParameterDto.GetParameter("RECAPTCHA", null, information.PortalCode.ToUpper()).Value2', //name
+                        'callback': verifyCallback,
+                    });
+                }*@
+                $('#submit_contact_form').validate({
+                    rules: {
+                        Content: {
+                            required: true
+                        },
+
+                    },
+                    messages: {
+                        Content: {
+                            required: "Nội dung không được để trống"
+                        },
+
+                    },
+                    submitHandler: function (form) {
+                        //if (grecaptcha.getResponse().length === 0) {
+                        //    $('#captcha-area_err').html("Xác nhận mã xác minh");
+                        //    return false;
+                        //}
+                        var content = $("#id-content").val();
+                        var name = $("#id-name").val();
+                        var email = $("#id-email").val();
+                        var phone = $("#id-phone").val();
+                        var subject = $("#id-subject").val();
+                        var address = $("#id-address").val();
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("InsertAskAnswer", "CongDoanMM", new { area = "Modules" })',
+                            data: {
+                                Content: content,
+                                Name: name,
+                                Email: email,
+                                PhoneNo: phone,
+                                Subject: subject,
+                                Address: address,
+                                //captcha: grecaptcha.getResponse()
+                            },
+                            success: function (response) {
+                                $("#submit_contact_form").trigger("reset");
+                                //grecaptcha.reset();
+                                $('#contact_html').html(response.Message);
+                                $('html, body').animate({
+                                    scrollTop: $("#send-question").offset().top - 40
+                                }, 500);
+                                setTimeout(function () {
+                                    $('#contact_html').html("");
+                                }, 10000);
+                            }
+                        });
+                    }
+                });
+	</script>
+}

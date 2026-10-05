@@ -1,0 +1,84 @@
+<div class="card card-primary">
+    <div class="card-body">
+        <p-treeTable [value]="treeNodes" [loading]="loading">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th width="85%">Tiêu đề</th>
+                    <th width="15%">Allow</th>
+                    <!-- <th width="10%">Thao tác</th> -->
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="input-group mb-3">
+                            <input type="text" [(ngModel)]="keyword" class="form-control" (keyup)="onKeyUp($event)">
+                            <div class="input-group-append">
+                                <span class="input-group-text" (click)="search()"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr>
+                    <td>
+                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                        {{rowData.Name}}
+                    </td>
+                    <td>
+                        <p-checkbox *ngIf="!rowData.IsParent" [(ngModel)]="rowData.Allow" [binary]="true"
+                            (onChange)="save('Allow',rowData)"></p-checkbox>
+                    </td>
+                    <!-- <td> -->
+                        <!-- <button *ngIf="!rowData.IsParent" (click)="openOther(rowData)"
+                            class="btn {{rowData.OtherActions.length>0 ? 'btn-success':'btn-primary'}}"
+                            pTooltip="{{rowData.OtherActions.length>0 ? 'Có quyền khác':'Chưa có quyền khác'}}">Khác</button> -->
+                    <!-- </td> -->
+                </tr>
+            </ng-template>
+        </p-treeTable>
+
+    </div>
+
+</div>
+<!-- <p-footer>
+    <div class="card-footer text-right">
+        <button class="btn btn-primary">Thoát</button>
+    </div>
+</p-footer> -->
+
+<p-dialog [(visible)]="viewDialog" [style]="{width: '50%'}" [header]="ortherTitle" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+         <p-table styleClass="p-datatable-gridlines"  [value]="ortherItem.OtherActions" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th width="80%">Tên Quyền
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-success btn-flat" (click)="addOrther()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </th>
+                    <th  style="width: 150px;">Thao tác</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" [(ngModel)]="product.Name">
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger btn-flat" (click)="removeOther(product)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Save" icon="pi pi-save" class="p-button-text" (click)="saveOther()"></button>
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="closeView()"></button>
+    </ng-template>
+</p-dialog>

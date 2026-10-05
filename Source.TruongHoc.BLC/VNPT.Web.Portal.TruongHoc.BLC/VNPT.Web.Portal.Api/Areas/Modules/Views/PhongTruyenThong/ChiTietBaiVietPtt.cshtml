@@ -1,0 +1,65 @@
+﻿@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+
+@model NewsResult2
+
+<div class="body-content pagedetail">
+    <div class="container">
+        <div class="content-title text-center" style="padding:0;">
+            <div class="c-title">
+                <span></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+
+            <div class="search-content">
+                <div class="header-search">
+                    <h1 class="text-title">@Model.DetailNews.Title</h1>
+
+                    <div class="info_content">
+                        <div class="info_bv">
+                            @if (Model.DetailNews.CreateDate != null)
+                            {
+                                <span class="time"><i class="fa fa-clock-o" aria-hidden="true"></i> @Model.DetailNews.CreateDate</span>
+                            }
+                            @if (Model.DetailNews.CountView != null && Model.DetailNews.CountView > 0)
+                            {
+                                <span class="count-views"><i class="fa fa-eye"></i> <b>@Model.DetailNews.CountView </b> đã xem</span>
+                            }
+                        </div>
+                        <div class="action_bv">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content_baiviet">
+                    @Html.Raw(Model.DetailNews.Content)
+                </div>
+
+                @if (Model.ListNews.Count > 0)
+                {
+                    <h3 class="cungchuyenmuc">Cùng chuyên mục</h3>
+                    <div class="row content-gd content-media">
+                        @foreach (var item in Model.ListNews)
+                        {
+                            <div class="col-sm-3">
+                                <div class="itemgd">
+                                    <a href="@Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = item.Alias, code = item.Code })" class="link_item">
+                                        <img alt="" class="img_hover" src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))">
+                                    </a>
+                                    <div class="itemgd-body">
+                                        <a href="@Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = item.Alias, code = item.Code })" class="gd-title">@item.Title</a>
+                                        <div class="itemgd-time text-right">@item.CreateDate</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+          
+    </div>
+</div>

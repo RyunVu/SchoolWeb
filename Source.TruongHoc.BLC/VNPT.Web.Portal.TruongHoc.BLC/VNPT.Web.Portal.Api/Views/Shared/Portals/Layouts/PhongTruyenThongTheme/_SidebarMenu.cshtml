@@ -1,0 +1,330 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var menus = MenuDal.MenuDoc(infomation);
+    // var linkWebsite = SystemParameterDto.GetParameters("LINK_WEBSITE", infomation.PortalCode.ToUpper()).OrderBy(x => x.Value).ToList();
+    //  var linkVb = SystemParameterDto.GetParameters("LINK_VANBAN", infomation.PortalCode.ToUpper()).ToList();
+
+    var analytics = AnalyticsDal.GetAnalyticData(infomation.PortalCode);
+
+    var day = 0;
+    var month = 0;
+    var year = 0;
+
+    if (analytics != null)
+    {
+        day = analytics.DayCount;
+        month = analytics.MonthCount;
+        year = analytics.YearCount;
+    }
+}
+
+<style>
+    .sidebar-link {
+        margin: 0;
+        padding: 0;
+    }
+
+        .sidebar-link a img {
+            width: 100%
+        }
+
+        .sidebar-link li {
+            margin-bottom: 10px;
+            border: 1px solid #ddd
+        }
+
+    .leftmenu .head-box {
+        background-image: linear-gradient(to right, #0098d6 0%, #00cbd6 100%);
+        padding: 0 10px;
+    }
+
+        .leftmenu .head-box a {
+            background: url(/Images/icon-site.png) no-repeat;
+            display: block;
+            line-height: 42px;
+            padding-left: 35px;
+            color: #FFF;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+    .head-box .thongtin {
+        background-position: 0 0;
+    }
+
+    .leftmenu ul.nav-left {
+        margin-bottom: 0px;
+        padding: 0;
+        border: 1px solid #dfdfdf;
+    }
+
+        .leftmenu ul.nav-left li {
+            padding: 5.6px 13px;
+            border-bottom: 1px solid #eee;
+            list-style: none;
+        }
+
+            .leftmenu ul.nav-left li.cus-li:hover {
+                background-color: #c4e4ff;
+            }
+
+            /*	.leftmenu ul.nav-left a:before {
+            content: "\f0da";
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-family: FontAwesome;
+            font-size: 18px;
+            color: #588fbe;
+        }*/
+
+            .leftmenu ul.nav-left li:last-child {
+                border: none
+            }
+
+            .leftmenu ul.nav-left li a {
+                position: relative;
+                padding-left: 0;
+                color: #000;
+                font-weight: 400;
+                font-size: 14.4px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                line-height: 22px;
+                max-height: 44px;
+            }
+
+                .leftmenu ul.nav-left li a i {
+                    font-size: 18px;
+                    padding-right: 2px;
+                }
+
+            .leftmenu ul.nav-left li:last-child a span {
+                border-bottom: none;
+            }
+
+    .head-box .lienket {
+        background-position: 0 -314px !important;
+    }
+
+    .head-box .video {
+        background-position: 0 -361px !important;
+    }
+
+    .scrolling-news > li {
+        list-style: none;
+        padding: 5.6px 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        display: inline-block;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+        .scrolling-news > li:hover {
+            background-color: #c4e4ff
+        }
+
+        .scrolling-news > li > a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 400;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            transition: .2s;
+        }
+
+    .statis-news > li {
+        list-style: none;
+        padding: 5.6px 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        width: 100% !important;
+        display: inline-block;
+    }
+
+        .statis-news > li:hover {
+            background-color: #c4e4ff
+        }
+
+        .statis-news > li > a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 400;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 22px;
+            max-height: 44px;
+            transition: .2s;
+        }
+</style>
+
+<div class="sidebar" id="lstLinkBotton">
+    @foreach (var systemMenu in menus)
+    {
+        if (systemMenu.MenuType == 1)
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left statis-news">
+                        @Html.Action("GetNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 2)
+        {
+            //Tin tức chạy
+            <div class="inline-block">
+                <div class="">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left scrolling-news" style="overflow: hidden">
+                        @Html.Action("ScrollingNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 3)
+        {
+            @Html.Action("LinkSidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+        }
+        else if (systemMenu.MenuType == 4)
+        {
+            @Html.Action("LinkSidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+        }
+        else if (systemMenu.MenuType == 5)
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate("Liên kết website")
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left">
+                        @*@foreach (var link in linkWebsite)
+                            {
+                                <li>
+                                    <a target="_blank" href="@link.Value2"><i class="fa fa-caret-right"></i> @link.Value4</a>
+                                </li>
+                            }*@
+
+                    </ul>
+                </div>
+            </div>
+        }
+
+    }
+    <div class="inline-block">
+        <div class="leftmenu">
+            <div class="site_block_title">
+                <h3>
+                    <a>
+                        <i class="fa fa-list"></i>
+                        @SystemParameterDto.Translate("Thống kê truy cập")
+                    </a>
+                </h3>
+            </div>
+            <div class="statistic clearfix" style="/**/">
+                <div class="content" style="padding: 10px; border: 1px solid #dfdfdf; font-weight:bold ">
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Hôm nay</span><b id="homnay">@day</b></p>
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Tháng này</span><b id="thangnay">@month</b></p>
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Năm này</span><b id="namnay">@year</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Tin tức mới nhất")
+                        </a>
+                    </h3>
+                </div>
+                <ul class="nav-left" style="overflow: hidden">
+                    @Html.Action("ScrollingNews", "Sidebar", new { area = "Modules" })
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Liên kết website")
+                        </a>
+                    </h3>
+                </div>
+                <ul class="nav-left">
+                    @foreach (var link in linkWebsite)
+                    {
+                        <li>
+                            <a target="_blank" href="@link.Value2"><i class="fa fa-caret-right"></i> @link.Value4</a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Thống kê truy cập")
+                        </a>
+                    </h3>
+                </div>
+                <div class="statistic clearfix" style="/**/">
+                    <div class="content" style="padding: 10px; border: 1px solid #dfdfdf; font-weight:bold ">
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Hôm nay</span><b id="homnay">3</b></p>
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Tháng này</span><b id="thangnay">11</b></p>
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Năm này</span><b id="namnay">156</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>

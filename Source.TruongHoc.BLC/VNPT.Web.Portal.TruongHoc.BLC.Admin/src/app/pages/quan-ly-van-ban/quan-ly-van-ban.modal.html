@@ -1,0 +1,122 @@
+<div *ngIf="isLoading" class="loading-overlay111">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Đang tải...</span>
+  </div>
+</div>
+
+<div class="row" [class.disabled111]="isLoading">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="soKyHieu">Số ký hiệu <span class="text-danger">(*)</span></label>
+      <input type="text" class="form-control" [(ngModel)]="soKyHieu" />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="nguoiKy">Người ký</label>
+      <input type="text" class="form-control" [(ngModel)]="nguoiKy" />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="ngayBanHanh">Ngày ban hành <span class="text-danger">(*)</span></label>
+      <p-calendar [(ngModel)]="ngayBanHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+        appendTo="body"></p-calendar>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="trichYeu">Trích yếu</label>
+      <input type="text" class="form-control" [(ngModel)]="trichYeu" />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="coQuanBanHanh">Cơ quan ban hành</label>
+      <!-- <input type="text" class="form-control" [(ngModel)]="coQuanBanHanh" /> -->
+      <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="coQuanBanHanh"
+        [options]="docCoQuanBhs" appendTo="body">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="docType">Loại văn bản</label>
+      <div>
+        <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="loaiVanBan" [options]="docTypes"
+          appendTo="body">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="linhVuc">Lĩnh vực</label>
+      <!-- <input type="text" class="form-control" [(ngModel)]="linhVuc" /> -->
+      <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="linhVuc" [options]="docLinhVucs"
+        appendTo="body">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="congBaoSo">Cổng báo số</label>
+      <input type="text" class="form-control" [(ngModel)]="congBaoSo" />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="ngayPhatHanh">Ngày phát hành</label>
+      <p-calendar [(ngModel)]="ngayPhatHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+        appendTo="body"></p-calendar>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <input #fileInput class="d-none" type="file" multiple (change)="chooseFile($event)" />
+    <label for="file">Tệp đính kèm</label>
+
+    <div class="row mx-0">
+      <div class="col-11 pr-2 pl-0">
+        <input type="text" class="form-control" [(ngModel)]="fileName" placeholder="Tên File" readonly />
+      </div>
+      <button (click)="clickFile()" class="btn btn-info col-1">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </button>
+    </div>
+
+
+    <ul class="mt-2" *ngIf="uploadedFiles && uploadedFiles.length > 0">
+      <li *ngFor="let file of uploadedFiles">
+        <a target="_blank" href="{{file.Path}}"><i class="fas fa-file-alt text-primary"></i> {{ file.Name }} </a>
+        <i style="position: relative;
+          top: 2px;
+          left: 8px;
+          font-size: 20px;
+          color: red;
+          cursor: pointer;" (click)="removeFile(file)" class="fa fa-window-close"></i>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="ghiChu">Ghi chú</label>
+      <textarea rows="2" class="form-control" [(ngModel)]="ghiChu"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="p-footer">
+  <div class="f-contains">
+    <button class="btn btn-info" *ngIf="isAdd" type="submit" (click)="submit()">
+      Thêm
+    </button>
+    <button class="btn btn-info" *ngIf="!isAdd" type="submit" (click)="submitEdit()">
+      Lưu thay đổi
+    </button>
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

@@ -1,0 +1,798 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Providers
+
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+    var banner3 = SystemParameterDto.GetParameter("BANNER_CENTER3", null, information.PortalCode.ToUpper());
+    var listbanner3 = SystemParameterDto.GetParameters("BANNER_CENTER3", information.PortalCode.ToUpper()).OrderBy(s => s.Id).ToList();
+    var color = SystemParameterDto.GetParameter("COLOR", "COLOR", information.PortalCode.ToUpper()).Value2;
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value6;
+    var nameUBNDXA = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value7;
+    var showeOffice = SystemParameterDto.GetParameter("DISPLAY", "EOFFICE", information.PortalCode.ToUpper()).Value5;
+    var slickPlaySpeed = SystemParameterDto.GetParameter("SLICK", "SLICK_PLAY_SPEED", information.PortalCode.ToUpper()).Value;
+    var menus = MenuDal.MenuHome(information);
+
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+    <style>
+
+        #slide_news .sp-thumbnail-description {
+            line-height: 24px;
+        }
+
+        #slide_news .sp-right-thumbnails.sp-has-pointer .sp-selected-thumbnail:before {
+            border-left: 5px solid #014D8F !important;
+        }
+
+        #slide_news .sp-right-thumbnails.sp-has-pointer .sp-selected-thumbnail:after {
+            border-right: 13px solid #014D8F !important;
+        }
+
+        .banner-center {
+            margin: 0;
+            padding: 0;
+        }
+
+            .banner-center li {
+                margin-bottom: 10px;
+            }
+
+            .banner-center a img {
+                width: 100%;
+            }
+
+        .caption {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .slide-item {
+            margin-right: 5px; /* Khoảng cách giữa các hình ảnh */
+        }
+
+        .li-submenu.overflow-item .sub-menu {
+            visibility: hidden!important
+        }
+
+        .li-submenu.overflow-item:hover ul.sub-menu {
+            visibility: visible !important
+        }
+
+        #more-menu > .sub-menu {
+            left: -100px!important
+        }
+    </style>
+}
+
+<div class="container">
+    <input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+    <input id="nameUBNDXA" value="@nameUBNDXA" type="hidden" />
+    <input id="showeOffice" value="@showeOffice" type="hidden" />
+    <div class="row">
+        @Html.Action("MainCarousel", "NewsHome", new { area = "Modules" })
+
+        <div class="col-md-9 body-page">
+            @foreach (var systemMenu in menus)
+            {
+                if (systemMenu.MenuType == 1)
+                {
+                    @Html.Action("CongDoanHotNewsOnlyUnit", "CongDoan", new { area = "Modules", Code = NewsCode.CHUYENMUC_TINTUC, number = 5 })
+                }
+                else if (systemMenu.MenuType == 2)
+                {
+                    var names = (systemMenu.Title ?? "").Split(';');
+                    var url = (systemMenu.Parameter ?? "").Split(';');
+                    <div class="content_row">
+                        @if (names.Length > 0 && url.Length > 0)
+                        {
+                            <div class="col-md-6">
+                                <div class="block-news-home">
+                                    <div class="site_block_title">
+                                        <h3>
+                                            <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = url[0] })">
+                                                <i class="fa fa-file-text"></i>
+                                                @SystemParameterDto.Translate(names[0])
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = url[0], number = 5 })
+                                </div>
+                            </div>
+                        }
+                        @if (names.Length > 1 && url.Length > 1)
+                        {
+                            <div class="col-md-6">
+                                <div class="block-news-home">
+                                    <div class="site_block_title">
+                                        <h3>
+                                            <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = url[1] })">
+                                                <i class="fa fa-file-text"></i>
+                                                @SystemParameterDto.Translate(names[1])
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = url[1], number = 5 })
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                }
+                else if (systemMenu.MenuType == 3)
+                {
+                    @Html.Action("SubCarousel", "NewsHome", new { area = "Modules", Code = systemMenu.Parameter })
+                }
+                else if (systemMenu.MenuType == 4)
+                {
+                    <div class="col-sm-12 block-news-home">
+                        <div class="site_block_title">
+                            <h3>
+                                <a href="">
+                                    <i class="fa fa-picture-o"></i>
+                                    @SystemParameterDto.Translate(systemMenu.Title)
+
+                                </a>
+                            </h3>
+                        </div>
+                        @Html.Action("ListMedia", "NewsHome", new { area = "Modules", Code = systemMenu.Parameter })
+                    </div>
+                }
+                else if (systemMenu.MenuType == 5)
+                {
+                    <div class="col-sm-12 block-news-home" style="position: relative">
+                        <ul class="banner-center">
+                            <li>
+                                <a target="_blank" href="@systemMenu.Action">
+                                    <img src="@Url.Image(systemMenu.Description)" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+            @*<div class="block-news-home" style="position: relative">
+            @Html.Action("GetListBannerCenter", "BannerCenter", new { area = "Modules", Code = NewsCode.BANNER_CENTER_1 })
+        </div>*@
+
+
+            <!--<div class="content_row">
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.TINCHUYENNGANH })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("TIN CHUYÊN NGÀNH")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.TINCHUYENNGANH, number = 5 })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.TINHOATDONG })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("TIN HOẠT ĐỘNG")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.TINHOATDONG, number = 5 })
+            </div>
+        </div>
+    </div>
+
+    <div class="content_row">
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.PHUONGPHAPTHONGKE })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("PHƯƠNG PHÁP THỐNG KÊ")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.PHUONGPHAPTHONGKE, number = 5 })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.NIENGIAMTHONGKE })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("NIÊN GIÁM THỐNG KÊ")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.NIENGIAMTHONGKE, number = 5 })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 block-news-home" style="position: relative">
+        @Html.Action("GetListBannerCenter", "BannerCenter", new { area = "Modules", Code = NewsCode.BANNER_CENTER_2 })
+        <marquee width="100%" behavior="scroll" class="cus-mar">
+            @SystemParameterDto.GetParameter("SOLOGAN2", null, information.PortalCode.ToUpper()).Value6
+        </marquee>
+    </div>
+
+    <div class="content_row">
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.CHITIEUCHUYEU })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("CHỈ TIÊU CHỦ YẾU")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.CHITIEUCHUYEU, number = 5 })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.CONGNGHETHONGTIN })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("CÔNG NGHỆ THÔNG TIN")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.CONGNGHETHONGTIN, number = 5 })
+            </div>
+        </div>
+    </div>-->
+            @*<div class="col-sm-12 block-news-home" style="position: relative">
+            @Html.Action("GetListBannerCenter", "BannerCenter", new { area = "Modules", Code = NewsCode.BANNER_CENTER_3 })
+            <marquee width="100%" behavior="scroll" class="cus-mar">
+                @SystemParameterDto.GetParameter("SOLOGAN2", null, information.PortalCode.ToUpper()).Value6
+            </marquee>
+        </div>*@
+
+            <!--<div class="content_row">
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.KINHTEXAHOIVIETNAM })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("KINH TẾ - XÃ HỘI VIỆT NAM")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.KINHTEXAHOIVIETNAM, number = 5 })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.KINHTEXAHOILAMDONG })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("KINH TẾ - XÃ HỘI LÂM ĐỒNG")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.KINHTEXAHOILAMDONG, number = 5 })
+            </div>
+        </div>
+    </div>
+
+    <div class="content_row">
+        <div class="col-md-6">
+            <div class="block-news-home">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = NewsCode.KINHTEXAHOIHUYENTP })">
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("KINH TẾ - XÃ HỘI HUYỆN, TP")
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = NewsCode.KINHTEXAHOIHUYENTP, number = 5 })
+            </div>
+        </div>
+    </div>-->
+            @*<div class="col-sm-12 block-news-home">
+            <div class="site_block_title">
+                <h3>
+                    <a href="">
+                        <i class="fa fa-picture-o"></i>
+                        Hình ảnh - Video
+                    </a>
+                </h3>
+            </div>
+            @Html.Action("ListMedia", "NewsHome", new { area = "Modules" })
+        </div>*@
+
+            @*@if (showeOffice != null && showeOffice == true)
+        {
+            <div class="content_row">
+                <div class="site_block_title">
+                    <h2>
+                        <a>
+                            <i class="fa fa-file-text"></i>
+                            @SystemParameterDto.Translate("VĂN BẢN - CÔNG VĂN")
+                        </a>
+                    </h2>
+                </div>
+            </div>
+            <div class="content_row border_van_ban_dieu_hanh" style="padding: 20px; border: 2px dashed; margin-top: 5px;">
+                <div class="col-md-12">
+                    <div class="col-md-4" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Số/Ký hiệu:
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input style="height: 34px; width: 100%; border: 1px solid #ccc;" id="soKyHieu" name="SoKyHieu" type="text" value="" />
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-4" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Trích yếu:
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <input style="height: 34px; width: 100%; border: 1px solid #ccc;" id="trichYeu" name="TrichYeu" type="text" value="" />
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-4" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Loại văn bản
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-control label_van_ban_dieu_hanh" id="loaiVanBan" name="LoaiVanBan"></select>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-4" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Lĩnh vực
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-control label_van_ban_dieu_hanh" id="linhVuc" name="LinhVuc"></select>
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-4" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Ngày ban hành
+                        </label>
+                    </div>
+                    <div class="col-md-2" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">Từ ngày</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input style="height: 34px; border: 1px solid #ccc; width: 100%;" type="date" id="tuNgay" name="TuNgay">
+                    </div>
+                    <div class="col-md-2" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">Đến ngày</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input style="height: 34px; border: 1px solid #ccc; width: 100%;" type="date" id="denNgay" name="DenNgay">
+                    </div>
+                </div>
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-8">
+                        <button class="background_van_ban_dieu_hanh" style="font-size: 14px; font-weight: 400; box-sizing: border-box; border: 1px solid transparent; display: inline-block; text-decoration: none; text-align: center; cursor: pointer; vertical-align: top; padding: 0px 16px; border-radius: 0px; min-width: 80px; height: 32px; color: rgb(255, 255, 255);" type="button" onclick="main.loadData(true, true)">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="content_row">
+                <label class="label_van_ban_dieu_hanh" style="padding: 10px 0; font-weight: 700;" id="soVanBan">
+
+                </label>
+            </div>
+            <div class="content_row">
+                <div class="list-news-cate" id="lstVanBanPl">
+                    <div class="table-text-system table-responsive ">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="background_van_ban_dieu_hanh">
+                                    <th scope="col" style="width:20%">Số ký hiệu</th>
+                                    <th scope="col">Ngày ban hành</th>
+                                    <th scope="col">Trích yếu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lstVanBanDetail"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination-primary" id="paginationholder">
+                    <ul class="pagination" id="pagination"></ul>
+                </div>
+                <div class="loading-box" aria-hidden="true" style="display: none;">
+                    <div class="box-show">
+                        <div class="loading-page"></div>
+                        <div class="box-content">Đang tải ...</div>
+                    </div>
+                </div>
+            </div>
+        }*@
+        </div>
+        <div class="col-md-3 sidebar-mobile-ontop">
+            @Html.Partial("~/Views/Shared/Portals/Layouts/TruongHocTheme/_SidebarMenu.cshtml")
+        </div>
+    </div>
+    <!-- Button trigger modal -->
+    @*<button type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#exampleModal">
+            Launch demo modal
+        </button>*@
+    <!-- Modal -->
+    <div class="modal fade"
+         id="exampleModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true" style="padding-top: 50px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header background_van_ban_dieu_hanh">
+                    <h3 class="modal-title" id="exampleModalLabel" style="color:white">Nội dung chi tiết</h3>
+                    @*<button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                </div>
+                <div class="modal-body">
+                    <div id="vanBanDetail">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<a id="duongDan" target="_blank" class="btn btn-primary" href="">Đường dẫn</a>*@
+                    <button type="button"
+                            class="btn btn-secondary background_van_ban_dieu_hanh"
+                            data-dismiss="modal" style="color:white">
+                        Đóng
+                    </button>
+                    @*<button type="button" class="btn btn-primary">Đường dẫn</button>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="img_data" type="x-tmpl-mustache">
+    <a href="{{IMG_URL}}">
+    </a>
+</script>
+
+<script src="~/Scripts/jquery.twbsPagination.min.js"></script>
+
+@section scripts {
+    <script type="text/javascript">
+
+        var data;
+
+        var nameCongThongTin = document.getElementById("nameCongThongTin").value;
+        var nameUBNDXA = document.getElementById("nameUBNDXA").value;
+        var showeOffice = document.getElementById("showeOffice").value;
+
+        function show_detail(id) {
+            $.ajax({
+                type: "POST",
+                data: {
+                    Id: id
+                },
+                url: '@Url.Action("GetDetailDoc", "EOfficeDoc", new { area = "Modules" })',
+                headers: { "Accept": "application/json; odata=verbose; charset=utf-8" },
+                beforeSend: function () {
+
+                },
+                success: function (res) {
+                    var attachmentFile = "";
+                    var lengthAttach = res.Attachments.length;
+                    if (lengthAttach > 0) {
+                        for (let i = 0; i < lengthAttach; i++) {
+                            const itemAttach = res.Attachments[i];
+                            attachmentFile += '<div><a target="_blank" href="' + itemAttach.Path + '">' + itemAttach.Name + '</a></div>'
+                        }
+                    }
+
+                    var parts = res.NgayBanHanh.split('/');
+
+                    // Rearrange the parts to the desired format
+                    var formattedDate = parts[1] + '/' + parts[0] + '/' + parts[2];
+
+                    var html = '<div class="content_row">'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Số/Ký hiệu</label></div><div class="col-md-8"><label>' + res.SoKyHieu + '</label></div></div>'
+                        + '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Ngày ban hành</label></div><div class="col-md-8"><label>' + formattedDate + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Người ký</label></div><div class="col-md-8"><label>' + res.NguoiKy + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Trích yếu</label></div><div class="col-md-8"><label>' + res.TrichYeu + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Cơ quan ban hành</label></div><div class="col-md-8"><label>' + res.CoQuanBanHanh + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Loại văn bản</label></div><div class="col-md-8"><label>' + res.LoaiVanBan + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Lĩnh Vực</label></div><div class="col-md-8"><label>' + res.LinhVuc + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Công báo số</label></div><div class="col-md-8"><label>' + res.CongBaoSo + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Ngày phát hành công báo</label></div><div class="col-md-8"><label>' + res.NgayPhatHanh + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Hiệu lực</label></div><div class="col-md-8"><label>' + res.HieuLuc + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Ghi chú</label></div><div class="col-md-8"><label>' + res.GhiChu + '</label></div></div>'
+						+ '<div class="col-md-12 detail_van_ban_dieu_hanh"><div class="col-md-4"><label>Đính kèm</label></div><div class="col-md-8"><label>' + attachmentFile + '</label></div></div>'
+						+ '</div>';
+                    $("#vanBanDetail").html(html);
+                },
+            });
+        }
+
+        function parseNestedXml(element, obj) {
+            for (let i = 0; i < element.children.length; i++) {
+                const child = element.children[i];
+                obj[child.nodeName] = {};
+
+                // Iterate through the child's attributes
+                for (let j = 0; j < child.attributes.length; j++) {
+                    const attribute = child.attributes[j];
+                    obj[child.nodeName][attribute.nodeName] = attribute.nodeValue;
+                }
+
+                // Recursively iterate through the child's children
+                if (child.children.length > 0) {
+                    obj[child.nodeName] = parseNestedXml(child, obj[child.nodeName]);
+                } else {
+                    obj[child.nodeName]["#text"] = child.textContent;
+                }
+            }
+
+            return obj;
+        }
+
+        var commonConfig = {
+            pageSize: 25,
+            pageNum: 1,
+            isClear: 0,
+            type: ""
+        };
+
+        var skip = commonConfig.pageSize * (commonConfig.pageNum - 1);
+
+        var obj = {
+            pageNum: commonConfig.pageNum,
+            pageSize: commonConfig.pageSize
+        };
+
+        var main = {
+            loadDocTypeList: function () {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListCategory", "EOfficeDoc", new { area = "Modules", Code = CategoryCode.LOAIVANBAN })',
+                    headers: { "Accept": "application/json; odata=verbose; charset=utf-8" },
+                    beforeSend: function () {
+
+                    },
+                    success: function (res) {
+                        var htmlLoaiVanBan = '';
+                        htmlLoaiVanBan += '<option value ="">-- Toàn bộ --</option>';
+                        $.each(res, function (key, item) {
+                            htmlLoaiVanBan += '<option value ="' + item.ID + '">' + item.NAME + '</option>';
+                        });
+                        $("#loaiVanBan").append(htmlLoaiVanBan);
+                    },
+                });
+            },
+            loadFieldList: function () {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetListCategory", "EOfficeDoc", new { area = "Modules", Code = CategoryCode.LINHVUC })',
+                    headers: { "Accept": "application/json; odata=verbose; charset=utf-8" },
+                    beforeSend: function () {
+
+                    },
+                    success: function (res) {
+                        var htmlLoaiVanBan = '';
+                        htmlLoaiVanBan += '<option value ="">-- Toàn bộ --</option>';
+                        $.each(res, function (key, item) {
+                            htmlLoaiVanBan += '<option value ="' + item.ID + '">' + item.NAME + '</option>';
+                        });
+                        $("#linhVuc").append(htmlLoaiVanBan);
+                    },
+                });
+            },
+            loadData: function (isloading, refresh) {
+                if (refresh) {
+                    commonConfig.pageSize = 25;
+                    commonConfig.pageNum = 1;
+                    commonConfig.isClear = 0;
+                    obj = {
+                        pageNum: commonConfig.pageNum,
+                        pageSize: commonConfig.pageSize
+                    };
+                }
+
+                var skip = commonConfig.pageSize * (commonConfig.pageNum - 1);
+
+                obj.SoKyHieu = "";
+                obj.TrichYeu = "";
+                obj.LoaiVanBan = "";
+                obj.LinhVuc = "";
+                obj.FromDate = "";
+                obj.ToDate = "";
+
+                var soKyHieu = $("#soKyHieu").val();
+                if (soKyHieu != null && soKyHieu != "") {
+                    obj.SoKyHieu = soKyHieu;
+                }
+
+                var trichYeu = $("#trichYeu").val();
+                if (trichYeu != null && trichYeu != "") {
+                    obj.TrichYeu = trichYeu;
+                }
+
+                var loaiVanBan = $("#loaiVanBan").val();
+                if (loaiVanBan != null && loaiVanBan != "") {
+                    var txtLoaiVanBan = $("#loaiVanBan option:selected").text();
+                    obj.LoaiVanBan = txtLoaiVanBan;
+                }
+
+                var linhVuc = $("#linhVuc").val();
+                if (linhVuc != null && linhVuc != "") {
+                    var txtLinhVuc = $("#linhVuc option:selected").text();
+                    obj.LinhVuc = txtLinhVuc;
+                }
+
+                var tuNgay = $("#tuNgay").val();
+                if (tuNgay != null && tuNgay != "") {
+                    obj.FromDate = tuNgay;
+                }
+
+                var denNgay = $("#denNgay").val();
+                if (denNgay != null && denNgay != "") {
+                    obj.ToDate = denNgay;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: '@Url.Action("GetDocuments", "EOfficeDoc", new { area = "Modules" })',
+                    beforeSend: function() {
+                        if (isloading) {
+                            loading.showLoading();
+                        }
+                    },
+                    success: function (res) {
+                        if (res.length > 0)
+                        {
+                            var totalRow = res[0].TOTALDOC;
+                            var s = document.getElementById("soVanBan");
+                            if (s)
+                            s.innerHTML = "Tìm thấy " + totalRow + " văn bản";
+                            var html = '';
+                            var html1 = '';
+
+                            $.each(res, function (key, item) {
+                                var parts = item.NGAYBANHANH.split('/');
+
+                                // Rearrange the parts to the desired format
+                                var formattedDate = parts[1] + '/' + parts[0] + '/' + parts[2];
+
+                                html += "<tr data-toggle='modal' data-target='#exampleModal' style='cursor: pointer;' onclick=\"show_detail('" + item.ID + "')\">"
+									+ "<td style = 'width:20%'>" + item.SOKYHIEU + "</td>"
+                                    + "<td>" + formattedDate + "</td>"
+									+ "<td>" + item.TRICHYEU + "</td>"
+									+ "</tr>";
+                            });
+                            main.pagingPage(totalRow, commonConfig.isClear, function () {
+                                main.loadData(true, false);
+                            });
+
+                            $("#lstVanBanDetail").html(html);
+
+                            var color = document.getElementById("color").value;
+                            $('.pagination li.active a').css("background", color);
+                        }
+                        else {
+                        main.pagingPage(0, commonConfig.isClear, function () {
+                            main.loadData(true, false);
+                        });
+
+                        var html = '<tr><td colspan="3" style="text-align: center">Không tìm thấy dữ liệu</td></tr>'
+
+                        $("#lstVanBanDetail").html(html);
+                    }
+                    if (isloading) {
+                        loading.hideLoading();
+                    }
+                },
+
+                });
+        },
+        pagingPage: function (totalRow, isClear, callback) {
+            var totalPage = Math.ceil(totalRow / commonConfig.pageSize);
+            if (totalPage >= 0 && commonConfig.isClear == 0) {
+                if (totalPage == 0) {
+                    totalPage = 1;
+                }
+                $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+            }
+
+            $("#paginationholder #pagination").twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 6,
+                first: "<<",
+                next: ">",
+                last: ">>",
+                prev: "<",
+                initiateStartPageClick: false,
+                onPageClick: function (event, pageNum) {
+                    commonConfig.pageNum = pageNum;
+                    commonConfig.isClear = 1;
+                    obj = {
+                        pageNum: commonConfig.pageNum,
+                        pageSize: commonConfig.pageSize,
+                    };
+                    setTimeout(callback, 200);
+                }
+            });
+        }
+        }
+
+        $(document).ready(function () {
+            var width = $("#slide_news .sp-slides-container").outerWidth();
+            $(".sp-caption-container").css({ "width": width + "px" });
+            if (showeOffice) {
+                setTimeout(function () {
+                    main.loadDocTypeList();
+                    main.loadFieldList();
+                    main.loadData(false, false);
+                }, 500)
+            };
+
+            $('.news-carousel').slick({
+                slidesToShow: 1,         // Số slide hiển thị cùng một lúc
+                slidesToScroll: 1,       // Số slide chuyển khi nhấn nút next/prev
+                autoplay: true,          // Tự động chạy
+                autoplaySpeed: Number(@slickPlaySpeed),     // Thời gian hiển thị mỗi slide (ms)
+                dots: true,              // Hiển thị chấm chấm dưới để chuyển đến từng slide
+                infinite: true,
+                speed: 500,
+            });
+
+            $('#image-slider').slick({
+                slidesToShow: 5,         // Số slide hiển thị cùng một lúc
+                slidesToScroll: 1,       // Số slide chuyển khi nhấn nút next/prev
+                autoplay: true,          // Tự động chạy
+                autoplaySpeed: 2000,     // Thời gian hiển thị mỗi slide (ms)
+                dots: true,              // Hiển thị chấm chấm dưới để chuyển đến từng slide
+                infinite: true,
+                speed: 500,
+                prevArrow: '<button type="button" class="slick-prev">Previous</button>', // Nút trước
+                nextArrow: '<button type="button" class="slick-next">Next</button>'     // Nút sau
+            });
+
+        });
+
+    </script>
+}

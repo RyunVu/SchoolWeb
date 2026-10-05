@@ -1,0 +1,163 @@
+<!-- <p-toast></p-toast> -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-content">
+        <span>Vui lòng đợi...</span>
+        <i class="fa fa-spinner fa-spin"></i> <!-- Icon loading -->
+    </div>
+</div>
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>Họ tên học sinh: <b>{{item.Hovaten}}</b></td>
+                        <td>Lớp: <b>{{item.Lop}}</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Mã Học sinh: <b>{{item.MaVnedu}}</b></td>
+                        <td>Năm học: <b>{{item.Namhoc}}</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Số CCCD: <b>{{item.SoCCCD}}</b></td>
+                        <td>Ngày sinh: <b>{{item.Ngaysinh}}</b></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td><b>Môn học</b></td>
+                            <td><b>Học kỳ I</b></td>
+                            <td><b>Học kỳ II</b></td>
+                            <td><b>Cả năm</b></td>
+                            <td><b>Thi lại</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Toán</b></td>
+                            <td>{{item.ToanHKI}}</td>
+                            <td>{{item.ToanHKII}}</td>
+                            <td>{{item.ToanCN}}</td>
+                            <td>{{item.ToanTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Vật Lý</b></td>
+                            <td>{{item.LiHKI}}</td>
+                            <td>{{item.LiHKII}}</td>
+                            <td>{{item.LiCN}}</td>
+                            <td>{{item.LiTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Hóa học</b></td>
+                            <td>{{item.HoaHKI}}</td>
+                            <td>{{item.HoaHKII}}</td>
+                            <td>{{item.HoaCN}}</td>
+                            <td>{{item.HoaTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Sinh học</b></td>
+                            <td>{{item.SinhHKI}}</td>
+                            <td>{{item.SinhHKII}}</td>
+                            <td>{{item.SinhCN}}</td>
+                            <td>{{item.SinhTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tin học</b></td>
+                            <td>{{item.TinHKI}}</td>
+                            <td>{{item.TinHKII}}</td>
+                            <td>{{item.TinCN}}</td>
+                            <td>{{item.TinTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ngữ văn</b></td>
+                            <td>{{item.VanHKI}}</td>
+                            <td>{{item.VanHKII}}</td>
+                            <td>{{item.VanCN}}</td>
+                            <td>{{item.VanTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Lịch sử</b></td>
+                            <td>{{item.SuHKI}}</td>
+                            <td>{{item.SuHKII}}</td>
+                            <td>{{item.SuCN}}</td>
+                            <td>{{item.SuTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Địa lý</b></td>
+                            <td>{{item.DiaHKI}}</td>
+                            <td>{{item.DiaHKII}}</td>
+                            <td>{{item.DiaCN}}</td>
+                            <td>{{item.DiaTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Công nghệ</b></td>
+                            <td>{{item.CongNgheHKI}}</td>
+                            <td>{{item.CongNgheHKII}}</td>
+                            <td>{{item.CongNgheCN}}</td>
+                            <td>{{item.CongNgheTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>GDKTPL</b></td>
+                            <td>{{item.GDKTPLHKI}}</td>
+                            <td>{{item.GDKTPLHKII}}</td>
+                            <td>{{item.GDKTPLCN}}</td>
+                            <td>{{item.GDKTPLTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>HDTN&amp;HN</b></td>
+                            <td>{{item.HDTNHKI}}</td>
+                            <td>{{item.HDTNHKII}}</td>
+                            <td>{{item.HDTNCN}}</td>
+                            <td>{{item.HDTNTL}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Kết quả học tập</b></td>
+                            <td>{{item.KQHTHKI}}</td>
+                            <td>{{item.KQHTHKII}}</td>
+                            <td>{{item.KQHTCN}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Kết quả rèn luyện</b></td>
+                            <td>{{item.KQRLHKI}}</td>
+                            <td>{{item.KQRLHKII}}</td>
+                            <td>{{item.KQRLCN}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Số buổi vắng</b></td>
+                            <td>{{item.VangHKI}}</td>
+                            <td>{{item.VangHKII}}</td>
+                            <td>{{item.VangCN}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Điểm TB cả năm</b></td>
+                            <td colspan="4"><b>{{item.DTBCN}}</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>Danh hiệu</b></td>
+                            <td colspan="4"><b>{{item.DANHHIEU}}</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>Lên lớp</b></td>
+                            <td colspan="4"><b>{{item.LENLOP}}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()"><i class="fa fa-file" aria-hidden="true"></i> Xuất file</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Đóng</button>
+    </div>
+</div>

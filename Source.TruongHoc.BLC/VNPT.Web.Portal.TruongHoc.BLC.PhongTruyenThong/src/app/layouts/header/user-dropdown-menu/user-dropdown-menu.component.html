@@ -1,0 +1,43 @@
+<li class="nav-item dropdown user-menu">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" (click)="toggleDropdownMenu()">
+        <!-- <img
+      [src]="user.AvatarUrl"
+      class="user-image img-circle elevation-2"
+      alt="User Image"
+    /> -->
+        Tài khoản
+    </a>
+    <ul #dropdownMenu class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <!-- User image -->
+        <li class="user-header bg-primary">
+            <img [src]="user.AvatarUrl" class="img-circle elevation-2" alt="User Image" />
+
+            <p>
+                {{user.LastName}} {{user.FirstName}}
+                <small>Quyền: {{user.roleName}} - Đơn vị: {{user.unitName}}</small>
+                <small>Email: {{user.Email}}</small>
+            </p>
+        </li>
+        <!-- Menu Body -->
+        <!-- <li class="user-body">
+      <div class="row">
+        <div class="col-4 text-center">
+          <a href="#">Followers</a>
+        </div>
+        <div class="col-4 text-center">
+          <a href="#">Sales</a>
+        </div>
+        <div class="col-4 text-center">
+          <a href="#">Friends</a>
+        </div>
+      </div>
+    </li> -->
+        <!-- Menu Footer-->
+        <li class="user-footer">
+            <a (click)="changePassword()" class="btn btn-default btn-flat">
+                Đổi mật khẩu
+            </a>
+            <a (click)="logout()" class="btn btn-default btn-flat float-right">Đăng Xuất</a>
+        </li>
+    </ul>
+</li>

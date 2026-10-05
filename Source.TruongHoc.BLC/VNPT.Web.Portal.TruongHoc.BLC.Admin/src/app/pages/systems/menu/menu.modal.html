@@ -1,0 +1,162 @@
+<!-- <div class="card card-primary"> -->
+<!-- <div class="card-body"> -->
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
+            <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+                filterBy="Name" placeholder="Chọn đơn vị" appendTo="body" (onChange)="loadmenus()">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="menuTypes">Loại Menu <span class="text-danger">(*)</span></label>
+            <div>
+                <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type"
+                    [options]="menuTypes" appendTo="body" (onChange)="loadmenus()">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="DayOfBirth">Menu cha</label>
+            <div>
+                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"  
+                    appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2" *ngIf="type == 'PORTAL'">
+        <div class="form-group" >
+            <label for="DayOfBirth">Vị trí menu</label>
+            <div>
+                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuPosition" [options]="menuPositions"(onChange)="changeLoaiMenu()"
+                    appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" *ngIf="type == 'PORTAL' && (item.MenuPosition == 2 || item.MenuPosition == 3)">
+        <div class="form-group" >
+            <label for="DayOfBirth">Loại menu</label>
+            <div>
+                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuType" [options]="menuDocTypes"
+                    appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="OrderNo">Thứ tự <span class="text-danger">(*)</span></label>
+            <input type="number" class="form-control" [(ngModel)]="item.OrderNo">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Title">Tiêu đề <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title" (keyup)="changeTitle($event)">
+        </div>
+    </div>
+    <!-- <div class="col-md-4">
+        <div class="form-group">
+            <label for="Title">Tiêu đề tiếng anh</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title_En">
+        </div>
+    </div> -->
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Icon">Icon</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Icon">
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="RoleLevel">RoleLevel <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.RoleLevel">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Action">Action</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Action">
+            <small *ngIf="type == 'PORTAL'">VD: chi-tiet-tin-tuc, danh-sach-tin-tuc</small>
+            <small *ngIf="type == 'Web'">VD: quan-ly-tin-tuc/</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Parameter">Parameter</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Parameter">
+            <small *ngIf="type == 'PORTAL'">Loại tin tức</small>
+            <small *ngIf="type == 'Web'">dùng dấu . để chọn 1 loại tin tức. Vd: an-pham.da-phat-hanh</small>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Parameter">Hiển thị</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsShowMenu"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Parameter">Có tham số động trên Url</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsUseParameterUrl"></p-checkbox>
+
+        </div>
+    </div>
+    <div class="col-md-12"></div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Parameter">Mở ra trang mới</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsOpenBlankPage"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Parameter">Mở link khác</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsNewsImage"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Parameter">Chỉ mở hình ảnh</label>
+            <p-checkbox [binary]="true" [(ngModel)]="item.IsOpenImageOnly"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Parameter">Quyền khác</label>
+            <input type="text" class="form-control" [(ngModel)]="item.OtherRole">
+            <small>Các quyền cách nhau bằng dấu ;</small>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Parameter">Mô tả</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Description">
+        </div>
+    </div>
+</div>
+<!-- </div> -->
+
+<!-- <div class="card-footer text-right">
+        <button class="btn btn-primary" (click)="submit()">Submit</button>
+    </div> -->
+<!-- </div> -->
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>
+<!-- <p-toast [showTransitionOptions]="'1000ms'" [baseZIndex]='1001'></p-toast> -->

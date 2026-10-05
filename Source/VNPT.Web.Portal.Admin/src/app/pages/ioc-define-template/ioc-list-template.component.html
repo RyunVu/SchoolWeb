@@ -1,0 +1,152 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Danh sách biểu mẫu</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">
+                <!-- <h3 class="card-title"><b>Danh sách địa điểm bốc số</b></h3> -->
+              </div>
+              <div class="col-md-6">
+                <button *ngIf="hasPermisionAdmin" type="button" class="btn btn-info btn-sm float-right" (click)="add()">
+                  <i class="fa fa-plus"></i> Thêm mới biểu mẫu
+                </button>
+                <button *ngIf="hasPermisionAdmin" type="button" class="btn btn-info btn-sm float-right mr-2"
+                  (click)="mapUnit()">
+                  <i class="fa fa-plus"></i> Map đơn vị chủ quản - khai thác - nhập liệu
+                </button>
+                <button *ngIf="hasPermisionAdmin" type="button" class="btn btn-info btn-sm float-right mr-2"
+                  (click)="tongHop()">
+                  <i class="fa fa-plus"></i> Tổng hợp biểu mẫu
+                </button>
+                <button type="button" class="btn btn-info btn-sm float-right mr-2" (click)="printTemplate()">
+                  <i class="fa fa-print"></i> In biểu mẫu
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <!-- <th class="text-center" style="width: 5%">{{'general.stt'}}</th> -->
+                  <th class="text-center" style="width:5%">STT</th>
+                  <th class="text-center" style="width:10%">Mã biểu mẫu</th>
+                  <th class="text-center" style="width:40%" (click)="sortName()">Tên biểu mẫu <i class="fa"
+                      [ngClass]="{'fa-arrow-down': isToggle == true,'fa-arrow-up': isToggle == false }"
+                      aria-hidden="true"></i></th>
+                  <th class="text-center" style="width:20%">Đơn vị chủ quản</th>
+                  <!-- <th class="text-center" style="width:5%">Loại</th> -->
+                  <th class="text-center" style="width:10%">Loại</th>
+                  <th class="text-center" style="width:15%">Thao tác</th>
+                </tr>
+                <tr>
+                  <th colspan="2">
+                    <p-dropdown *ngIf="hasPermisionInput" id="organization_id" [options]="organizations"
+                      optionLabel="Name" dataKey="Id" [style]="{'width':'100%'}"
+                      (onChange)="onChangeOrganization($event)" [(ngModel)]="defaultOrganization">
+                    </p-dropdown>
+                  </th>
+                  <th colspan="4" class="find-item">
+                    <input class="form-control" placeholder="Từ khóa" (keyup)="getSearch($event.keyCode)"
+                      [(ngModel)]="Keyword" />
+                    <button class="btn btn-info" (click)="search()">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="dataTable">
+                <tr *ngFor="let item of listItemSearch;let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.Code }}</td>
+                  <td>{{ item.Name }}</td>
+                  <td>{{ item.OrganizationName }}</td>
+                  <td><span *ngIf="item.Tag && item.Tag == '1'">Tự động</span></td>
+                  <!-- <td *ngIf="item.IsNotSingle">Tổng hợp</td>
+                          <td *ngIf="!item.IsNotSingle">Đơn</td> -->
+                  <td class="text-right">
+                    <button *ngIf="hasPermisionInput || item.Status != 0 && item.IsDisplay"
+                      class="btn btn-link h-pointer" (click)="input(item)"><i class="fa fa-file fa-2x"
+                        title="Nhập dữ liệu"></i></button>
+                    <!-- 
+                              <button *ngIf="hasPermisionInput || item.Status != 0 && item.IsDisplay" class="btn btn-link h-pointer"
+                              (click)="inputv2(item)"><i class="fa fa-file fa-2x" title="Nhập dữ liệu v2"></i></button> -->
+
+                    <button *ngIf="item.IsNotSingle && hasPermisionAdmin" class="btn btn-link h-pointer"
+                      (click)="editTongHop(item)" title="Sửa biểu mẫu tổng hợp"><i
+                        class="fa fa-pencil-ruler fa-2x"></i></button>
+                    <button *ngIf="!item.IsNotSingle && hasPermisionAdmin" class="btn btn-link h-pointer"
+                      (click)="editMau(item)" title="Sửa biểu mẫu"> <i class="fa fa-pencil-alt fa-2x"></i></button>
+                    <button *ngIf="hasPermision && hasPermisionAdmin" class="btn btn-link h-pointer"
+                      (click)="editDonVi(item)" title="Đơn vị khai thác"><i
+                        class="fa fa-align-justify fa-2x"></i></button>
+                    <!-- <button *ngIf="hasPermisionAdmin" class="btn btn-link h-pointer" (click)="themChiTieu(item)"
+                      title="Chỉ tiêu"><i class="fa fa-external-link-alt fa-2x"></i></button> -->
+                    <button *ngIf="hasPermisionAdmin" class="btn btn-link h-pointer" (click)="delete(item)"><i
+                        class="fa fa-trash red-color fa-2x" title="Xóa biểu mẫu"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">
+
+                    <ul class="pagination">
+                      <li class="disabled">
+                        <a>Xem</a>
+                      </li>
+                      <li [ngClass]="5 == currentPageSize ? 'active' : ''">
+                        <a (click)="changePageSize(5)">5</a>
+                      </li>
+                      <li [ngClass]="10 == currentPageSize ? 'active' : ''">
+                        <a (click)="changePageSize(10)">10</a>
+                      </li>
+                      <li [ngClass]="15 == currentPageSize ? 'active' : ''">
+                        <a (click)="changePageSize(15)">15</a>
+                      </li>
+                      <li [ngClass]="20 == currentPageSize ? 'active' : ''">
+                        <a (click)="changePageSize(20)">20</a>
+                      </li>
+                      <li [ngClass]="25 == currentPageSize ? 'active' : ''">
+                        <a (click)="changePageSize(25)">25</a>
+                      </li>
+                      <li class="disabled">
+                        <a>trong số {{total}} records</a>
+                      </li>
+                    </ul>
+                  </td>
+                  <td colspan="2">
+                    <ul class="pagination pull-right">
+
+                      <li *ngFor="let page of listDisplayPage"
+                        [ngClass]="page.pageNumber == currentPageIndex ? 'active' : ''">
+                        <a (click)="changePage(page.pageNumber)">{{page.pageDisplay}}</a>
+                      </li>
+                      <li class="w-80" *ngIf="listDisplayPage.length > 0">
+                        <input type="text" class="form-control" placeholder="Page No." (keyup)="turnToPage($event)" />
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

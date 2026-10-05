@@ -1,0 +1,50 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+
+@model List<SystemParameter>
+<div class="inline-block">
+	<ul class="sidebar-link">
+		@foreach (var item in Model)
+		{
+			<li>
+				@if (item.Value3 == 1)
+				{
+					<a target="_blank" href="@Url.Site("sgdprocedurelist", parameter: new { param = item.Value6 })">
+						<img src="@Url.Image(item.Value2)" />
+					</a>
+				}
+				else if (item.Value3 == 2)
+				{
+					<a target="_blank" href="@Url.Site("sgdnews", parameter: new { param = item.Value6 })">
+						<img src="@Url.Image(item.Value2)" />
+					</a>
+				}
+				else if (item.Value3 == 3)
+				{
+					<a target="_blank" href="@Url.Site("sgditemlist", parameter: new { param = item.Value6 })">
+						<img src="@Url.Image(item.Value2)" />
+					</a>
+                }
+                else if (item.Value3 == 4)
+                {
+                    <a href="@Url.Site(item.Value6)">
+                        <img src="@Url.Image(item.Value2)" />
+                    </a>
+                }
+                else if (item.Value6.CheckUrl())
+                {
+					<a target="_blank" href="@Html.Raw(item.Value6)">
+						<img src="@Url.Image(item.Value2)" />
+					</a>
+				}
+				else
+				{
+					<a target="_blank" href="@Url.Site("danh-sach-tin-tuc", parameter: new { param = item.Value6 })">
+						<img src="@Url.Image(item.Value2)" />
+					</a>
+				}
+
+			</li>
+		}
+	</ul>
+</div>

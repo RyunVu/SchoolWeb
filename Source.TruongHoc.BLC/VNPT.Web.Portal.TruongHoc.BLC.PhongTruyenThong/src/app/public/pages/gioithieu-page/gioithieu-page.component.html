@@ -1,0 +1,673 @@
+<div class="form-content">
+  <div class="brecrum">
+    <h2 class="text-white">{{subtitle}}</h2>
+  </div>
+</div>
+
+<div class="body-content">
+
+  <div class="container" *ngIf="type == 1">
+    <div id="gioithieu" class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 text-left">
+            <div class="info-title">Phòng truyền thông - UBKT tỉnh lâm đồng</div>
+            <div class="info-des">
+              <p>Ở Nam Tây Nguyên, ngày 18/10/1977 Ban Bí thư Trung ương Đảng đã ban hành Nghị quyết số 283-NQNS/TW do
+                đồng
+                chí Nguyễn Duy Trinh ký chuẩn y danh sách Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng khóa I. Cùng với cả nước tiến
+                hành công cuộc đổi mới, 46 năm qua, Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng đã không ngừng phát triển, lớn mạnh
+                cùng Đảng bộ tỉnh, đóng góp quan trọng, tích cực vào sự nghiệp xây dựng và bảo vệ Tổ quốc, để lại những
+                dấu
+                ấn thành tựu, giá trị truyền thống tốt đẹp mà các thế hệ cán bộ, công chức, người lao động đã dày công
+                xây
+                dựng, vun đắp và trao truyền qua nhiều thế hệ....</p>
+            </div>
+
+            <a routerLink="/public/chitiet-baiviet" [queryParams]="{baiviet:0}" class="c-xemthem"><span>Xem thêm</span>
+              <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+
+          </div>
+          <div class="col-sm-6 text-right"><img width="80%" src="assets/template/images/info-img.png"></div>
+        </div>
+
+        <div class="content_baiviet text-center">
+
+          <img src="assets/template/images/ngaythanhlap.png" />
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="container" *ngIf="type == 3">
+
+    <div class="content-title text-center">
+      <div class="c-title">Nhiệm kỳ</div>
+    </div>
+
+    <div class="nhiemky_scroll">
+      <div class="dsnhiemky">
+
+        <div class="nhiemky_item nk_left" (click)="nhiemKyOpen()">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ XI </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(2021 - 2025)</span>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="nhiemky_item nk_right">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ X</span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(2015 - 2020)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_left">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ IX</span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(2010 - 2015)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_right">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ VIII</span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(2005 - 2010)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_left">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ VII</span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(2001 - 2005)</span>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="nhiemky_item nk_right">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ VI </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1996 - 2000)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_left">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ V </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1991 - 1996)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_right">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ IV </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1986 - 1990)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_left">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ III </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1983 - 1985)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_right">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ II </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1979 - 1983)</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="nhiemky_item nk_left">
+          <div class="nk_content">
+
+            <img src="assets/template/images/nhiemky.png" />
+            <div class="nhiemky_right">
+              <span class="nhiemky_title">Nhiệm kỳ I </span>
+              <div class="is-divider"></div>
+              <span class="nhiemky_info">(1977 - 1979)</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container" *ngIf="type == 2 || type == 4">
+
+    <div class="content-title text-center">
+      <div class="c-title">trưởng ban chủ nhiệm uỷ ban kiểm tra tỉnh uỷ qua các thời kỳ</div>
+    </div>
+
+    <div class="lstperson row col-sm-12">
+      <div class="col-sm-6">
+
+        <div class="person_item" (click)="showPerson()">
+          <div class="person_name">Mai Văn Ngọc</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Ngày vào Đảng: 6/6/1989</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container" *ngIf="type == 5">
+
+    <div class="content-title text-center">
+      <div class="c-title">Chủ nhiệm</div>
+    </div>
+
+    <div class="lstperson col-sm-6 offset-sm-3">
+      <div class="person_item" (click)="showPerson()">
+        <div class="person_name">Đồng chí Đặng Đức Hiệp</div>
+
+        <div class="person_info">
+
+          <div class="person_img">
+            <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+          </div>
+
+          <div class="person_content">
+            <p>Ngày sinh: 1/1/1967</p>
+            <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+            <p>
+              Chức vụ:
+              <br />
+              - Ủy viên Trung ương Đảng: Khóa XIII
+              - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Phó Chủ nhiệm</div>
+    </div>
+
+    <div></div>
+
+    <div class="lstperson row col-sm-12">
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showPerson()">
+          <div class="person_name">Đồng chí Đặng Thế Hải - Tỉnh ủy viên</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showPerson()">
+          <div class="person_name">Đồng chí Đặng Thế Hải - Tỉnh ủy viên</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="content-title text-center">
+      <div class="c-title">Ủy viên Chuyên trách</div>
+    </div>
+
+    <div class="lstperson row col-sm-12">
+      <div class="col-sm-6">
+
+        <div class="person_item" (click)="showPerson()">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <div class="person_item">
+          <div class="person_name">TRẦN ĐỨC QUẬN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="https://cdnimage.daihoidang.vn/t200x250/Media/Graphic/Profile/2021/02/03/tran-duc-quan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 1/1/1967</p>
+              <p>Ngày vào Đảng: 6/6/1989</p>
+              <p>Trình độ chuyên môn: Thạc sĩ Luật</p>
+              <p>
+                Chức vụ:
+                <br />
+                - Ủy viên Trung ương Đảng: Khóa XIII
+                - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container" *ngIf="type == 10">
+
+    <div class="content-title text-center">
+      <div class="c-title">giới thiệu phòng truyền thống</div>
+    </div>
+
+    <div class="content_baiviet">
+
+      <p> Sau khi Cách mạng tháng Tám thành công, Đảng và Nhà nước ta đã bắt tay ngay vào giải quyết những khó khăn cấp
+        bách
+        của đời sống nhân dân, tăng cường thực lực cách mạng trên tất cả các phương diện chính trị, quân sự, kinh tế,
+        văn
+        hóa, xã hội.... Do yêu cầu "Đảng ta hiện đương lãnh đạo cuộc kháng chiến và kiến quốc của dân tộc. Phong trào
+        mỗi
+        ngày một tiến nên công việc của Đảng mỗi ngày một phức tạp. Mỗi việc của Đảng phải thấu suốt từ trên xuống dưới,
+        chính sách của Đảng phải được thi hành đầy đủ...để xem xét chủ trương của Đảng có được thi hành và có sát, đúng
+        không, đồng thời xem xét thi hành kỷ luật trong Đảng để thu nhặt kinh nghiệm giúp Trung ương bổ khuyết cho chính
+        sách của Đảng", tại Chiến khu Việt Bắc, cơ quan chuyên trách đầu tiên của Đảng - Ban Kiểm tra Trung ương đầu
+        tiên
+        được thành lập theo Quyết nghị số 29/QN/TW, ngày 16/10/1948 của Ban Thường vụ Trung ương Đảng (khóa I) do đồng
+        chí
+        Thận, tức đồng chí Trường Chinh - Tổng Bí thư ký thành lập.</p>
+
+    </div>
+
+  </div>
+
+
+</div>

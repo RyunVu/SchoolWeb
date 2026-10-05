@@ -1,0 +1,48 @@
+<!-- <p-toast></p-toast> -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Tên<b class="red">*</b></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Name">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Mã đơn vị</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Code">
+        </div>
+    </div>
+    <!-- <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Huyện/Thành phố<b class="red">*</b></label>
+            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Phường/Xã</label>
+            <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn phường" appendTo="body" [disabled]="wards.length == 0">
+            </p-dropdown>
+        </div>
+    </div> -->
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="SortNo">Thứ tự</label>
+            <input type="number" class="form-control" [(ngModel)]="item.SortNo">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Mô tả</label>
+            <textarea class="form-control" [(ngModel)]="item.Description" rows="5" placeholder="Mô tả"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

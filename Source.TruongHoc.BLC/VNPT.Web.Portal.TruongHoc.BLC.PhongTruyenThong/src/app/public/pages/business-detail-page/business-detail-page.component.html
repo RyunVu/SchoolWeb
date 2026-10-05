@@ -1,0 +1,103 @@
+<div class="container business-detail-wrapper w-100 mt-4">
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="javascript:void(0)" (click)="back()"><i class="fa fa-2x fa-chevron-left mr-2"></i
+      ></a>
+            <h4 class="d-inline">
+                Chi tiết HKD {{ businessDetail ? '-' : '' }} {{ businessDetail?.TenNguoiNopThue }}
+            </h4>
+        </div>
+    </div>
+    <div *ngIf="loading; then loadingTemp; else detailTemp"></div>
+</div>
+
+<ng-template #loadingTemp>
+    <div class="spinner">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+</ng-template>
+
+<ng-template #detailTemp>
+    <div class="card">
+        <div class="card-body row">
+            <!-- <div class="col-12 col-md-4 mb-4 mb-md-0">
+        <img
+          class="card-img-top"
+          src="assets/Images/default-banner.jpg"
+          alt=""
+        />
+      </div> -->
+            <div class="col-12 col-md-4">
+                <p><b>Tên Chủ Hộ:</b> {{ businessDetail?.TenNguoiNopThue }}</p>
+                <p><b>Mã Số Thuế:</b> {{ businessDetail?.MaSoThue }}</p>
+                <p><b>Địa Chỉ:</b> {{ populateBusinessFullAddress(businessDetail) }}</p>
+                <p *ngIf="businessDetail?.TenTrangThaiDKTToChuc">
+                    <b>Trạng thái:</b> {{ businessDetail?.TenTrangThaiDKTToChuc }}
+                </p>
+                <p *ngIf="businessDetail?.DoanhThuBQThang">
+                    <b>Doanh thu bình quân tháng:</b> {{ businessDetail?.DoanhThuBQThang | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="businessDetail?.HThueGTGT">
+                    <b>Thuế GTGT:</b> {{ businessDetail?.HThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="businessDetail?.HThueTNCN">
+                    <b>Thuế TNCN:</b> {{ businessDetail?.HThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+            </div>
+            <div class="col-12 col-md-4">
+                <p>
+                    <b>Số Giấy Chứng Nhận:</b> {{ businessDetail?.SoGiayChungNhan }}
+                </p>
+                <p>
+                    <b>Ngày Cấp:</b> {{ businessDetail?.NgayCapGCN | date: 'dd/MM/yyyy' }}
+                </p>
+                <p>
+                    <b>Ngành nghề KD: </b> <span *ngIf="businessDetail?.LinhVucs">{{ businessDetail?.LinhVucs }}</span><span *ngIf="!businessDetail?.LinhVucs">{{ businessDetail?.NganhNghe }}</span>
+                </p>
+                <p>
+                    <b>Loại hình: </b> {{ businessDetail?.LoaiHinhNopThueText }}
+                </p>
+                <p *ngIf="businessDetail?.HThueMonBai">
+                    <b>Thuế Môn Bài:</b> {{ businessDetail?.HThueMonBai | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="businessDetail?.HThueTTDB">
+                    <b>Thuế TTDB:</b> {{ businessDetail?.HThueTTDB | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+            </div>
+        </div>
+        <div class="card-body row">
+            <div class="col-12">
+                <button (click)="direct()" class="btn btn-primary">Chỉ đường</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div [ngClass]="!origin ? 'd-none' : ''" class="col-12 col-md-4">
+            <div class="card">
+                <div #myPanel class="card-body"></div>
+            </div>
+        </div>
+        <div class="col-md-8" [ngClass]="!origin ? 'offset-2' : ''">
+            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId">
+                <ng-container *ngIf="!origin">
+                    <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="marker.iconHome">
+                        <agm-info-window [isOpen]="openMarker">
+                            <business-tiny-detail [entity]="marker.entity"></business-tiny-detail>
+                        </agm-info-window>
+                    </agm-marker>
+                </ng-container>
+                <agm-direction *ngIf="origin" [origin]="origin" [destination]="destination" [panel]="myPanel">
+                </agm-direction>
+            </agm-map>
+            <div class="btn-icon">
+                <div class="a-icon" (click)="changeMapType()">
+                    <a title="Thay đổi chế độ bản đồ" target="_blank"><img src="assets/img/{{
+                mapTypeId == 'roadmap'
+                  ? 'btnMapTypeStreet.png'
+                  : 'btnMapType.png'
+              }}" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

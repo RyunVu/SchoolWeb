@@ -1,0 +1,49 @@
+<div class="modal-wrapper">
+    <div class="card card-primary">
+        <div *ngIf="entityForm" class="card-body">
+            <form class="row" [formGroup]="entityForm">
+                <div class="form-group col-6">
+                    <label for="value">Giá trị</label>
+                    <input type="text" id="value" class="form-control" formControlName="value" placeholder="" />
+                    <validation-msg [control]="entityForm.controls.value"> </validation-msg>
+                </div>
+                <div class="col-6"></div>
+                <div class="form-group col-6">
+                    <label for="tableColumnId">Thuộc cột <span class="text-danger">(*)</span></label>
+                    <option-selector formControlName="tableColumnId" [options]="columns"></option-selector>
+                    <validation-msg [control]="entityForm.controls.tableColumnId"> </validation-msg>
+                </div>
+                <div class="form-group col-6">
+                    <label for="rowNo">Thuộc dòng <span class="text-danger">(*)</span></label>
+                    <input type="number" id="rowNo" class="form-control" formControlName="rowNo" placeholder="" />
+                    <validation-msg [control]="entityForm.controls.rowNo"> </validation-msg>
+                </div>
+                <div class="form-group col-6">
+                    <label for="rowSpan">Số dòng hợp nhất (MERGE) <span class="text-danger">(*)</span></label>
+                    <input type="number" id="rowSpan" class="form-control" formControlName="rowSpan" placeholder="" />
+                    <validation-msg [control]="entityForm.controls.rowSpan"> </validation-msg>
+                </div>
+                <div class="form-group col-6">
+                    <label for="colSpan">Thuộc cột hợp nhất (MERGE) <span class="text-danger">(*)</span></label>
+                    <input type="number" id="colSpan" class="form-control" formControlName="colSpan" placeholder="" />
+                    <validation-msg [control]="entityForm.controls.colSpan"> </validation-msg>
+                </div>
+                <div class="form-group col-6">
+                    <label for="readonly">ReadOnly</label>
+                    <br />
+                    <p-checkbox [binary]="true" formControlName="readonly"></p-checkbox>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="p-footer">
+        <div class="f-contains">
+            <button [disabled]="saving" class="btn btn-info" type="submit" (click)="save()">
+                <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                Xác nhận
+            </button>
+            <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+        </div>
+    </div>
+</div>

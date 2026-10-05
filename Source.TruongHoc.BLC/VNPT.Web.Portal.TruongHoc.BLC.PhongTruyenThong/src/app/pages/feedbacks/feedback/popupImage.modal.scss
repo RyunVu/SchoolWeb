@@ -1,0 +1,131 @@
+popupimage-modal {
+  .p-dropdown {
+    width: 100%;
+  }
+  .p-autocomplete {
+    width: 100%;
+  }
+  .p-autocomplete > ul {
+    width: 100%;
+  }
+
+  .p-calendar {
+    width: 100%;
+  }
+  .p-multiselect {
+    width: 100%;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .modal-footer {
+    position: absolute;
+    bottom: 0;
+  }
+
+  .card-primary {
+    position: relative;
+  }
+  .p-footer {
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    // bottom: -70px;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #e9ecef;
+    background: #ffffff;
+    color: #212529;
+    padding: 1rem;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    .f-contains {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      justify-content: flex-end;
+      button {
+        margin-left: 15px;
+      }
+    }
+  }
+  .bg-pro {
+    background: #007bff;
+  }
+  .color-white {
+    color: #fff;
+  }
+  .row-custom {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .p-galleria .p-galleria-thumbnail-container {
+    background: rgba(255, 255, 255, 1);
+    padding: 0;
+    position: relative;
+  }
+  .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
+  .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
+    color: #777;
+  }
+  .p-galleria-item {
+    width: 100%;
+    height: calc(35vh + 120px);
+    a,
+    img {
+      height: 100%;
+    }
+  }
+
+  .p-grid {
+    width: calc(10vh + 20px);
+    height: calc(10vh + 20px);
+    margin: 1px;
+    overflow: hidden;
+    img {
+      height: 100%;
+    }
+  }
+
+  .p-galleria-thumbnail-wrapper {
+    align-items: center;
+    margin-top: 5px;
+  }
+  .p-galleria-thumbnail-prev {
+    position: absolute;
+    left: -32px;
+    z-index: 999;
+  }
+  .p-galleria-thumbnail-next {
+    position: absolute;
+    right: -32px;
+    z-index: 999;
+  }
+
+  @media screen and (max-width: 920px) {
+    .p-galleria .p-galleria-thumbnail-container {
+      position: unset;
+    }
+    .p-galleria .p-galleria-thumbnail-wrapper {
+      position: relative;
+    }
+    .p-galleria-thumbnail-prev {
+      left: -1px;
+    }
+    .p-galleria-thumbnail-next {
+      right: -1px;
+    }
+  }
+
+  .download {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 999;
+  }
+
+  .stop-click {
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,114 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+
+@{
+	Layout = ViewBag.Layout;
+}
+@section MetaData {
+	@Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.News, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+<div class="container">
+	<div class="row">
+		@*<div class="col-md-9 float-right" style="margin-top: 10px" id="content_pl">*@
+		<div class="col-md-9" id="content_pl">
+			@Html.Action("GetDetailNews", "PhongGDDT_NewsHome", new { area = "Modules" })
+		</div>
+		<div class="col-md-3 sidebar-mobile-ontop float-left">
+			@Html.Partial("~/Views/Shared/Portals/Layouts/PhongGDDTTheme/_SidebarMenu.cshtml")
+		</div>
+	</div>
+</div>
+
+@section scripts {
+	<script type="text/javascript">
+
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        }
+
+        $(document).ready(function () {
+
+            if (getUrlParameter("type") == 1) {
+                var maCongVan = getUrlParameter("param"), sodi = getUrlParameter("sodi");
+
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        maCongVan: maCongVan,
+                        sodi: sodi
+                    },
+                    url: "@Url.Action("GetDetailDocument2", "PhongGDDT_Sidebar", new { area = "Modules" })",
+                    success: function (res) {
+                        res = JSON.parse(res)
+                        if (res.length > 0) {
+
+                            var html = ' <div class="heading-direct">'
+                                + '<h3><i class="fa fa-file-text"></i></h3>'
+                                + '<ul class="menu-direct">'
+                                    + '<li class="item-block"><a href="" title="" class="text-uppercase">' + res[0].TRICH_YEU + '</a></li>'
+                                + '</ul>'
+                            + '</div>'
+
+                            + ' <section class="wrap-page-primary text-system-details">'
+                                +' <h1 class="no-border">Văn bản của sở Giáo Dục và Đào Tạo</h1>'
+                                +' <div class="table-text-system table-text-system-details table-responsive ">'
+                                    +' <table class="table table-bordered">'
+                                        +' <tbody>'
+                                            +' <tr>'
+                                                +' <th>Số ký hiệu</th>'
+                                                + ' <td>' + res[0].SO_HIEU + '</td>'
+                                            + ' </tr>'
+                                            + ' <tr>'
+                                                + ' <th>Loại</th>'
+                                                + ' <td>' + res[0].TEN_LOAI + '</td>'
+                                            + ' </tr>'
+                                            +' <tr>'
+                                                +' <th>Ngày duyệt</th>'
+                                                + ' <td>' + res[0].NGAY_DUYET + '</td>'
+                                            +' </tr>'
+                                            +' <tr>'
+                                                +' <th>Ngày ban hành</th>'
+                                                + ' <td>' + res[0].NGAY_BAN_HANH + '</td>'
+                                            +' </tr>'
+                                            +' <tr>'
+                                                +' <th>cơ quan ban hành</th>'
+                                                + ' <td>' + res[0].XUAT_XU + '</td>'
+                                            +' </tr>'
+                                            +' <tr>'
+                                                +' <th>người ký duyệt</th>'
+                                                + ' <td>' + res[0].BUT_PHE + '</td>'
+                                            +' </tr>'
+                                            +' <tr>'
+                                                +' <th>tệp đính kèm</th>'
+                                                + ' <td><a target="_blank" href="http://qlvb.dalat.vn/Vanban/' + res[0].CONG_VAN + '" title=""><i class="fa fa-file-pdf-o"></i> Xem</a></td>'
+                                            +' </tr>'
+                                            +' <tr>'
+                                                +' <th>trích yếu nội dung</th>'
+                                                + ' <td>' + res[0].TRICH_YEU + '</td>'
+                                            +' </tr>'
+                                        +' </tbody>'
+                                    +' </table>'
+                                +' </div>'
+                            +' </section>';
+
+                            $("#content_pl").html(html);
+                        }
+
+                    }
+                });
+
+            }
+        })
+
+	</script>
+}

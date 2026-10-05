@@ -1,0 +1,399 @@
+<div class="row">
+    <div class="col-sm-6">
+        <fieldset style="min-height: 100px;">
+            <legend><b>Thông tin HKD</b></legend>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="Name">Người nộp thuế <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="item.TenNguoiNopThue" [disabled]="!parent.checkPermission('Thông tin HKD')" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="Name">Tên bảng hiệu </label>
+                        <input type="text" class="form-control" [(ngModel)]="item.TenBangHieu" [disabled]="!parent.checkPermission('Thông tin HKD')" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="Name">Số điện thoại</label>
+                        <input type="text" class="form-control" [(ngModel)]="item.PhoneNumber" [disabled]="!parent.checkPermission('Thông tin HKD')" />
+                    </div>
+                </div>
+
+                <div class="col-sm-8" >
+                    <div class="form-group">
+                        <label for="Name" class="d-block">Ngành nghề</label>
+                        <input type="text" class="form-control" [(ngModel)]="item.Description" [disabled]="!parent.checkPermission('Thông tin HKD')" />
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="col-sm-6">
+        <fieldset style="min-height: 100px;">
+            <legend><b>Thông tin đăng ký thuế</b></legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="Name">Số giấy phép</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button [disabled]="!parent.checkPermission('Đăng ký thuế')" type="button" class="btn btn-primary" style="border-top-left-radius: 0.25rem;border-bottom-left-radius: 0.25rem;" (click)="getInfoBySo()"><i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <input [disabled]="!parent.checkPermission('Đăng ký thuế')" type="text" class="form-control" [(ngModel)]="item.SoGiayChungNhan" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="control-label">Ngày cấp </label>
+                    <div>
+                        <p-calendar [disabled]="!parent.checkPermission('Đăng ký thuế')" [(ngModel)]="item.NgayCapGCN" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="Name">Mã số thuế</label>
+                        <input type="text" class="form-control" [(ngModel)]="item.MaSoThue" [disabled]="!parent.checkPermission('Đăng ký thuế')" />
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="control-label">Ngày cấp MST</label>
+                    <div>
+                        <p-calendar [(ngModel)]="item.NgayCapMST" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body" [disabled]="!parent.checkPermission('Đăng ký thuế')"></p-calendar>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Trạng thái quản lý thuế</h3>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="item.MaSoThue">
+                    <div class="col-sm-12">
+                        <fieldset style="min-height: 100px;">
+                            <legend><b>Khoán thuế</b></legend>
+                            <div class="row">
+                                <div class="col-sm-4" *ngIf="item.MaSoThue">
+                                    <div class="form-group">
+                                        <label for="Name" class="d-block">Doanh thu</label>
+                                        <p-inputNumber [(ngModel)]="item.DoanhThuBQThang" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('Khoán Thuế')"></p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" *ngIf="item.MaSoThue">
+                                    <div class="form-group">
+                                        <label for="Name" class="d-block">Thuế GTGT </label>
+                                        <p-inputNumber [(ngModel)]="item.ThueGTGT" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('Khoán Thuế')"></p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" *ngIf="item.MaSoThue">
+                                    <div class="form-group">
+                                        <label for="Name" class="d-block">Thuế TNCN </label>
+                                        <p-inputNumber [(ngModel)]="item.ThueTNCN" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('Khoán Thuế')"></p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" *ngIf="item.MaSoThue">
+                                    <div class="form-group">
+                                        <label for="Name" class="d-block">Thuế Môn bài </label>
+                                        <p-inputNumber [(ngModel)]="item.ThueMonBai" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('Khoán Thuế')"></p-inputNumber>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" *ngIf="item.MaSoThue">
+                                    <div class="form-group">
+                                        <label for="Name" class="d-block">Thuế TTDB </label>
+                                        <p-inputNumber [(ngModel)]="item.ThueTTDB" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('Khoán Thuế')"></p-inputNumber>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3" *ngIf="parent.checkPermission('Trạng thái') && !item.DoanhThuBQThang">
+                        <fieldset style="min-height: 100px;" class="gcheckSc">
+                            <legend><b>Tình trạng Quản lý</b> <button style="color: red;" class="btn btn-xs" (click)="clearValue('TinhTrangQuanLy')"><i class="fas fa-times"></i></button></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="d-block" *ngFor="let i of tinhTrangQuanLys">
+                                        <p-radioButton name="TinhTrangQuanLy" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TinhTrangQuanLy" (onClick)="changeTinhTrangQuanLy($event)">
+                                        </p-radioButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3" *ngIf="item.MaSoThue && parent.checkPermission('Trạng thái')">
+                        <fieldset style="min-height: 100px;" class="gcheckSc">
+                            <legend><b>Loại hình</b> <button style="color: red;" class="btn btn-xs" (click)="clearValue('LoaiHinhNopThue')"><i class="fas fa-times"></i></button></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="d-block" *ngFor="let i of loaiHinhs">
+                                        <p-radioButton name="LoaiHinhNopThue" value="{{i.Id}}" label="{{i.Label}}" [(ngModel)]="item.LoaiHinhNopThue" (onClick)="changeLoaiHinh($event)"></p-radioButton>
+                                        <!-- <p-dropdown [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
+                                </p-dropdown> -->
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3" *ngIf="!item.MaSoThue && parent.checkPermission('Trạng thái')">
+                        <fieldset style="min-height: 100px;" class="gcheckSc">
+                            <legend><b>Lý do chưa có MST</b> <button style="color: red;" class="btn btn-xs" (click)="clearValue('TrangThaiChuaCoMST')"><i class="fas fa-times"></i></button></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="d-block" *ngFor="let i of lyDoChuaMSTs">
+                                        <p-radioButton name="TrangThaiChuaCoMST" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TrangThaiChuaCoMST" (onClick)="changeTrangThaiChuaCoMST($event)"></p-radioButton>
+                                        <!-- <p-dropdown [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
+                                </p-dropdown> -->
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+
+
+
+                    <div class="col-sm-3" *ngIf="item.MaSoThue && parent.checkPermission('Trạng thái') && !item.DoanhThuBQThang">
+                        <fieldset style="min-height: 100px; " class="gcheckSc ">
+                            <legend><b>Lý do chưa khoán</b> <button style="color: red; " class="btn btn-xs " (click)="clearValue( 'TrangThaiChuaKhoan') "><i class="fas fa-times "></i></button></legend>
+                            <div class="row ">
+                                <div class="col-sm-12 ">
+                                    <div class="d-block " *ngFor="let i of trangThaiChuaKhoans ">
+                                        <p-radioButton name="TrangThaiChuaKhoan " value="{{i.Id}} " label="{{i.Name}} " [(ngModel)]="item.TrangThaiChuaKhoan " (onClick)="changeTrangThaiChuaKhoan($event) ">
+                                        </p-radioButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-sm-3 " *ngIf="parent.checkPermission( 'Trạng thái') && !item.DoanhThuBQThang">
+                        <fieldset style="min-height: 100px;" class="gcheckSc">
+                            <legend><b>Dự kiến trả GPKD</b> <button style="color: red;" class="btn btn-xs" (click)="clearValue('TraGpKhongKD6Thang')"><i class="fas fa-times"></i></button></legend>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="d-block" *ngFor="let i of traGiayPhepKds">
+                                        <p-radioButton name="TraGpKhongKD6Thang" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TraGpKhongKD6Thang" (onClick)="changeTraGpKhongKD6Thang($event)">
+                                        </p-radioButton>
+                                        <!-- <p-dropdown [options]="traGiayPhepKds" [disabled]="!parent.checkPermission('TraGpKhongKD6Thang')" [(ngModel)]="item.TraGpKhongKD6Thang" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn dự kiến" appendTo="body">
+            </p-dropdown> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="col-sm-3" *ngIf="parent.checkPermission('LinhVuc')">
+        <div class="form-group">
+            <label for="Name">Lĩnh vực</label>
+            <p-multiSelect [options]="linhvucs" [(ngModel)]="item.linhvucselect" defaultLabel="Chọn lĩnh vực" optionLabel="Name" optionValue="Id" [disabled]="!parent.checkPermission('LinhVuc')"></p-multiSelect>
+        </div>
+    </div> -->
+
+<!-- <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name" class="d-block">Vốn kinh doanh </label>
+            <p-inputNumber [disabled]="!parent.checkPermission('VonKinhDoanh')" [(ngModel)]="item.VonKinhDoanh" mode="currency" currency="VND" locale="vi-VN"></p-inputNumber>
+        </div>
+    </div> -->
+
+
+
+
+
+
+
+<!-- <div class="col-sm-3" *ngIf="item.MaSoThue">
+        <div class="form-group">
+            <label for="Name">Quyết định phạt trễ</label>
+            <input type="text" class="form-control" [(ngModel)]="item.QuyetDinhPhatCapMSTTre" [disabled]="!parent.checkPermission('QuyetDinhPhatCapMSTTre')" />
+        </div>
+    </div>
+    <div class="col-sm-3" *ngIf="item.MaSoThue">
+        <div class="form-group">
+            <label for="Name">Phạt trễ </label>
+            <p-inputNumber [(ngModel)]="item.TienPhatCapMSTTre" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('TienPhatCapMSTTre')"></p-inputNumber>
+        </div>
+    </div> -->
+
+
+<!-- <div class="col-sm-3" *ngIf="parent.checkPermission('TrangThaiDKTToChucRef')">
+        <div class="form-group">
+            <label for="Name">Trạng thái </label>
+            <p-dropdown [options]="hkdStatuses" [(ngModel)]="item.TrangThaiDKTToChucRef" [disabled]="!parent.checkPermission('TrangThaiDKTToChucRef')" optionValue="value" optionLabel="label" [filter]="true" filterBy="Name" placeholder="Chọn loại trạng thái" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-sm-3" *ngIf="parent.checkPermission('LoaiHinhNopThue')">
+        <div class="form-group">
+            <label for="Name">Loại hình </label>
+            <p-dropdown [options]="loaiHinhs" [(ngModel)]="item.LoaiHinhNopThue" [disabled]="!parent.checkPermission('LoaiHinhNopThue')" optionValue="Id" optionLabel="Label" [filter]="true" filterBy="Name" placeholder="Chọn loại tình trạng" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div> -->
+
+<!-- <div class="col-sm-3" *ngIf="item.MaSoThue && item.LoaiHinhNopThue ==3">
+        <div class="form-group">
+            <label for="Name" class="d-block">Kỳ nộp thuế</label>
+            <input type="text" class="form-control" [(ngModel)]="item.KyNopThue" readonly />
+        </div>
+    </div>
+    <div class="col-sm-3" *ngIf="item.MaSoThue && item.LoaiHinhNopThue ==3">
+        <div class="form-group">
+            <label for="Name" class="d-block">Doanh thu tính thuế</label>
+            <p-inputNumber [(ngModel)]="item.DoanhThuTinhThueKeKhai" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('DoanhThuTinhThue')"></p-inputNumber>
+        </div>
+    </div>
+    <div class="col-sm-3" *ngIf="item.MaSoThue && item.LoaiHinhNopThue ==3">
+        <div class="form-group">
+            <label for="Name" class="d-block">Thuế GTGT</label>
+            <p-inputNumber [(ngModel)]="item.ThueGTGTKeKhai" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('ThueGTGT')"></p-inputNumber>
+        </div>
+    </div>
+    <div class="col-sm-3" *ngIf="item.MaSoThue && item.LoaiHinhNopThue ==3">
+        <div class="form-group">
+            <label for="Name" class="d-block">Thuế TNCN</label>
+            <p-inputNumber [(ngModel)]="item.ThueTNCNKeKhai" mode="currency" currency="VND" locale="vi-VN" [disabled]="!parent.checkPermission('ThueTNCN')"></p-inputNumber>
+        </div>
+    </div> -->
+
+
+<!-- <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name">Tỉnh </label>
+            <p-dropdown [options]="province" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Tinh')">
+            </p-dropdown>
+        </div>
+    </div> -->
+<!-- <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name">Quận/ Huyện </label>
+            <p-dropdown [options]="district" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Huyen')">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name">Phường/ Xã </label>
+            <p-dropdown [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" (onChange)="ChangeWard()" [disabled]="!parent.checkPermission('Phuong')">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name">Tên đường</label>
+            <p-dropdown [options]="streets" [(ngModel)]="item.LocationStreetId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Duong')">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label for="Name">Địa chỉ </label>
+            <input type="text" class="form-control" [(ngModel)]="diaChi" [disabled]="!parent.checkPermission('DiaChi')" />
+        </div>
+    </div> -->
+
+<!-- <div class="col-sm-3" *ngIf="parent.checkPermission('ToaDo')">
+        <div class="form-group">
+            <label for="Name">Tọa độ </label>
+            <div class="input-group">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" style="border-top-left-radius: 0.25rem;border-bottom-left-radius: 0.25rem;" (click)="getMaps()" [disabled]="!parent.checkPermission('ToaDo')">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]="item.ToaDo" [disabled]="!parent.checkPermission('ToaDo')" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3" *ngIf="parent.checkPermission('Email')">
+        <div class="form-group">
+            <label for="Name">Email</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Email" [disabled]="!parent.checkPermission('Email')" />
+        </div>
+    </div> -->
+
+<!-- <div class="col-sm-3" *ngIf="parent.checkPermission('VonKinhDoanh')">
+        <div class="form-group">
+            <label for="Name" class="d-block">Vốn kinh doanh </label>
+            <p-inputNumber [disabled]="!parent.checkPermission('VonKinhDoanh')" [(ngModel)]="item.VonKinhDoanh" mode="currency" currency="VND" locale="vi-VN"></p-inputNumber>
+        </div>
+    </div> -->
+<!-- <div class="col-sm-3">
+    <div class="form-group">
+      <label for="Name">Fax</label>
+      <input type="text" class="form-control" [(ngModel)]="item.Fax" />
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label for="Name">Họ tên chủ hộ </label>
+      <input type="text" class="form-control" [(ngModel)]="item.HoTenChuHo" />
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label for="Name">Hộ khẩu chủ hộ </label>
+      <input type="text" class="form-control" [(ngModel)]="item.HoKhauChuHo" />
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="form-group">
+      <label for="Name">Địa chỉ chủ hộ </label>
+      <input type="text" class="form-control" [(ngModel)]="item.DiaChiChuHo" />
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <label class="control-label">Ngày in </label>
+    <div>
+      <p-calendar [(ngModel)]="item.NgayIn" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+    </div>
+  </div> -->
+<!-- <div class="col-12"><hr /></div> -->
+<div class="p-footer">
+    <div class="f-contains">
+        <div style="width: 40%;">
+            <span *ngIf="!config.data.IsAdd">Cán bộ tạo: {{item.CanBoTao}} - Cán bộ chỉnh sửa lần cuối:
+                {{item.CanBoChinhSua == null || item.CanBoChinhSua == '' ? 'Không có' : item.CanBoChinhSua}}</span>
+        </div>
+        <div class="text-right" style="width: 60%;">
+            <button class="btn bg-pro color-white" type="submit" (click)="submit()">
+                Lưu thay đổi
+            </button>
+            <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+                Thoát
+            </button>
+        </div>
+
+    </div>
+</div>

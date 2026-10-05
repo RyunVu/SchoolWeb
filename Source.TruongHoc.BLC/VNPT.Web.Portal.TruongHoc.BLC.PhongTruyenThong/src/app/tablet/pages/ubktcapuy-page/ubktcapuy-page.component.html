@@ -1,0 +1,41 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="container">
+
+    <div class="content-title text-center">
+      <div class="c-title">
+        <span>CÁC PHÒNG BAN</span>
+      </div>
+    </div>
+
+    <div class="lstperson row">
+
+      <div class="col-md-4 col-sm-4 col-xs-12" *ngFor="let index of listHuyenUy">
+
+        <div class="person_item" (click)="showChiTiet(index.ShortContent)">
+          <div class="person_name">{{index.Title}}</div>
+
+          <div class="person_info_HU">
+
+            <div class="person_img_HU">
+              <img src="{{imageUrl + index.ImageUrl}}" onerror="onerror=null;src='assets/img/Noimage.jpg';" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

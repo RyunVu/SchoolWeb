@@ -1,0 +1,229 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@{
+    var code = Request.QueryString["nhiemky"] != null ? Request.QueryString["nhiemky"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    string lang = "vi";
+
+    if (cookie != null)
+    {
+        lang = cookie.Value;
+    }
+
+    var menuSite = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper());
+
+    var codename = menuSite?.Name;
+    var codesite = menuSite?.Value;
+
+    if (lang != "vi")
+    {
+        codename = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+    }
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+
+}
+
+<style>
+    .lstperson .person_item {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 15px;
+        cursor: pointer;
+        margin: 12px 5px;
+    }
+
+        .lstperson .person_item .person_name {
+            color: #fff;
+            padding: 10px 10px;
+            background: #007ade !important;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: left;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .lstperson .person_item .person_img {
+            float: left;
+            width: 30%;
+            text-align: center;
+        }
+
+            .lstperson .person_item .person_img img {
+                width: 100%;
+                height: 226px;
+                -o-object-fit: cover;
+                object-fit: cover;
+                transition: 0.5s;
+                margin-top: 10px;
+                border: 2px solid #b01116;
+                border-radius: 14px;
+                box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.09);
+            }
+
+        .lstperson .person_item .person_content {
+            float: right;
+            width: 70%;
+            padding: 10px;
+            padding-left: 15px;
+            color: #000
+        }
+
+            .lstperson .person_item .person_content p {
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+
+        .lstperson .person_item:hover,
+        .lstperson .person_item:active {
+            background-image: linear-gradient(-70deg, #f8b1b4, #fff 70%, #fff);
+            transition: 0.2s;
+        }
+
+
+    @@media (max-width: 575px) {
+        .lstperson .person_item .person_img, .lstperson .person_item .person_content {
+            width: 100%;
+            clear: both;
+            padding: 10px;
+        }
+            .lstperson .person_item .person_img img {
+                height: 350px
+            }
+    }
+</style>
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+
+<div class="body-content">
+    <div class="container" id="dsCanBo">
+
+    </div>
+</div>
+
+
+<script id="dsCanBoHtml" type="x-tmpl-mustache">
+    {{#dataList}}
+        <div class="content-title text-center">
+            <div class="c-title">{{Name}}</div>
+        </div>
+
+        <div class="lstperson row col-sm-12">
+            {{#CBCVNKlst}}
+            <div class="col-sm-6 {{offsetClass}}">
+                <div class="person_item">
+                    <a href="{{UrlCanBo}}">
+                        <div class="person_info">
+                            <div class="person_img">
+                                <img src="{{UrlAvtNew}}" />
+                            </div>
+                            <div class="person_content hidden-sm-down">
+                                <div class="person_name">{{HoTen}}</div>
+                                <p>Ngày sinh: {{NgaySinhString}}</p>
+                                <p>Quê quán: {{QueQuan}}</p>
+                                <p>Chỗ ở hiện nay: {{NoiThuongTru}}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {{/CBCVNKlst}}
+        </div>
+    {{/dataList}}
+
+</script>
+
+@section scripts {
+    <script type="text/javascript">
+
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+        var urlTemplate = "@Url.Site("phong-truyen-thong/chi-tiet-can-bo", parameter: new { param = "__value__" })";
+        const template = $("#itemNhiemKy").html();
+
+
+        var main = {
+            loadCanBos: function () {
+                var obj = {
+                    Id: "@code",
+                    UnitCode: "@information.PortalCode"
+                }
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    url: '/api/NhiemKy/GetNhiemKy',
+                    contentType: "application/json",
+                    dataType: "json",
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+
+                        console.log(res)
+                        const regExp = /^(http|https|ftp):\/\//i;
+
+                        const processedData = res.Result.CVNKlst.map(item => {
+                            return {
+                                ...item,
+                                CBCVNKlst: item.CBCVNKlst.map(cbcv => {
+
+                                    let imageUrl = cbcv.UrlAvt1 && regExp.test(cbcv.UrlAvt1) ? cbcv.UrlAvt1 : cbcv.UrlAvt1;
+
+                                    if (cbcv.UrlAvt1 && cbcv.UrlAvt1 != 'null') {
+                                        imageUrl = domainMedia + imageUrl;
+                                    } else {
+                                        imageUrl = "/Images/NoImage400x266.png";
+                                    }
+
+                                    return {
+                                        ...cbcv,
+                                        NgaySinhString: cbcv.NgaySinh
+                                            ? new Date(cbcv.NgaySinh).toLocaleDateString("vi-VN")
+                                            : "N/A",
+                                        UrlCanBo: urlTemplate.replace("__value__", cbcv.TieuSuId),
+                                        offsetClass: item.CBCVNKlst.length == 1 ? "col-sm-offset-3" : "",
+                                        UrlAvtNew: imageUrl
+                                    }
+
+                                })
+                            }
+                        });
+
+                        const template = $("#dsCanBoHtml").html();
+
+                        const rendered = Mustache.render(template, { dataList: processedData });
+
+                        $("#dsCanBo").html(rendered);
+                    },
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadCanBos();
+        })
+
+    </script>
+}

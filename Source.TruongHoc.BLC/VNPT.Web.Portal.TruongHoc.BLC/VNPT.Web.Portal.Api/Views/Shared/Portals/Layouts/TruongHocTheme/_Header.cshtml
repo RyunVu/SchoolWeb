@@ -1,0 +1,94 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var linkBanner = SystemParameterDto.GetParameters("BANNER_HEADER", infomation.PortalCode.ToUpper()).ToList();
+}
+
+<nav id="menu-mobile" class="mm-menu mm-offcanvas mm-pagedim-black">
+    <ul>
+        <li class="active"><a href="/" title="">Trang chủ</a></li>
+        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+    </ul>
+</nav>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="slider_banner" class="owl-carousel">
+                    @foreach (var link in linkBanner)
+                    {
+                        <div class="item">
+                            <img src="@Url.Image(link.Value2)" />
+                        </div>
+                    }
+                    @*<div class="item">
+                        <img src="https://i.upanh.org/2024/03/01/banner1-3982e81f6290f55ad.jpeg" />
+                    </div>*@
+                    
+                </div>
+
+                <div class="top-header">
+                    <div class="logo">
+                        <a class="img-logo" href="/" title="">
+                            <img src="@Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", infomation.PortalCode.ToUpper()).Value2)">
+                        </a>
+                    </div>
+                    <a href="#menu-mobile" class="icon-reponsive">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                </div>
+                <nav class="menu" id="menu-pc">
+                    <ul id="menu-list">
+                        <li class="active isHomePc"><a class=" menu-a" href="/" title=""><i class="fa fa-home"></i></a></li>
+                        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+
+                        <li id="more-menu" class="li-submenu" style="display: none; float: right; padding-right: 8px; ">
+                            <a href="#" id="more-btn"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+                            <ul class="sub-menu" id="more-dropdown" style="min-height: 300px;"></ul>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="sub_menu" style="position: relative;">
+                    <ul>
+                        <li><i class="timeWeb"><i class="fa fa-clock-o"></i><span class="time_count" id="timeCurrent">Thứ sáu, 11/09/2020, 16:16:24</span></i></li>
+                        @if (infomation.PortalCode.ToUpper() == "TTGDTXLD")
+                        {
+                            <li class="marquee_item">
+                                <span>
+                                    @Html.Action("GetNewsNoti", "Sidebar", new { area = "Modules", Code = "thong-bao.0fa0e413-4b88-4f1b-ba26-bf824863f994" })
+                                </span>
+                            </li>
+                        }
+
+                        @*<li style="float: right; padding: 5px;">
+            <a id="changeEn" title="Tiếng Anh" style="cursor: pointer;">
+                <img class="wpml-ls-flag" src="~/Images/en.png" alt="Tiếng Anh">
+            </a>
+        </li>
+
+        <li style="float: right; padding: 5px;">
+            <a id="changeVn" title="Tiếng Việt" style="cursor: pointer;">
+                <img class="wpml-ls-flag" src="~/Images/vi.png" alt="Tiếng Việt">
+            </a>
+        </li>*@
+                        <li class="search-container" style="float: right!important">
+                            <div class="" id="form_global_search">
+                                <div class="input-container form-group fg-right">
+                                    <input value="" id="keyword" class="input-field form-control" type="text" placeholder="Tìm kiếm" name="keyword" style="">
+                                    <i id="searchBtn" class="fa fa-search icon"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

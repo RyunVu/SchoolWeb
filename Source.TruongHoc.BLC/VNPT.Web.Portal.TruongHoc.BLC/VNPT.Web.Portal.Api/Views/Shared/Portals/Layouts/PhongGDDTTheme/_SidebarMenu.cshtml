@@ -1,0 +1,209 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var menus = MenuDal.MenuDoc(infomation);
+    // var linkWebsite = SystemParameterDto.GetParameters("LINK_WEBSITE", infomation.PortalCode.ToUpper()).OrderBy(x => x.Value).ToList();
+    //  var linkVb = SystemParameterDto.GetParameters("LINK_VANBAN", infomation.PortalCode.ToUpper()).ToList();
+}
+
+<div class="sidebar" id="lstLinkBotton">
+
+    <div class="inline-block">
+        <div class="site_block_title">
+            <h3>
+                <a href="#" class="titlepgddt">
+                    <img class="iconp" src="~/Images/pgddt/link.png" />
+                    Các website trực thuộc
+                </a>
+            </h3>
+        </div>
+
+        @Html.Action("WebsiteTrucThuoc", "PhongGDDT_Sidebar", new { area = "Modules", Code = "thong-bao.0f60793f-d8ca-4638-bc06-22b5f9ba560f" })
+    </div>
+
+    @foreach (var systemMenu in menus)
+    {
+        if (systemMenu.MenuType == 1)
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left statis-news">
+                        @Html.Action("GetNews", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 2)
+        {
+            //Tin tức chạy
+            <div class="inline-block">
+                <div class="">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left scrolling-news" style="overflow: hidden">
+                        @Html.Action("ScrollingNews", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 3)
+        {
+            @Html.Action("LinkSidebar", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+        }
+        else if (systemMenu.MenuType == 4)
+        {
+            @Html.Action("LinkSidebar", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+        }
+
+        else if (systemMenu.MenuType == 5)
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate("Liên kết website")
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left">
+                        @*@foreach (var link in linkWebsite)
+                            {
+                                <li>
+                                    <a target="_blank" href="@link.Value2"><i class="fa fa-caret-right"></i> @link.Value4</a>
+                                </li>
+                            }*@
+
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 6)
+        {
+            <div class="inline-block">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="#" class="titlepgddt">
+                            <img class="iconp" src="~/Images/pgddt/image.png" />
+                            @SystemParameterDto.Translate(systemMenu.Title)
+                        </a>
+                    </h3>
+                </div>
+
+                @Html.Action("NewsHinh1Sidebar", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </div>
+        }
+        else if (systemMenu.MenuType == 8)
+        {
+            <div class="inline-block">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="#" class="titlepgddt">
+                            <img class="iconp" src="~/Images/pgddt/video.png" />
+                            @SystemParameterDto.Translate(systemMenu.Title)
+                        </a>
+                    </h3>
+                </div>
+
+                @Html.Action("Video1Sidebar", "PhongGDDT_Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </div>
+        }
+    }
+
+    <div class="inline-block">
+        <div class="leftmenu">
+            <div class="site_block_title">
+                <h3>
+                    <a>
+                        <i class="fa fa-list"></i>
+                        @SystemParameterDto.Translate("Thống kê truy cập")
+                    </a>
+                </h3>
+            </div>
+            <div class="statistic clearfix" style="/**/">
+                <div class="content" style="padding: 10px; border: 1px solid #dfdfdf; font-weight:bold ">
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Hôm nay</span><b id="homnay">3</b></p>
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Tháng này</span><b id="thangnay">11</b></p>
+                    <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Năm này</span><b id="namnay">156</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Tin tức mới nhất")
+                        </a>
+                    </h3>
+                </div>
+                <ul class="nav-left" style="overflow: hidden">
+                    @Html.Action("ScrollingNews", "PhongGDDT_Sidebar", new { area = "Modules" })
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Liên kết website")
+                        </a>
+                    </h3>
+                </div>
+                <ul class="nav-left">
+                    @foreach (var link in linkWebsite)
+                    {
+                        <li>
+                            <a target="_blank" href="@link.Value2"><i class="fa fa-caret-right"></i> @link.Value4</a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="inline-block">
+            <div class="leftmenu">
+                <div class="site_block_title">
+                    <h3>
+                        <a>
+                            <i class="fa fa-list"></i>
+                            @SystemParameterDto.Translate("Thống kê truy cập")
+                        </a>
+                    </h3>
+                </div>
+                <div class="statistic clearfix" style="/**/">
+                    <div class="content" style="padding: 10px; border: 1px solid #dfdfdf; font-weight:bold ">
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Hôm nay</span><b id="homnay">3</b></p>
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Tháng này</span><b id="thangnay">11</b></p>
+                        <p style="display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; display: -webkit-flex; -webkit-align-items: center; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; margin: 0; line-height: 30px;"><span>Năm này</span><b id="namnay">156</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</div>

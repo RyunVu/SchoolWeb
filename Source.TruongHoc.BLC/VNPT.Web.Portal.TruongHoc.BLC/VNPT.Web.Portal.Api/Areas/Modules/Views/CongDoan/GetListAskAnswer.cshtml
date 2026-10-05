@@ -1,0 +1,57 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Models
+@using PagedList.Mvc;
+
+@model  PagedList.IPagedList<SysPortalReviewModel>
+
+<div id="detailQA" class="container mfp-with-anim mfp-hide">
+</div>
+<section class="wrap-page-primary">
+	@{
+		foreach (var placeReview in Model)
+		{
+			<div class="list-QA">
+				<div class="block-QA">
+					<div class="box-QA-question item-QA">
+						<i class="fa fa-user"></i>
+						<div class="content-QA">
+							<span class="user-QA">Được hỏi bởi <a> @placeReview.Name</a> - @placeReview.CreateDate.Value.ToShortDateString()</span>
+							<a class="name-QA">Chủ đề: @placeReview.Subject</a>
+							<span class="desc-QA">Câu hỏi: @placeReview.Content </span>
+						</div>
+					</div>
+					@if (placeReview.Reviews.Count() > 0)
+					{
+						foreach (var reply in placeReview.Reviews.Where(a => a.Status == StatusEnum.Used).OrderByDescending(a => a.CreateDate))
+						{
+							<div class="box-QA-answer item-QA">
+								<i class="fa fa-user"></i>
+								<div class="content-q">
+									<span class="user-QA">Trả lời bởi <a> @reply.Name</a> - @reply.CreateDate.ToShortDateString()</span>
+									<span class="desc-QA desc-QA-more">Câu trả lời: @Html.Raw(reply.Content) </span>
+									<a class="item-detail" data-id="@reply.Id">Xem chi tiết >> </a>
+								</div>
+							</div>
+						}
+					}
+				</div>
+			</div>
+		}
+	}
+	@if (Model.Any())
+	{
+		<div class="pagination-primary">
+			@(Html.PagedListPager(Model, page => Url.Site(
+                    "tiep-nhan-phan-anh",
+                    parameter: new { page, pageSize = ViewBag.CurrentPageSize }).ToString(),
+                    PagedListRenderOptions.ClassicPlusFirstAndLast
+            ))
+		</div>
+	}
+
+</section>
+
+
+

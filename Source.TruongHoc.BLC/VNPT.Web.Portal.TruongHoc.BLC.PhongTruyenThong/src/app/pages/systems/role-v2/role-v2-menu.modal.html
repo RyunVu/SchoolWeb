@@ -1,0 +1,156 @@
+<div class="card card-primary" (scroll)="onScroll($event)">
+    <div class="c-fixed-top">
+        <div class="fw">
+            <div class="border-all">
+                <div class="ccol-35">
+                    Tiêu đề
+                </div>
+                <div class="ccol-10">
+                    All
+                </div>
+                <div class="ccol-10">
+                    View
+                </div>
+                <div class="ccol-10">
+                    Add
+                </div>
+                <div class="ccol-10">
+                    Edit
+                </div>
+                <div class="ccol-10">
+                    Delete
+                </div>
+                <div class="ccol-15">
+                    Thao tác
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="fw fw-2">
+            <div class="input-group">
+                <input type="text" [(ngModel)]="keyword" class="form-control" (keyup)="onKeyUp($event)">
+                <div class="input-group-append">
+                    <span class="input-group-text" (click)="search()"><i class="fas fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="c-fixed-top-behind">
+
+    </div>
+    <div class="card-body">
+        <p-treeTable [value]="treeNodes" [loading]="loading">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Tiêu đề</th>
+                    <th width="10%">All</th>
+                    <th width="10%">View</th>
+                    <th width="10%">Add</th>
+                    <th width="10%">Edit</th>
+                    <th width="10%">Delete</th>
+                    <th width="15%">Thao tác</th>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div class="input-group mb-3">
+                            <input type="text" [(ngModel)]="keyword" class="form-control" (keyup)="onKeyUp($event)">
+                            <div class="input-group-append">
+                                <span class="input-group-text" (click)="search()"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr>
+                    <td>
+                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                        {{rowData.Title}}
+                    </td>
+                    <td>
+                        <p-checkbox [binary]="true" (onChange)="saveAll(rowData,$event)">
+                        </p-checkbox>
+                    </td>
+                    <td>
+                        <p-checkbox [(ngModel)]="rowData.Allow" [binary]="true" (onChange)="save('Allow',rowData)">
+                        </p-checkbox>
+                    </td>
+                    <td>
+                        <p-checkbox [(ngModel)]="rowData.Add" [binary]="true" (onChange)="save('Add',rowData)">
+                        </p-checkbox>
+                    </td>
+                    <td>
+                        <p-checkbox [(ngModel)]="rowData.Edit" [binary]="true" (onChange)="save('Edit',rowData)">
+                        </p-checkbox>
+                    </td>
+                    <td>
+                        <p-checkbox [(ngModel)]="rowData.Delete" [binary]="true" (onChange)="save('Delete',rowData)">
+                        </p-checkbox>
+                    </td>
+                    <td>
+                        <button (click)="openOther(rowData)" class="btn btn-primary">Khác</button>
+                        <button *ngIf="rowData.Allow" (click)="setHomePage(rowData)" [disabled]="rowData.IsHomePage" class="btn btn-danger"><i class="fas fa-home"></i></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-treeTable>
+
+    </div>
+
+</div>
+<!-- <div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+          Thoát
+        </button>
+    </div>
+</div>
+</div> -->
+
+<p-dialog [(visible)]="viewDialog" [style]="{width: '50%'}" [header]="ortherTitle" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <p-table styleClass="p-datatable-gridlines" [value]="ortherItem.OtherPermissions" [autoLayout]="true">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th width="80%">
+                        Tên Quyền
+                    </th>
+                    <th width="20%">
+                        Thao tác
+                        <a class="btn btn-sm" (click)="addRole()"><i class="fas fa-plus"></i></a>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <button class="btn btn-xs btn-success btn-goi-y" (click)="save(goiY ,ortherItem)" *ngFor="let goiY of ortherItem.GoiYs">{{goiY}}</button>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr *ngIf="!product.IsNew">
+                    <td>
+                        {{product.Command}}
+                    </td>
+                    <td>
+                        <p-checkbox [(ngModel)]="product.Value" [binary]="true" (onChange)="save(product.Command,ortherItem)">
+                        </p-checkbox>
+                    </td>
+                </tr>
+                <tr *ngIf="product.IsNew">
+                    <td>
+                        <input type="text" class="form-control" [(ngModel)]="product.Command">
+                    </td>
+                    <td>
+                        <a class="btn btn-sm" (click)="saveNew(product, ortherItem)"><i class="fas fa-save"></i> Lưu</a>
+                        <!-- <p-checkbox [(ngModel)]="product.Value" [binary]="true"
+                            (onChange)="save(product.Command,ortherItem)">
+                        </p-checkbox> -->
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Thoát" icon="pi pi-times" class="p-button-text" (click)="closeView()"></button>
+    </ng-template>
+</p-dialog>

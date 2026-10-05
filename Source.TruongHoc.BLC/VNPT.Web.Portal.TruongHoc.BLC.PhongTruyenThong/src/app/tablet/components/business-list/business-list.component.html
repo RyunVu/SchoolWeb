@@ -1,0 +1,107 @@
+<p-table [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục" [value]="list" [loading]="loading" [paginator]="true" [lazy]="true" [rows]="pageSize" [totalRecords]="totalRecords" (onLazyLoad)="pageChange($event)">
+    <ng-template pTemplate="header">
+        <tr>
+            <th width="3%">
+                STT
+            </th>
+            <th width="8%">
+                {{ 'MST' }}
+            </th>
+            <th width="8%">
+                {{ 'Số Giấy Chứng Nhận' }}
+            </th>
+            <th width="12%">
+                {{ 'Tên Hộ Kinh Doanh' }}
+            </th>
+            <th width="12%">
+                {{ 'Địa Chỉ' }}
+            </th>
+            <th width="8%">Trạng thái</th>
+            <th width="8%">Loại hình</th>
+            <th>Doanh thu</th>
+            <th>Thuế GTGT</th>
+            <th>Thuế TNCN</th>
+            <th>Thuế Môn bài</th>
+            <th>Thuế TTDB</th>
+            <!-- <th *ngIf="typeSearch==3">Kỳ</th>
+            <th *ngIf="typeSearch==3">Doanh thu</th>
+            <th *ngIf="typeSearch==3">Thuế GTGT</th>
+            <th *ngIf="typeSearch==3">Thuế TNCN</th> -->
+            <!-- <th *ngIf="showDoanhThu">Doanh thu GTGT 1 tháng</th>
+      <th *ngIf="showDoanhThu">Thuế GTGT 1 tháng</th>
+      <th *ngIf="showDoanhThu">Doanh thu TNCN 1 tháng</th>
+      <th *ngIf="showDoanhThu">Thuế TNCN 1 tháng</th> -->
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-ri="rowIndex">
+        <tr>
+            <td>
+                {{ (ri + 1 ) }}
+            </td>
+            <td>
+                {{ item?.MaSoThue }}
+            </td>
+            <td>
+                {{ item.SoGiayChungNhan }}
+            </td>
+            <td>
+                <a target="_blank" [routerLink]="['/public/business-detail', item.Id]" href="javascript:void(0)">
+          {{ item.TenNguoiNopThue }}</a
+        >
+      </td>
+      <td>
+        {{ populateBusinessFullAddress(item) }}
+      </td>
+      <!-- <td>
+        {{ item.PhoneNumber }}
+      </td>
+      <td>
+        {{ item.DoanhThuTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <td>
+        {{ item.ThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+      </td> -->
+      <td>
+        {{ item.TenTrangThaiDKTToChuc }}
+      </td>
+      <td>
+        {{ item.LoaiHinhNopThueText }}
+      </td>
+       <td >
+        {{ item.DoanhThuBQThang | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <td>
+        {{ item.HThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}
+      </td> 
+       <td>
+        {{ item.HThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <td>
+        {{ item.HThueMonBai | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+    
+      <td>
+        {{ item.HThueTTDB | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <!-- <td *ngIf="typeSearch==3">
+        {{ item.ListKeKhai[0]?.Ky }}
+      </td>
+      <td *ngIf="typeSearch==3">
+        {{ item.ListKeKhai[0]?.DoanhThu | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <td *ngIf="typeSearch==3">    
+            {{ item.ListKeKhai[0]?.ThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}
+      </td>
+      <td *ngIf="typeSearch==3">
+        {{ item.ListKeKhai[0]?.ThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+      </td> -->
+      <!-- <td>
+        <span
+          class="badge"
+          [ngClass]="calculateBusinessStatusBadge(item.TextTrangThaiHoatDong)"
+          >{{ item.TextTrangThaiHoatDong }}
+        </span>
+      </td> -->
+    </tr>
+  </ng-template>
+</p-table>

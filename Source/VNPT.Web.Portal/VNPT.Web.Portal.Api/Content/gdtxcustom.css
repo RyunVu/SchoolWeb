@@ -1,0 +1,135 @@
+﻿.slide-video .item.popup-youtube h3.title {
+    background: rgba(225,59,1, 0.7)!important;
+}
+.custom-title .heading-direct {
+    background: linear-gradient(to right, rgb(255, 156, 60) 0%, rgb(239, 199, 155) 100%);
+}
+header {
+    border-top: none!important;
+    background-color: #CCCCCC
+}
+nav.menu ul > li.active a {
+    background-color: #F87B00!important;
+}
+nav.menu ul > li.active a:before {
+    height: 0
+}
+
+nav.menu ul > li.active a, nav.menu ul > li:hover a {
+    background-color: #f4f4f2;
+}
+
+nav.menu ul li:hover a:before {
+    background-color: #F4F4F2
+}
+
+header nav.menu {
+    background-color: #F87B00;
+} 
+
+nav.menu ul > li.active:nth-child(1) a i {
+    color: #fff
+}
+
+header .top-header .pgd-mobile {
+    position: absolute;
+    right: 10px;
+}
+header .top-header .pgd-mobile > * {
+    background: #F87B00
+}
+header .top-header {
+    padding: 0px;
+}
+
+#lstLinkBotton {
+    margin: 0;
+    margin-top: 10px;
+}
+
+#menu_ver .menu-cs {
+    background: #F87B00;
+}
+.rhead .name {
+    background: #F87B00;
+}
+.rhead .name:after {
+    border-left-color: #F87B00;
+}
+.showitem_tab ul li.active .tab_one {
+    background: #F87B00;
+}
+.nav-pills>li.active>a {
+    background-color: #F87B00;
+}
+.nav-pills>li.active>a:focus {
+    background-color: #F87B00;
+}
+
+#menu_ver .block-notifi-sidebar {
+    background: linear-gradient(to right, rgb(253, 180, 109) 0%, rgb(255, 237, 217) 100%);
+    border: 0;
+}
+#menu_ver .mainmenu li:hover {
+  background-color: #FEA20E;
+}
+
+.title-primary h3 {
+    background: inherit;
+    padding-left: 0;
+}
+
+.title-primary h3 a {
+    display: inline-block;
+    width: 100%;
+    color: #E13B01;
+    padding-bottom: 7px;
+    border-bottom: 2px solid #E13B01;
+}
+.item-video .title-primary {
+    float: initial;
+}
+.item-video .item {
+    border-top: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+}
+.box-news-home, .block-notifi-sidebar, .block-links-sidebar {
+    border-top: 1px solid #dfdfdf!important;
+}
+
+#menu_ver .block-notifi-sidebar {
+    border-top: 0!important
+}
+
+.block-notifi-sidebar ul.mainmenu li a {
+    color: #b82805;
+    font-weight: bold;
+}
+
+.title-primary h3 a i {
+    display: inline;
+    background: inherit;
+    color: #E13B01
+}
+/*van ban*/
+.block-notifi-sidebar.document ul li a {
+    max-height: initial;
+}
+.block-notifi-sidebar.document ul li a::before {
+    content: ''
+}
+.block-notifi-sidebar.document ul li a i {
+    display: block;
+    font-weight: normal;
+}
+/*end*/
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+@media (max-width: 1199px) {
+    .top-header {
+        padding: 0px;
+    }
+}

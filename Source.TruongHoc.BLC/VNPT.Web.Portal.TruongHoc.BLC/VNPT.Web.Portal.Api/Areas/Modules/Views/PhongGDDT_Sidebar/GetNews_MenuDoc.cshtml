@@ -1,0 +1,23 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@model List<VNPT.Web.Portal.Base.News>
+
+@foreach (var item in Model)
+{
+    <li>
+        @if (item.IsNewsImage)
+        {
+            <a href="@(item.IsOpenImageOnly ? Url.Image(item.ImageUrl).ToString() :  Url.Site(item.OtherUrl).ToString())" @(item.IsOpenBlankPage ? "target=\"\"" : "")>
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                @item.Title
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" @(item.IsOpenBlankPage ? "target=\"\"" : "")>
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                @item.Title
+            </a>
+        }
+    </li>
+
+}

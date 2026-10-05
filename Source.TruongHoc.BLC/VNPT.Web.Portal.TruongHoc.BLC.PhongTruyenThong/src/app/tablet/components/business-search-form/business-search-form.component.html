@@ -1,0 +1,42 @@
+<form class="row" [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
+    <div class="form-group col-6 col-md-2">
+        <label>Thành phố / Huyện</label>
+        <city-selector [selectFirstAsDefault]="true" appendTo="body" formControlName="city"></city-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Phường / Xã</label>
+        <ward-selector [selectFirstAsDefault]="true" appendTo="body" formControlName="ward" [parentId]="searchForm?.value?.city"></ward-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Tên đường</label>
+        <street-selector formControlName="streetAddr" appendTo="body" [parentId]="searchForm?.value?.ward"></street-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Lĩnh vực</label>
+        <business-type-selector appendTo="body" formControlName="businessType"></business-type-selector>
+    </div>
+    <div class="form-group col-6 col-md-4"></div>
+
+    <div class="form-group col-12 col-md-4">
+        <label>Từ khóa</label>
+        <div class="input-group input-group-merge">
+            <input type="text" [placeholder]="searchPlaceholder" class="form-control" formControlName="keyword" />
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label for="keyword">Trạng thái</label>
+        <p-dropdown [options]="hkdStatuses" styleClass="w-100" formControlName="status" optionValue="value" optionLabel="label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label for="keyword">Loại hình</label>
+        <p-dropdown [options]="loaiHinhs" styleClass="w-100" formControlName="loaiHinh" optionValue="Id" optionLabel="Label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+    </div>
+    <div style="margin-top: 10px" class="form-group col-12 col-md-1 d-flex align-items-end ">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>

@@ -1,0 +1,10 @@
+.full-content {
+    width: 100%;
+    height: calc(100vh - 170px);
+    position: relative;
+    .middle-banner {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

@@ -1,0 +1,23 @@
+role-v2-user-modal {
+    .p-dropdown {
+        width: 100%;
+    }
+    .p-autocomplete {
+        width: 100%;
+    }
+    .p-autocomplete>ul {
+        width: 100%;
+    }
+    .p-calendar {
+        width: 100%;
+    }
+    .p-multiselect {
+        width: 100%;
+    }
+    .text-right {
+        text-align: right;
+    }
+    .p-dialog.p-dynamic-dialog {
+        padding-bottom: 0px !important;
+    }
+}

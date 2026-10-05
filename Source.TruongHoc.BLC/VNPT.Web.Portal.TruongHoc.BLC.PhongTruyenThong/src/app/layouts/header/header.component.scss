@@ -1,0 +1,26 @@
+.fa-bars {
+  cursor: pointer;
+}
+
+.nav-item {
+  .nav-link {
+    cursor: pointer;
+  }
+}
+
+.main-header {
+  z-index: 809;
+}
+
+// @media (min-width: 768px) {
+//   .main-header {
+//     margin-left: 270px !important;
+//   }
+// }
+
+
+@media (max-width: 991.98px) {
+  .main-header {
+    margin-left: 0 !important;
+  }
+}

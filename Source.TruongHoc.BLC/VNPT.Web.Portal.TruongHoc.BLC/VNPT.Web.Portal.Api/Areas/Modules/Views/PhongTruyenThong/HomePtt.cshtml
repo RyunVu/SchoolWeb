@@ -1,0 +1,189 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+}
+
+@model List<MenuModel>
+
+<style>
+    .sectionhome {
+        background: rgba(13, 110, 253, .058823529411764705) url('/Images/ptt/bg6.png') no-repeat;
+        background-size: cover;
+        background-position-x: 30px;
+        background-position-y: 30px;
+        padding: 10px 25px;
+        min-height: calc(100vh - 71px);
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+        .sectionhome .col-sm-4 {
+            height: 260px;
+            padding: 25px;
+        }
+
+        .sectionhome .row .col-sm-4 .itemBox {
+            height: 100%;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 4px solid #2196f3;
+        }
+
+            .sectionhome .row .col-sm-4 .itemBox img {
+                height: 100%;
+                width: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+                transition: .5s;
+            }
+
+        .sectionhome .itemBox .itemName {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            font-size: calc(1vw + 5pt);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .sectionhome .itemName span {
+            background: #2196f3;
+            border-radius: 8px;
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 215px;
+            padding: 0 10px;
+            color: #ffe500
+        }
+
+    @@media (max-width: 575px) {
+        .sectionhome {
+            height: auto;
+        }
+
+            .sectionhome .row .col-sm-4 .itemBox .itemName {
+                font-size: calc(1vw + 13pt);
+                line-height: 30px;
+            }
+
+            .sectionhome .itemName span {
+                min-width: 100%;
+            }
+    }
+
+    @@media (max-width: 768px) {
+        .sectionhome .itemName span {
+            min-width: 100%;
+        }
+    }
+
+    @@media (min-width: 768px) and (max-width: 1024px) {
+        .sectionhome .row .col-sm-4 {
+            height: 210px;
+            padding: 20px;
+        }
+    }
+</style>
+
+@helper CreateLink(MenuModel menu, bool isChild)
+{
+    if (menu.IsNewsImage)
+    {
+        <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@menu.Action" class="menu-a @(isChild?"":"")" title="@menu.Title">
+            @menu.Title
+        </a>
+    }
+    else if (!string.IsNullOrEmpty(menu.Action))
+    {
+        switch (menu.Action)
+        {
+            case "danh-sach-bai-viet":
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(menu.Parameter) ? Url.Site("phong-truyen-thong/" + menu.Action, parameter: new { param = menu.Parameter }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+            case "danh-sach-tin-tuc":
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(menu.Parameter) ? Url.Site("phong-truyen-thong/danh-sach-bai-viet", parameter: new { param = menu.Parameter }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+            case "chi-tiet-bai-viet":
+                var param = menu.Parameter?.Split('.').Last();
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(param) ? Url.Site("phong-truyen-thong/" + menu.Action, parameter: new { param = param }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+
+            case "chi-tiet-tin-tuc":
+                var paramcttt = menu.Parameter?.Split('.').Last();
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(paramcttt) ? Url.Site("phong-truyen-thong/chi-tiet-bai-viet", parameter: new { param = paramcttt }).ToString() : Url.Site("chi-tiet-bai-viet").ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+
+            case "lanh-dao-qua-cac-thoi-ky":
+                var paramld = menu.Parameter?.Split('.').Last();
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(paramld) ? Url.Site("phong-truyen-thong/" + menu.Action, parameter: new { param = paramld }).ToString() : Url.Site("phong-truyen-thong/" + menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+            case "co-quan-nhiem-ky":
+                var paramcq = menu.Parameter?.Split('.').Last();
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(paramcq) ? Url.Site("phong-truyen-thong/" + menu.Action, parameter: new { param = paramcq }).ToString() : Url.Site("phong-truyen-thong/" + menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+            default:
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(menu.Parameter) ? Url.Site(menu.Action, parameter: new { param = menu.Parameter }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    <span>@menu.Title</span>
+                </a>
+                break;
+        }
+    }
+}
+
+<div class="sectionhome">
+    <div class="row">
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model.FirstOrDefault().Children)
+            {
+                <div class="col-xs-12 col-sm-4">
+                    <div class="itemBox">
+                        <img src="~/Images/ptt/1.jpg">
+                        <div class="itemName">
+                            @if (item.Action.CheckUrl())
+                            {
+                                <a target="_blank" href="@item.Action" title="">
+                                    @item.Title
+                                </a>
+                            }
+                            else
+                            {
+                                @CreateLink(item, true)
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

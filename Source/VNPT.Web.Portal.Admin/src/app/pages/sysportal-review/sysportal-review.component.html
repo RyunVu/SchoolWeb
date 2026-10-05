@@ -1,0 +1,128 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h4 class="m-0 text-dark">Quản lý hỏi đáp</h4>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Quản lý hỏi đáp</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div *ngIf="isSuperAdminSystem" class="col-md-2">
+                <div class="form-group">
+                    <label class="d-block" for="Name">Đơn vị: </label>
+                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name"
+                        optionValue="Code" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị"
+                        appendTo="body">
+                    </p-dropdown>
+                </div>
+            </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="d-block" for="Name">Trả lời: </label>
+                  <p-dropdown [options]="types" [(ngModel)]="typeId" optionLabel="Name" optionValue="Id" [filter]="true"
+                    filterBy="Name" placeholder="Chọn loại trả lời" appendTo="body">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="d-block" for="Name">Công khai: </label>
+                  <p-dropdown [options]="status" [(ngModel)]="statusId" optionLabel="Name" optionValue="Id" [filter]="true"
+                    filterBy="Name" placeholder="Chọn loại công khai" appendTo="body">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
+                <div class="form-group">
+                  <label for="Name">Từ khóa tìm kiếm</label>
+                  <input type="text" class="form-control" [(ngModel)]="keywordInput" placeholder="Từ khóa tìm kiếm" />
+                </div>
+              </div>
+              <div class="col-md-2" style="padding-top: 37px;">
+                <button (click)="search()" type="button" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                  <i class="fa fa-filter"></i> Tìm kiếm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+          [paginator]="true" [rows]="pageSize"
+          [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="headerTable" style="width: 5%; text-align: center;">STT</th>
+                <th class="headerTable" style="width:250px">Thông tin cá nhân</th>
+                <th class="headerTable">Tiêu đề</th>
+                <th class="headerTable">Nội dung</th>
+                <th class="headerTable" style="width:150px"> Ngày tạo</th>
+                <th class="headerTable" style="width:150px"> Công khai</th>
+                <th class="headerTable" style="width:150px">Thao tác</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+              <tr [ngClass]="rowData.Status == 5 ? 'cls-public' : 'cls-unpublic'">
+                <td style="text-align: center;">{{i+1}}</td>
+                <td class="text-bold">
+                  <p style="margin: 0;">Họ và tên : <span>{{rowData.Name}}</span></p>
+                  <p style="margin: 0;">Email : <span>{{rowData.Email}}</span></p>
+                  <p style="margin: 0;">Số điện thoại : <span>{{rowData.PhoneNo}}</span></p>
+                  <p style="margin: 0;">Địa chỉ : <span>{{rowData.Address}}</span></p>
+                </td>
+                <td class="text-left">{{rowData.Subject}}</td>
+                <td class="text-left">{{rowData.Content}}</td>
+                <td class="text-center">{{rowData.CreateDate | date:'dd/MM/yyyy'}}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-warning" (click)="public(rowData)"
+                    *ngIf="rowData.Status != 5">
+                    Công khai
+                  </button>
+                  <button type="button" class="btn btn-primary" (click)="unpublic(rowData)"
+                    *ngIf="rowData.Status == 5">
+                    Thu hồi
+                  </button>
+                </td>
+                <td style="text-align: center;">
+                  <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Thao tác
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                      <a class="dropdown-item" (click)="showReply(rowData)" *ngIf="checkPermission('Edit')">Trả lời</a>
+                      <a class="dropdown-item" (click)="delete(rowData)" *ngIf="checkPermission('Delete')">Xóa</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3">No items found.</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft" let-state>
+              <span>Tổng cộng: {{state.totalRecords}}</span>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

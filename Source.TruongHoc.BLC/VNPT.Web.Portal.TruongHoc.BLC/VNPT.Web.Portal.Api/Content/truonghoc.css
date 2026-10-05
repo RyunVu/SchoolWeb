@@ -1,0 +1,100 @@
+﻿.styleLoading h3 {
+    height: 26.39px !important;
+}
+
+.styleLoading th,
+.styleLoading td {
+    height: 40.34px;
+    vertical-align: initial!important;
+}
+
+.styleLoading .itemloading {
+    width: 100%;
+    display: inline-block;
+    height: 100%;
+}
+
+.itemloading {
+    animation-name: loading;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    background: linear-gradient(90deg, #f4f7fe 8%, #cdcdcd 18%, #f4f7fe 33%);
+    background-size: 800px auto;
+}
+.contentTab p.p-item {
+    font-size: 12pt;
+    margin: 8px 0;
+}
+@keyframes loading {
+    0% {
+        background-position: -350px 0;
+    }
+
+    to {
+        background-position: 400px 0;
+    }
+}
+
+.cusUl {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.cusUl li {
+    font-size: 12pt;
+    padding-bottom: 6px
+}
+
+#loadingExport {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loaderExport {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px; /* Thêm khoảng cách giữa loader và text */
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    color: #fff;
+    font-size: 16pt;
+}

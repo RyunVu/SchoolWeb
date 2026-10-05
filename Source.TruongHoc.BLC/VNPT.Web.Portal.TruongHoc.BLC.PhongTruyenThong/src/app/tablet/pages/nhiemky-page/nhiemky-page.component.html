@@ -1,0 +1,50 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">Nhiệm kỳ</div>
+    </div>
+
+    <div class="nhiemky_scroll">
+      <div class="dsnhiemky">
+
+        <ng-container *ngFor="let item of contentPage; let index = index">
+          <div *ngIf="0 === index % 2" class="nhiemky_item nk_left" (click)="nhiemKyOpen(item.Id)">
+            <div class="nk_content">
+              <img class="hidden-sm-down" src="assets/template/images/nhiemky.png" />
+              <div class="nhiemky_right">
+                <span class="nhiemky_title">{{item.Ten}} </span>
+                <div class="is-divider hidden-sm-down"></div>
+                <span class="nhiemky_info hidden-sm-down">({{item.TuNam}} <span *ngIf="item.DenNam != '0'"> - {{item.DenNam}}</span>)</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="0 !== index % 2" class="nhiemky_item nk_right" (click)="nhiemKyOpen(item.Id)">
+            <div class="nk_content">
+              <img class="hidden-sm-down" src="assets/template/images/nhiemky.png" />
+              <div class="nhiemky_right">
+                <span class="nhiemky_title">{{item.Ten}} </span>
+                <div class="is-divider hidden-sm-down"></div>
+                <span class="nhiemky_info hidden-sm-down">({{item.TuNam}} - {{item.DenNam}})</span>
+              </div>
+
+            </div>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@model List<VNPT.Web.Portal.Base.News>
+
+@foreach (var item in Model)
+{
+    if (item.IsNewsImage)
+    {
+        <a href="@(item.IsOpenImageOnly ? Url.Image(item.ImageUrl).ToString() : item.OtherUrl)" target="_blank">
+            <i class="fa fa-bullhorn" aria-hidden="true"></i>
+            @item.Title
+        </a>
+    }
+    else
+    {
+        <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" target="_blank">
+            <i class="fa fa-bullhorn" aria-hidden="true"></i>
+            @item.Title
+        </a>
+    }
+
+}

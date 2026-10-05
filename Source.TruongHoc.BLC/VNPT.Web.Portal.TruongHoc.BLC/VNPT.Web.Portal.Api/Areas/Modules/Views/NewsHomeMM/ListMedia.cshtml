@@ -1,0 +1,17 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Code
+
+@model List<News>
+
+<div id="image-slider">
+    @foreach (var item in Model)
+    {
+        <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">
+            <div class="slide-item">
+                <div><img src="@Url.Image(item.ImageUrl)" alt="@item.Title" style="height:140px"></div>
+                <div class="caption">@item.Title</div>
+            </div>
+        </a>
+    }
+</div>

@@ -1,0 +1,166 @@
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+
+    // ĐỔI TỪ MenuDoc SANG MenuDocLeft ĐỂ LẤY MENU BÊN TRÁI (MenuPosition == 22)
+    var menus = MenuDal.MenuDocLeft(infomation);
+
+    // Lấy dữ liệu Thống kê truy cập
+    var analytics = AnalyticsDal.GetAnalyticData(infomation.PortalCode);
+    var day = 0;
+    var month = 0;
+    var year = 0;
+
+    if (analytics != null)
+    {
+        day = analytics.DayCount;
+        month = analytics.MonthCount;
+        year = analytics.YearCount;
+    }
+}
+
+<style>
+    /* CSS bổ sung để đảm bảo các khối menu dọc trái xếp ngay ngắn */
+    #lstLinkLeft .inline-block {
+        width: 100% !important;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    #lstLinkLeft .site_block_title h3 {
+        margin-top: 0;
+    }
+
+    #lstLinkLeft .leftmenu {
+        background-color: #fff;
+    }
+</style>
+
+<div class="sidebar left-sidebar" id="lstLinkLeft">
+
+    @* Vòng lặp lấy các menu được cấu hình hiển thị bên trái từ Admin *@
+    @foreach (var systemMenu in menus)
+    {
+        if (systemMenu.MenuType == 1) // Danh sách tin tĩnh
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left statis-news">
+                        @Html.Action("GetNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 2) // Tin tức chạy cuộn
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-list"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left scrolling-news" style="overflow: hidden">
+                        @Html.Action("ScrollingNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 3 || systemMenu.MenuType == 4) // Liên kết banner/ảnh
+        {
+            <div class="inline-block">
+                @Html.Action("LinkSidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </div>
+        }
+        else if (systemMenu.MenuType == 5) // Liên kết website
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a>
+                                <i class="fa fa-link"></i>
+                                @SystemParameterDto.Translate(systemMenu.Title)
+                            </a>
+                        </h3>
+                    </div>
+                    <ul class="nav-left">
+                        @* Vị trí render list liên kết web nếu cần cấu hình *@
+                    </ul>
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 6) // Hình ảnh hoạt động
+        {
+            <div class="inline-block">
+                <div class="leftmenu">
+                    <div class="site_block_title">
+                        <h3>
+                            <a href="#">
+                                <i class="fa fa-image"></i>
+                                <span class="span-text">@SystemParameterDto.Translate(systemMenu.Title)</span>
+                            </a>
+                        </h3>
+                    </div>
+                    @Html.Action("NewsHinh1Sidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                </div>
+            </div>
+        }
+        else if (systemMenu.MenuType == 8) // Video Clip
+        {
+            <div class="inline-block">
+                <div class="site_block_title">
+                    <h3>
+                        <a href="#">
+                            <i class="fa fa-video-camera"></i>
+                            @SystemParameterDto.Translate(systemMenu.Title)
+                        </a>
+                    </h3>
+                </div>
+                @Html.Action("Video1Sidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </div>
+        }
+    }
+
+    <!-- KHỐI CỐ ĐỊNH: THỐNG KÊ TRUY CẬP (Nằm dưới cùng bên trái) -->
+    <div class="inline-block">
+        <div class="leftmenu">
+            <div class="site_block_title">
+                <h3>
+                    <a>
+                        <i class="fa fa-bar-chart"></i>
+                        @SystemParameterDto.Translate("Thống kê truy cập")
+                    </a>
+                </h3>
+            </div>
+            <div class="statistic clearfix">
+                <div class="content" style="padding: 10px; border: 1px solid #dfdfdf; font-weight:bold;">
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0; line-height: 30px;">
+                        <span>Hôm nay</span><b id="homnay">@day</b>
+                    </p>
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0; line-height: 30px;">
+                        <span>Tháng này</span><b id="thangnay">@month</b>
+                    </p>
+                    <p style="display: flex; align-items: center; justify-content: space-between; margin: 0; line-height: 30px;">
+                        <span>Năm nay</span><b id="namnay">@year</b>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,63 @@
+<!-- <p-toast></p-toast> -->
+<div class="row" *ngIf="selectedfolder.Id != null">
+    <div class="col-md-12 set-bar-color">
+        <span class="p-buttonset">
+            <button pButton pRipple label="Tạo thư mục" icon="pi pi-folder-open" (click)="newFolder()"></button>
+            <button pButton pRipple label="Tải file lên" icon="pi pi-upload" (click)="newFile()"></button>
+        </span>
+
+        <div class="anchor-right">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Search" [(ngModel)]="keyword" (keyup.enter)="reload()" />
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="treeviewleft">
+            <p-tree [value]="treeView" [(selection)]="selectedfolder" selectionMode="single" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        </div>
+        <div class="containerviewright">
+            <p-divider align="center">
+                <span class="p-tag">Thư mục</span>
+            </p-divider>
+
+            <div class="row">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 my-container-item" *ngFor="let folder of selectedfolder.ChildrenFolders" (dblclick)="loadFolders(folder)">
+                    <div class="my-file-image">
+                        <i class="pi pi-folder" style="font-size: 4rem"></i>
+                    </div>
+                    <div class="my-filename">{{folder.Name}}</div>
+                    <div class="my-btn-delete" (click)="deleteFolder(folder)">
+                        <i class="pi pi-trash" style="font-size: 1rem"></i>
+                    </div>
+                </div>
+            </div>
+
+            <p-divider align="center">
+                <span class="p-tag">Tập tin</span>
+            </p-divider>
+
+            <div class="row">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 my-container-item" [ngClass]="file.selected ? 'mark-item' : ''" *ngFor="let file of selectedfolder.Files" (click)="setSelectedFile(file)">
+                    <div class="my-file-image">
+                        <img [src]="file.FullThumbUrl" />
+                    </div>
+                    <div class="my-filename">{{file.Name}}</div>
+                    <div class="my-btn-delete" (click)="deleteFile(file)" *ngIf="selectedfolder.Id != null">
+                        <i class="pi pi-trash" style="font-size: 1rem"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="selectFile()">Chọn tập tin</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

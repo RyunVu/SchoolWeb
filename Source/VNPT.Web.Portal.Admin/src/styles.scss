@@ -1,0 +1,374 @@
+/* You can add global styles to this file, and also import other style files */
+
+.p-dialog.p-dynamic-dialog {
+    padding-bottom: 70px;
+    min-width: 350px;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-open #sidebar-overlay {
+        display: block;
+        z-index: 809;
+    }
+}
+
+p-calendar {
+    input {
+        height: 38px;
+    }
+}
+
+p-dropdown {
+    .p-dropdown {
+        height: 38px;
+    }
+}
+
+// Form styles
+form {
+
+    // Border error styles
+    @mixin border-error {
+        // Error styling
+        border-color: red;
+    }
+
+    // Validation error styles
+    ul.errors {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        color: red;
+    }
+
+    .form-group {
+        input.ng-invalid.ng-touched {
+            @include border-error;
+        }
+
+        p-calendar.ng-invalid.ng-touched {
+            input {
+                @include border-error;
+            }
+        }
+
+        .ng-invalid.ng-touched {
+            .p-dropdown {
+                @include border-error;
+            }
+        }
+    }
+}
+
+.errors {
+    list-style-type: none;
+    color: red;
+    padding: 0;
+    margin: 0;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+label {
+    display: inline-block;
+    margin: 5px 0 5px 0;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 0rem;
+}
+
+.content-header {
+    padding: 8px 0.5rem 0px 0.5rem;
+}
+
+.headerTable {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    color: white !important;
+    background: #3c8dbc !important;
+    text-align: center !important;
+    border: 1px solid #f4f4f4 !important;
+}
+
+.p-divider.p-divider-horizontal {
+    margin: 5px 0;
+    padding: 0 1rem;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    padding: 10px;
+    position: relative;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.card {
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+    margin-bottom: 5px;
+}
+
+.p-tree .p-tree-container .p-treenode {
+    padding: 1px;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content {
+    border-radius: 4px;
+    transition: box-shadow 0.15s;
+    padding: 0px;
+    margin: 2px;
+}
+
+.p-tree {
+    border: 1px solid #dee2e6;
+    background: #ffffff;
+    color: #212529;
+    padding: 0px 0px 10px 0px;
+    border-radius: 4px;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
+    background: transparent;
+    color: #256a92;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+    padding: 5px 5px 5px 5px;
+}
+
+.btn-info {
+    background: #3c8dbc !important;
+    border: #3c8dbc !important;
+    border: 1px solid transparent !important;
+}
+
+.btn-info:hover {
+    background: #256a92 !important;
+}
+
+.p-button {
+    color: #ffffff;
+    background: #3c8dbc !important;
+    border: #3c8dbc !important;
+}
+
+.p-button:hover {
+    background: #256a92 !important;
+}
+
+.p-button.p-button-success, .p-buttonset.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button {
+    color: #ffffff !important;
+    background: #22C55E !important;
+    border: 1px solid #22C55E !important;
+}
+
+.p-button.p-button-warning, .p-buttonset.p-button-warning > .p-button, .p-splitbutton.p-button-warning > .p-button {
+    color: #ffffff !important;
+    background: #F59E0B !important;
+    border: 1px solid #F59E0B !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #3c8dbc !important;
+    border-color: #3c8dbc !important;
+}
+
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+    color: #3c8dbc !important;
+}
+
+.card-primary.card-outline {
+    border-top: 3px solid #3c8dbc;
+}
+
+.navbar-primary {
+    background-color: #3c8dbc;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #3c8dbc;
+    color: #fff;
+}
+
+[class*=sidebar-light-] .nav-treeview>.nav-item>.nav-link.active,
+[class*=sidebar-light-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: #256a92;
+    color: #fff;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active:hover {
+    background-color: #3c8dbc;
+    color: #fff;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item.menu-open>.nav-link,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link:hover {
+    color: #256a92;
+}
+
+[class*=sidebar-light-] .nav-treeview>.nav-item>.nav-link.active,
+[class*=sidebar-light-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: #3c8dbc;
+    color: #fff;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+    color: #256a92;
+}
+
+.bg-primary {
+    background-color: #3c8dbc !important;
+}
+
+.p-tag {
+    background: #3c8dbc;
+}
+
+.p-dialog .p-dialog-header {
+    padding: 5px;
+}
+
+.p-dialog .p-dialog-header {
+    background-color: #3c8dbc;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+    border: 1px solid #ddd;
+    border-width: 1px;
+}
+
+.p-treetable .p-treetable-tbody>tr>td {
+    border: 1px solid #ddd;
+    border-width: 1px;
+}
+
+.required-color {
+    color: red;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
+    background: #3c8dbc;
+    color: #ffffff;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #256a92;
+}
+
+.p-paginator {
+    background: #ffffff;
+    color: #3c8dbc;
+}
+
+.p-confirm-dialog-reject {
+    color: #dc3545;
+    background: #ffffff !important;
+    border: #dc3545 1px solid !important;
+}
+
+.p-confirm-dialog-reject:hover {
+    color: #ffffff;
+    background: #dc3545 !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: white;
+}
+
+.my-container-item:hover {
+    color: #256a92 !important;
+    background: transparent !important;
+}
+
+.name-document {
+    font-weight: bold;
+}
+
+.name-document:hover {
+    color: #256a92 !important;
+    background: transparent !important;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+    border-color: #256a92 !important;
+    background: #256a92 !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    color: #ffffff;
+    background: #3c8dbc;
+}
+
+.p-dropdown .p-dropdown-trigger {
+    background: transparent;
+    color: #3c8dbc;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff !important;
+    text-decoration: none !important;
+    background-color: #3c8dbc !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active i {
+    color: #fff !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #fff !important;
+    text-decoration: none !important;
+    background-color: #3c8dbc !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover i {
+    color: #fff !important;
+}
+
+.p-dialog .p-dialog-header {
+    padding: 5px;
+    background-color: #3c8dbc;
+    color: white;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: white;
+}
+
+.p-dialog {
+    .p-dialog-content {
+        padding: 0.5rem;
+
+        .card {
+            margin-bottom: 0px;
+        }
+    }
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}

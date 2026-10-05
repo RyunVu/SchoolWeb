@@ -1,0 +1,42 @@
+<div class="modal-wrapper">
+    <div class="card card-primary">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-6">
+                    <label class="label-control">Chu kỳ:</label>
+                    <period-list-selector [type]="periodType" [(ngModel)]="period" (ngModelChange)="onChangePeriod()">
+                    </period-list-selector>
+                </div>
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-primary">
+                    <tr *ngFor="let header of tableHeader">
+                        <th *ngFor="let th of header" scope="col" [attr.colspan]="th.ColSpan"
+                            [attr.rowspan]="th.RowSpan" class="text-center align-middle">
+                            {{th.Name}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of tableRows">
+                        <td *ngFor="let col of tableColumns">
+                            <span *ngIf="row[col.Id]?.ReadOnly">{{ row[col.Id].Value }}</span>
+                            <textarea *ngIf="!row[col.Id]?.ReadOnly" rows="1" type="text" class="form-control"
+                                [(ngModel)]="row[col.Id].Value"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="p-footer">
+        <div class="f-contains">
+            <button [disabled]="loading" class="btn btn-info" type="submit" (click)="save()">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                Lưu thay đổi
+            </button>
+            <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+        </div>
+    </div>
+</div>

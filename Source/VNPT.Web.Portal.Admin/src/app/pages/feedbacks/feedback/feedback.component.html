@@ -1,0 +1,232 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Quản lý phản ánh</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Phản ánh</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title"><b>Danh sách phản ánh</b></h3>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-info btn-sm float-right collapsed mr-3" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                    <i class="fas fa-search"></i> Lọc nâng cao
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row d-flex flex-row bd-highlight justify-content-end">
+                                <button (click)="recommendedList()" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-heart"></i> Danh sách quan tâm
+                                </button>
+                                <button (click)="shareList()" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-share"></i> Danh sách chia sẻ
+                                </button>
+                                <button (click)="setStatus(4)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-exclamation-triangle"></i> Danh sách không đúng
+                                </button>
+                                <button (click)="setStatus(8)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-exclamation-triangle"></i> Danh sách trùng
+                                </button>
+                                <button (click)="setStatus(0)" type="button" class="btn btn-info btn-sm float-right custom-equal only-show-high-screen">
+                                    <i class="fas fa-hourglass-start"></i> Chưa xử lý
+                                </button>
+                                <button (click)="setStatus(5)" type="button" class="btn btn-info btn-sm float-right custom-equal only-show-high-screen">
+                                    <i class="fas fa-hourglass-start"></i> Đã xử lý
+                                </button>
+                            </div>
+                            <div class="row d-flex flex-row bd-highlight justify-content-end">
+                                <button (click)="setStatus(null)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-align-justify"></i> Tất cả phản ánh
+                                </button>
+
+                                <button (click)="setStatus(6)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fa fa-check"></i> Đã duyệt phát hành
+                                </button>
+                                <button (click)="setStatus(7)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fas fa-spinner"></i> Chờ duyệt phát hành
+                                </button>
+                                <button (click)="setStatus(3)" type="button" class="btn btn-info btn-sm float-right custom-equal">
+                                    <i class="fas fa-stopwatch"></i> Phản ánh quá hạn xử lý
+                                </button>
+                                <button (click)="setStatus(2)" type="button" class="btn btn-info btn-sm float-right custom-equal only-show-high-screen">
+                                    <i class="fas fa-stop-circle"></i> Đã kết thúc
+                                </button>
+                            </div>
+                            <div class="row d-flex flex-row bd-highlight justify-content-end">
+                                <button (click)="setStatus(5)" type="button" class="btn btn-info btn-sm float-right custom-equal only-show-low-screen">
+                                    <i class="fas fa-hourglass-end"></i> Đã xử lý
+                                </button>
+                                <button (click)="setStatus(0)" type="button" class="btn btn-info btn-sm float-right custom-equal only-show-low-screen">
+                                    <i class="fas fa-hourglass-start"></i> Chưa xử lý
+                                </button>
+                            </div>
+                            <div class="mb-4"></div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Name">Từ khóa tìm kiếm</label>
+                                        <input type="text" class="form-control" [(ngModel)]="keywordInput" placeholder="Từ khóa tìm kiếm">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Name">Khu vực</label>
+                                        <p-dropdown optionLabel="Name" optionValue="UnitCode" [(ngModel)]="unitCode" placeholder="Chọn khu vực" [options]="unitCodes" appendTo="body" [filter]="true" filterBy="Name" (onChange)="changeUnitCode()">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Name">Đơn vị</label>
+                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput" placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="Name">Lĩnh vực</label>
+                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="fieldInput" placeholder="Chọn lĩnh vực" [options]="fields" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="Name">Từ ngày</label>
+                                        <p-calendar [(ngModel)]="startDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="Name">Đến ngày</label>
+                                        <p-calendar [(ngModel)]="endDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="Name">Trạng thái xử lý</label>
+                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="statusInput" placeholder="Chọn trạng thái" [options]="statuses" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button (click)="search()" type="button" class="btn btn-info btn-sm float-right">
+                                        <i class="fa fa-filter"></i> Tìm kiếm
+                                    </button>
+                                    <button (click)="clearfilter()" type="button" class="btn btn-danger btn-sm float-right mr-3">
+                                        <i class="fa fa-circle"></i> Bỏ lọc nâng cao
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="5%">
+                                        Mã số
+                                    </th>
+                                    <th width="8%">
+                                        Thời gian
+                                    </th>
+                                    <th width="10%">
+                                        Hình ảnh
+                                    </th>
+                                    <th width="32%">
+                                        Thông tin phản ánh
+                                    </th>
+                                    <th width="10%">
+                                        Số điện thoại
+                                    </th>
+                                    <th width="10%">
+                                        Đơn vị đang xử lý
+                                    </th>
+                                    <th width="10%">
+                                        Tình trạng xử lý
+                                    </th>
+                                    <th width="10rem;">Thao tác</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td>
+                                        #{{item.No}}
+                                    </td>
+                                    <td>
+                                        {{item.CreateDate}}
+                                    </td>
+
+                                    <td class="p-0">
+                                        <!-- <a href="{{item.ImageList[0] | imageUrlPipe}}" target="_blank"> -->
+                                        <img class="img-responsivethumb" src="{{item.ImageList[0] | imageUrlPipe:'thumb'}}" (click)="openPopupImage(item)">
+                                        <!-- </a> -->
+                                    </td>
+                                    <td>
+                                        <span *ngIf="item.FieldName"><b>Lĩnh vực:</b> {{item.FieldName }}<br></span>
+                                        <span *ngIf="item.Content"><b>Nội dung:</b> {{item.Content }}</span>
+                                        <p *ngIf="item.DocumentId">
+                                            <span *ngIf="item.DocumentId"><b>Mã hồ sơ:</b> {{item.DocumentId}}<br></span>
+                                            <span *ngIf="item.Representative"><b>Người đại diện: </b>{{item.Representative}}<br></span>
+                                            <span *ngIf="item.ProcessingStatus"><b>Tình trạng: </b>{{item.ProcessingStatus}}<br></span>
+                                            <!-- <span *ngIf="item.HandlingParts"><b>Đơn vị: </b>{{item.HandlingParts}} - {{item.ProcessingUnit}}<br></span> -->
+                                            <span *ngIf="item.ReceivedDate"><b>Ngày nhận:</b> {{item.ReceivedDate}} <span *ngIf="item.AppointmentDate">- <b>Ngày hẹn trả:</b> {{item.AppointmentDate}}</span><br></span>
+                                            <!-- <span *ngIf="item.ProcedureName"><b>Thủ tục:</b> {{item.ProcedureName}}</span> -->
+                                        </p>
+                                    </td>
+                                    <td>
+                                        {{item.PhoneNo }}
+                                    </td>
+                                    <td>
+                                        {{ item.UnitName }}
+                                    </td>
+                                    <td>
+                                        <span *ngIf="item.StatusName">{{item.StatusName }}<br></span>
+                                        <span *ngIf="item.DueDate"> {{item.DueDate }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info btn-flat" data-toggle="dropdown" aria-expanded="false">Thao tác</button>
+                                            <button type="button" class="btn btn-info btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item" (click)="detailItem(item)">Chi tiết</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item" (click)="history(item)" target="_blank">Lịch sử thay đổi</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

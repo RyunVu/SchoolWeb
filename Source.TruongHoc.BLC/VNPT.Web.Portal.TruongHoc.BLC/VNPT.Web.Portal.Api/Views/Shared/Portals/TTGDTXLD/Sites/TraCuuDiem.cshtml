@@ -1,0 +1,515 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+    var banner3 = SystemParameterDto.GetParameter("BANNER_CENTER3", null, information.PortalCode.ToUpper());
+    var listbanner3 = SystemParameterDto.GetParameters("BANNER_CENTER3", information.PortalCode.ToUpper()).OrderBy(s => s.Id).ToList();
+    var color = SystemParameterDto.GetParameter("COLOR", "COLOR", information.PortalCode.ToUpper()).Value2;
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value6;
+    var nameUBNDXA = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value7;
+    var showeOffice = SystemParameterDto.GetParameter("DISPLAY", "EOFFICE", information.PortalCode.ToUpper()).Value5;
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+@section pluginStyles {
+    <style>
+        .askanswer .s-page-search .fg1 {
+            width: calc(57% - 12px) !important;
+        }
+
+        .askanswer .item-QA.box-QA-question > i:after {
+            width: 0px !important;
+        }
+
+        .askanswer .item-QA.box-QA-answer > i:after {
+            height: 0 !important
+        }
+
+        .cls-h3 {
+            text-align: center;
+            border-bottom: 3px solid #0098d6;
+        }
+
+        .item-detail {
+            cursor: pointer;
+            float: right;
+            font-style: italic;
+        }
+
+        .mfp-close {
+            color: #000 !important;
+        }
+
+        #bangDiemModal .modal-dialog {
+            min-width: 50% !important;
+        }
+
+        #vanBanDetail .table-borderless td {
+            border: 0!important;
+        }
+        #vanBanDetail td {
+            font-size: 16px
+        }
+        .loading-box {
+            z-index: 9999 !important
+        }
+
+        #Keyword {
+            height: 34px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+            #Keyword.error-border {
+                border: 0.6px solid #fa2121;
+                outline: 0.6px solid #fa2121;
+            }
+    </style>
+}
+
+<div class="container">
+    <input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+    <input id="nameUBNDXA" value="@nameUBNDXA" type="hidden" />
+    <input id="showeOffice" value="@showeOffice" type="hidden" />
+    <div class="row">
+        <div class="col-md-9 askanswer">
+            <div class="heading-direct">
+                <h3>
+                    <i class="fa fa-file"></i>Tra cứu điểm trực tuyến
+                </h3>
+            </div>
+            <div class="content_row border_van_ban_dieu_hanh" style="background:#fff; padding: 20px; border: 2px dashed; margin-top: 5px;">
+                <div class="col-md-12">
+                    <div class="col-md-3" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Nhập từ khóa:
+                        </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input placeholder="Nhập mã học sinh" id="Keyword" name="Keyword" type="text" value="" />
+                    </div>
+                </div>
+                
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-3" style="padding-top: 5px;">
+                        <label class="label_van_ban_dieu_hanh">
+                            Năm học
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control label_van_ban_dieu_hanh" id="NamHoc" name="NamHoc"></select>
+                    </div>
+                </div>
+                
+                <div class="col-md-12" style="padding-top: 5px;">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-9">
+                        <button class="background_van_ban_dieu_hanh" style="font-size: 14px; font-weight: 400; box-sizing: border-box; border: 1px solid transparent; display: inline-block; text-decoration: none; text-align: center; cursor: pointer; vertical-align: top; padding: 0px 16px; border-radius: 0px; min-width: 80px; height: 32px; color: rgb(255, 255, 255);" type="button" onclick="main.loadData(true, true)">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="content_row">
+                <label class="label_van_ban_dieu_hanh" style="padding: 10px 0; font-weight: 700;" id="soVanBan">
+                    Tìm thấy 0 thông tin
+                </label>
+            </div>
+            <div class="content_row">
+                <div class="list-news-cate" id="lstVanBanPl">
+                    <div class="table-text-system table-responsive ">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="background_van_ban_dieu_hanh">
+                                    <th scope="col" style="width:15%">Mã học sinh</th>
+                                    <th scope="col" style="width:20%">Họ và tên</th>
+                                    <th scope="col" style="width:5%">Lớp</th>
+                                    <th scope="col" style="width:10%">Năm học</th>
+                                    <th scope="col" style="width:25%">Danh hiệu</th>
+                                    <th scope="col" style="width:25%">Tổng kết</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lstVanBanDetail" style="background: #fff;"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination-primary" id="paginationholder">
+                    <ul class="pagination" id="pagination"></ul>
+                </div>
+                <div class="loading-box" aria-hidden="true" style="display: none;">
+                    <div class="box-show">
+                        <div class="loading-page"></div>
+                        <div class="box-content">Đang tải ...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 sidebar-mobile-ontop">
+            @Html.Partial("~/Views/Shared/Portals/Layouts/TruongHocTheme/_SidebarMenu.cshtml")
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="bangDiemModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="bangDiemModalLabel"
+         aria-hidden="true" style="padding-top: 50px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header background_van_ban_dieu_hanh">
+                    <h3 class="modal-title" id="bangDiemModalLabel" style="color:white">Thông tin bảng điểm</h3>
+                    <button style="position: absolute; right: 15px; top: 15px;" target="_blank" class="btn btn-info exportFile"><i class="fa fa-file"></i> Xuất file</button>
+                    @*<button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>*@
+                </div>
+                <div class="modal-body" id="vanBanDetail">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button id="exportFile" target="_blank" class="btn btn-info exportFile"><i class="fa fa-file"></i> Xuất file</button>
+                    <button type="button"
+                            class="btn btn-secondary background_van_ban_dieu_hanh"
+                            data-dismiss="modal" style="color:white">
+                        Đóng
+                    </button>
+                    @*<button type="button" class="btn btn-primary">Đường dẫn</button>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery.twbsPagination.min.js"></script>
+
+<script id="student-template" type="x-tmpl-mustache">
+  <table class="table table-borderless">
+    <tr>
+      <td style="width:40%">Họ tên học sinh: <b>{{Hovaten}}</b></td>
+      <td>Lớp: <b>{{Lop}}</b></td>
+    </tr>
+    <tr>
+      <td>Mã Học sinh: <b>{{MaVnedu}}</b></td>
+      <td>Năm học: <b>{{Namhoc}}</b></td>
+    </tr>
+    <tr>
+      <td>Số CCCD: <b></b></td>
+      <td>Ngày sinh: <b>{{Ngaysinh}}</b></td>
+    </tr>
+  </table>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td><b>Môn học</b></td>
+        <td><b>Học kỳ I</b></td>
+        <td><b>Học kỳ II</b></td>
+        <td><b>Cả năm</b></td>
+        <td><b>Thi lại</b></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Toán</b></td><td>{{ToanHKI}}</td><td>{{ToanHKII}}</td><td>{{ToanCN}}</td><td>{{ToanTL}}</td></tr>
+      <tr><td><b>Vật Lý</b></td><td>{{LiHKI}}</td><td>{{LiHKII}}</td><td>{{LiCN}}</td><td>{{LiTL}}</td></tr>
+      <tr><td><b>Hóa học</b></td><td>{{HoaHKI}}</td><td>{{HoaHKII}}</td><td>{{HoaCN}}</td><td>{{HoaTL}}</td></tr>
+      <tr><td><b>Sinh học</b></td><td>{{SinhHKI}}</td><td>{{SinhHKII}}</td><td>{{SinhCN}}</td><td>{{SinhTL}}</td></tr>
+      <tr><td><b>Tin học</b></td><td>{{TinHKI}}</td><td>{{TinHKII}}</td><td>{{TinCN}}</td><td>{{TinTL}}</td></tr>
+      <tr><td><b>Ngữ văn</b></td><td>{{VanHKI}}</td><td>{{VanHKII}}</td><td>{{VanCN}}</td><td>{{VanTL}}</td></tr>
+      <tr><td><b>Lịch sử</b></td><td>{{SuHKI}}</td><td>{{SuHKII}}</td><td>{{SuCN}}</td><td>{{SuTL}}</td></tr>
+      <tr><td><b>Địa lý</b></td><td>{{DiaHKI}}</td><td>{{DiaHKII}}</td><td>{{DiaCN}}</td><td>{{DiaTL}}</td></tr>
+        <tr><td><b>Công nghệ</b></td><td>{{CongNgheHKI}}</td><td>{{CongNgheHKII}}</td><td>{{CongNgheCN}}</td><td>{{CongNgheTL}}</td></tr>
+      <tr><td><b>GDKTPL</b></td><td>{{GDKTPLHKI}}</td><td>{{GDKTPLHKII}}</td><td>{{GDKTPLCN}}</td><td>{{GDKTPLTL}}</td></tr>
+      <tr><td><b>HDTN&amp;HN</b></td><td>{{HDTNHKI}}</td><td>{{HDTNHKII}}</td><td>{{HDTNCN}}</td><td>{{HDTNTL}}</td></tr>
+      <tr><td><b>Kết quả học tập</b></td><td>{{KQHTHKI}}</td><td>{{KQHTHKII}}</td><td>{{KQHTCN}}</td><td></td></tr>
+      <tr><td><b>Kết quả rèn luyện</b></td><td>{{KQRLHKI}}</td><td>{{KQRLHKII}}</td><td>{{KQRLCN}}</td><td></td></tr>
+      <tr><td><b>Số buổi vắng</b></td><td>{{VangHKI}}</td><td>{{VangHKII}}</td><td>{{VangCN}}</td><td></td></tr>
+      <tr><td><b>Điểm TB cả năm</b></td><td colspan="4"><b>{{DTBCN}}</b></td></tr>
+      <tr><td><b>Danh hiệu</b></td><td colspan="4"><b>{{DANHHIEU}}</b></td></tr>
+      <tr><td><b>Lên lớp</b></td><td colspan="4"><b>{{LENLOP}}</b></td></tr>
+    </tbody>
+  </table>
+</script>
+
+@section scripts {
+    <script type="text/javascript">
+
+        var data, chooseItem = null;
+
+        var nameCongThongTin = document.getElementById("nameCongThongTin").value;
+        var nameUBNDXA = document.getElementById("nameUBNDXA").value;
+        var showeOffice = document.getElementById("showeOffice").value;
+
+        function show_detail(item) {
+            this.chooseItem = item;
+            $.ajax({
+                type: "POST",
+                data: {
+                    MaVnedu: item.MaVnedu,
+                    Namhoc: item.Namhoc
+                },
+                url: '@Url.Action("GetDetail", "TraCuuDiem", new { area = "Modules" })',
+                headers: { "Accept": "application/json; odata=verbose; charset=utf-8" },
+                beforeSend: function () {
+
+                },
+                success: function (res) {
+                    const template = $('#student-template').html();
+                    const rendered = Mustache.render(template, res.Result);
+                    $("#vanBanDetail").html(rendered);
+                },
+            });
+        }
+
+        function parseNestedXml(element, obj) {
+            for (let i = 0; i < element.children.length; i++) {
+                const child = element.children[i];
+                obj[child.nodeName] = {};
+
+                // Iterate through the child's attributes
+                for (let j = 0; j < child.attributes.length; j++) {
+                    const attribute = child.attributes[j];
+                    obj[child.nodeName][attribute.nodeName] = attribute.nodeValue;
+                }
+
+                // Recursively iterate through the child's children
+                if (child.children.length > 0) {
+                    obj[child.nodeName] = parseNestedXml(child, obj[child.nodeName]);
+                } else {
+                    obj[child.nodeName]["#text"] = child.textContent;
+                }
+            }
+
+            return obj;
+        }
+
+        var commonConfig = {
+            pageSize: 15,
+            pageNum: 1,
+            isClear: 0,
+            type: ""
+        };
+
+        var skip = commonConfig.pageSize * (commonConfig.pageNum - 1);
+
+        var obj = {
+            PageIndex: commonConfig.pageNum,
+            PageSize: commonConfig.pageSize,
+            IsPagination: true
+        };
+
+        //function getQueryParam(param) {
+        //    var urlParams = new URLSearchParams(window.location.search);
+        //    return urlParams.get(param);
+        //}
+
+        function selectOptionById(selectId, value) {
+            $("#" + selectId).val(value).change();
+        }
+
+        //var cqbhValue = getQueryParam("cqbh");
+
+        $("#bangDiemModal").on('click', '.exportFile', function () {
+            if (chooseItem) {
+                main.exportFile(chooseItem, true);
+            }
+        });
+
+        var main = {
+            exportFile: function (chooseItem, isloading) {
+                if (isloading) {
+                    loading.showLoading();
+                }
+                $.ajax({
+                    type: "POST",
+                    data: chooseItem,
+                    url: '@Url.Action("ExportFile", "TraCuuDiem", new { area = "Modules" })',
+                    beforeSend: function() {
+                        if (isloading) {
+                            loading.showLoading();
+                        }
+                    },
+                    success: function (respon) {
+                        window.open(respon.Result);
+                        loading.hideLoading();
+                    },
+                    error: function (xhr, status, error) {
+                        loading.hideLoading();
+                        alert("Không thể thực hiện thao tác này vào lúc này!!!");
+                    },
+                    timeout: 20000
+                });
+            },
+            loadNamHoc: function () {
+                var currentYear = new Date().getFullYear() + 1;
+                var $namHoc = $('#NamHoc');
+
+                $namHoc.append($('<option>', {
+                    value: '',
+                    text: '-- Chọn năm --'
+                }));
+
+                for (let year = currentYear - 1; year >= 2020; year--) {
+                    let nextYear = year + 1;
+                    let namHocValue = `${year} - ${nextYear}`;
+                    let namHocText = `${year} - ${nextYear}`;
+
+                    $namHoc.append($('<option>', {
+                        value: namHocValue,
+                        text: namHocText
+                    }));
+                }
+            },
+            loadData: function (isloading, refresh) {
+                if (refresh) {
+                    commonConfig.pageSize = 15;
+                    commonConfig.pageNum = 1;
+                    commonConfig.isClear = 0;
+                    obj = {
+                        PageIndex: commonConfig.pageNum,
+                        PageSize: commonConfig.pageSize
+                    };
+                }
+
+                var skip = commonConfig.pageSize * (commonConfig.pageNum - 1);
+
+                obj.Keyword = "";
+                obj.NamHoc = "";
+
+                var Keyword = $("#Keyword").val().trim();
+                $("#Keyword").removeClass("error-border");
+
+                if (Keyword) {
+                    obj.Keyword = Keyword;
+                } else {
+                    $("#Keyword").addClass("error-border").focus();
+                    return;
+                }
+
+                var NamHoc = $("#NamHoc").val();
+                if (NamHoc != null && NamHoc != "") {
+                    var txtNamHoc = $("#NamHoc option:selected").text();
+                    obj.NamHoc = txtNamHoc;
+                }
+
+                obj.UnitCode = '@information.PortalCode.ToUpper()';
+                obj.IsPagination = true;
+
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: '@Url.Action("GetList", "TraCuuDiem", new { area = "Modules" })',
+                    beforeSend: function () {
+                        if (isloading) {
+                            loading.showLoading();
+                        }
+                    },
+                    success: function (respon) {
+                        var res = respon.Result;
+                        if (res.length > 0) {
+                            var totalRow = respon.TotalRow;
+                            $("#soVanBan").text("Tìm thấy " + totalRow + " thông tin")
+                            var html = '';
+
+                            $.each(res, function (key, item) {
+                                html += "<tr data-toggle='modal' data-target='#bangDiemModal' style='cursor: pointer;' " +
+                                    "onclick='show_detail(" + JSON.stringify(item).replace(/'/g, "\\'") + ")'>" +
+                                    "<td><b>" + item.MaVnedu + "</b></td>" +
+                                    "<td><b>" + item.Hovaten + "</b></td>" +
+                                    "<td>" + item.Lop + "</td>" +
+                                    "<td>" + item.Namhoc + "</td>" +
+                                    "<td>" + item.DANHHIEU + "</td>" +
+                                    "<td>" + item.LENLOP + "</td>" +
+                                    "</tr>";
+                            });
+
+                            //off pt
+                            //main.pagingPage(totalRow, commonConfig.isClear, function () {
+                            //    main.loadData(true, false);
+                            //});
+
+                            $("#lstVanBanDetail").html(html);
+
+                            var color = document.getElementById("color").value;
+                            $('.pagination li.active a').css("background", color);
+
+                        }
+                        else {
+                            $("#soVanBan").text("Tìm thấy 0 thông tin")
+
+                            //off pt
+                            //main.pagingPage(0, commonConfig.isClear, function () {
+                            //    main.loadData(true, false);
+                            //});
+
+                            var html = '<tr><td colspan="6" style="text-align: center">Không tìm thấy dữ liệu</td></tr>'
+
+                            $("#lstVanBanDetail").html(html);
+                        }
+                        if (isloading) {
+                            loading.hideLoading();
+                        }
+                    },
+
+                });
+        },
+        pagingPage: function (totalRow, isClear, callback) {
+            var totalPage = Math.ceil(totalRow / commonConfig.pageSize);
+            if (totalPage >= 0 && commonConfig.isClear == 0) {
+                if (totalPage == 0) {
+                    totalPage = 1;
+                }
+                $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+            }
+
+            $("#paginationholder #pagination").twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 6,
+                first: "<<",
+                next: ">",
+                last: ">>",
+                prev: "<",
+                initiateStartPageClick: false,
+                onPageClick: function (event, pageNum) {
+                    commonConfig.pageNum = pageNum;
+                    commonConfig.isClear = 1;
+                    obj = {
+                        pageNum: commonConfig.pageNum,
+                        pageSize: commonConfig.pageSize,
+                    };
+                    setTimeout(callback, 200);
+                }
+            });
+        }
+        }
+
+        $(document).ready(function () {
+            var width = $("#slide_news .sp-slides-container").outerWidth();
+            $(".sp-caption-container").css({ "width": width + "px" });
+            main.loadNamHoc();
+
+            //setTimeout(function () {
+            //    $.when(
+            //        main.loadNamHoc(),
+            //    ).done(function () {
+            //        main.loadData(true, false);
+            //    });
+            //}, 500)
+        })
+    </script>
+}

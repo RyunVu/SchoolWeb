@@ -1,0 +1,555 @@
+<div class="body-content">
+
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <nav id="menu-filter" class="sidenavfilter">
+
+    <div (click)="closeFilter()" class="bg-close"></div>
+
+    <div class="close-menu-filter close-menu" (click)="closeFilter()"><span><i class="fa fa-window-close"
+          aria-hidden="true"></i></span></div>
+
+    <div class="filter_action">
+      <button class="btn-sm btn btn-outline-secondary"><i class="fas fa-ban"></i> Reset all</button>
+      <button class="btn-sm btn btn-success"><i class="fas fa-check"></i> Áp dụng</button>
+    </div>
+
+  </nav>
+
+  <div class="container" *ngIf="coquan == 1">
+    <div class="content-title text-center">
+      <div class="c-title">Thủ trưởng cơ quan</div>
+    </div>
+    <div class="lstperson col-sm-6 offset-sm-3">
+      <div class="person_item" (click)="showTieuSu(11,1)">
+        <div class="person_name"> Đ/c ĐẶNG ĐỨC HIỆP</div>
+
+
+        <div class="person_info">
+          <div class="person_img">
+            <img src="assets/template/images/3. LÃNH ĐẠO ỦY BAN KIỂM TRA TỈNH ỦY/1. TRƯỞNG BAN - CHỦ NHIỆM/12. ĐẶNG ĐỨC HIỆP - Chủ nhiệm Khóa XI 2020-2025/ĐC Hiệp (avatar 1).jpg" />
+          </div>
+          <div class="person_content">
+            <p>Ngày sinh: 01/5/1972</p>
+            <p>Quê quán: Xã Đức Thuận, Thị xã Hồng Lĩnh, Tỉnh Hà Tĩnh</p>
+            <p>Chỗ ở hiện nay: 01 Lý Nam Đế, Phường 8, TP Đà Lạt, Lâm Đồng</p>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Phó thủ trưởng cơ quan</div>
+    </div>
+
+    <div></div>
+
+    <div class="lstperson row col-sm-12">
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,2)">
+          <div class="person_name">Đ/c Đ/c ĐẶNG THẾ HẢI</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/3. LÃNH ĐẠO ỦY BAN KIỂM TRA TỈNH ỦY/2. PHÓ TRƯỞNG BAN - PHÓ CHỦ NHIỆM/2020-2025.Đặng Thế Hải, Tỉnh ủy viên, Phó Chủ nhiệm Thường trực Khóa XI/1.PNG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 23/4/1966</p>
+              <p>Quê quán: Xã Bình Hải – Huyện Bình Sơn – Tỉnh Quảng Ngãi</p>
+              <p>Chỗ ở hiện nay: 01 Lương Thế Vinh, Phường 3, TP Đà Lạt, Lâm Đồng</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,3)">
+          <div class="person_name">Đ/c LÊ THỊ XUÂN LIÊN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/3. LÃNH ĐẠO ỦY BAN KIỂM TRA TỈNH ỦY/2. PHÓ TRƯỞNG BAN - PHÓ CHỦ NHIỆM/2020-2025. Lê Thị Xuân Liên, Phó Chủ nhiệm Khóa XI/1.PNG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 26/3/1977</p>
+              <p>Quê quán: Xã Nghĩa Hiệp – Huyện Tư Ngĩa – Tỉnh Quảng Ngãi</p>
+              <p>Chỗ ở hiện nay: 211/14 Phan Đình Phùng, Phường 2, TP Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="container" *ngIf="coquan == 2">
+    <div class="content-title text-center">
+      <div class="c-title">Trưởng phòng - Phụ trách phòng</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,4)">
+          <div class="person_name">Đ/c NGUYỄN VIẾT MỘC</div>
+          <div class="person_info">
+            <div class="person_img">
+              <img src="assets/template/images/CHINH ANH 4. ỦY BAN KIỂM TRA TỈNH ỦY/11.UBKTTU KHOA XI 2020-2025/04. Nguyễn Viết Mộc - Ủy viên chuyên trách/Nguyễn Viết Mộc 1 (ava2).jpg" />
+            </div>
+            <div class="person_content">
+              <p>Ngày sinh: 02/04/1967</p>
+              <p>Quê quán: Xã Vạn Ninh, Huyện Gia Bình, Tỉnh Bắc Ninh</p>
+              <p>Chỗ ở hiện nay: 45 Lữ Gia, TP Đà Lạt, Tỉnh Lâm Đồng</p>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,9)">
+          <div class="person_name"> Đ/c TRẦN HUY PHONG</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/CHINH ANH 4. ỦY BAN KIỂM TRA TỈNH ỦY/11.UBKTTU KHOA XI 2020-2025/10. Trần Huy Phong - Ủy viên chuyên trách/Trần Huy Phong 2.jpg" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 18/10/1982</p>
+              <p>Quê quán: Xã Thượng Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
+              <p>Chỗ ở hiện nay: Hẻm số 79 đường Hùng Vương, Phường 9, Thành phố Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Phó phòng</div>
+    </div>
+
+    <div></div>
+
+    <div class="lstperson col-sm-6 offset-sm-3">
+      <div class="person_item" (click)="showTieuSu(11,11)">
+        <div class="person_name"> Đ/c PHẠM THỊ HUYỀN</div>
+
+        <div class="person_info">
+
+          <div class="person_img">
+            <img src="assets/template/images/profile/Phạm Thị Huyền 8.JPG" />
+          </div>
+
+          <div class="person_content">
+            <p>Ngày sinh: 22/9/1984</p>
+            <p>Quê quán: Xã Liên Trạch – Huyện Bố Trạch – Quảng Bình</p>
+            <p>Chỗ ở hiện nay: 64/17 Lữ Gia, Phường 9, TP Đà Lạt</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Nhân viên</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,14)">
+          <div class="person_name"> Đ/c HUỲNH NGỌC LÂM</div>
+
+          <div class="person_item" (click)="showTieuSu(11,14)">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Huỳnh Ngọc Lâm.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 29/11/1965</p>
+              <p>Quê quán: Xã Đại Hòa , Huyện Đại Lộc, Quảng Nam</p>
+              <p>Chỗ ở hiện nay: 7/22 Phi Nôm, Hiệp Thạnh, Đức Trọng, Lâm Đồng</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,15)">
+          <div class="person_name">Đ/c TRẦN THỊ BÍCH</div>
+
+          <div class="person_item" (click)="showTieuSu(11,15)">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Trần Thị Bích 1.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 07/01/1989</p>
+              <p>Quê quán: Trực Tuấn, Trực Ninh, Nam Định</p>
+              <p>Chỗ ở hiện nay: LK60 KQH Yersin, Phường 9, Đà Lạt, Lâm Đồng</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,16)">
+          <div class="person_name">Đ/c ĐỖ THỊ LOAN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/đồng chí Đỗ Thị Loan.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 12/10/1984</p>
+              <p>Quê quán: Xã Đông Cường, Huyện Đông Hưng, Tỉnh Thái Bình</p>
+              <p>Chỗ ở hiện nay: 37/37 Ngô Thì Sỹ, Phường 4, Thành phố Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,17)">
+          <div class="person_name">TRẦN BẢO HÀ</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Trần Bảo Hà.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 07/11/1987</p>
+              <p>Quê quán: Thọ An, Đan Phượng, Hà Nội</p>
+              <p>Chỗ ở hiện nay: 32 Đào Duy Từ, Phường 4, TP Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,18)">
+          <div class="person_name">TRẦN THỊ NGUYỆT</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Trần Thị Nguyệt.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 25/10/1975</p>
+              <p>Quê quán: Thái Bình</p>
+              <p>Chỗ ở hiện nay: 31 Hùng Vương, TP Đà lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container" *ngIf="coquan == 3">
+    <div class="content-title text-center">
+      <div class="c-title">Trưởng phòng - Phụ trách phòng</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,8)">
+          <div class="person_name">Đ/c NGUYỄN MẬU HÀ</div>
+          <div class="person_info">
+            <div class="person_img">
+              <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/3. Phòng Nghiệp vụ 1/1. Đồng chí Nguyễn Mậu Hà - Trưởng phòng Nghiệp vụ 1/Nguyễn Mậu Hà ava2.JPG" />
+            </div>
+            <div class="person_content">
+              <p>Ngày sinh: 29/6/1980</p>
+              <p>Quê quán: Xã Duy Ninh, Huyện Quảng Ninh, Tỉnh Quảng Bình</p>
+              <p>Chỗ ở hiện nay: 194/10 Yersin Phường 9 Đà Lạt</p>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,7)">
+          <div class="person_name">Đ/c ĐÀO ĐỨC OAI</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/3. Phòng Nghiệp vụ 1/2. Đồng chí Đào Đức Oai - Phụ trách Phòng/Đào Đức Oai (avatar).jpg" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 30/12/1976</p>
+              <p>Quê quán: Xã Đông Hội – Đông Anh – Tp. Hà Nội</p>
+              <p>Chỗ ở hiện nay: Khu phố Văn Hà, Thị trấn Đinh Văn, Lâm Hà</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Phó phòng</div>
+    </div>
+
+    <div></div>
+
+    <div class="lstperson col-sm-6 offset-sm-3">
+      <div class="person_item" (click)="showTieuSu(11,12)">
+        <div class="person_name">Đ/c ĐỖ THỊ HẠNH</div>
+
+        <div class="person_info">
+
+          <div class="person_img">
+            <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/3. Phòng Nghiệp vụ 1/3. Đồng chí Đỗ Thị Hạnh - Phó phòng Nghiệp vụ 1/Đỗ Thị Hạnh ava2.JPG" />
+          </div>
+
+          <div class="person_content">
+            <p>Ngày sinh: 10/10/1988</p>
+            <p>Quê quán: Xã Đông Cường, Huyện Đông Hưng, Tỉnh Thái Bình</p>
+            <p>Chỗ ở hiện nay: 289 Tô Hiến Thành, Phường 3, Thành phố Đà Lạt</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Nhân viên</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,19)">
+          <div class="person_name">Đ/c TRIỆU THỊ HẢI YẾN</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Triệu Thị Hải Yến 3.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 01/01/1978</p>
+              <p>Quê quán: Thôn Vân Cầu, Xã An Đức, Huyện Ninh Giang</p>
+              <p>Chỗ ở hiện nay: 70/34, Lữ Gia, Phường 9, TP Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,20)">
+          <div class="person_name">Đ/c MAI THANH LONG</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Mai Thanh Long (avatar).JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 10/5/1988</p>
+              <p>Quê quán: Xã Tịnh Long, Huyện Sơn Tịnh, Tỉnh Quảng Ngãi</p>
+              <p>Chỗ ở hiện nay: Lô B5 KQH 12A Triệu Việt Vương, Phường 4, TP. Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,21)">
+          <div class="person_name">Đ/c NGUYỄN THỊ NGUYỆT</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/3. Phòng Nghiệp vụ 1/6. Đồng chí Nguyễn Thị Nguyệt - Kiểm tra viên Phòng NV1/đồng chí Nguyễn Thị Nguyệt ava1.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 16/7/1991</p>
+              <p>Quê quán: Mỹ Sơn, Đô Lương, Nghệ An</p>
+              <p>Chỗ ở hiện nay: 8/1 Đường 3 Tháng 4, Phường 3, TP. Đà Lạt, Lâm Đồng</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container" *ngIf="coquan == 4">
+    <div class="content-title text-center">
+      <div class="c-title">Trưởng phòng - Phụ trách phòng</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+      <div class="col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,5)">
+          <div class="person_name">Đ/c HOÀNG XUÂN THÙY</div>
+  
+          <div class="person_info">
+  
+            <div class="person_img">
+              <img src="assets/template/images/profile/đồng chí Hoàng Xuân Thùy (avatar).JPG" />
+            </div>
+  
+            <div class="person_content">
+              <p>Ngày sinh: 23/11/1970</p>
+              <p>Quê quán: Xã Nghĩa Thịnh, Huyện Nghĩa Hưng, Tỉnh Nam Định</p>
+              <p>Chỗ ở hiện nay: Số nhà 79/7a đường Hùng Vương, Phường 9, Thành phố Đà Lạt</p>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div>
+      <div class="col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,6)">
+          <div class="person_name">Đ/c VŨ KIM THUẤN</div>
+  
+          <div class="person_info">
+  
+            <div class="person_img">
+              <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/4. Phòng Nghiệp vụ 2/2. Đồng chí Vũ Kim Thuấn - Ủy viên UBKT Tỉnh ủy/Vũ Kim Thuấn ava1.JPG" />
+            </div>
+  
+            <div class="person_content">
+              <p>Ngày sinh: 02/03/1972</p>
+              <p>Quê quán: Xã Hồng Quang – Huyện Thanh Miện, Tỉnh Hải Dương</p>
+              <p>Chỗ ở hiện nay: Số 42H, đường Cao Bá Quát, Phường 7, TP Đà Lạt</p>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div>
+  
+    </div>
+   
+
+    <div class="content-title text-center">
+      <div class="c-title">Phó phòng</div>
+    </div>
+
+    <div></div>
+
+    <div class="lstperson col-sm-6 offset-sm-3">
+      <div class="person_item" (click)="showTieuSu(11,13)">
+        <div class="person_name">Đ/c ĐỖ VĂN THOAN</div>
+
+        <div class="person_info">
+
+          <div class="person_img">
+            <img src="assets/template/images/1. Cơ quan Ủy ban Kiểm tra Tỉnh ủy 2020-2025 (hoanchinh)/4. Phòng Nghiệp vụ 2/3. Đồng chí Đỗ Văn Thoan - Phó phòng NV2/Đ.c Thoan(avatar1).JPG" />
+          </div>
+
+          <div class="person_content">
+            <p>Ngày sinh: 20/05/1975</p>
+            <p>Quê quán: Xã Hoà Thạch, Huyện Quốc Oai, Thành phố Hà Nội</p>
+            <p>Chỗ ở hiện nay: Thửa 112 tờ bản đồ 39 đường hẻm Nguyễn Trung Trực, Phường 4, T.P Đà Lạt</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content-title text-center">
+      <div class="c-title">Nhân viên</div>
+    </div>
+    <div class="lstperson row col-sm-12">
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,22)">
+          <div class="person_name">Đ/c THÂN VĂN DŨNG</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/đồng chí Thân Văn Dũng.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 19/08/1979</p>
+              <p>Quê quán:  Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
+              <p>Chỗ ở hiện nay: 9B Hoàng Văn Thụ, Phường 5, Thành phố Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class=" col-sm-6">
+        <div class="person_item" (click)="showTieuSu(11,23)">
+          <div class="person_name">Đ/c NGUYỄN THỊ HẠNH QUỲNH</div>
+
+          <div class="person_info">
+
+            <div class="person_img">
+              <img src="assets/template/images/profile/Nguyễn Thị Hạnh Quỳnh.JPG" />
+            </div>
+
+            <div class="person_content">
+              <p>Ngày sinh: 21/12/1984</p>
+              <p>Quê quán: Xã Cát Trinh, Huyện Phù Cát, Tỉnh Bình Định</p>
+              <p>Chỗ ở hiện nay: 1/5 Lữ Gia - Phường 9 - TP Đà Lạt</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

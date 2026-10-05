@@ -1,0 +1,34 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@model List<VNPT.Web.Portal.Base.News>
+
+
+
+<div id="slider_1newimage" class="owl-carousel">
+
+    @foreach (var item in Model)
+    {
+        <div class="item">
+            @if (item.IsNewsImage)
+            {
+                <div class="item">
+                    <a href="@(item.IsOpenImageOnly ? Url.Image(item.ImageUrl).ToString() : item.OtherUrl)" @(item.IsOpenBlankPage ? "target=\"\"" : "")>
+                        <img class="simg" src="@Url.Image(item.ImageUrl)" />
+                        <p>@item.Title</p>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="item">
+                    <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" @(item.IsOpenBlankPage ? "target=\"\"" : "")>
+                        <img class="simg" src="@Url.Image(item.ImageUrl)" />
+                        <p>@item.Title</p>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+

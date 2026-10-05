@@ -1,0 +1,31 @@
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Mật khẩu cũ</label>
+                    <input type="password" class="form-control" [(ngModel)]="item.OldPassword">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Mật khẩu mới</label>
+                    <input type="password" class="form-control" [(ngModel)]="item.NewPassword">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Nhập lại mật khẩu mới</label>
+                    <input type="password" class="form-control" [(ngModel)]="item.NewPassword2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-outline-danger" type="submit" (click)="save()">Lưu</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

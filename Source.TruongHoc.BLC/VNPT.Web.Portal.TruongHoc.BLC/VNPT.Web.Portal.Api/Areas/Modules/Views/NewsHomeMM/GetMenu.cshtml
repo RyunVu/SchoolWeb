@@ -1,0 +1,136 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Models;
+@using VNPT.Web.Portal.Api.Helper
+
+@model List<MenuModel>
+
+@helper CreateLink(MenuModel menu, bool isChild)
+{
+    if (menu.IsNewsImage)
+    {
+        <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@menu.Action" class="menu-a @(isChild?"":"")" title="@menu.Title">
+            @menu.Title
+        </a>
+    }
+    else if (!string.IsNullOrEmpty(menu.Action))
+    {
+        switch (menu.Action)
+        {
+            case "hoi-dap-truc-tuyen":
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    @if (isChild)
+                    {
+                        <i class="fa fa-caret-right"></i>
+                    }
+                    @menu.Title
+                </a>
+                break;
+            case "login":
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="/admin" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    @if (isChild)
+                    {
+                        <i class="fa fa-caret-right"></i>
+                    }
+                    @menu.Title
+                </a>
+                break;
+            case "danh-sach-tin-tuc":
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(menu.Parameter) ? Url.Site(menu.Action, parameter: new { param = menu.Parameter }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    @if (isChild)
+                    {
+                        <i class="fa fa-caret-right"></i>
+                    }
+                    @menu.Title
+                </a>
+                break;
+            case "chi-tiet-tin-tuc":
+                var param = menu.Parameter?.Split('.').Last();
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(param) ? Url.Site(menu.Action, parameter: new { param = param }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    @if (isChild)
+                    {
+                        <i class="fa fa-caret-right"></i>
+                    }
+                    @menu.Title
+                </a>
+                break;
+            default:
+                <a @(menu.IsOpenBlankPage ? "target=\"_blank\"" : "") href="@(!string.IsNullOrEmpty(menu.Parameter) ? Url.Site(menu.Action, parameter: new { param = menu.Parameter }).ToString() : Url.Site(menu.Action).ToString())" title="@menu.Title" class="menu-a @(isChild?"":"")">
+                    @if (isChild)
+                    {
+                        <i class="fa fa-caret-right"></i>
+                    }
+                    @menu.Title
+                </a>
+                break;
+        }
+    }
+}
+
+@foreach (var menu in Model)
+{
+    if (menu.Children.Count > 0)
+    {
+        <li class="li-submenu">
+            <a class="menu-a">@menu.Title <i class="@(menu.Icon != null ? "fa fa-angle-down" : "")fa fa-angle-down"></i></a>
+            @if (menu.Children.Count > 0)
+            {
+                <ul class="sub-menu">
+                    @foreach (var sub in menu.Children)
+                    {
+                        <li class="li-submenu2">
+                            @if (sub.Action.CheckUrl())
+                            {
+                                <a target="_blank" href="@sub.Action" title="">
+                                    @sub.Title
+                                </a>
+                            }
+                            else
+                            {
+                                if (sub.Children.Any())
+                                {
+                                    <a>
+                                        <i class="fa fa-caret-right"></i>
+                                        @sub.Title
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="sub-menu2">
+                                        @foreach (var sub2 in sub.Children)
+                                        {
+
+                                            <li>
+                                                @CreateLink(sub2, true)
+                                                @*@if (sub2.Action.CheckUrl())
+                                                                                                {
+                                                                                                    <a target="_blank" href="@sub2.Action" title="">
+                                                                                                        @sub2.Title
+                                                                                                    </a>
+                                                                                                }
+                                                                                                else
+                                                            {
+                                                                                                    <a href="@(!string.IsNullOrEmpty(sub2.Parameter) ? Url.Site(sub2.Action, parameter: new { param = sub2.Parameter }).ToString() : Url.Site(sub2.Action).ToString())" title="">
+                                                                                                        <i class="fa fa-caret-right"></i>
+                                                                                                        @sub2.Title
+                                                                                                    </a>
+                                                    }*@
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    @CreateLink(sub, true)
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+    else
+    {
+        <li>
+            @CreateLink(menu, false)
+        </li>
+    }
+}

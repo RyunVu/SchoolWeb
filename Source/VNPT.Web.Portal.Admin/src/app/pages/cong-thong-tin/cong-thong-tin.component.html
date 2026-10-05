@@ -1,0 +1,104 @@
+<!-- <p-toast [style]="{marginTop: '80px'}"></p-toast> -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 class="m-0 text-dark">Quản lý cổng thông tin</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Quản lý cổng thông tin</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="Name">Từ khóa tìm kiếm</label>
+                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
+                                        placeholder="Từ khóa tìm kiếm" />
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="padding-top: 37px;">
+                                <button (click)="search()" type="button" class="btn btn-info btn-sm"
+                                    style="margin-right: 5px;">
+                                    <i class="fa fa-filter"></i> Tìm kiếm
+                                </button>
+                                <button (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
+                                    <i class="fas fa-plus"></i> Thêm mới
+                                </button>
+                                <button (click)="uploadFile()" type="button" class="btn btn-info btn-sm mr-3" style="float: right;">
+                                    <i class="fas fa-cloud-upload-alt"></i> Upload File
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    [paginator]="true" [rows]="pageSize"
+                    [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading"
+                        responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="headerTable" style="width: 10rem; text-align: center;">STT</th>
+                                <th class="headerTable">Tên cổng</th>
+                                <th class="headerTable">Đơn vị</th>
+                                <th class="headerTable">Người quản trị</th>
+                                <th class="headerTable" style="width: 10rem">Thao tác</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+                            <tr>
+                                <td style="text-align: center;">{{i+1}}</td>
+                                <td>{{ rowData.Name }}</td>
+                                <td>{{ rowData.UnitName }}</td>
+                                <td>{{ rowData.AdministratorUserName }}</td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-info dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Thao tác
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <a class="dropdown-item" (click)="edit(rowData)"
+                                                *ngIf="checkPermission('Edit')">Cập nhật</a>
+                                            <a class="dropdown-item" (click)="delete(rowData)"
+                                                *ngIf="checkPermission('Delete')">Xóa</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                (click)="addalias(rowData)">Quản lý tên miền</a>
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                (click)="addsiteurl(rowData)">Quản lý tên miền con</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                              <td colspan="3">No items found.</td>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="paginatorleft" let-state>
+                            <span>Tổng cộng: {{state.totalRecords}}</span>
+                          </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,134 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 class="m-0 text-dark">Quản lý menu trang quản trị</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Menus</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <div class="row">
+                            <div *ngIf="isSuperAdminSystem" class="col-md-2">
+                                <div class="form-group">
+                                    <label for="Name">Đơn vị</label>
+                                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" 
+                                    [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                                    </p-dropdown>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="Name">Loại Menu</label>
+                                    <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type" [options]="menuTypes" appendTo="body">
+                                    </p-dropdown>
+                                </div>
+                            </div> -->
+                            
+                            <div class="col-md-2" *ngIf="type == 'PORTAL'">
+                                <div class="form-group" >
+                                    <label for="DayOfBirth">Vị trí menu</label>
+                                    <div>
+                                        <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="menuPosition" [options]="menuPositions"
+                                            appendTo="body">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div [ngClass]="isSuperAdminSystem ? 'col-md-8' : 'col-md-10'">
+                                <div class="form-group">
+                                    <label for="Name">Từ khóa tìm kiếm</label>
+                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
+                                        placeholder="Từ khóa tìm kiếm" />
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="padding-top: 37px;">
+                                <button (click)="search()" type="button" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                                    <i class="fa fa-filter"></i> Tìm kiếm
+                                </button>
+                                <button (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
+                                    <i class="fas fa-plus"></i> Thêm mới
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <p-treeTable [value]="treeNodes">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="headerTable" width="25%">Tiêu đề</th>
+                                <th class="headerTable" width="5%">Thứ tự</th>
+                                <th class="headerTable" width="5%">Hiển thị</th>
+                                <th class="headerTable" width="10%">Action</th>
+                                <th class="headerTable" width="15%">Parameter</th>
+                                <th class="headerTable" width="10%">Icon</th>
+                                <th class="headerTable" width="10%">Code (Role Level)</th>
+                                <th class="headerTable" width="10%">Đơn vị</th>
+                                <th class="headerTable" width="10%">Thao tác</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                            <tr>
+                                <td>
+                                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                                    {{ rowData.Title }}
+                                </td>
+                                <td>
+                                    {{ rowData.OrderNo }}
+                                </td>
+                                <td style="text-align: center;">
+                                    <i *ngIf="rowData.IsShowMenu == true" class="fa fa-check"></i>
+                                </td>
+                                <td>{{ rowData.Action }}</td>
+                                <td>{{ rowData.Parameter }}</td>
+                                <td>
+                                    <i class="{{ rowData.Icon }}"></i> {{rowData.Icon}}
+                                </td>
+                                <td>{{ rowData.Code }} ({{ rowData.RoleLevel }})</td>
+                                <td>{{ rowData.UnitCode }}</td>
+                                <td style="text-align: center;">
+                                    <div class="dropdown">
+                                        <button class="btn btn-info dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                            Thao tác
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a *ngIf="checkPermission('Edit')" class="dropdown-item"
+                                                (click)="edit(rowData)">Cập nhật</a>
+                                            <a *ngIf="isSuperAdminSystem && checkPermission('Edit')" class="dropdown-item"
+                                                (click)="functionMenu(rowData)">Function</a>
+                                            <a *ngIf="checkPermission('Delete')" class="dropdown-item"
+                                                (click)="delete(rowData)">Xoá</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                (click)="history(rowData)">Lịch sử thay đổi</a>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-treeTable>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>

@@ -1,0 +1,15 @@
+<div class="card business-tiny-detail">
+    <div class="card-body pt-0">
+        <h5 class="card-title mt-3">{{ entity.NguoiNop }} - {{ entity.SoGp }}</h5>
+        <div class="clearfix"></div>
+        <hr />
+        <p class="card-text">
+            {{ populatePermitFullAddress(entity) }}
+        </p>
+        <span class="py-2 float-left"><strong>Tình trạng xây: </strong>
+      <span class="badge" [ngClass]="calculateConstructionStatusBadge(entity.TrangThaiXayText)">{{ entity.TrangThaiXayText }}</span></span>
+        <span *ngIf="entity.TrangThaiNopThueText" class="py-2 float-right"><strong>Nộp thuế: </strong>
+      <span *ngIf="entity.TrangThaiNopThueText" class="badge" [ngClass]="calculatePermitFeeStatusBadge(entity.TrangThaiNopThueText)">{{ entity.TrangThaiNopThueText }}</span></span>
+        <div class="clearfix"></div>
+    </div>
+</div>

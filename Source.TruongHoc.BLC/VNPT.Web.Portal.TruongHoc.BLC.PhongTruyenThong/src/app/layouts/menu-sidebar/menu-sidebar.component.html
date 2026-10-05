@@ -1,0 +1,93 @@
+<aside #mainSidebar class="main-sidebar elevation-4 sidebar-light-primary">
+    <!-- Brand Logo -->
+    <a [routerLink]="['/']" class="brand-link">
+        <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
+        <span class="brand-text font-weight-light">Phòng truyền thống</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+        <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img [src]="user.image" class="img-circle elevation-2" alt="User Image" />
+      </div>
+      <div class="info">
+        <a [routerLink]="['/profile']" class="d-block">{{user.firstName}} {{user.lastName}}</a>
+      </div>
+    </div> -->
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+
+                <ng-container [ngTemplateOutletContext]="{link:menus}" [ngTemplateOutlet]="common1">
+                </ng-container>
+
+                <ng-template #common1 let-link='link'>
+
+                    <li class="nav-item" *ngFor="let item of link; let i = index" [ngClass]="{
+            'has-treeview': item.Children != null && item.Children.length > 0,
+            'menu-is-opening': item.Action === currentUrlPath,
+            'menu-open': item.Action === currentUrlPath
+          }" (click)="toggleMenu($event)">
+                        <a (click)="toggleMenu($event)" class="nav-link" style="font-weight: bold;" [ngClass]="{ active: item.Action === currentUrlPath }" *ngIf="
+              item.Children != null && item.Children.length > 0;
+              else notChild
+            ">
+                            <!-- <i class="nav-icon" [ngClass]="item.Icon"></i> -->
+                            <i class="custom-number-i">{{item.OrderNo}}. </i>
+                            <p>
+                                {{ item.Title }}
+                                <i class="right fas fa-angle-left" *ngIf="item.Children != null && item.Children.length > 0"></i>
+                            </p>
+                        </a>
+                        <ng-template #notChild>
+                            <a [routerLink]="'/' + item.Action" class="nav-link" style="font-weight: bold;" [ngClass]="{ active: item.Action === currentUrlPath }">
+                                <i class="custom-number-i">{{item.OrderNo}}. </i>
+                                <p>{{ item.Title }}</p>
+                            </a>
+                        </ng-template>
+
+                        <ng-container *ngIf="item.Children" [ngTemplateOutlet]="common" [ngTemplateOutletContext]="{link:item.Children,parent: item.OrderNo + '.'}"></ng-container>
+
+                    </li>
+                </ng-template>
+            </ul>
+
+            <ng-template #common let-link='link' let-parent="parent">
+                <ul class="nav nav-treeview ng-star-inserted">
+
+                    <li class="nav-item" *ngFor="let item of link; let i = index" [ngClass]="{
+            'has-treeview': item.Children != null && item.Children.length > 0,
+            'menu-is-opening': item.Action === currentUrlPath,
+            'menu-open': item.Action === currentUrlPath
+          }" (click)="toggleMenu($event)">
+                        <a (click)="toggleMenu($event)" class="nav-link" [ngClass]="{ active: item.Action === currentUrlPath }" *ngIf="item.Children != null && item.Children.length > 0;else notChild">
+                            <!-- <i class="nav-icon" [ngClass]="item.Icon"></i> -->
+                            <i class="custom-number-i">{{parent}}{{item.OrderNo}}. </i>
+                            <p>
+                                {{ item.Title }}
+                                <i class="right fas fa-angle-left" *ngIf="item.Children != null && item.Children.length > 0"></i>
+                            </p>
+                        </a>
+                        <ng-template #notChild>
+                            <a [routerLink]="'/' + item.Action" class="nav-link" [ngClass]="{ active: item.Action === currentUrlPath }">
+                                <!-- <i class="nav-icon" [ngClass]="item.Icon"></i> -->
+                                <i class="custom-number-i">{{parent}}{{item.OrderNo}}. </i>
+                                <p>{{ item.Title }}</p>
+                            </a>
+                        </ng-template>
+
+                        <ng-container *ngIf="item.Children" [ngTemplateOutlet]="common" [ngTemplateOutletContext]="{link:item.Children,parent: parent + item.OrderNo + '.'}"></ng-container>
+
+                    </li>
+
+                </ul>
+            </ng-template>
+
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

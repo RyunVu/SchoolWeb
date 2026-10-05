@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Tiêu đề</label>
+            <input type="text" class="form-control" [(ngModel)]="caption"/>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger"  (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

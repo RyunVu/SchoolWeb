@@ -1,0 +1,290 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.DTO
+
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+    var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    string lang = "vi";
+
+    if (cookie != null)
+    {
+        lang = cookie.Value;
+        // Use the cookie value as needed
+    }
+
+    var codename = "Danh sách tin tức - " + GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper())?.Name;
+
+    if (lang != "vi")
+    {
+        codename = "News list - " + GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+    }
+}
+@section MetaData {
+	@Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+<div class="container">
+	<div class="row">
+		<div class="col-md-9">
+			<div class="site_block_title">
+				<h3>
+					<a>
+						<i class="fa fa-file-text"></i>
+						@codename
+					</a>
+				</h3>
+			</div>
+			<div class="search-item search-doc" id="form_search_change">
+				<form>
+					@Html.AntiForgeryToken()
+					<div class="input-container form-group fg-right" style="margin-top:10px;">
+						<input value="" id="keyword" class="input-field form-control" type="text" placeholder="Tìm kiếm" name="keyword">
+						<i class="fa fa-search icon"></i>
+					</div>
+				</form>
+			</div>
+			<div class="list-news-cate" id="lstVanBanPl">
+			</div>
+			<div class="pagination-primary" id="paginationholder">
+				<ul class="pagination" id="pagination"></ul>
+			</div>
+			<div class="loading-box" aria-hidden="true" style="display: none;">
+				<div class="box-show">
+					<div class="loading-page"></div>
+					<div class="box-content">Đang tải ...</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 sidebar-mobile-ontop float-left">
+			@Html.Partial("~/Views/Shared/Portals/Layouts/TruongHocTheme/_SidebarMenu.cshtml")
+		</div>
+	</div>
+</div>
+
+<script src="~/Scripts/jquery.twbsPagination.min.js"></script>
+
+@section scripts {
+    <script type="text/javascript">
+
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        }
+
+        function formatDateString(string) {
+            var d = new Date(string);
+            return (d.getDate() < 9 ? ("0" + d.getDate()) : d.getDate()) + "/" + ((d.getMonth() + 1) < 9 ? ("0" + (d.getMonth() + 1)) : (d.getMonth() + 1)) + "/" + d.getFullYear();
+        }
+        function CutString(number, stringContent) {
+            var content = $(stringContent).text();
+            var c = content.substr(0, number);
+            return c;
+        }
+        function CutStringNoHtml(number, stringContent) {
+            var content = stringContent.substr(0, number);
+            return content;
+        }
+
+        var commonConfig = {
+            pageSize: 10,
+            page: 1,
+            number: 100000,
+            isClear: 0,
+        }
+
+        var Code = '@code';
+        var linkImg = '@linkImg';
+        var url_api = '';
+        if (Code == "CM_TINTUYENTRUYEN".toLowerCase()) {
+            url_api = '@Url.Action("GetNewsList2", "CongDoan", new { area = "Modules", type = 2 })';
+        }else{
+            url_api = '@Url.Action("GetNewsList2", "CongDoan", new { area = "Modules", type = 1 })';
+        }
+
+        var obj = {
+            page: commonConfig.page,
+            pageSize: commonConfig.pageSize,
+            keyword: $("#keyword").val(),
+            Code: Code,
+            number: commonConfig.number
+        };
+
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+
+        var main = {
+            loadData: function () {
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: url_api,
+                    beforeSend: function () {
+                        loading.showLoading();
+                    },
+                    success: function (res) {
+                        if (res.length > 0) {
+                            var html = '';
+                            var text = '';
+                            $.each(res, function (key, item) {
+                                var content = "";
+                                if (item.SHORT_CONTENT != null) {
+                                    content = item.SHORT_CONTENT + "...";
+                                } else {
+                                    content = CutString(300,item.CONTENT) + "...";
+                                }
+
+                                var regExp = /^(http|https|ftp):\/\//i;
+
+                                 var valueUrl = "";
+                                if (!regExp.test(item.URL_IMG)) {
+                                    valueUrl = domainMedia + item.URL_IMG;
+                                 } else {
+                                    valueUrl = item.URL_IMG;
+                                 }
+
+                                if (item.URL_IMG != null) {
+                                    html += '<div class="box-news-cate">'
+                                            + '<a class="img" href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "" })" data-href="' + item.ALIAS + '"  title="' + item.TITLE + '" >'
+                                        + '<img src="' + valueUrl + '" alt="' + item.TITLE + '" >'
+                                            + '</a>'
+                                            + '<div class="title">'
+                                                + '<h3><a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "" })" data-href="' + item.ALIAS + '" title="' + item.TITLE + '">' + item.TITLE + '</a></h3>'
+                                                + '<span class="time-primary"><i class="fa fa-clock-o"></i>' + item.CREATE + '</span>'
+                                                + '<span class="desc-primary" > ' + content + ' </span>'
+                                            + '</div>'
+                                       + '</div>';
+                                } else {
+                                    html += '<div class="box-news-cate">'
+                                            + '<a class="img" href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "" })" data-href="' + item.ALIAS + '"  title="' + item.TITLE + '" >'
+										+ '<img src="/Images/noimage.png" alt="' + item.TITLE + '" >'
+                                            + '</a>'
+                                            + '<div class="title">'
+                                                + '<h3><a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "" })" data-href="' + item.ALIAS + '" title="' + item.TITLE + '">' + item.TITLE + '</a></h3>'
+                                                + '<span class="time-primary"><i class="fa fa-clock-o"></i>' + item.CREATE + '</span>'
+                                                + '<span class="desc-primary" > ' + content + ' </span>'
+                                            + '</div>'
+                                       + '</div>';
+                                }
+
+                            });
+
+                            main.pagingPage(res[0].TOTALPAGE, commonConfig.isClear, function () {
+                                main.loadData();
+                            });
+
+                            $("#lstVanBanPl").html(html);
+
+                            $("#lstVanBanPl").find("a").each(function () {
+                                var href = $(this).attr("href"), data = $(this).attr("data-href");
+                                if (data != undefined) {
+                                    $(this).attr("href", href + data);
+                                }
+                            });
+
+                        } else {
+                            var parentHtml = '<div class="table-text-system table-responsive ">'
+                                + '<h4>Không tìm thấy dữ liệu</h4>'
+                            + '</div>';
+                            main.pagingPage(0, commonConfig.isClear, function () {
+                                main.loadData();
+                            });
+                            $("#lstVanBanPl").html(parentHtml);
+                        }
+                        loading.hideLoading();
+                    }
+                });
+            },
+            pagingPage: function (totalRow,isClear, callback) {
+                //if (totalRow == 1 || totalRow == 0) {
+                //    totalRow = 1;
+                //    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+                //}
+                var totalPage = Math.ceil(totalRow / commonConfig.pageSize);
+                if (totalPage >= 0 && commonConfig.isClear == 0) {
+                    if (totalPage == 0) {
+                        totalPage = 1;
+                    }
+                    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+
+                }
+
+                $("#paginationholder #pagination").twbsPagination({
+
+                    totalPages: totalPage,
+                    visiblePages: 6,
+					first: "<<",
+					next: ">",
+					last: ">>",
+					prev: "<",
+                    initiateStartPageClick: false,
+                    onPageClick: function (event, page) {
+                        commonConfig.page = page;
+                        commonConfig.isClear = 1
+                        obj = {
+                            page: commonConfig.page,
+                            pageSize: commonConfig.pageSize,
+                            keyword: $("#keyword").val(),
+                            number: commonConfig.number,
+                            Code: Code
+                        };
+                        setTimeout(callback, 200);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadData();
+        });
+
+        $("#keyword").blur(function () {
+            loading.showLoading();
+            obj = {
+                page: commonConfig.page,
+                pageSize: commonConfig.pageSize,
+                keyword: $("#keyword").val(),
+                number: commonConfig.number,
+                Code: Code
+            };
+            commonConfig.isClear = 0;
+            main.loadData();
+        });
+
+        $(document).keypress(function (e) {
+            if (e.which == 13) {
+                obj = {
+                    page: commonConfig.page,
+                    pageSize: commonConfig.pageSize,
+                    keyword: $("#keyword").val(),
+                    number: commonConfig.number,
+                    Code: Code
+                };
+                commonConfig.isClear = 0;
+                main.loadData();
+            }
+        });
+
+        $("#keyword").keyup(function (e) {
+            if (e.which == 13) {
+                $(this).blur();
+            }
+        });
+
+        // event enter
+        $('#keyword').keypress(function (e) { return e.which != 13; });
+    </script>
+}

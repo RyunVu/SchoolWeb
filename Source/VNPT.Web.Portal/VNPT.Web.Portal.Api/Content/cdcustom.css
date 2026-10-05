@@ -1,0 +1,113 @@
+﻿.custom-title .heading-direct {
+    background-image: -webkit-gradient(linear, left top, right top, from(#0098d6), to(#00cbd6));
+    background-image: linear-gradient(to right, #0098d6 0%, #00cbd6 100%);
+}
+.custom-title .heading-direct .menu-direct:before {
+    color: #1b3446
+}
+header {
+    border-top: none!important;
+}
+nav.menu ul > li.active a {
+    background-color: #F87B00!important;
+}
+nav.menu ul > li.active a:before {
+    height: 0
+}
+.wrap {
+    background: url('../Images/cdbg.png')
+}
+nav.menu ul > li.active a, nav.menu ul > li:hover a {
+    background-color: #f4f4f2;
+}
+
+nav.menu ul li:hover a:before {
+    background-color: #F4F4F2
+}
+
+.box-services-home h3, .title-primary h3, header nav.menu {
+    background-image: -webkit-gradient(linear, left top, right top, from(#0098d6), to(#00cbd6));
+    background-image: linear-gradient(to right, #0098d6 0%, #00cbd6 100%);
+}
+nav.menu ul > li.active:nth-child(1) a i {
+    color: #fff
+}
+
+header .top-header .pgd-mobile {
+    position: absolute;
+    right: 10px;
+}
+header .top-header .pgd-mobile > * {
+    background: #F87B00
+}
+header .top-header {
+    padding: 0px;
+}
+
+#lstLinkBotton {
+    margin: 0;
+    margin-top: 10px;
+}
+
+#menu_ver .menu-cs {
+    background: #F87B00;
+}
+.rhead .name {
+    background: #F87B00;
+}
+.rhead .name:after {
+    border-left-color: #F87B00;
+}
+.showitem_tab ul li.active .tab_one {
+    background: #F87B00;
+}
+.nav-pills>li.active>a {
+    background-color: #F87B00;
+}
+.nav-pills>li.active>a:focus {
+    background-color: #F87B00;
+}
+
+#menu_ver .block-notifi-sidebar {
+    background-image: -webkit-gradient(linear, left top, right top, from(#0098d6), to(#00cbd6));
+    background-image: linear-gradient(to right, #0098d6 0%, #00cbd6 100%);
+    border: 0;
+}
+#menu_ver .block-notifi-sidebar ul li {
+    border-bottom: 1px dashed #00c3d6
+}
+#menu_ver .block-notifi-sidebar ul li:last-child {
+    border-bottom: 0
+}
+#menu_ver .block-notifi-sidebar ul li a {
+    color: #fff
+}
+#menu_ver .mainmenu li:hover {
+  background-color: #FEA20E;
+  border-bottom: 0
+}
+/*van ban*/
+.block-notifi-sidebar.document ul li a {
+    max-height: initial;
+}
+.block-notifi-sidebar.document ul li a::before {
+    content: ''
+}
+.block-notifi-sidebar.document ul li a i {
+    display: block;
+    font-weight: normal;
+}
+/*end*/
+.item-video .title-primary {
+    float: inherit
+}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+@media (max-width: 1199px) {
+    .top-header {
+        padding: 0px;
+    }
+}

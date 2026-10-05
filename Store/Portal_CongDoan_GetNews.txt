@@ -1,0 +1,37 @@
+CREATE PROCEDURE [dbo].[Portal_CongDoan_GetNews] 
+@p_code nvarchar(500) = NULL,
+@p_unitcode nvarchar(500) = NULL,
+@p_lang nvarchar(500) = NULL,
+@p_type int = 1,
+@p_page_index int = 1,
+@p_page_size int = 10
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+	SELECT n.Id, n.NewTypeId, n.Code, n.Alias, 
+	case when @p_lang = 'en' then ISNULL(n.Title_En, n.Title) else n.Title end Title, 
+	case when @p_lang = 'en' then ISNULL(n.Content_En, n.Content) else n.Content end Content, 
+	n.ImageUrl, n.ShortContent, n.[Order], n.CountView, n.Tag, n.Status, n.Description, n.CreateDate, n.CreateUserId,
+	n.UpdateDate, n.UpdateUserId, n.LanguageId, n.UnitCode,
+	n.Title_En, n.Content_En, n.ShortContent_En,
+	n.AudioUrl, n.AudioCreateDate 
+	FROM News n
+	WHERE  
+	n.Status != -1
+	AND 
+	(@p_code IS NULL
+		OR n.Code = @p_code)
+	AND
+	(@p_unitcode IS NULL
+		OR n.UnitCode = @p_unitcode)
+		
+	ORDER BY CASE
+        WHEN @p_type = 1 then n.CreateDate
+        WHEN @p_type = 2 then n.CountView
+        END DESC
+        
+    OFFSET ((@p_page_index - 1) * @p_page_size) ROWS FETCH NEXT @p_page_size ROWS ONLY;
+END 

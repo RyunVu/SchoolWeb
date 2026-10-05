@@ -1,0 +1,26 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Code
+
+@model List<News>
+@if (ViewBag.SlideHinhAnhBatTat == true)
+{
+	<div id="sub-carousel">
+		@foreach (var item in Model)
+		{
+			if (item.Description?.Trim() != "" && item.Description != null)
+			{
+				<a href="@item.Description">
+					<img src="@Url.Image(item.ImageUrl)" alt="carousel" width="100%" height="@ViewBag.SlideHinhAnhHeight" style="object-fit: contain">
+				</a>
+			}
+			else
+			{
+				<a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">
+					<img src="@Url.Image(item.ImageUrl)" alt="carousel" width="100%" height="@ViewBag.SlideHinhAnhHeight" style="object-fit: contain">
+				</a>
+			}
+		}
+	</div>
+
+}

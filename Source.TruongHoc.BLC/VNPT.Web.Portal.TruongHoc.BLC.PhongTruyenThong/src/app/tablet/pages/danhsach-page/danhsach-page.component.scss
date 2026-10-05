@@ -1,0 +1,13 @@
+app-danhsach-page {
+    .body-content {
+        background: url(../../../../assets/template/images/bg-profile.png) no-repeat, url(../../../../assets/template/images/bg.png) no-repeat;
+        background-position: left top, left bottom;
+        //background-attachment: fixed;
+        min-height: 400px;
+        clear: both;
+        padding-bottom: 10px; 
+        display: inline-block;
+        width: 100%;
+        
+    }
+}

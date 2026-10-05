@@ -1,0 +1,40 @@
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label for="Province">Tỉnh/Tp</label>
+            <p-dropdown [options]="provinces" [(ngModel)]="province" optionLabel="Name" [filter]="true" 
+                filterBy="Name" placeholder="Chọn tỉnh" appendTo="body" disable="true">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label for="Username">Quận/Huyện</label>
+            <p-dropdown [options]="districts" [(ngModel)]="district" optionLabel="Name" [filter]="true" 
+                filterBy="Name" placeholder="Chọn Quận/Huyện" appendTo="body" (onChange)="selectDistrict($event)">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="form-group">
+            <label for="PositionId">Phường/Xã</label>
+            <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" 
+                filterBy="Name" placeholder="Chọn Phường/Xã" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="add()">Thêm</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+}
+
+@model List<News>
+
+<div class="body-content">
+    @*<div class="side_nav">
+            <a (click)="backPage()" class="item_nav">
+                <i class="fa fa-reply" aria-hidden="true"></i>
+            </a>
+
+            <a href="#/tablet" class="item_nav">
+                <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
+        </div>*@
+
+    <div class="container">
+        <div class="content-title text-center">
+            <div class="c-title">
+                <span>@ViewBag.Title</span>
+                @*<div *ngIf="isOn" class="filterBtn" (click)="turnOffSound()"><i class="fas fa-volume-up"></i></div>
+                <div *ngIf="!isOn" class="filterBtn" (click)="turnOnSound()"><i class="fas fa-volume-mute"></i></div>*@
+            </div>
+        </div>
+        <div class="row content-gd content-media">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-3">
+                    <div class="itemgd">
+                        @*(click)="gotoChiTiet(i.Alias, i.Code, i.Id)"*@
+                        <a class="link_item">
+                            <img class="img_hover thanhtich" src="@item.ImageUrl" onerror="onerror=null;src='assets/img/Noimage.jpg';" />
+                        </a>
+                        <div class="itemgd-body" style="background-color: #EFB338;">
+                            <a class="gd-title" style="color: #fff;">@item.Title</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

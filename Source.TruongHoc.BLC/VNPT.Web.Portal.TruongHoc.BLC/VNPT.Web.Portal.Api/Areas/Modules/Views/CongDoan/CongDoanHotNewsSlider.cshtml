@@ -1,0 +1,147 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Base
+
+@{
+
+}
+
+@model List<News>
+
+<style>
+    #hotnewsslider .item {
+        width: 100%;
+        position: relative;
+    }
+
+        #hotnewsslider .item::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            z-index: 1;
+            background: linear-gradient(#000, transparent);
+            transform: rotate(180deg);
+            opacity: .8;
+        }
+
+        #hotnewsslider .item a.img {
+            text-decoration: none;
+            display: block;
+            overflow: hidden;
+        }
+
+            #hotnewsslider .item a.img img {
+                width: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+                height: 450px;
+                transition: .5s;
+            }
+
+        #hotnewsslider .item .titleSlide {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            padding: 18px;
+            z-index: 2;
+        }
+
+            #hotnewsslider .item .titleSlide h4 {
+                margin: 0;
+                font-weight: 700;
+                font-size: 14px;
+            }
+
+                #hotnewsslider .item .titleSlide h4 a {
+                    text-decoration: none;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    font-size: 24px;
+                    line-height: 30px;
+                    color: #fff;
+                    padding: 5px 0;
+                }
+
+
+
+            #hotnewsslider .item .titleSlide .time {
+                color: #fff;
+            }
+
+
+    #hotnewsslider .owl-dots {
+        position: absolute;
+        bottom: 10px;
+        text-align: center;
+        width: 100%;
+    }
+
+        #hotnewsslider .owl-dots .owl-dot {
+            border-radius: 50% !important;
+            margin-right: 5px;
+            width: 12px;
+            height: 12px;
+            background: #696969;
+            border: 0;
+        }
+
+            #hotnewsslider .owl-dots .owl-dot.active {
+                background: #efb338
+            }
+
+    #hotnewsslider .owl-nav button {
+        border: 0;
+    }
+</style>
+
+<div id="hotnewsslider" class="owl-carousel">
+
+    @foreach (var item in Model)
+    {
+        if (item.OtherUrl != null && item.OtherUrl.Contains("baolamdong.vn"))
+        {
+            <div class="item">
+                <a class="img" href="@item.OtherUrl" target="_blank">
+                    <img onerror="this.onerror=null;this.src='/Images/bg-error.png';" src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))" />
+                </a>
+                <div class="titleSlide">
+                    <h4>
+                        <a class="name" href="@item.OtherUrl" target="_blank">
+                            @item.Title
+                        </a>
+                    </h4>
+                    <span class="time"><i class="fa fa-clock-o"></i> @item.CreateDate.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="item">
+                <a class="img" href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">
+                    <img src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))" />
+                </a>
+                <div class="titleSlide">
+                    <h4>
+                        <a class="name" href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">
+                            @item.Title
+                        </a>
+                    </h4>
+                    <span class="time"><i class="fa fa-clock-o"></i> @item.CreateDate.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+        }
+    }
+
+</div>
+
+<script>
+
+</script>

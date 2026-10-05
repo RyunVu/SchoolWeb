@@ -1,0 +1,525 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+
+@{
+    Layout = ViewBag.Layout;
+}
+
+<style>
+    .customp .form-control {
+        border-radius: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        outline: none;
+        color: #818285;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #left_panel {
+        width: 23%;
+        float: left;
+    }
+
+        #left_panel li {
+            float: inherit !important;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+            #left_panel li a {
+                font-size: 14pt;
+                font-weight: bold;
+                padding: 12px 15px;
+            }
+
+        #left_panel > li > a {
+            background: #ddd !important;
+        }
+
+        #left_panel > li.active > a {
+            background: #0E427E !important;
+        }
+
+
+    .content_baocao .tab-content {
+        width: calc(100% - 23%);
+        float: right;
+        padding: 0 15px;
+    }
+
+    #left_panel > li + li {
+        margin-left: inherit !important
+    }
+
+
+    .titleTab {
+        background: #0E427E;
+        color: #fff;
+        padding: 12px 15px;
+        font-size: 14pt;
+        border-radius: 3px;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .table-primary {
+        background: #0080FF;
+        color: #fff;
+    }
+
+    #tablesContainer table td, #tablesContainer table th {
+        font-size: 12pt;
+    }
+
+    
+</style>
+
+<link href="~/Content/truonghoc.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        @*<div class="col-md-9 float-right" style="margin-top: 10px" id="content_pl">*@
+        <div class="col-md-12">
+            <div class="site_block_title" style="border-color: rgb(14, 66, 126);">
+                <h3 style="background-color: rgb(14, 66, 126);">
+                    <a>
+                        <i class="fa fa-file-text"></i>
+                        Báo cáo thường niên
+                    </a>
+                </h3>
+            </div>
+
+            <div id="loadingExport" style="display:none;">
+                <div class="loaderExport"></div>
+                <div class="loading-text">Đang tải...</div>
+            </div>
+            @Html.Action("GetBaoCao", "BaoCaoThuongNien", new { area = "Modules" })
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts {
+
+    <script type="text/javascript">
+        var countCreateTable = 0;
+
+        $(document).ready(function () {
+            var currentYear = new Date().getFullYear();
+            createChooseYear();
+            $('#conLoading').show();
+            getData(currentYear);
+            //$('#left_panel').find('li.active').trigger('click');
+        });
+
+        $('#yearSelect').on('change', function () {
+            var selectedYear = $(this).val();
+            countLoading = 0
+            $('#tablesContainer').hide();
+            $('#tablesContainer').html('');
+            $('#conLoading').show();
+            getData(selectedYear)
+        });
+
+        $('#exportFile').on('click', function () {
+            $("#loadingExport").show();
+            var selectedYear = $("#yearSelect").val();
+            exportFile(selectedYear);
+        });
+
+        function exportFile(selectedYear) {
+            return $.ajax({
+                type: "POST",
+                data: {
+                    year: selectedYear
+                },
+                //async: false,
+                url: "@Url.Action("ExportFile", "BaoCaoThuongNien", new { area = "Modules" })",
+                success: function (res) {
+                    window.open(res.path)
+                    $("#loadingExport").hide();
+                },
+                error: function (xhr, status, error) {
+                    $("#loadingExport").hide();
+                    alert("Không thể thực hiện thao tác này vào lúc này!!!")
+                }
+            });
+        }
+
+        function createChooseYear() {
+            var currentYear = new Date().getFullYear();
+            var years = [];
+            for (var i = 0; i < 5; i++) {
+                years.push(currentYear - i);
+            }
+
+            var $select = $('#yearSelect');
+
+            years.forEach(function (year) {
+                $select.append($('<option></option>', {
+                    value: year,
+                    text: "Năm " + year
+                }));
+            });
+        }
+
+        function createNullData() {
+            var html = `<h4 style="transition: none;" class="btn btn-info text-center btn-block" ><i class="fa fa-search-minus" aria-hidden="true"></i> Không tìm thấy dữ liệu
+            </h4>`;
+            $('#tablesContainer').html(html);
+        }
+
+        $("#left_panel").on('click', 'li', async function () {
+            $('#left_panel').css('pointer-events', 'none');
+            countLoading = 0;
+            $('#tablesContainer').hide();
+            $('#tablesContainer').html('');
+            $('#conLoading').show();
+            $(".titleTab").text($(this).text());
+            var gpTableId = $(this).attr("data-id");
+            var data = await getTableTemplateByGrIdt(gpTableId);
+            var yearValue = $("#yearSelect").val();
+            var jSon = JSON.parse(data); // load table template
+
+            if (jSon.length == 0) {
+                setTimeout(function () {
+                    createNullData();
+                    $('#conLoading').hide();
+                    $('#tablesContainer').show('');
+                }, 1500);
+            }
+
+            if (jSon.length > 0) {
+                countCreateTable = jSon.length;
+            }
+
+            for (var i = 0; i < jSon.length; i++) {
+                var t = await getRowOfTableTemplate2(jSon[i].Id, yearValue);
+                var jSons = JSON.parse(t); //load row template
+
+                var nameTable = (i + 1) + ", " + jSon[i].Name
+
+                if (jSon[i].Type == "TABLE") {
+                    createTable(nameTable, jSons);
+                } else if (jSon[i].Type == "LIST") {
+                    createList(nameTable, jSons);
+                } else {
+                    var values = jSons.Cells;
+                    values.sort(function (a, b) {
+                        return a.RowNo - b.RowNo;
+                    });
+
+                    var lstP = "";
+                    values.forEach(function (vla) {
+                        lstP += "<p class='p-item'>" + vla.Value + "</p>";
+                    });
+
+                    $('#tablesContainer').html(lstP);
+
+                    $('#left_panel').css('pointer-events', 'auto');
+                    $('#tablesContainer').show();
+                    $('#conLoading').hide();
+
+                }
+            }
+        });
+
+       async function getData(yearValue) {
+            $('#tablesContainer').html('');
+            var liActived = $("#left_panel li.active");
+            var gpTableId = liActived.attr("data-id");
+            var liText = liActived.text();
+            $(".titleTab").text(liText)
+
+            var data = await getTableTemplateByGrIdt(gpTableId);
+            var jSon = JSON.parse(data); // load table template
+           if (jSon.length == 0) {
+               $('#left_panel').css('pointer-events', 'auto');
+                setTimeout(function () {
+                    createNullData();
+                    $('#conLoading').hide();
+                    $('#tablesContainer').show('');
+                }, 1500);
+           }
+
+           if (jSon.length > 0) {
+               countCreateTable = jSon.length;
+           }
+            for (var i = 0; i < jSon.length; i++) {
+                var t = await getRowOfTableTemplate2(jSon[i].Id, yearValue);
+                var jSons = JSON.parse(t);
+
+                var nameTable = (i + 1) + ", " + jSon[i].Name
+
+                if (jSon[i].Type == "TABLE") {
+                    createTable(nameTable, jSons);
+                } else if (jSon[i].Type == "LIST") {
+                    createList(nameTable, jSons);
+                } else {
+                    var values = jSons.Cells;
+                    values.sort(function (a, b) {
+                        return a.RowNo - b.RowNo;
+                    });
+                    
+                    var lstP = "";
+                    values.forEach(function (vla) {
+                        lstP += "<p class='p-item'>" + vla.Value +"</p>";
+                    });
+
+                    $('#tablesContainer').html(lstP);
+
+                    $('#left_panel').css('pointer-events', 'auto');
+                    $('#tablesContainer').show();
+                    $('#conLoading').hide();
+
+                }
+            }
+        }
+
+        function getRowOfTableTemplate2(tableId, year) {
+            return $.ajax({
+                type: "POST",
+                data: {
+                    tableId: tableId,
+                    year: year
+                },
+                async: false,
+                url: "@Url.Action("GetRowOfTableTemplate2", "BaoCaoThuongNien", new { area = "Modules" })",
+                success: function (res) {
+                    res = JSON.parse(res);
+                    //return res;
+                    //console.log(res)
+                }
+            });
+        }
+
+        function getRowOfTableTemplate(tableId) {
+            return $.ajax({
+                type: "POST",
+                data: {
+                    tableId: tableId
+                },
+                async: false,
+                url: "@Url.Action("getRowOfTableTemplate", "BaoCaoThuongNien", new { area = "Modules" })",
+                success: function (res) {
+                    res = JSON.parse(res);
+                    //return res;
+                    //console.log(res)
+                }
+            });
+        }
+
+        function getRowOfTableTemplate(tableId) {
+            return $.ajax({
+                type: "POST",
+                data: {
+                    tableId: tableId
+                },
+                async: false,
+                url: "@Url.Action("getRowOfTableTemplate", "BaoCaoThuongNien", new { area = "Modules" })",
+                success: function (res) {
+                    res = JSON.parse(res);
+                    //return res;
+                    //console.log(res)
+                }
+            });
+        }
+
+        function getTableTemplateByGrIdt(gpTableId) {
+            return $.ajax({
+                type: "POST",
+                data: {
+                    gpTableId: gpTableId
+                },
+                async: false,
+                url: "@Url.Action("GetTableTemplateByGrId", "BaoCaoThuongNien", new { area = "Modules" })",
+                success: function (res) {
+                    res = JSON.parse(res);
+                    //return res;
+                    //console.log(res)
+                }
+            });
+        }
+
+        function createList(title, result) {
+            var tableDetail = result;
+            countLoading++;
+
+            var tableValues = tableDetail.Values || [];
+            var tableColumns = populateTableCols(tableDetail.Columns || []);
+            var tableRows = populateTableRows(tableDetail.Cells || [], tableValues);
+
+            var ul = $('<ul class="cusUl"></ul>');
+
+            tableRows.forEach(function (row) {
+                var li = $('<li></li>');
+                tableColumns.forEach(function (col, index) {
+                    if (index == 0) {
+                        var span = $('<span class="align-middle"></span>').text('- ' + row[col.Id]?.Value + ': ');
+                    } else {
+                        var span = $('<span class="align-middle"></span>').text(' ' + row[col.Id] ? row[col.Id].Value : '');
+                    }
+                    li.append(span);
+                });
+                ul.append(li);
+            });
+
+            var container = $('<div></div>');
+            //container.append($('<h3></h3>').text(title));
+            container.append(ul);
+
+            $('#tablesContainer').append(container);
+
+            setTimeout(function () {
+                $('#left_panel').css('pointer-events', 'auto');
+                $('#tablesContainer').show();
+                $('#conLoading').hide();
+            }, 1000);
+        }
+
+        var countLoading = 0;
+        function createTable(title, result) {
+            var tableDetail = result;
+            countLoading++;
+
+            var tableHeader = populateTableHeader(tableDetail.Columns || []);
+            var tableValues = tableDetail.Values || [];
+            var tableColumns = populateTableCols(tableDetail.Columns || []);
+            var tableRows = populateTableRows(tableDetail.Cells || [], tableValues);
+
+            //console.log(tableHeader)
+            //console.log(tableColumns)
+            //console.log(tableRows)
+            //console.log(tableValues)
+            //console.log("---------")
+
+            var table = $('<table class="table table-bordered"></table>');
+            var thead = $('<thead class="table-primary"></thead>');
+            var tbody = $('<tbody></tbody>');
+
+            // Create table header
+            tableHeader.forEach(function (header) {
+                var tr = $('<tr></tr>');
+                header.forEach(function (th) {
+                    var thElement = $('<th></th>', {
+                        'colspan': th.ColSpan,
+                        'rowspan': th.RowSpan,
+                        'class': 'text-center align-middle'
+                    }).text(th.Name);
+                    tr.append(thElement);
+                });
+                thead.append(tr);
+            });
+
+            // Create table body
+            tableRows.forEach(function (row) {
+                var tr = $('<tr></tr>');
+                tableColumns.forEach(function (col, index) {
+                    var td = $('<td class="align-middle"></td>').text(row[col.Id]?.Value);
+                    tr.append(td);
+                });
+                tbody.append(tr);
+            });
+
+            table.append(thead);
+            table.append(tbody);
+
+            var container = $('<div></div>');
+            container.append($('<h3></h3>').text(title));
+            container.append(table);
+
+            $('#tablesContainer').append(container);
+
+            setTimeout(function () {
+                $('#left_panel').css('pointer-events', 'auto');
+                $('#tablesContainer').show();
+                $('#conLoading').hide();
+            }, 1000);
+
+        }
+
+        function populateTableHeader(cols) {
+            // Group columns by RowNo
+            var groupByRow = {};
+            $.each(cols, function (index, col) {
+                if (!groupByRow[col.RowNo]) {
+                    groupByRow[col.RowNo] = [];
+                }
+                groupByRow[col.RowNo].push(col);
+            });
+
+            // Sort keys in ascending order and parse groupByRow to an array
+            var rows = $.map(Object.keys(groupByRow).sort(function (a, b) {
+                return a - b;
+            }), function (key) {
+                var values = groupByRow[key];
+
+                // Order the values by Order
+                values.sort(function (a, b) {
+                    return a.Order - b.Order;
+                });
+
+                return [values];
+            });
+
+            return rows;
+        }
+
+        function populateTableCols(cols) {
+            // Filter columns where ColSpan is less than or equal to 1
+            var filteredCols = $.grep(cols, function (col) {
+                return col.ColSpan <= 1;
+            });
+
+            // Order the filtered columns by ColNo
+            filteredCols.sort(function (a, b) {
+                return a.ColNo - b.ColNo;
+            });
+
+            return filteredCols;
+        }
+
+
+        function populateTableRows(cells, tableValues) {
+            // Group cells by RowNo
+            var groupByRow = {};
+            $.each(cells, function (index, cell) {
+                if (!groupByRow[cell.RowNo]) {
+                    groupByRow[cell.RowNo] = [];
+                }
+                groupByRow[cell.RowNo].push(cell);
+            });
+
+            // Sort keys in ascending order and parse groupByRow to an array
+            var result = $.map(Object.keys(groupByRow).sort(function (a, b) {
+                return a - b;
+            }), function (key) {
+                var cells = groupByRow[key];
+                var obj = {};
+
+                $.each(cells, function (index, cell) {
+                    var tbtValue = tableValues.find(function (v) {
+                        return v.TableCellId === cell.Id;
+                    }) || {};
+
+                    obj[cell.TableColumnId] = {
+                        Value: cell.ReadOnly ? cell.Value : tbtValue.Value,
+                        TableCellId: cell.Id,
+                        ReadOnly: cell.ReadOnly
+                    };
+                });
+
+                return obj;
+            });
+
+            return result;
+        }
+
+
+    </script>
+}

@@ -1,0 +1,45 @@
+<div class="card card-primary">
+  <div class="card-body">
+    <p-table [value]="types" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <td width="40%">
+            <div class="form-group">
+              <p-dropdown (onChange)="loadListFieldWard()" [options]="linhvucs" [(ngModel)]="linhvuc" optionLabel="Name"
+                optionValue="Value" [filter]="true" filterBy="Name" placeholder="Chọn loại phản ánh" appendTo="body">
+              </p-dropdown>
+            </div>
+          </td>
+          <td width="60%">
+            <div class="input-group mb-3">
+              <input type="text" [(ngModel)]="keyword" class="form-control" (keyup)="onKeyUp($event)" />
+              <div class="input-group-append">
+                <span class="input-group-text" (click)="loadListFieldWard()"><i class="fas fa-search"></i></span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Allow</th>
+          <th>Tiêu đề</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-itemType>
+        <tr>
+          <td>
+            <p-checkbox [binary]="true" [(ngModel)]="itemType.isCheck" (onChange)="save(itemType)"></p-checkbox>
+          </td>
+          <td>{{itemType.Name}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<div class="p-footer">
+  <div class="f-contains">
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

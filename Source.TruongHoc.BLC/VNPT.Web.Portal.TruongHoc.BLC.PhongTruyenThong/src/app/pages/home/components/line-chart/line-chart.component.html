@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-7 d-flex align-items-center">{{ title }}</div>
+            <div class="col-2">
+                <p-checkbox [(ngModel)]="isAllLinhVuc" [binary]="true" (onChange)="onAllLvChange($event)"></p-checkbox> Tất cả LV
+            </div>
+            <div class="col-3">
+                <p-dropdown [options]="yearOptions" [(ngModel)]="year" styleClass="w-100" optionValue="value" optionLabel="label" placeholder="Chọn trạng thái" (onChange)="onYearChange($event)"></p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p-chart type="pie" [data]="chartData" [options]="pieOPtions"></p-chart>
+    </div>
+</div>

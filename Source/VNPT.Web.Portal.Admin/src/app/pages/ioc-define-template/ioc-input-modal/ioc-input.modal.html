@@ -1,0 +1,282 @@
+<style>
+    .cus-col {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px !important;
+    }
+</style>
+<div class="app-loading" *ngIf="isDisabled">
+    <div class="logo"></div>
+    <svg class="spinner" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="4" fill="none" stroke-width="1" stroke-miterlimit="10" />
+    </svg>
+</div>
+
+<div class="col-lg-12 col-12 row">
+    <h3 class="box-title">{{nameTemplate}}</h3>
+</div>
+<div class="col-lg-12 col-12 row">
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label class="control-label">Ngày nhập:</label>
+            <!-- <input type='text' class="form-control" id="input-date" (blur)="onChangeDate()" /> -->
+            <p-calendar id="input-date" [style]="{'width':'100%'}" [(ngModel)]="inputDate" dateFormat="dd/mm/yy"
+                (blur)="onChangeDate()">
+            </p-calendar>
+
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label class="control-label">Kì trước:</label>
+            <p-dropdown id="UnitType" [options]="frequencies" optionLabel="Name" dataKey="Id" [filter]="true"
+                [(ngModel)]="defaultFrequency" [style]="{'width':'100%'}" (onChange)="onChange($event)">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div *ngIf="(defaultHasIns && hasPermision) || hasAdminPermision" class="col-lg-4 col-md-4">
+        <div class="form-group">
+            <label class="control-label">Đơn vị:</label>
+            <p-dropdown id="organization_id" [options]="organizations" optionLabel="Name" dataKey="Id" [filter]="true"
+                [(ngModel)]="defaultOrganization" [style]="{'width':'100%'}" (onChange)="onChangeOrganizations($event)">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 col-12 row">
+    <div class="box-body with-border" id="ioc-input-modal" style="overflow: auto; width: 100%;">
+        <table class="table table-condensed" id="tableContent" [ngStyle]="setMaxWidth()">
+            <tbody>
+                <tr style="border: 1px solid #d3d3d3; background: #e7e5e5;">
+                    <th class="zix-max" style="width: 5%; padding: 15px;">#</th>
+                    <th class="zix-max"
+                        style="padding:15px;width: 300px; display: block; border: none !important;background: #e7e5e5;">
+                        Tên chỉ số</th>
+                    <!-- <th style="width: 2%"></th> -->
+                    <th *ngFor="let col of listCol" class="zix-max" style="padding: 15px;">{{col}}</th>
+                </tr>
+                <tr *ngFor="let mValue of values; let j = index">
+                    <td *ngIf="mValue.DataType == 3" class="zix-max">
+                        <strong>{{mValue.CodeId}}</strong>
+                    </td>
+                    <td *ngIf="mValue.DataType != 3" class="zix-max">
+                        <i>&nbsp;&nbsp;{{mValue.CodeId}}</i>
+                    </td>
+
+                    <td *ngIf="mValue.DataType == 3" class="zix-max">
+                        <strong>{{mValue.PropertyName}}</strong>
+                    </td>
+                    <td *ngIf="mValue.DataType == 3">
+                        <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true"
+                            data-placement="top" title="{{mValue.ContentTooltip}}"
+                            (click)="iocInputList(mValue.PropertyId,mValue.PropertyName,mValue.Property2Id,mValue.Property2Name,mValue.DataType,mValue.UnitId)">
+                            <i class="fa fa-plus-square-o fa-2x"></i><i *ngIf="mValue.ContentTooltip != ''"
+                                class="fa fa-question-circle fa-1" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td *ngIf="mValue.DataType == 2" class="zix-max">
+                        <i>{{mValue.PropertyName}} ({{mValue.SValue}})</i>
+                    </td>
+                    <td *ngIf="mValue.DataType == 2" class="zix-max">
+
+                    </td>
+                    <td *ngIf="mValue.DataType != 3 && mValue.DataType != 2" class="zix-max">
+                        <i>&nbsp;&nbsp;{{mValue.PropertyName}}</i>
+                    </td>
+                    <!-- <td *ngIf="mValue.DataType != 3 && mValue.DataType != 2">
+                        <button type="button" class="btn btn-link test" data-toggle="tooltip" data-html="true"
+                            data-placement="top" title="{{mValue.ContentTooltip}}"
+                            (click)="iocInputList(mValue.PropertyId,mValue.PropertyName,mValue.Property2Id,mValue.Property2Name,mValue.DataType,mValue.UnitId)">
+                            <i class="fa fa-plus-square-o fa-2x"></i><i *ngIf="mValue.ContentTooltip != ''"
+                                class="fa fa-question-circle fa-1" aria-hidden="true"></i>
+                        </button>
+                    </td> -->
+
+                    <td *ngFor="let col1 of mValue.MapValueId; let i = index">
+                        <ng-container *ngIf="col1.DataType == '0'">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{col1.RandomId}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{col1.CodeId}}</button>
+                                        </span>
+                                        <input type="number" class="form-control" value="{{col1.NumberValue}}"
+                                            placeholder="({{col1.CodeId}})" id="numberInput{{mValue.ValueId[i]}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="col1.DataType == 1">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{col1.RandomId}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{col1.CodeId}}</button>
+                                        </span>
+                                        <input type="text" class="form-control" value="{{col1.StringValue}}"
+                                            placeholder="Nhập giá trị (chữ)" id="textInput{{mValue.ValueId[i]}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="col1.DataType == 2">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{col1.RandomId}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control cus-col"
+                                                readonly="">{{col1.CodeId}}={{col1.Recipe}}
+                                            </button>
+                                        </span>
+                                        <button type="button" style="pointer-events: none"
+                                            class="btn btn-default btn-flat form-control"
+                                            readonly="">{{col1.NumberValue}}
+                                        </button>
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="col1.DataType == 3">
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>KỲ TRƯỚC</h3>
+        <table class="table table-condensed" id="tableContent" [ngStyle]="setMaxWidth()">
+            <tbody>
+                <tr style="border: 1px solid #d3d3d3; background: #e7e5e5;">
+                    <th class="zix-max" style="width: 5%; padding: 15px;">#</th>
+                    <th class="zix-max"
+                        style="padding:15px;width: 300px; display: block; border: none !important;background: #e7e5e5;">
+                        Tên chỉ số</th>
+                    <!-- <th style="width: 2%"></th> -->
+                    <th *ngFor="let col of listColPast" class="zix-max" style="padding:15px;">{{col}}</th>
+                </tr>
+                <tr *ngFor="let mValue of valuesPast; let j = index">
+                    <td *ngIf="mValue.DataType == 3" class="zix-max">
+                        <strong>{{mValue.CodeId}}</strong>
+                    </td>
+                    <td *ngIf="mValue.DataType != 3" class="zix-max">
+                        <i>&nbsp;&nbsp;{{mValue.CodeId}}</i>
+                    </td>
+
+                    <td *ngIf="mValue.DataType == 3" class="zix-max">
+                        <strong>{{mValue.PropertyName}}</strong>
+
+                    </td>
+                    <td *ngIf="mValue.DataType == 2" class="zix-max">
+                        <i>{{mValue.PropertyName}} ({{mValue.SValue}})</i>
+
+                    </td>
+                    <td *ngIf="mValue.DataType != 3 && mValue.DataType != 2" class="zix-max">
+                        <i>&nbsp;&nbsp;{{mValue.PropertyName}}</i>
+
+                    </td>
+                    <td *ngFor="let col1 of listCol; let i = index">
+                        <ng-container *ngIf="mValue.DataType[i] == '0'">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{mValue.ValueId[i]}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.CodeId[i]}}</button>
+                                        </span>
+                                        <input type="number" class="form-control" value="{{mValue.NValue[i]}}"
+                                            readonly="true" placeholder="({{mValue.CodeId[i]}})" id="numberInput">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="mValue.DataType[i] == 1">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{mValue.ValueId[i]}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.CodeId[i]}}</button>
+                                        </span>
+                                        <input type="text" class="form-control" value="{{mValue.SValue[i]}}"
+                                            readonly="true" placeholder="Nhập giá trị (chữ)" id="textInput">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="mValue.DataType[i] == 2">
+                            <div>
+                                <div class="col-sm-12">
+                                    <div class="input-group" id="{{mValue.ValueId[i]}}">
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control cus-col"
+                                                readonly="">{{mValue.CodeId[i]}}={{mValue.SValue[i]}}
+                                            </button>
+                                        </span>
+                                        <button type="button" style="pointer-events: none"
+                                            class="btn btn-default btn-flat form-control"
+                                            readonly="">{{mValue.NValue[i]}}
+                                        </button>
+                                        <span class="input-group-btn">
+                                            <button type="button" style="pointer-events: none"
+                                                class="btn btn-default btn-flat form-control"
+                                                readonly="">{{mValue.UnitName[i]}}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="mValue.DataType[i] == 3">
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="p-footer text-right">
+    <button type="button" class="btn btn-danger pull-right  mr-2" (click)="cancel()">{{'Đóng'}}</button>
+    <button *ngIf="!hasPermision" type="button" class="btn btn-info pull-right" (click)="submit()">Lưu</button>
+</div>

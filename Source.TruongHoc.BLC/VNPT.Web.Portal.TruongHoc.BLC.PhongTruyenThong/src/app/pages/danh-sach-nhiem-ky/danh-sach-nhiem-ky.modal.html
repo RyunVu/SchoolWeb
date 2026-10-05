@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label for="Name">Thứ tự <span class="text-danger">(*)</span></label>
+                    <input type="number" min="1" class="form-control" [(ngModel)]="item.ThuTu" placeholder="Thứ tự" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Name">Tên nhiệm kỳ</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.Ten" placeholder="Tên nhiệm kỳ" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Name">Loại nhiệm kỳ <span class="text-danger">(*)</span></label>
+                    <p-dropdown [options]="itemLoaiNhiemKys" [(ngModel)]="item.TypeId" optionLabel="Name"
+                        optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" placeholder="Loại nhiệm kỳ">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="Name">Từ năm <span class="text-danger">(*)</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="item.TuNam" placeholder="Từ năm" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="Name">Đến năm</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.DenNam" placeholder="Đến năm" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="Name">Chức vụ &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                    <button class="btn btn-sm btn-info" (click)="addChucVu()">
+                        Thêm chức vụ
+                    </button>
+                    <table class="table">
+                        <tr>
+                            <th width="20%">Thứ tự</th>
+                            <th width="60%">Chức vụ</th>
+                            <th width="20%">Xóa</th>
+                        </tr>
+                        <tr *ngFor="let chucvu of item.CVNKlst">
+                            <td>
+                                <div class="form-group">
+                                    <input type="number" min="1" class="form-control" [(ngModel)]="chucvu.ThuTu"
+                                        placeholder="Thứ tự" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <p-dropdown [options]="itemChucVus" [(ngModel)]="chucvu.ChucVuId" optionLabel="Name"
+                                        optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
+                                        placeholder="Chọn chức vụ">
+                                    </p-dropdown>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-danger" (click)="minusChucVu(chucvu)"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

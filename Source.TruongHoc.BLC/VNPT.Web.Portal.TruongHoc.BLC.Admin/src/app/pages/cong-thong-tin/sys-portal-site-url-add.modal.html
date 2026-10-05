@@ -1,0 +1,35 @@
+<!-- <p-toast></p-toast> -->
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="col-md-12 allow-overflow">
+            <div class="form-group">
+                <label for="Name">Tên <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" [(ngModel)]="defaultName">
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Subdomain <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" [(ngModel)]="defaultSubdomain">
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Tên file .cshtml <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" [(ngModel)]="defaultSiteUrl">
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Chủ đề <span class="text-danger">(*)</span></label>
+                <p-dropdown [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id" [filter]="true"
+                    filterBy="Name" appendTo="body">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

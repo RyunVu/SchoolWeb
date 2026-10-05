@@ -1,0 +1,30 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+    
+}
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+@*<input id="nameUBNDXA" value="@nameUBNDXA" type="hidden" />
+<input id="showeOffice" value="@showeOffice" type="hidden" />*@
+
+@Html.Action("PhongTruyenThongPage", "PhongTruyenThong", new { area = "Modules", Code = codeFromUrl, number = 5 })
+
+@section scripts {
+ 
+}

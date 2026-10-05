@@ -1,0 +1,369 @@
+<p-tabView>
+    <p-tabPanel header="Thông tin tiểu sử">
+        <div class="row">
+            <div class="col-lg-12">
+                <fieldset style="min-height: 100px">
+                    <legend><b>Thông tin tiểu sử</b></legend>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Họ tên <span class="text-danger">(*)</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="item.HoTen" placeholder="Họ tên" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Họ tên thường dùng</label>
+                                <input type="text" class="form-control" [(ngModel)]="item.Alias"
+                                    placeholder="Họ tên thường dùng" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Name">Bí danh</label>
+                                <input type="text" class="form-control" [(ngModel)]="item.BiDanh"
+                                    placeholder="Bí danh" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Name">Dân tộc <span class="text-danger">(*)</span></label>
+                                <p-dropdown [options]="itemDanTocs" [(ngModel)]="item.DanTocId" optionLabel="Name"
+                                    optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Name">Tôn giáo <span class="text-danger">(*)</span></label>
+                                <p-dropdown [options]="itemTonGiaos" [(ngModel)]="item.TonGiaoId" optionLabel="Name"
+                                    optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Số điện thoại</label>
+                                <input type="text" class="form-control" [(ngModel)]="item.SDT"
+                                    placeholder="Số điện thoại" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Ngày sinh </label>
+                                <p-calendar [(ngModel)]="item.NgaySinh" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
+                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Ngày vào đảng </label>
+                                <p-calendar [(ngModel)]="item.NgayVaoDang" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
+                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Ngày chính thức vào đảng </label>
+                                <p-calendar [(ngModel)]="item.NgayChinhThuc" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
+                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Name">Quê quán</label>
+                                <input type="text" class="form-control" [(ngModel)]="item.QueQuan"
+                                    placeholder="Quê quán" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Name">Chỗ ở hiện nay</label>
+                                <input type="text" class="form-control" [(ngModel)]="item.NoiThuongTru"
+                                    placeholder="Chỗ ở hiện nay" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Ảnh đại diện 1</label>
+                                <div>
+                                    <div class="btn bg-pro color-white" (click)="openFileDilogAvt('avt1')">
+                                        Chọn hình ảnh
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="row-custom">
+                                    <div style="background-color: #ececec; width: 100px; height: 100px; padding: 10px;">
+                                        <img *ngIf="item.UrlAvt1 != null" [src]="item.UrlAvt1 | imageUrlPipe: 'thumb'"
+                                            (click)="deleteImage('avt1')" style="width: 100%; height: 100%" />
+                                        <img *ngIf="item.UrlAvt1 == null" [src]="item.UrlAvt1 | imageUrlPipe: 'thumb'"
+                                            style="width: 100%; height: 100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Name">Ảnh đại diện 2</label>
+                                <div>
+                                    <div class="btn bg-pro color-white" (click)="openFileDilogAvt('avt2')">
+                                        Chọn hình ảnh
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="row-custom">
+                                    <div style="background-color: #ececec; width: 100px; height: 100px; padding: 10px;">
+                                        <img *ngIf="item.UrlAvt2 != null" [src]="item.UrlAvt2 | imageUrlPipe: 'thumb'"
+                                            (click)="deleteImage('avt2')" style="width: 100%; height: 100%" />
+                                        <img *ngIf="item.UrlAvt2 == null" [src]="item.UrlAvt2 | imageUrlPipe: 'thumb'"
+                                            style="width: 100%; height: 100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Description" class="d-block">Chức vụ</label>
+                            <textarea rows="2" [(ngModel)]="item.ChucVu" style="
+                      width: 100% !important;
+                      border-radius: 0.25rem;
+                      border: 1px solid #ced4da;
+                      outline: none;
+                    ">
+                  </textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Description" class="d-block">Khen thưởng</label>
+                            <textarea rows="2" [(ngModel)]="item.KhenThuong" style="
+                      width: 100% !important;
+                      border-radius: 0.25rem;
+                      border: 1px solid #ced4da;
+                      outline: none;
+                    ">
+                  </textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Description" class="d-block">Trình độ lý luận chính trị</label>
+                            <textarea rows="2" [(ngModel)]="item.TrinhDoLyLuanChinhTri" style="
+                      width: 100% !important;
+                      border-radius: 0.25rem;
+                      border: 1px solid #ced4da;
+                      outline: none;
+                    ">
+                  </textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Description" class="d-block">Trình độ chuyên môn</label>
+                            <textarea rows="2" [(ngModel)]="item.TrinhDoChuyenMon" style="
+                      width: 100% !important;
+                      border-radius: 0.25rem;
+                      border: 1px solid #ced4da;
+                      outline: none;
+                    ">
+                  </textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Quá trình công tác">
+        <div class="row">
+            <div class="col-lg-12">
+                <fieldset style="min-height: 100px">
+                    <legend><b>Quá trình công tác &nbsp; &nbsp; &nbsp; &nbsp; <button class="btn btn-sm btn-info"
+                                (click)="addQTCT()"> Thêm quá trình công tác</button></b></legend>
+                    <div class="col-md-12">
+                        <table class="table">
+                            <tr>
+                                <th width="10%">Thứ tự</th>
+                                <th width="20%">Từ ngày - đến ngày</th>
+                                <th width="75%">Nội dung <span class="text-danger">(*)</span></th>
+                                <th width="5%">Xóa</th>
+                            </tr>
+                            <tr *ngFor="let prop of item.QTCTlst">
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number" min="1" class="form-control" [(ngModel)]="prop.ThuTu" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.TuNgayDenNgay" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <textarea rows="2" placeholder="Nội dung" [(ngModel)]="prop.NoiDung" style="
+                    width: 100% !important;
+                    border-radius: 0.25rem;
+                    border: 1px solid #ced4da;
+                    outline: none;
+                  ">
+                </textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-danger" (click)="minusQTCT(prop)"><i
+                                                class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Hình ảnh hoạt động">
+        <div class="row">
+            <div class="col-lg-12">
+                <fieldset style="min-height: 100px">
+                    <legend><b>Hình ảnh hoạt động &nbsp; &nbsp; &nbsp; &nbsp;<button class="btn btn-sm btn-info"
+                                (click)="addHAHD()">Thêm hình ảnh hoạt động
+                            </button></b></legend>
+                    <div class="col-md-12">
+                        <table class="table">
+                            <tr>
+                                <th width="15%">Chọn hình ảnh</th>
+                                <th width="15%">Hình ảnh <span class="text-danger">(*)</span></th>
+                                <th width="20%">Tên hình</th>
+                                <th width="45%">Mô tả</th>
+                                <th width="5%">Xóa</th>
+                            </tr>
+                            <tr *ngFor="let prop of item.HAHDlst">
+                                <td>
+                                    <div class="form-group">
+                                        <div class="btn bg-pro color-white" (click)="openFileDilog(prop)">
+                                            Chọn hình ảnh
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="row-custom">
+                                            <div
+                                                style="background-color: #ececec; width: 100px; height: 100px; padding: 10px;">
+                                                <img [src]="prop.Url | imageUrlPipe: 'thumb'"
+                                                    style="width: 100%; height: 100%" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.TenHinh"
+                                            placeholder="Tên hình" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <textarea rows="2" [(ngModel)]="prop.MoTa" style="
+                    width: 100% !important;
+                    border-radius: 0.25rem;
+                    border: 1px solid #ced4da;
+                    outline: none;
+                  ">
+                </textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-danger" (click)="minusHAHD(prop)"><i
+                                                class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Bài phát biểu">
+        <div class="row">
+            <div class="col-lg-12">
+                <fieldset style="min-height: 100px">
+                    <legend><b>Bài phát biểu &nbsp; &nbsp; &nbsp; &nbsp;<button class="btn btn-sm btn-info"
+                                (click)="addBPB()">Thêm bài phát biểu
+                            </button></b></legend>
+                    <div class="col-md-12">
+                        <table class="table">
+                            <tr>
+                                <th width="15%">Ngày đăng</th>
+                                <th width="20%">Tiêu đề</th>
+                                <th width="20%">Mô tả ngắn</th>
+                                <th width="35%">Nội dung</th>
+                                <th width="5%">Sửa</th>
+                                <th width="5%">Xóa</th>
+                            </tr>
+                            <tr *ngFor="let prop of item.BPBlst">
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.NgayDangSaveString"
+                                            [readonly]=true />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.TieuDe"
+                                            [readonly]=true />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.MoTaNgan"
+                                            [readonly]=true />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="prop.NoiDung"
+                                            [readonly]=true />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-info" (click)="editBPB(prop)"><i
+                                                class="fa fa-cog"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-danger" (click)="minusBPB(prop)"><i
+                                                class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </p-tabPanel>
+</p-tabView>
+
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

@@ -1,0 +1,936 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="keywords" content="cong doan, giao duc, cong doan giao duc, lam dong, cong doan giao duc lam dong, congdoan.lamdong.edu">
+
+    <link href="@Url.Image(@SystemParameterDto.GetParameter("FOOTER", "LOGO", (Session["PortalInformation"] as PortalInformation).PortalCode.ToUpper()).Value2)" rel="Shortcut Icon">
+    @RenderSection("MetaData", required: false)
+    @RenderSection("pluginStyles", required: false)
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.mmenu.all.css" rel="stylesheet" />
+    <link href="~/Content/jquery.mmenu.themes.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/Content/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/Content/custom2.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <link href="~/Content/define.css" rel="stylesheet" />
+    <link href="~/Content/slider-pro.min.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/mmcustom.css" rel="stylesheet" />
+
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/themify-icons/themify-icons.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/elegantIcon/elegantIcon.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.simplyscroll.css" />
+
+    <meta name="google-site-verification" content="FULY_TEX_nUmnIxIRjmCfOdhVtEmIwFjG4F8doxt2mA" />
+    @*<link href="~/Content/sgdcustom.css" rel="stylesheet" />*@
+    <link href="~/Content/bootstrap-rating.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery.js"></script>
+
+    <!-- Thêm thư viện Slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+
+    @*<link href="~/Content/style.min.css" rel="stylesheet" />*@
+
+    @Scripts.Render("~/bundles/modernizr")
+    @if (!string.IsNullOrEmpty(ViewBag.GoogleMapKey))
+    {
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapKey"></script>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.GoogleAnalytics))
+    {
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@ViewBag.GoogleAnalytics"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '@ViewBag.GoogleAnalytics');
+        </script>
+    }
+
+<style>
+        nav.menu.scroll {
+            width: 1170px !important;
+            left: 50% !important;
+            transform: translate(-50%) !important;
+        }
+
+        .simply-scroll {
+            width: 100% !important;
+            border: 1px dashed #dfdfdf;
+            border-bottom: 0;
+            border-top: 0;
+        }
+
+        ul.nav-left a {
+            color: blue;
+        }
+
+            ul.nav-left a:hover {
+                color: #DA3B01
+            }
+
+        .menu-a {
+            text-decoration: none !important;
+        }
+
+        .menu-white {
+            color: white !important;
+        }
+    .owl-carousel .owl-item img {
+        border-radius: 20px;
+    }
+
+    .bannerfixscroll {
+        position: fixed;
+        top: 220px;
+        width: 180px;
+        z-index: 1000;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+        .bannerfixscroll img {
+            width: 100%;
+            height: 385px;
+            display: block;
+        }
+
+        @@media (max-width: 991px) {
+            .bannerfixscroll {
+                display: none;
+            }
+        }
+</style>
+
+</head>
+<body>
+    @using VNPT.Web.Portal.Api.Helper
+    @using VNPT.Web.Portal.Api.Models
+    @using VNPT.Web.Portal.Api.DTO
+    @{
+        var information = Session["PortalInformation"] as PortalInformation;
+        var xuat_xu_vb = SystemParameterDto.GetParameter("XUAT_XU", "vb_cdgd", information.PortalCode.ToUpper()).Description;
+
+        var color = SystemParameterDto.GetParameter("COLOR", "COLOR", information.PortalCode.ToUpper()).Value2;
+
+        var bannerImageLeft = SystemParameterDto.GetParameter("BANNER_CENTER", "BANNER_CENTER_LEFT", information.PortalCode.ToUpper()).Value2;
+        var bannerImageRight = SystemParameterDto.GetParameter("BANNER_CENTER", "BANNER_CENTER_RIGHT", information.PortalCode.ToUpper()).Value2;
+    }
+
+    <div class="wrap">
+        <input id="xuat_xu_vb" value="@xuat_xu_vb" type="hidden" />
+        <input id="color" value="@color" type="hidden" />
+
+        @Html.Partial("~/Views/Shared/Portals/Layouts/MauGiaoTheme/_Header.cshtml")
+        <main>
+            <div class="bannerfixscroll fixleft">
+                <img src="@Url.Image(bannerImageLeft)" />
+            </div>
+            @RenderBody()
+            <div class="bannerfixscroll fixright">
+                <img src="@Url.Image(bannerImageRight)" />
+            </div>
+        </main>
+        @Html.Partial("~/Views/Shared/Portals/Layouts/MauGiaoTheme/_Footer.cshtml")
+
+    </div>
+
+    <script src="~/Scripts/tether.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/wow.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/owl.carousel.min.js" type="text/javascript"></script>
+
+
+    <script src="~/Scripts/jquery.mmenu.all.js" type="text/javascript"></script>
+    <script src="~/Scripts/common.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.sliderPro.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/slide.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.magnific-popup.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.simpleWeather.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/mustache.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/bootstrap-rating.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+    <script id="pro_data" type="x-tmpl-mustache">
+        <div class="content-promotion" style="height: 600px; overflow: auto;">
+            <table class="table table-bordered" style="width: 3000px">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 5%; text-align:center">Tên thủ tục</th>
+                        <th scope="col" style="width: 4%; text-align:center">Cấp thực hiện</th>
+                        <th scope="col" style="width: 20%; text-align:center">Trình tự thực hiện</th>
+                        <th scope="col" style="width: 4%; text-align:center">Cách thức thực hiện</th>
+                        <th scope="col" style="width: 20%; text-align:center">Thành phần hồ sơ</th>
+                        <th scope="col" style="width: 3%; text-align:center">Số lượng hồ sơ</th>
+                        <th scope="col" style="width: 4%; text-align:center">Thời gian giải quyết</th>
+                        <th scope="col" style="width: 3%; text-align:center">Cơ quan thực hiện</th>
+                        <th scope="col" style="width: 2%; text-align:center">Lệ phí</th>
+                        <th scope="col" style="width: 2%; text-align:center">Phí</th>
+                        <th scope="col" style="width: 25%; text-align:center">Yêu cầu, điều kiện thực hiện</th>
+                        <th scope="col" style="width: 6%; text-align:center">Căn cứ pháp lý</th>
+                        <th scope="col" style="width: 2%; text-align:center">Mức độ thủ tục</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td style="text-align:justify ">
+                       {{{TITLE}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{CapThucHien}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{TrinhTuTH}}}
+                    </td>
+                    <td style="text-align:justify ">
+                      {{{CachThucTH}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{ThanhPhanHS}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{SoLuongHS}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{TGGiaiQuyet}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{CoQuanTH}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{LePhi}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{Phi}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{YeuCauTH}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{CanCuPhapLy}}}
+                    </td>
+                    <td style="text-align:justify ">
+                        {{{MucDoThuTuc}}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+    <script type="text/javascript">
+        var xuat_xu_vb = document.getElementById("xuat_xu_vb").value;
+        var color = document.getElementById("color").value;
+        //var xuat_xu_bo = document.getElementById("xuat_xu_bo").value;
+        //var xuat_xu_khac = document.getElementById("xuat_xu_khac").value;
+
+        $(document).ready(function ($) {
+
+            $('#menu-pc').css("background", color); // css menu
+            //$('.site_block_title_top h3').css("background-color", color); //css top news
+            //$('.th_top_menu_rhead.color-mm-1').css("background-color", color); //css top news
+
+            $('.th_top_menu_rhead.color-mm-1').next(".box-news-haft").addClass("cborder-color-mm-1"); //css border
+            $('.th_top_menu_rhead.color-mm-2').next(".box-news-haft").addClass("cborder-color-mm-2"); //css border
+            $('.th_top_menu_rhead.color-mm-3').next(".box-news-haft").addClass("cborder-color-mm-3"); //css border
+
+            setTimeout(function () {
+                $('#featured .left .box-img h4').css('color', color); //css top news 1 tin đang hiển thị
+            }, 10)
+
+            $('.site_block_title').css("border-color", color); //css border title phải
+			$('.site_block_title h3').css("background-color", color); // css title phải
+
+			$('.site_block_title h2').css("background-color", color); // css title văn bản chỉ đạo điều hành
+			$('.label_van_ban_dieu_hanh ').css("color", color); // css văn bản điều hành
+			$('.border_van_ban_dieu_hanh').css("color", color); // css văn bản điều hành
+			$('.background_van_ban_dieu_hanh').css("background-color", color); // css văn bản điều hành
+
+            $('.leftmenu ul.nav-left li a i').css("color", color); // css caret bên phải
+
+            $('.showitem_tab ul.cls-item').css("background-color", color);//css tab new ở giữa trái
+
+            $('footer .bottom-footer').css("background-color", color); // css footer
+
+
+            $('.heading-direct').css("background-color", color); //css title chi tiết bài viết
+
+            $('section.news-home.other-news .heading-other-news').css("color", color); // css title orther news
+
+            $('.search-doc .icon').css("background-color", color); // css icon search button
+
+            setTimeout(function () {
+                $('.pagination li.active a').css("background", color); // css phân trang danh sách
+            }, 500)
+
+            if (window.innerWidth > 767) {
+
+                n = $('#featured .rights .ui-tabs-nav-item').length;
+                LoadFocus();
+                interval = setInterval("LoadFocus()", 114000);
+                $('#featured .rights .ui-tabs-nav-item').each(function (i) {
+                    $(this).hover(function () {
+                        clearInterval(interval);
+                        index = i;
+                        LoadFocus();
+                    }, function () {
+                        interval = setInterval("LoadFocus()", 114000);
+                    });
+                });
+            }
+            getCurrentDate();
+            setInterval(function () {
+                getCurrentDate();
+            }, 1000)
+            //getVanBan();
+            //getVanBanUBNDPl();
+            //getVanBanBGDPl();
+            //getVanBanKhacPl();
+            //getpublicBudget();
+            $('.popup-youtube').magnificPopup({
+                type: 'iframe',
+                mainClass: 'mfp-fade',
+                preloader: true,
+            });
+
+	        $('#slide_news').sliderPro({
+	            width: 670,
+	            autoplayDelay: 2000,
+			    height: 400,
+			    orientation: 'vertical',
+			    loop: false,
+			    arrows: true,
+			    buttons: false,
+			    thumbnailsPosition: 'right',
+			    thumbnailPointer: true,
+			    thumbnailWidth: 290,
+			    breakpoints: {
+				    800: {
+					    thumbnailsPosition: 'bottom',
+					    thumbnailWidth: 270,
+					    thumbnailHeight: 100
+				    },
+				    500: {
+					    thumbnailsPosition: 'bottom',
+					    thumbnailWidth: 120,
+					    thumbnailHeight: 50
+				    }
+			    }
+	        });
+	        $('.slide-images').owlCarousel({
+	            loop: false,
+	            margin: 30,
+	            dots: false,
+	            nav: true,
+	            autoplay: false,
+	            autoplayTimeout: 5000,
+	            smartSpeed: 800,
+	            responsiveClass: true,
+	            responsive: {
+	                0: {
+	                    items: 1,
+	                    nav: true
+	                },
+	                600: {
+	                    items: 1,
+	                    nav: true
+	                },
+	                1000: {
+	                    items: 1,
+	                    nav: true,
+	                    loop: true,
+	                    margin: 16,
+	                }
+	            }
+	        });
+	        $('a.popup-img').on('click', function (event) {
+	            event.preventDefault();
+
+	            var gallery = $(this).attr('href');
+
+	            $(gallery).magnificPopup({
+	                delegate: 'a',
+	                type: 'image',
+	                gallery: {
+	                    enabled: true
+	                }
+	            }).magnificPopup('open');
+	        });
+	        $('#slider_banner').owlCarousel({
+	            loop: true,
+	            margin: 0,
+                nav: false,
+                dots: false,
+	            items: 1,
+	            animateIn: 'fadeIn',
+	            animateOut: 'fadeOut',
+	            autoplay:true,
+	            autoplayTimeout:3000,
+            });
+
+            $('#slider_1newimage').owlCarousel({
+                loop: true,
+                margin: 0,
+                nav: false,
+                dots: false,
+                items: 1,
+                animateIn: 'slideInUp',
+                animateOut: 'slideOutDown',
+                autoplay: true,
+                autoplayTimeout: 3000,
+            });
+
+	        //if (window.innerWidth <= 1199) {
+	        //    var menuHtml = $("#menu-pc");
+	        //    $("#menu-pc").html(menuHtml.html());
+	        //    menuHtml.find(".isHomePc a").html("Trang chủ");
+	        //    $("#menu-mobile").html(menuHtml.html());
+	        //}
+
+            $('#changeEn').click(function () {
+                // Ví dụ cập nhật ngôn ngữ thành "vi" (Tiếng Việt)
+                updatePortalInformationName('en');
+            });
+
+            $('#changeVn').click(function () {
+                // Ví dụ cập nhật ngôn ngữ thành "vi" (Tiếng Việt)
+                updatePortalInformationName('vi');
+            });
+
+            function updatePortalInformationName(newName) {
+                // Send an AJAX request to update the session data
+                $.ajax({
+                    url: "@Url.Action("UpdateSession", "Sidebar", new { area = "Modules" })",
+                    //url: 'SysPortal/UpdateSession',
+                    type: 'POST',
+                    data: { lang: newName },
+                    success: function (response) {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.error('Error updating name:', error);
+                    }
+                });
+            }
+
+        });
+        var n = 0; var interval;
+        var index = 0;
+
+        function LoadFocus() {
+            if (index >= 0) {
+                var Des = "";
+                var item = $('#featured .ct .rights .ui-tabs-nav-item').eq(index);
+                if ($(item).find('a.img').attr('aria-valuetext') != undefined) {
+                    Des = $(item).find('a.img').attr('aria-valuetext')
+                } else {
+                    Des = $(item).find('a.img').attr('aria-label')
+                }
+                //var item = $('#featured .ct .rights .ui-tabs-nav-item').eq(index),
+				//var img = $(item).find('a.img').attr('aria-label'),
+                //Des = $(item).find('a.img').attr('aria-valuetext'),
+                var link = $(item).find('a.img').attr('href');
+                var title = $(item).find('.title h4 a').html();
+                var image = $(item).find('a.img').html();
+                //var time = $(item).find('a.img').attr('data-date');
+				//var view = $(item).find('a.img').attr('data-view');
+                //img = img;
+                $('#featured .rights .ui-tabs-nav-item').removeClass('ui-tabs-active');
+                $('#featured .rights .ui-tabs-nav-item').eq(index).addClass('ui-tabs-active');
+                $('#featured .lefts').hide().html("<div class=\"box-img\"> <a href=" + link + ">" + image + "<h4>" + title + "</h4></a><div class=\"des\"><div class=\"ct\">" + noscript(Des) + "</div></div>").toggle();
+                index++;
+                if (index == n) index = 0;
+            }
+        }
+        function noscript(strCode) {
+            var div = document.createElement('div');
+            div.innerHTML = strCode;
+            var scripts = div.getElementsByTagName('script');
+            var i = scripts.length;
+            while (i--) {
+                scripts[i].parentNode.removeChild(scripts[i]);
+            }
+            return div.innerHTML;
+        }
+        function getVanBan() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    pageNum: 1,
+                    pageSize: 5,
+                    Code: "vb_cdgd",
+                    XuatXu: xuat_xu_vb
+                },
+                @*url: "@Url.Action("GetVanBan", "CongDoan", new { area = "Modules" })",*@
+                url: "@Url.Action("GetDocument", "CongDoanMM", new { area = "Modules" })",
+                success: function (res) {
+                    if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+                            html += '<div class="item-sch cus-box-news-home_right">'
+		                                + '<a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0})" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&code=' + item.CODE + '&alias=' + item.ALIAS + '" title="">' + item.SO_HIEU + '</a>'
+		                                + '<p class="item-p">' + item.TRICH_YEU + '</p>'
+	                                +'</div>'
+
+                            @*html += '<li>'
+                                +' <a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0 })" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&alias=' + item.ALIAS + '&code=' + item.CODE + '">'
+                                    + '<b class="item-sohieu">Công văn số: ' + item.SO_HIEU + '</b>'
+                                     + '<i>Ngày ban hành: ' + item.NGAY_BAN_HANH + '</i>'
+                                    + '<span class="desc_doc">'+item.TRICH_YEU+'</span>'
+                                + '</a>'
+                           + '</li>';*@
+                        })
+
+                        $("#documentApp").prepend(html);
+
+                        $("#documentApp .item-sch").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }
+                }
+            });
+        }
+
+        @*function getVanBanUBNDPl() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    Code: "SGD_COMMITTEE",
+                    XuatXu : xuat_xu_tinh
+                },
+                url: "@Url.Action("GetDocumentHome", "Sidebar", new { area = "Modules" })",
+                success: function (res) {
+                    if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+
+                            var NGAY_BAN_HANH = "";
+                            if (item.NGAY_BAN_HANH == null || item.NGAY_BAN_HANH == "") {
+                                NGAY_BAN_HANH = NGAY_BAN_HANH;
+                            } else {
+                                NGAY_BAN_HANH = formatDateString(item.NGAY_BAN_HANH);
+                            }
+
+                            html += '<li>'
+                                +' <a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0 })" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&alias=' + item.ALIAS + '&code=' + item.CODE + '">'
+                                    + '<b class="item-sohieu">Công văn số: ' + item.SO_HIEU + '</b>'
+                                     + '<i>Ngày ban hành: ' + NGAY_BAN_HANH + '</i>'
+                                    + '<span class="desc_doc">'+item.TRICH_YEU+'</span>'
+                                + '</a>'
+                           + '</li>';
+                        })
+
+                        $("#documentUBNDApp ul").prepend(html);
+
+                        $("#documentUBNDApp ul li").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }
+                }
+        });
+        }*@
+        @*function getVanBanBGDPl() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    Code: "SGD_MINISTRY",
+                    XuatXu: xuat_xu_bo
+                },
+                url: "@Url.Action("GetDocumentHome", "Sidebar", new { area = "Modules" })",
+                success: function (res) {
+                    if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+
+                            var NGAY_BAN_HANH = "";
+                            if (item.NGAY_BAN_HANH == null || item.NGAY_BAN_HANH == "") {
+                                NGAY_BAN_HANH = NGAY_BAN_HANH;
+                            } else {
+                                NGAY_BAN_HANH = formatDateString(item.NGAY_BAN_HANH);
+                            }
+
+                            html += '<li>'
+                                +' <a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0 })" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&alias=' + item.ALIAS + '&code=' + item.CODE + '">'
+                                    + '<b class="item-sohieu">Công văn số: ' + item.SO_HIEU + '</b>'
+                                     + '<i>Ngày ban hành: ' + NGAY_BAN_HANH + '</i>'
+                                    + '<span class="desc_doc">'+item.TRICH_YEU+'</span>'
+                                + '</a>'
+                           + '</li>';
+                        })
+
+                        $("#documentBGDApp ul").prepend(html);
+
+                        $("#documentBGDApp ul li").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }
+                }
+        });
+        }*@
+        @*function getVanBanKhacPl() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    Code: "DOCUMENT_OTHER",
+                    XuatXu: xuat_xu_khac
+                },
+                url: "@Url.Action("GetDocumentHome", "Sidebar", new { area = "Modules" })",
+                success: function (res) {
+                    if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+
+                            var NGAY_BAN_HANH = "";
+                            if (item.NGAY_BAN_HANH == null || item.NGAY_BAN_HANH == "") {
+                                NGAY_BAN_HANH = NGAY_BAN_HANH;
+                            } else {
+                                NGAY_BAN_HANH = formatDateString(item.NGAY_BAN_HANH);
+                            }
+
+                            html += '<li>'
+                                +' <a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0 })" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&alias=' + item.ALIAS + '&code=' + item.CODE + '">'
+                                    + '<b class="item-sohieu">Công văn số: ' + item.SO_HIEU + '</b>'
+                                     + '<i>Ngày ban hành: ' + NGAY_BAN_HANH + '</i>'
+                                    + '<span class="desc_doc">'+item.TRICH_YEU+'</span>'
+                                + '</a>'
+                           + '</li>';
+                        })
+
+                        $("#documentKhacApp ul").prepend(html);
+
+                        $("#documentKhacApp ul li").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }
+                }
+        });
+        }*@
+        @*function getpublicBudget() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    Code: "SGD_PUBLIC_BUDGET",
+                },
+                url: "@Url.Action("Getpublicbudget", "Sidebar", new { area = "Modules" })",
+                success: function (res) {
+                    if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+
+                            //var NGAY_BAN_HANH = "";
+                            //if (item.NGAY_BAN_HANH == null || item.NGAY_BAN_HANH == "") {
+                            //    NGAY_BAN_HANH = NGAY_BAN_HANH;
+                            //} else {
+                            //    NGAY_BAN_HANH = formatDateString(item.NGAY_BAN_HANH);
+                            //}
+
+                            html += '<li>'
+                                +' <a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0 })" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&alias=' + item.ALIAS + '&code=' + item.CODE + '">'
+                                    + '<b class="item-sohieu">Công văn số: ' + item.SO_HIEU + '</b>'
+                                     + '<i>Ngày ban hành: ' + item.NGAY_BAN_HANH + '</i>'
+                                    + '<span class="desc_doc">'+item.TRICH_YEU+'</span>'
+                                + '</a>'
+                           + '</li>';
+                        })
+
+                        $("#publicBudget ul").prepend(html);
+
+                        $("#publicBudget ul li").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }
+                }
+        });
+        }*@
+        //$("#documentApp ul").on('click', "li a", function () {
+        //    if ($(this).attr("data-pl") == 1) {
+        //        alert(1)
+        //    }
+        //})
+
+        function formatDateString(string) {
+            var d = new Date(string);
+            return (d.getDate() < 9 ? ("0" + d.getDate()) : d.getDate()) + "/" + ((d.getMonth() + 1) < 9 ? ("0" + (d.getMonth() + 1)) : (d.getMonth() + 1)) + "/" + d.getFullYear();
+        }
+
+        @*$('.gallery-link').on('click', function () {
+            var valueNews = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetListImageChild", "Gallery", new { area = "Modules" })',
+                data: {
+                    value: valueNews
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var data = response.kq;
+                        var html = '';
+                        var template = $('#img_data').html();
+                        if (data.length > 0) {
+                            $.each(data, function (key, item) {
+                                html += Mustache.render(template,
+                                {
+                                    IMG_URL: config.UrlImage(item.ImageUrl)
+                                });
+                            });
+                        }
+                        $('#lst_img').html(html);
+                        $('.gallery').magnificPopup('open');
+                    }
+                },
+                error: function () {
+                    console.log("Error connection!");
+                },
+                timeout: 100000
+            });
+
+        });
+
+        $('.gallery').each(function () {
+            $(this).magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                gallery: {
+                    enabled: true,
+                    navigateByImgClick: true
+                },
+                fixedContentPos: false
+            });
+        });*@
+
+	    function getCurrentDate() {
+	        var date = new Date();
+            var day_name = "";
+            var lang = "vi";
+
+            const cookies = document.cookie;
+            const cookieArray = cookies.split('; ');
+
+            for (let i = 0; i < cookieArray.length; i++) {
+                const [name, value] = cookieArray[i].split('=');
+                if (name === "Language_Portal") {
+                    lang = decodeURIComponent(value);
+                }
+            }
+
+	        // Lấy tên thứ của ngày hiện tại
+	        switch (date.getDay()) {
+	            case 0:
+                    day_name = lang == "vi" ? "Chủ nhật" : "Sunday";
+	                break;
+	            case 1:
+                    day_name = lang == "vi" ? "Thứ 2" : "Monday";
+	                break;
+	            case 2:
+                    day_name = lang == "vi" ? "Thứ 3" : "Tuesday";
+	                break;
+	            case 3:
+                    day_name = lang == "vi" ? "Thứ 4" : "Wednesday";
+	                break;
+	            case 4:
+                    day_name = lang == "vi" ? "Thứ 5" : "Thursday";
+	                break;
+	            case 5:
+                    day_name = lang == "vi" ? "Thứ 6" : "Friday";
+	                break;
+	            case 6:
+                    day_name = lang == "vi" ? "Thứ 7" : "Saturday";
+	        }
+
+            var html = day_name + ", " + date.toLocaleString("en-GB");
+	        $("#timeCurrent").html(html);
+        }
+
+	    $('.show-popup-detail').on('click', function () {
+	        jQuery.magnificPopup.open({
+	            items: {
+	                src: '#modal-text-detail'
+	            },
+	            closeBtnInside: true
+	        });
+	    });
+
+	    //$('#lstprocedure').on('click', '.tthc-click', function () {
+	    //    jQuery.magnificPopup.open({
+	    //        items: {
+	    //            src: '#modal-tthc-detail'
+	    //        },
+	    //        closeBtnInside: true
+	    //    });
+	    //});
+	    $('#lstprocedure').on('click', '.tthc-click', function () {
+            var idPro = $(this).attr('data-id');
+            var codePro = $(this).attr('data-code');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDetailTTHC", "NewsHomeMM", new { area = "Modules" })',
+                data: {
+                    id: idPro,
+                    code: codePro
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var data = response.data;
+                        console.log(data);
+                        var template = $('#pro_data').html();
+
+                        var html = Mustache.render(template,
+                            {
+                                ALIAS: data.ALIAS,
+                                TITLE: data.TITLE,
+                                CapThucHien: data.CapThucHien,
+                                TrinhTuTH: data.TrinhTuTH,
+                                CachThucTH: data.CachThucTH,
+                                ThanhPhanHS: data.ThanhPhanHS,
+                                SoLuongHS: data.SoLuongHS,
+                                TGGiaiQuyet: data.TGGiaiQuyet,
+                                CoQuanTH: data.CoQuanTH,
+                                LePhi: data.LePhi,
+                                Phi: data.Phi,
+                                YeuCauTH: data.YeuCauTH,
+                                CanCuPhapLy: data.CanCuPhapLy,
+                                MucDoThuTuc: data.MucDoThuTuc,
+                            });
+
+                        $('#modal-tthc-detail').html(html);
+
+                        setTimeout(function(){
+                            jQuery.magnificPopup.open({
+                                removalDelay: 500,
+                                items: {
+                                    src: '#modal-tthc-detail'
+                                },
+                                callbacks: {
+                                    beforeOpen: function (e) {
+                                        this.st.mainClass = 'mfp-zoom-in';
+                                    },
+                                    close: function (e) {
+                                    }
+                                },
+                                midClick: true,
+                                closeOnBgClick: true
+                            });
+
+                        }, 10);
+                    }
+                },
+                error: function () {
+                    console.log("Error connection!");
+                },
+                timeout: 100000
+            });
+
+	    });
+
+
+    </script>
+    @RenderSection("pluginScripts", required: false)
+
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" src="~/Scripts/jquery.simplyscroll.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".scrolling-news").simplyScroll({
+                orientation: 'vertical',
+            });
+        });
+    </script>
+
+    <script>
+        function adjustBannerByMenu() {
+            const $menu = $('#menu-pc');
+            if (!$menu.length) return;
+
+            const menuWidth = $menu.outerWidth();
+            const bannerWidth = 160;
+            const gap = 20;
+            const winWidth = window.innerWidth;
+
+            if (winWidth < 992) {
+                $('.bannerfixscroll').hide();
+                return;
+            }
+
+            $('.bannerfixscroll').show();
+
+            const center = winWidth / 2;
+            const offset = menuWidth / 2 + gap;
+
+            // trái
+            $('.fixleft').css({
+                left: (center - offset - bannerWidth - 15) + 'px'
+            });
+
+            // phải
+            $('.fixright').css({
+                left: (center + offset - 20) + 'px'
+            });
+        }
+
+        $(window).on('load resize', adjustBannerByMenu);
+    </script>
+
+    <script>
+        function navigateToSearch() {
+            // Get the value of the keyword input field
+            var keyword = document.getElementById("keyword").value;
+
+            if (!keyword) {
+                return;
+            }
+
+            // Construct the URL for the search page
+            var searchUrl = "/tim-kiem?keyword=" + encodeURIComponent(keyword); // Modify the URL as per your search page URL
+
+            // Navigate to the search page
+            window.location.href = searchUrl;
+        }
+
+
+        $("#searchBtn").click(() => {
+            navigateToSearch();
+        });
+
+        $("#keyword").keyup(e => {
+            if (e && e.which == 13) {
+                navigateToSearch();
+            }
+        });
+    </script>
+</body>
+</html>

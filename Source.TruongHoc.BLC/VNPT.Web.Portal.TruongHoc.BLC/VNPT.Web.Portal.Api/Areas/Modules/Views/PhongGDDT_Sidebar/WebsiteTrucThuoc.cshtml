@@ -1,0 +1,70 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+@model List<VNPT.Web.Portal.Base.News>
+
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+
+    var newTypeDSTHCS = GeneralCategoryDto.GetNameNewsType("danh-sach-truong-thcs", infomation.PortalCode.ToUpper());
+
+    var codeDSTHCS = newTypeDSTHCS != null ? "danh-sach-truong-thcs." + newTypeDSTHCS.Id.ToString() : "";
+
+    var newTypeDSTieuHoc = GeneralCategoryDto.GetNameNewsType("danh-sach-truong-tieu-hoc", infomation.PortalCode.ToUpper());
+
+    var codeDSTieuHoc = newTypeDSTieuHoc != null ? "danh-sach-truong-tieu-hoc." + newTypeDSTieuHoc.Id.ToString() : "";
+
+    var newTypeDSMamNon = GeneralCategoryDto.GetNameNewsType("danh-sach-truong-mam-non", infomation.PortalCode.ToUpper());
+
+    var codeDSMamNon = newTypeDSMamNon != null ? "danh-sach-truong-mam-non." + newTypeDSMamNon.Id.ToString() : "";
+
+}
+
+<div class="list-inforNeed">
+    <div class="box-inforNeed">
+        <h3 class="header-box">
+            <img src="~/Images/pgddt/school.png" alt="">
+            THCS
+            <i class="fa fa-caret-up rotate"></i>
+        </h3>
+        <div class="title" style="display: none;">
+            <ul style="list-style-type: none; padding: 0; margin-bottom: 0; font-size: 14.4px;">
+                @Html.Action("GetNews", "PhongGDDT_Sidebar", new { area = "Modules", Code = codeDSTHCS })
+            </ul>
+        </div>
+    </div>
+    <div class="box-inforNeed">
+        <h3 class="header-box">
+            <img src="~/Images/pgddt/school.png" alt="">
+            Tiểu học
+            <i class="fa fa-caret-up rotate"></i>
+        </h3>
+        <div class="title" style="display: none;">
+            <ul style="list-style-type: none; padding: 0; margin-bottom: 0; font-size: 14.4px;">
+                @Html.Action("GetNews", "PhongGDDT_Sidebar", new { area = "Modules", Code = codeDSTieuHoc })
+            </ul>
+        </div>
+    </div>
+    <div class="box-inforNeed">
+        <h3 class="header-box">
+            <img src="~/Images/pgddt/school.png" alt="">
+            Mầm non
+            <i class="fa fa-caret-up rotate"></i>
+        </h3>
+        <div class="title" style="display: none;">
+            <ul style="list-style-type: none; padding: 0; margin-bottom: 0; font-size: 14.4px;">
+                @Html.Action("GetNews", "PhongGDDT_Sidebar", new { area = "Modules", Code = codeDSMamNon })
+            </ul>
+        </div>
+    </div>
+    @*<div class="box-inforNeed">
+        <h3 class="header-box">
+            <img src="~/Images/pgddt/school.png" alt="">
+            Liên kết
+            <i class="fa fa-caret-up rotate"></i>
+        </h3>
+        <div class="title" style="display: none;">
+            <a href="#" class="link"><b><i class="fa fa-angle-right"></i> THCS Chu Văn An</b></a>
+        </div>
+    </div>*@
+</div>

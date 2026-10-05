@@ -1,0 +1,128 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <nav id="menu-filter" class="sidenavfilter">
+
+    <div (click)="closeFilter()" class="bg-close"></div>
+
+    <div class="close-menu-filter close-menu" (click)="closeFilter()"><span><i class="fa fa-window-close"
+          aria-hidden="true"></i></span></div>
+
+    <div class="container_filter" *ngIf="type == 11">
+      <div class="filter_item">
+        <h5>Thể loại</h5>
+        <div class="item_content">Huân, huy chương</div>
+        <div class="item_content">Cờ, bằng khen</div>
+        <div class="item_content">Hiện vật</div>
+        <div class="item_content">Phim ảnh</div>
+        <div class="item_content">Sách, tư liệu</div>
+      </div>
+
+      <div class="filter_item">
+        <h5>Nguồn gốc</h5>
+        <div class="item_content">Thi đua</div>
+        <div class="item_content">Hoạt động phong trào</div>
+        <div class="item_content">Sưu tầm</div>
+      </div>
+    </div>
+
+    <div class="container_filter" *ngIf="type == 2 || type == 4">
+      <div class="filter_item">
+        <h5>Nhiệm kỳ</h5>
+        <div class="item_content">Nhiệm kỳ I</div>
+        <div class="item_content">Nhiệm kỳ II</div>
+        <div class="item_content">Nhiệm kỳ III</div>
+        <div class="item_content">Nhiệm kỳ IV</div>
+        <div class="item_content">Nhiệm kỳ V</div>
+        <div class="item_content">Nhiệm kỳ VI</div>
+        <div class="item_content">Nhiệm kỳ VII</div>
+        <div class="item_content">Nhiệm kỳ VIII</div>
+        <div class="item_content">Nhiệm kỳ IX</div>
+        <div class="item_content">Nhiệm kỳ X</div>
+      </div>
+
+      <div class="filter_item">
+        <h5>Chức vụ</h5>
+        <div class="item_content">Chủ nhiệm</div>
+        <div class="item_content">Phó Chủ nhiệm</div>
+      </div>
+    </div>
+
+    <div class="filter_action">
+      <button class="btn-sm btn btn-outline-secondary"><i class="fas fa-ban"></i> Reset all</button>
+      <button class="btn-sm btn btn-success"><i class="fas fa-check"></i> Áp dụng</button>
+    </div>
+
+  </nav>
+
+  <div class="container">
+
+    <div class="content-title text-center">
+      <div class="c-title">
+        <span>TRUYỀN THỐNG NGÀNH GIÁO DỤC TỈNH LÂM ĐỒNG</span>
+        <div *ngIf="isOn" class="filterBtn" (click)="turnOffSound()"><i class="fas fa-volume-up"></i></div>
+        <div *ngIf="!isOn" class="filterBtn" (click)="turnOnSound()"><i class="fas fa-volume-mute"></i></div>
+      </div>
+    </div>
+
+    <div class="content_baiviet p-justify-center" [innerHTML]="contentPage.Content">
+      <!-- <iframe width="100%" height="600" src="https://www.youtube.com/embed/_RM2SKVyqj0?si=UKgiYOkQH2lUu8NN"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe> -->
+
+      <!-- <p> Đảng bộ tỉnh Lâm Đồng được thành lập từ tháng 02 năm 1976, là một trong những Đảng bộ có tổ chức Đảng ra đời sớm, trải qua nhiều thử thách, tích luỹ được nhiều kinh nghiệm lãnh đạo trong đấu tranh cách mạng.</p>
+      <p>
+        Để đáp ứng yêu cầu nhiệm vụ chính trị, công tác xây dựng Đảng và yêu cầu của công tác kiểm tra, giám sát và kỷ luật của Đảng, sau ngày giải phóng miền Nam, thống nhất đất nước, Ban Chấp hành lâm thời Đảng bộ tỉnh Lâm Đồng đã tổ chức Hội nghị lần thứ nhất, từ ngày 23/02 đến ngày 01/3/1976 để bàn về nhiệm vụ và công tác của tỉnh trong thời gian tiếp theo, Ban chấp hành đã phân công đồng chí Nguyễn Văn Hòa (tức đồng chí Nguyễn Nghĩa Phương) Tỉnh ủy viên, phụ trách công tác kiểm tra lâm thời. Ngày 16/3/1977, Ban Chấp hành Đảng bộ tỉnh khóa I đã bầu Ủy ban Kiểm tra Tỉnh ủy gồm 05 đồng chí, đến ngày 18 tháng 10 năm 1977, Ban Bí thư Trung ương Đảng đã ban hành Nghị quyết số 283-NQNS/TW do đồng chí Nguyễn Duy Trinh ký chuẩn y danh sách Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng khóa I.
+      </p>
+      <p>
+        Bước vào thực hiện nhiệm vụ cách mạng mới - xây dựng và bảo vệ Tổ quốc, tỉnh Lâm Đồng gặp vô vàn khó khăn, hậu quả của ba mươi năm chiến tranh để lại khá nặng nề. Là một tỉnh có vị trí quan trọng ở Nam Tây Nguyên nên số đông ngụy quân, ngụy quyền, tình báo, gián điệp tìm cách trụ lại và coi đây là địa bàn thuận lợi để tập hợp các tổ chức phản động, nhằm chống phá cách mạng. Đồng thời, do bối cảnh tình hình thế giới phức tạp, Liên xô - Đông Âu sụp đổ, kẻ thù tấn công quyết liệt nhằm xoá bỏ chủ nghĩa xã hội mà Việt Nam là một trong những mục tiêu chính… Nếu Đảng bộ tỉnh không chỉnh đốn và đổi mới để thực sự vững mạnh về chính trị, tư tưởng và tổ chức thì nhất định không đáp ứng yêu cầu, nhiệm vụ lãnh đạo cách mạng trong giai đoạn mới. Trước tình hình đó, Ban Chấp hành Trung ương đã ban hành Nghị quyết Trung ương 3 về một số nhiệm vụ đổi mới và chỉnh đốn đảng; Tỉnh ủy Lâm Đồng đã ban hành chương trình hành động và Chỉ thị để thực hiện Nghị quyết Trung ương 3. Giai đoạn này, công tác kiểm tra của Đảng bộ đã tích cực triển khai nhiệm vụ và có đóng góp quan trọng cho công tác chỉnh đốn đảng, nhiều đảng viên thoái hóa biến chất đã được xử lý, uốn nắn lệch lạc; tập trung kiểm tra việc chấp hành nguyên tắc sinh hoạt đảng, thực hiện quy chế làm việc, giữ gìn phẩm chất, đạo đức, thi hành kỷ luật, nhờ đó các tổ chức cơ sở đảng được củng cố, dân chủ trong đảng thực hiện tương đối tốt, năng lực lãnh đạo được nâng lên.
+      </p>
+      <p>Có thể khẳng định, qua 46 năm thành lập và hoạt động, Ủy ban Kiểm tra Tỉnh ủy nói riêng và ủy ban kiểm tra các cấp trong toàn Đảng bộ tỉnh nói chung đã không ngừng phát triển và hoạt động có hiệu quả. Tổ chức, bộ máy và cán bộ của ủy ban kiểm tra từng bước được hoàn thiện về số lượng và trình độ chuyên môn, nghiệp vụ. Thể hiện được tư tưởng chỉ đạo trong hoạt động kiểm tra <i>"chủ động, chiến đấu, giáo dục, hiệu quả" </i> đi cùng phương châm <i>"công minh, chính xác, kịp thời"</i>,  hoàn thành được nhiệm vụ chính trị theo từng giai đoạn cách mạng, đáp ứng yêu cầu lãnh đạo của Đảng bộ. </p>
+      <p>
+        Qua từng thời kỳ, giai đoạn, gắn liền với những thuận lợi, khó khăn và thử thách, Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng đã phát huy cao nhất hiệu quả của công tác kiểm tra, giám sát, giữ gìn kỷ luật, kỷ cương của Đảng, được Ủy ban Kiểm tra Trung ương, Ban Thường vụ Tỉnh ủy, Ủy ban nhân dân tỉnh ghi nhận..v.v. tặng nhiều cờ thi đua, bằng khen, giấy khen cho tập thể và các cá nhân tiêu biểu, hoàn thành xuất sắc nhiệm vụ hàng năm và nhiệm kỳ. Đặc biệt, đã có thành tích xuất sắc trong công tác, góp phần vào sự nghiệp xây dựng Chủ nghĩa xã hội và bảo vệ Tổ quốc, vinh dự được Chủ tịch nước tặng: 
+      </p>
+
+      <p>
+        + Huân chương lao động Hạng Ba vào năm 2008.
+      </p>
+      <p>
+        + Huân chương lao động Hạng Nhì vào năm 2013.
+      </p>
+      <p>
+        + Huân chương lao động Hạng Nhất vào năm 2022.
+      </p>
+      <p>
+        Tạo nên thế đứng vững chãi, là minh chứng cho tinh thần đoàn kết, kiên trung và một lòng sắt son với Đảng. 
+      </p>
+
+      <p>
+        Trước những giá trị trân quý đó, được sự đồng ý của Thường trực Tỉnh ủy, Ủy ban Kiểm tra Tỉnh ủy đã xây dựng Phòng Truyền thống Ngành Kiểm tra Đảng bộ tỉnh Lâm Đồng với mong muốn lưu giữ những hình ảnh, tư liệu về sự đóng góp quý báu của các đồng chí lãnh đạo, cán bộ, công chức qua các thời kỳ cũng như quá trình thành lập và phát triển của Ngành Kiểm tra Đảng bộ tỉnh. Trở thành nơi hội tụ của quá khứ, hiện tại và tương lai. Động viên, cổ vũ ủy ban kiểm tra, đội ngũ cán bộ, công chức ủy ban kiểm tra các cấp tiếp tục cống hiến, giữ gìn và phát huy hơn nữa truyền thống của Ngành Kiểm tra Đảng và những thành tích mà Ngành Kiểm tra Đảng bộ tỉnh đã đạt được. 
+      </p>
+      <p>
+        Thông tin trưng bày tại Phòng Truyền thống được chia làm 2 chủ đề: 
+      </p>
+      <p>
+        <b>Chủ đề thứ nhất:</b> Gồm các thông tin chung về Ngành.
+      </p>
+      <p>
+        <b>Chủ đề thứ hai:</b> Gồm hình ảnh tư liệu, hiện vật gắn liền với quá trình hình thành và phát triển của Ủy ban Kiểm tra Tỉnh ủy Lâm Đồng. 
+      </p>
+      <p>
+        Bên cạnh đó, Phòng truyền thống Ngành Kiểm tra Đảng bộ tỉnh Lâm Đồng đã kết hợp hài hòa giữa truyền thống và hiện đại, ứng dụng công nghệ chuyển đổi số vào lưu giữ các giá trị truyền thống, dễ dàng kể lại những câu chuyện ý nghĩa gắn với lịch sử hình thành và phát triển bằng công nghệ trình chiếu, kết hợp với các hiện vật, tư liệu trưng bày, đa dạng về sắc thái, trực quan về hình ảnh. Là không gian mở để người dùng có thể sử dụng thiết bị công nghệ truy cập, khai thác và cập nhật thông tin thuận lợi, tăng giá trị trải nghiệm, được trao quyền chủ động tìm hiểu thông tin quan tâm và chủ động tiếp nhận thông tin, tạo ra sự tương tác hai chiều, là <i>"sứ giả" </i>rút ngắn khoảng cách giữa ủy ban kiểm tra và người dân.
+      </p>
+      <p>
+        Mỗi tư liệu, hiện vật được trưng bày và số hóa bằng công nghệ, đều mang trong mình một câu chuyện lịch sử, với nhiều giá trị nhân văn. Tuy nhiên, sau 46 năm, nhiều tài liệu, hiện vật bị phân tán, thất lạc; nhiều câu chuyện giá trị được lưu giữ trong ký ức của những chứng nhân lịch sử, đã mai một theo quy luật của thời gian. Song, đây chỉ là điểm khởi đầu. Phòng Truyền thống Ngành Kiểm tra Đảng bộ tỉnh Lâm Đồng sẽ tiếp tục bổ sung, vun đắp với sự chung tay của các thế hệ lãnh đạo, cán bộ, công chức đã, đang và sẽ công tác trong toàn ngành để thực sự có một tầm vóc, quy mô tương xứng với những thành tích đã đạt được.
+      </p> -->
+
+    </div>
+  </div>
+</div>

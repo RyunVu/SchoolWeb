@@ -1,0 +1,110 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Quản lý tiện ích</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Tiện ích</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12 col-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Danh sách tiện ích</h3>
+            <button
+              *ngIf="checkPermission('Add')"
+              (click)="add()"
+              type="button"
+              class="btn btn-info btn-sm float-right"
+            >
+              <i class="fas fa-plus"></i> Thêm mới
+            </button>
+          </div>
+          <div class="card-body p-0">
+            <p-table
+              [value]="treeNodes"
+              [responsive]="true"
+              [lazy]="true"
+              (onLazyLoad)="paginate($event)"
+              [paginator]="true"
+              [rows]="10"
+              [totalRecords]="totalRecords"
+              [loading]="loading"
+              responsiveLayout="scroll"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th width="25%">Tiêu đề</th>
+                  <th width="10%">Code</th>
+                  <th width="20%">Image</th>
+                  <th width="10%">Thao tác</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData>
+                <tr>
+                  <td>
+                    {{ rowData.Name }}
+                  </td>
+                  <td>{{ rowData.Code }}</td>
+                  <td>
+                    <img
+                      [src]="rowData.ImageUrl | imageUrlPipe: 'thumb'"
+                      style="width: 100px; height: 100%"
+                    />
+                  </td>
+
+                  <td>
+                    <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-info btn-flat"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Thao tác
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-info btn-flat dropdown-toggle dropdown-icon"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <div class="dropdown-menu" role="menu">
+                        <a class="dropdown-item" (click)="utilityChild(rowData)"
+                          >Tiện ích con</a
+                        >
+                        <a class="dropdown-item" (click)="edit(rowData)"
+                          >Cập nhật</a
+                        >
+                        <a class="dropdown-item" (click)="delete(rowData)"
+                          >Xoá</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<p-confirmDialog
+  header="Xác nhận"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
+<p-toast></p-toast>

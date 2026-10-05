@@ -1,0 +1,139 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <nav id="menu-filter" class="sidenavfilter">
+
+    <div (click)="closeFilter()" class="bg-close"></div>
+
+    <div class="close-menu-filter close-menu" (click)="closeFilter()"><span><i class="fa fa-window-close"
+          aria-hidden="true"></i></span></div>
+
+    <div class="container_filter">
+      <div class="filter_item">
+        <h5>Thể loại</h5>
+        <div class="item_content">Huân, huy chương</div>
+        <div class="item_content">Cờ, bằng khen</div>
+        <div class="item_content">Hiện vật</div>
+        <div class="item_content">Phim ảnh</div>
+        <div class="item_content">Sách, tư liệu</div>
+      </div>
+
+      <div class="filter_item">
+        <h5>Nguồn gốc</h5>
+        <div class="item_content">Thi đua</div>
+        <div class="item_content">Hoạt động phong trào</div>
+        <div class="item_content">Sưu tầm</div>
+      </div>
+    </div> 
+
+    <div class="filter_action">
+      <button class="btn-sm btn btn-outline-secondary"><i class="fas fa-ban"></i> Reset all</button>
+      <button class="btn-sm btn btn-success"><i class="fas fa-check"></i> Áp dụng</button>
+    </div>
+
+  </nav>
+
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">
+        <span>{{subtitle}}</span>
+      </div>
+    </div>
+
+    <div class="lstperson row">
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="person_item" (click)="showChiTietCQ(1)">
+          <div class="person_name">TẬP THỂ THƯỜNG TRỰC</div>
+
+          <div class="person_info_HU">
+
+            <div class="person_img_HU">
+              <img src="assets/template/images/DANGTHEHAI/đồng chí Đặng Thế Hải nhận quyết định.jpg" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="person_item" (click)="showChiTietCQ(2)">
+          <div class="person_name">PHÒNG TỔNG HỢP</div>
+
+          <div class="person_info_HU">
+
+            <div class="person_img_HU">
+              <img src="assets/template/images/CQTU/Phòng Tổng hợp.JPG" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="person_item" (click)="showChiTietCQ(3)">
+          <div class="person_name">PHÒNG NGHIỆP VỤ 1</div>
+
+          <div class="person_info_HU">
+
+            <div class="person_img_HU">
+              <img src="assets/template/images/CQTU/Phòng Nghiệp vụ 1.JPG" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="person_item" (click)="showChiTietCQ(4)">
+          <div class="person_name">PHÒNG NGHIỆP VỤ 2</div>
+
+          <div class="person_info_HU">
+
+            <div class="person_img_HU">
+              <img src="assets/template/images/CQTU/Phòng Nghiệp vụ 2.JPG" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <p-galleria [autoPlay]="true" [transitionInterval]="5000" [(value)]="images_ToNuCong" [(visible)]="displayBasic_TNC"
+      [containerStyle]="{'max-width': '80%'}" [numVisible]="9" [circular]="true" [fullScreen]="true"
+      [showThumbnails]="false" [showItemNavigators]="true" [baseZIndex]="100000">
+        <ng-template pTemplate="item" let-item>
+          <img [src]="item.previewImageSrc"
+            style="width: 100%; display: block;-o-object-fit: contain; object-fit: contain;" />
+        </ng-template>
+      </p-galleria>
+      <div class="col-md-4 col-sm-4 col-xs-12">
+
+        <div class="person_item">
+          <div class="person_name">TỔ NỮ CÔNG</div>
+
+          <div class="person_info_HU" (click)="clickImageTNC()">
+
+            <div class="person_img_HU">
+              <img src="assets/template/images/CQTU/Tổ nữ công cơ quan1.JPG" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

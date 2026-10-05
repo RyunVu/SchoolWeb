@@ -1,0 +1,17 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@model List<VNPT.Web.Portal.Base.EOffice>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a href="@Url.Site("chi-tiet-van-ban", parameter: new { param = item.Id })" class="vanbans">
+            <b class="item-sohieu">@item.SoKyHieu</b>
+            <p class="datevb">
+                <b><i class="fa fa-calendar-o" aria-hidden="true"></i> Ngày đăng:</b> @item.CreateDate.ToString("dd/MM/yyyy") - <b><i class="fa fa-calendar-o" aria-hidden="true"></i> Ngày hiệu lực:</b> (@item.NgayBanHanh.ToString("dd/MM/yyyy"))
+            </p>
+            <span class="trichyeu">
+                @item.TrichYeu
+            </span>
+        </a>
+    </li>
+}

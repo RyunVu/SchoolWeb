@@ -1,0 +1,86 @@
+<div class="card card-primary">
+  <div class="collapse show" id="collapseExample">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Name">Từ khóa tìm kiếm</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="keyword"
+              placeholder="Từ khóa tìm kiếm"
+            />
+            <div class="input-group-append">
+              <button
+                (click)="search()"
+                type="button"
+                class="btn btn-info btn-sm float-right"
+              >
+                <i class="fa fa-filter"></i> Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <p-table
+      #dt
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục"
+      [value]="items"
+      [lazy]="true"
+      (onLazyLoad)="paginate($event)"
+      [paginator]="true"
+      [rows]="10"
+      [totalRecords]="totalRow"
+      [loading]="loading"
+      [autoLayout]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Tên</th>
+          <th>Thông tin liên hệ</th>
+          <th>Đơn vị</th>
+          <th>Lĩnh vực phân công</th>
+          <th style="width: 5rem">Thao tác</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item.FullName}}</td>
+          <td>
+            <span *ngIf="item.UserName"
+              >Tên đăng nhập: {{item.UserName }}<br
+            /></span>
+            <span *ngIf="item.PhoneNumber"
+              >Số ĐT: {{item.PhoneNumber }}<br
+            /></span>
+            <span *ngIf="item.Email">Email: {{item.Email }}</span>
+          </td>
+          <td>
+            <span *ngIf="item.UnitName"
+              >Phòng/ban: {{item.UnitName }}<br
+            /></span>
+            <span *ngIf="item.PositionName"
+              >Chức vụ: {{item.PositionName }}</span
+            >
+          </td>
+          <td>{{item.Fields }}</td>
+          <td style="text-align: center">
+            <button type="button" class="btn btn-info" (click)="delete(item)">
+              Xóa
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">Không tìm thấy dữ liệu</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

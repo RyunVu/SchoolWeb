@@ -1,0 +1,39 @@
+<!-- <p-toast></p-toast> -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Nội dung chỉ đạo <span class="text-danger">(*)</span></label>
+            <textarea class="form-control" [(ngModel)]="command" rows="8" placeholder="Nội dung"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <b>Hình ảnh</b>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-outline-danger" type="submit" (click)="openFileDialog()">Chọn hình ảnh</button>
+    </div>
+</div>
+<div class="row mb-2"></div>
+<div class="row">
+    <div class="col-md-3 custom-image img-thumb" *ngFor="let item of images">
+        <a href="{{item.Url | imageUrlPipe}}" target="_blank">
+            <img [src]="item.Url | imageUrlPipe: 'thumb'">
+        </a>
+        <div class="custom-delete" (click)="deleteImage(item)">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="saveAndEnd()"><span class="d-sm-block d-md-none">BC&KT</span><span class="d-none d-sm-none d-md-block">Báo cáo và kết thúc</span></button>
+        <button class="btn bg-pro color-white" type="submit" (click)="save()"><span class="d-sm-block d-md-none">BC</span><span class="d-none d-sm-none d-md-block">Báo cáo</span></button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

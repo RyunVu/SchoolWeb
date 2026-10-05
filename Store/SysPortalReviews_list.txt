@@ -1,0 +1,52 @@
+CREATE PROCEDURE [dbo].[SysPortalReviews_list] 
+@p_unitcode nvarchar(500) = NULL,
+@p_keyword nvarchar(500) = NULL,
+@p_tag nvarchar(500) = NULL,
+@p_status nvarchar(500) = NULL,
+@p_page_index int = 1,
+@p_page_size int = 10
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+	SELECT spr.*, unit.Name as UnitName FROM SysPortalReviews spr
+	LEFT JOIN Units unit ON spr.UnitCode  = unit.Code
+	WHERE  
+	((@p_status = 0 and spr.Status IN (1, 5, 6)) OR (@p_status = 6
+		AND spr.Status IN (1, 6)) OR spr.Status = @p_status)
+	AND spr.Status != -1
+	AND spr.ParentId is NULL 
+	AND
+	(@p_tag IS NULL
+		OR isnull(spr.Tag,'') = @p_tag)	
+	AND
+	(@p_unitcode IS NULL
+		OR spr.UnitCode = @p_unitcode)
+	AND 
+	(@p_keyword IS NULL
+		OR spr.Subject LIKE '%' + @p_keyword + '%'
+		OR spr.Content LIKE '%' + @p_keyword + '%'
+		OR spr.Name LIKE '%' + @p_keyword + '%')
+	ORDER BY CreateDate DESC 
+    OFFSET ((@p_page_index - 1) * @p_page_size) ROWS FETCH NEXT @p_page_size ROWS ONLY;
+   
+   	SELECT COUNT(*) FROM SysPortalReviews spr
+	WHERE  
+	((@p_status = 0 and spr.Status IN (1, 5, 6)) OR (@p_status = 6
+		AND spr.Status IN (1, 6)) OR spr.Status = @p_status)
+	AND spr.Status != -1
+	AND spr.ParentId is NULL 
+	AND
+	(@p_tag IS NULL
+		OR isnull(spr.Tag,'') = @p_tag)	
+	AND
+	(@p_unitcode IS NULL
+		OR spr.UnitCode = @p_unitcode)
+	AND 
+	(@p_keyword IS NULL
+		OR spr.Subject LIKE '%' + @p_keyword + '%'
+		OR spr.Content LIKE '%' + @p_keyword + '%'
+		OR spr.Name LIKE '%' + @p_keyword + '%');
+END 

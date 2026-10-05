@@ -1,0 +1,167 @@
+<div class="progress-spinner" *ngIf='isDisabled'>
+    <p-progressSpinner></p-progressSpinner>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-12">
+        <p-tabView (onChange)="ChangTab($event)">
+            <p-tabPanel header="Đơn vị chủ quản" [selected]="true">
+                <div class="col-lg-12 col-12 row">
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Đơn vị chủ quản:</label>
+                        <p-dropdown id="organization_id" [options]="organizations" optionLabel="Name" dataKey="Id"
+                            [filter]="true" [style]="{'width':'100%'}" (onChange)="onChangeOrganizationChuQuan($event)">
+                        </p-dropdown>
+                        <span class="help-block required-color" id="field_idError">
+                        </span>
+                    </div>
+                    <span class="help-block required-color" id="listDocumentChuQuanError">
+                    </span>
+                </div>
+
+                <div class="col-lg-12 col-12 row">
+                    <div class="col-lg-7 col-7">
+                        <div class="form-group">
+                            <label for="Name" class="control-label"> Lọc biểu mẫu theo lĩnh
+                                vực:</label>
+                            <p-dropdown id="field_id" [options]="fields" optionLabel="Name" dataKey="Id" [filter]="true"
+                                [style]="{'width':'100%'}" (onChange)="onChangeField($event)"
+                                [(ngModel)]="defaultField">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-5">
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-12 row">
+                    <div class="col-lg-7 col-7" style="overflow-y: scroll;">
+                        <p-listbox styleClass="listbox-minheight" [options]="listDocumentChuQuan"
+                            [style]="{'width':'100%'}" [multiple]="true" [checkbox]="true" [filter]="true"
+                            optionLabel="Header" dataKey="Id" (onChange)="onChangeDocumentChuQuan($event)"
+                            [(ngModel)]="listSelectedDocumentChuQuan" [showToggleAll]="false">
+                            <ng-template let-document pTemplate="item">
+                                <div class="col-lg-12 col-12 row">
+                                    <!-- *ngIf="document && document.value" -->
+                                    <div class="col-lg-5 col-5">
+                                        {{document.Header}}
+                                    </div>
+                                    <div class="col-lg-5 col-5">
+                                        {{document.OrganizationName}}
+                                    </div>
+                                    <div class="col-lg-1 col-1"
+                                        *ngIf="document.OrganizationId == defaultOrganizationChuQuan"
+                                        id="{{document.value.Id}}">
+                                        <button class="btn btn-link h-pointer del-btn"><i
+                                                class="fa fa-exclamation-circle red-color fa-2x" style="color: white;"
+                                                title="Xóa biểu mẫu"></i></button>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                        </p-listbox>
+                    </div>
+                    <div class="col-lg-5 col-5" style="overflow-y: scroll;" id="danh-sach-tong-hop-chu-quan">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let item of listTongHopDocumentChuQuan; let j = index">
+                                {{j + 1}}.
+                                {{item.Header}}<span class="close"
+                                    (click)="removeLiChuQuan($event,item.Id)">&times;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-7 allow-overflow" id="danh-sach-template-chu-quan" style="overflow-y: scroll;">
+
+                </div>
+
+            </p-tabPanel>
+            <p-tabPanel header="Đơn vị khai thác">
+                <div class="col-lg-12 col-12 row">
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Đơn vị khai thác:</label>
+                        <p-dropdown id="organization_id" [options]="organizations" optionLabel="Name" dataKey="Id"
+                            [filter]="true" [style]="{'width':'100%'}" (onChange)="onChangeOrganization($event)">
+                        </p-dropdown>
+                        <span class="help-block required-color" id="field_idError">
+                        </span>
+                    </div>
+                    <span class="help-block required-color" id="listDocumentError">
+                    </span>
+                </div>
+
+                <div class="col-lg-12 col-12 row">
+                    <div class="col-lg-7 col-7">
+                        <div class="form-group">
+                            <label for="Name" class="control-label"> Lọc biểu mẫu theo lĩnh
+                                vực:</label>
+                            <p-dropdown id="kt_field_id" [options]="kt_fields" optionLabel="Name" dataKey="Id"
+                                [filter]="true" [style]="{'width':'100%'}" (onChange)="onChangeField_kt($event)"
+                                [(ngModel)]="defaultField_kt">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-12 row">
+                    <div class="col-md-7 allow-overflow" id="danh-sach-template" style="overflow-y: scroll;">
+                        <p-listbox [options]="listDocumentKhaiThac" [style]="{'width':'100%'}" [multiple]="true"
+                            [checkbox]="true" [filter]="true" optionLabel="Header" dataKey="Id"
+                            (onChange)="onChangeDocument($event)" [(ngModel)]="listSelectedDocument">
+                        </p-listbox>
+                    </div>
+                    <div class="col-lg-5 col-5" style="overflow-y: scroll;" id="danh-sach-tong-hop-khai-thac">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let item of listTongHopDocument; let j = index">
+                                {{j + 1}}.
+                                {{item.Header}}<span class="close" (click)="removeLi($event,item.Id)">&times;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Đơn vị nhập liệu">
+                <div class="col-lg-12 col-12 row">
+                    <div class="form-group">
+                        <label for="Name" class="col-sm-3 control-label">Biểu mẫu:</label>
+                        <p-dropdown id="documentTemplate_id" [options]="documentTemplates" optionLabel="Header"
+                            dataKey="Id" [filter]="true" [style]="{'width':'100%'}"
+                            (onChange)="onChangeDocumentTemplate($event)">
+                        </p-dropdown>
+                        <span class="help-block required-color" id="field_idError">
+                        </span>
+                    </div>
+                    <span class="help-block required-color" id="listOrganizationError">
+                    </span>
+                </div>
+
+                <div class="col-lg-12 col-12 row">
+                    <div class="col-lg-7 col-7 allow-overflow" id="danh-sach-template-nhap-lieu"
+                        style="overflow-y: scroll;">
+                        <p-listbox [options]="listOrganizationsNhapLieu" [style]="{'width':'100%'}" [multiple]="true"
+                            [checkbox]="true" [filter]="true" optionLabel="Name" dataKey="Id"
+                            (onChange)="onChangeDocumentNhapLieu($event)"
+                            [(ngModel)]="listSelectedOrganizationsNhapLieu">
+                        </p-listbox>
+                    </div>
+                    <div class="col-lg-5 col-5 allow-overflow" id="danh-sach-tong-hop-don-vi"
+                        style="overflow-y: scroll;">
+                        <ul class="list-group">
+                            <li class="list-group-item"
+                                *ngFor="let item of listTongHopOrganizationsNhapLieu; let j = index">
+                                {{j + 1}}.
+                                {{item.Name}}<span class="close"
+                                    (click)="removeLiNhapLieu($event,item.Id)">&times;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>
+<div class="p-footer text-right">
+    <button type="button" class="btn btn-info pull-right mr-2" (click)="submit()">{{'Lưu'}}</button>
+    <button type="button" class="btn btn-danger pull-right " (click)="cancel()">{{'Đóng'}}</button>
+</div>
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

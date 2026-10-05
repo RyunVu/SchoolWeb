@@ -1,0 +1,91 @@
+<!-- <p-toast></p-toast> -->
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-content">
+        <span>Vui lòng đợi...</span>
+        <i class="fa fa-spinner fa-spin"></i> <!-- Icon loading -->
+    </div>
+</div>
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Quản trị viên<span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="quanTriViens" [(ngModel)]="quanTriVien" optionLabel="Name"
+                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Chủ đề <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id"
+                            [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code"
+                            [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                        </p-dropdown>
+                        <button class="btn btn-success btn-xs" (click)="addUnit()">Thêm đơn vị</button>
+                    </div>
+                </div>
+                <div *ngIf="!config.data.IsAdd" class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Trang chủ</label>
+                        <p-dropdown [options]="trangChus" [(ngModel)]="trangChu" optionLabel="Name" optionValue="Id"
+                            [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div *ngIf="config.data.IsAdd" class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Sao chép từ cổng <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="portals" [(ngModel)]="portal" optionLabel="Name" optionValue="UnitCode"
+                            [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Tên cổng <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="defaultTenCong">
+                    </div>
+                </div>
+                <div *ngIf="config.data.IsAdd" class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Tên miền</label>
+                        <input type="text" class="form-control" [(ngModel)]="defaultTenMien">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Tag</label>
+                        <input type="text" class="form-control" [(ngModel)]="defaultTag">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Mô tả</label>
+                        <ckeditor [value]="defaultMoTa" (onEditorKeyup)="changeMoTa($event)">
+
+                        </ckeditor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

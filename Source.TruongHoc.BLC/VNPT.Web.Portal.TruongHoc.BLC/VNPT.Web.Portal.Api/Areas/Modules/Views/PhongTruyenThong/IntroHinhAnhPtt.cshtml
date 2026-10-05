@@ -1,0 +1,64 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+
+@{
+    var information = Session["PortalInformation"] as PortalInformation;
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+}
+
+@model HomeSliderNewModel
+<style>
+</style>
+
+<div class="sectionptt">
+
+    <div class="wwwwItem">
+
+        <div class="text-center visible-xs hidden-sm hidden-md hidden-lg">
+            <img src="@logo" style="padding: 5px; background: #fff; border-radius: 50%;">
+        </div>
+
+        <div class="logoTop">
+            <div class="logoDang hidden-xs">
+                <img src="~/Images/ptt/logo.gif" style="width: 92%;">
+            </div>
+            <div class="logoText"><h3>truyền thống @nameCongThongTin</h3></div>
+            <div class="logoDang hidden-xs" style="padding: 5px; background: #fff;">
+                <img src="@logo">
+            </div>
+        </div>
+
+        <div class="news-carousel sliImage" style="padding: 0 5px">
+            @if(Model.Description != null)
+            {
+                foreach (var img in Model.GetImages())
+                {
+                    <a href="#">
+                        <img src="@Url.Image(img.Url)" alt="carousel" width="100%">
+                    </a>
+                }
+            }
+        </div>
+
+        <div class="logoText">
+            <a class="btn btn-warning btn-lg box" href="@Url.Site("phong-truyen-thong", parameter: new { Code = NewsCode.HOMEPHONGTRUYENTHONG })">Bắt đầu</a>
+
+            @*@Html.ActionLink("Bắt đầu", "PhongTruyenThongPage", "PhongTruyenThong", new { area = "Modules", Code = NewsCode.HOMEPHONGTRUYENTHONG }, new { @class = "btn btn-primary" })*@
+
+            @*<button class="btn btn-warning btn-lg box">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Bắt đầu
+        </button>*@
+        </div>
+    </div>
+</div>
+
+

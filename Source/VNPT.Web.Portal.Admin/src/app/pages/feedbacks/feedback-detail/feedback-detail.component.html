@@ -1,0 +1,188 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark" *ngIf="item != null">Chi tiết phản ánh: #{{item.No}}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Chi tiết phản ánh</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Chi tiết phản ánh</b></h3>
+                    </div>
+                    <div class="card-body p-0" *ngIf="item != null">
+                        <div class="row mb-3 p-4">
+                            <div class="col-md-3">
+                                <b>Ngày phản ánh:</b> {{ item.CreateDate }}
+                            </div>
+                            <div class="col-md-3">
+                                <b>Số điện thoại:</b> {{ item.PhoneNo }}
+                            </div>
+                            <div class="col-md-3">
+                                <b>Đơn vị xử lý:</b> {{ item.UnitName }}
+                            </div>
+                            <div class="col-md-3">
+                                <b>Tình trạng hiện tại:</b> {{ item.StatusName }}
+                            </div>
+                        </div>
+                        <div class="dropdown-divider mb-3"></div>
+                        <div class="row mb-3 p-4" *ngIf="item.DocumentId">
+                            <div class="col-md-12">
+                                <h3 class="card-title"><b>Thông tin hồ sơ</b></h3>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Mã hồ sơ: </b> <a target="_blank" href="https://motcua.lamdong.gov.vn/dichvucong/tracuu?so-ho-so={{item.DocumentId}}">{{item.DocumentId}}</a>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Người đại diện: </b>{{item.Representative}}
+                            </div>
+                            <div class="col-md-4">
+                                <b>Tình trạng: </b>{{item.ProcessingStatus}}<br>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Đơn vị xử lý: </b>{{item.HandlingParts}} - {{item.ProcessingUnit}}
+                            </div>
+                            <div class="col-md-4">
+                                <b>Ngày nhận:</b> {{item.ReceivedDate}}
+                            </div>
+                            <div class="col-md-4">
+                                <b>Ngày hẹn trả:</b> {{item.AppointmentDate}}
+                            </div>
+                            <div class="col-md-12">
+                                <b>Thủ tục:</b> {{item.ProcedureName}}
+                            </div>
+                        </div>
+                        <div class="dropdown-divider mb-3"></div>
+                        <div class="row d-flex flex-row-reverse bd-highlight p-4">
+                            <div [class]="images == null || images.length == 0 ? 'col-md-12' : 'col-md-6'">
+                                <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="3">
+                                    <ng-template pTemplate="item" let-itemimage>
+                                        <a href="{{itemimage?.Url | imageUrlPipe}}" target="_blank">
+                                            <img [src]="itemimage.Url | imageUrlPipe" style="width: 100%;" />
+                                        </a>
+                                        <div class="download r1" (click)="downloadFile(itemimage)">
+                                            <i class="fas fa-download"></i>
+                                        </div>
+                                        <div class="download r2" (click)="downloadFiles()" [ngClass]="ldButton ? 'stop-click' : ''">
+                                            <i class="fa fa-spinner fa-spin" *ngIf="ldButton"></i>
+                                            <i class="fas fa-file-archive" *ngIf="!ldButton"></i>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="thumbnail" let-itemimage>
+                                        <div class="p-grid p-nogutter p-justify-center">
+                                            <img [src]="itemimage.ThumbUrl | imageUrlPipe" />
+                                        </div>
+                                    </ng-template>
+                                </p-galleria>
+                                <div class="row mb-4"></div>
+                            </div>
+                            <div [class]="images == null || images.length == 0 ? 'col-md-12' : 'col-md-6'" *ngIf="item != null">
+                                <h5>Nội dung phản ánh</h5>
+
+                                <div class="custom-row">
+                                    <div class="custom-col-1"><b>Lĩnh vực</b></div>
+                                    <div class="custom-col-2">{{item.FieldName}}</div>
+                                    <div class="clearboth"></div>
+                                </div>
+                                <div class="custom-row">
+                                    <div class="custom-col-1"><b>Nội dung</b></div>
+                                    <div class="custom-col-2">{{item.Content}}</div>
+                                    <div class="clearboth"></div>
+                                </div>
+                                <div class="custom-row">
+                                    <div class="custom-col-1"><b class="text-danger">Ý kiến chỉ đạo</b></div>
+                                    <div class="custom-col-2">
+                                        <div class="row" *ngFor="let e of item.Commands">
+                                            <div class="col-md-12 text-danger">
+                                                Đ/c {{e.UserName}} ({{e.PositionName}}): {{e.Command}} - {{e.CreateDate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                </div>
+                                <div class="row mb-2"></div>
+                                <h5>Cán bộ đã xem</h5>
+                                <div class="text-info">
+                                    <span *ngFor="let e of item.SeenUsers; let last = last" (click)="openPopupInfo(e)">
+                                        {{e.UserName}} <span *ngIf="!last">, </span>
+                                    </span>
+                                </div>
+                                <div class="row mb-2"></div>
+                                <h5>Cán bộ đã nhận</h5>
+                                <div class="text-info">
+                                    <span *ngFor="let e of item.ReceivedUsers; let last = last" (click)="openPopupInfo(e)">
+                                        {{e.UserName}} <span *ngIf="!last">, </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-4" *ngIf="item.FeedbackButton != null">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('ChiDao') && item.FeedbackButton.ChiDao" (click)="ChiDao()">
+                                    Chỉ đạo
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('ChiaSe') && item.FeedbackButton.ChiaSe" (click)="ChiaSe()">
+                                    Chia sẻ
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('DoiDonVi') && item.FeedbackButton.DoiDonVi" (click)="ChuyenDonVi()">
+                                    Chuyển đơn vị
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('BaoCao') && item.FeedbackButton.BaoCao" (click)="BaoCao()">
+                                    Báo cáo
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('QuaTrinhXuLy') && item.FeedbackButton.QuaTrinhXuLy" (click)="QuaTrinhXuLy()">
+                                    Quá trình xử lý
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('KetThuc') && item.FeedbackButton.KetThuc" (click)="KetThuc()">
+                                    Kết thúc
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('KetThuc') && item.FeedbackButton.MoKetThuc" (click)="MoKetThuc()">
+                                    Mở kết thúc
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('TrangThai') && item.FeedbackButton.ChuyenKhongDung" (click)="ChuyenKhongDung()">
+                                    Chuyển không đúng
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('TrangThai') && item.FeedbackButton.ChuyenDung" (click)="ChuyenDung()">
+                                    Chuyển đúng
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('SoanThaoPhatHanh') && item.FeedbackButton.SoanThaoPhatHanh" (click)="SoanThaoPhatHanh()">
+                                    Soạn thảo phát hành
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('PhatHanh') && item.FeedbackButton.ThuHoiPhatHanh" (click)="ThuHoiPhatHanh()">
+                                    Thu hồi phát hành
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('PhanAnhTieuBieu') && item.FeedbackButton.PhanAnhTieuBieu" (click)="PhanAnhTieuBieu()">
+                                    PA tiêu biểu
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('PhanAnhTieuBieu') && item.FeedbackButton.ThuHoiPhanAnhTieuBieu" (click)="ThuHoiPhanAnhTieuBieu()">
+                                    Bỏ PA tiêu biểu
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('DuyetPhanAnh') && item.FeedbackButton.DuyetPhanAnh" (click)="DuyetPhanAnh()">
+                                    Duyệt phát hành
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm custom-equal" *ngIf="checkPermission('DuyetPhanAnh') && item.FeedbackButton.ThuHoiDuyetPhanAnh" (click)="ThuHoiDuyetPhanAnh()">
+                                    Thu hồi duyệt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

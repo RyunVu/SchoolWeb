@@ -1,0 +1,101 @@
+﻿@using VNPT.Web.Portal.Base
+@using VNPT.Web.Portal.Api.Models;
+
+@model List<GroupTable>
+
+<div class="wrap-page-primary feedback-details">
+    <div class="col-sm-2">
+        <div class="form-group customp">
+            <select id="yearSelect" style="height: 40px;" class="form-control">
+      
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-7"></div>
+    <div class="col-sm-3">
+        <button id="exportFile" style="height: 40px" class="btn btn-success float-right"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export file</button>
+    </div>
+
+    <div class="col-sm-12">
+
+        <div class="content_baocao">
+            <ul class="nav nav-pills" id="left_panel">
+
+                @if (Model.Any())
+                {
+                    <li class="active" data-id="@Model.First().Id" data-name="@Model.First().Name">
+                        <a href="#@Model.First().Id" data-toggle="tab">@Model.First().Name</a>
+                    </li>
+                }
+
+                @foreach (var item in Model.Skip(1))
+                {
+                    <li data-id="@item.Id" data-name="@Model.First().Name">
+                        <a href="#@item.Id" data-toggle="tab">@item.Name</a>
+                    </li>
+                }
+            </ul>
+
+            <div class="tab-content clearfix">
+                
+                <div class="tab-pane active">
+                    <div class="titleTab"></div>
+
+                    <div id="conLoading">
+
+                        <div class="styleLoading">
+                            <h3 class="itemloading"></h3>
+                            <table class="table table-bordered">
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="45%">
+                                    <col width="15%">
+                                    <col width="25%">
+                                </colgroup>
+                                <thead class="">
+                                    <tr>
+                                        <th colspan="1" rowspan="1" class="text-center align-middle"><span class="itemloading"></span></th>
+                                        <th colspan="1" rowspan="1" class="text-center align-middle"><span class="itemloading"></span></th>
+                                        <th colspan="1" rowspan="1" class="text-center align-middle"><span class="itemloading"></span></th>
+                                        <th colspan="1" rowspan="1" class="text-center align-middle"><span class="itemloading"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                        <td class="align-middle"><span class="itemloading"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="contentTab" id="tablesContainer" style="display: none"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

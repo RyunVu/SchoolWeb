@@ -1,0 +1,66 @@
+<section class="content-header">
+    <button type="button" class="btn btn-xs btn-primary" (click)="back()">
+        <i class="fa fa-reply"></i> Trang chủ
+    </button>
+    <h1 style="text-align: center">
+        Thống kê tỷ lệ bốc số tại quầy/ qua mạng
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-lg-12 col-12">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="form-group">
+                        <label for="Ward_ID" class="control-label">Địa bàn:</label>
+                        <p-dropdown [options]="wards" optionLabel="Name" dataKey="Id"
+                            [filter]="true" [style]="{'width':'100%'}" (onChange)="onChangeWard($event)"
+                            [(ngModel)]="defaultWard">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <div class="form-group">
+                        <label for="TANG_ID" class="control-label">Tầng:</label>
+                        <p-dropdown [options]="listTang" optionLabel="Name" dataKey="Id"
+                            [filter]="true" [style]="{'width':'100%'}"
+                            [(ngModel)]="UnitCounterId">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">Từ ngày:</label>
+                        <p-calendar [(ngModel)]="startDate" (onBlur)="onChangeDate()"
+                            dateFormat="dd/mm/yy">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">Đến ngày:</label>
+                        <p-calendar [(ngModel)]="endDate" (onBlur)="onChangeDate()"
+                            dateFormat="dd/mm/yy">
+                        </p-calendar>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <a class=" form-control btn btn-info btn-flat" (click)="search()"><i class="fa fa-search"></i>
+                            Xem báo
+                            cáo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-12">
+            <div id="viewReport">
+            </div>
+            <div id="viewReport2">
+                <p>Không tìm thấy dữ liệu</p>
+            </div>
+        </div>
+    </div>
+</section>

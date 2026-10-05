@@ -1,0 +1,36 @@
+<form class="row" [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
+    <div class="form-group col-12 col-md-2">
+        <label>Từ khóa</label>
+        <div class="input-group input-group-merge">
+            <input type="text" [placeholder]="searchPlaceholder" class="form-control" formControlName="keyword" />
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-6 col-md-2 d-none">
+        <label>Thành phố / Huyện</label>
+        <city-selector [selectFirstAsDefault]="true" appendTo="body" formControlName="city"></city-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Phường / Xã</label>
+        <ward-selector [selectFirstAsDefault]="true" appendTo="body" formControlName="ward" [parentId]="searchForm?.value?.city"></ward-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Tên đường</label>
+        <street-selector formControlName="streetAddr" appendTo="body" [parentId]="searchForm?.value?.ward"></street-selector>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Tình trạng xây</label>
+        <p-dropdown [options]="constructionStatuses" styleClass="w-100" formControlName="constructionStatus" optionValue="Id" optionLabel="Name" placeholder="Xây dựng" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+    </div>
+    <div class="form-group col-6 col-md-2">
+        <label>Tình trạng nộp thuế</label>
+        <p-dropdown [options]="feeStatuses" styleClass="w-100" formControlName="feeStatus" optionValue="value" optionLabel="label" placeholder="Nộp thuế" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+    </div>
+    <div class="form-group text-right col-12 col-md-2 d-flex align-items-end justify-content-end">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>

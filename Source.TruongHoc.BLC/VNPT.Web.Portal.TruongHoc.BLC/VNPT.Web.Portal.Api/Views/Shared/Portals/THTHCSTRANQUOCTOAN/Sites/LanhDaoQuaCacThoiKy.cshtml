@@ -1,0 +1,345 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    //var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@{
+//var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+//var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+//HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+//string lang = "vi";
+
+//if (cookie != null)
+//{
+//    lang = cookie.Value;
+//}
+
+//var menuSite = GeneralCategoryDto.GetNameNewsType(code == null ? code : information.SubSite, information.PortalCode.ToUpper());
+
+//var codename = menuSite?.Name;
+
+//if (lang != "vi")
+//{
+//    codename = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+//}
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+
+}
+
+<style>
+    .nav-custom-tab {
+        border: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-custom-tab {
+        border: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* background: #fbe9c3; */
+        /* padding: 15px 0 0 0; */
+        /* box-shadow: 1px 2px 4px #0000001c; */
+    }
+
+        .nav-custom-tab li {
+            min-width: 214.69px;
+            margin-right: 10px;
+            margin-bottom: 15px;
+        }
+
+            .nav-custom-tab li a {
+                color: #000;
+                border: 2px dashed !important;
+                border-color: #007ade;
+                border-radius: 0;
+                min-width: 347.45px;
+                text-align: center;
+            }
+
+                .nav-custom-tab li a span {
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+            .nav-custom-tab li.active a {
+                border: 0;
+                background-image: linear-gradient(to right, #007ade, #8ebcf8);
+                color: #fff !important;
+                border-radius: 0;
+                padding: 10px;
+            }
+
+                .nav-custom-tab li a:hover {
+                    border-color: #007ade;
+                }
+
+
+
+    .lstperson .person_item {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 15px;
+        cursor: pointer;
+        margin: 12px 5px;
+    }
+
+        .lstperson .person_item .person_name {
+            color: #fff;
+            padding: 10px 10px;
+            background: #007ade !important;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+        }
+
+            .lstperson .person_item .person_name .person_subname {
+                font-size: 16px;
+                font-weight: 500;
+                margin-top: 5px;
+            }
+
+        .lstperson .person_item .person_img {
+            float: left;
+            width: 100%; /* Hiển thị 2 hình */
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .lstperson .person_item .person_img img {
+                width: 50%; /* Chia đều để hiển thị 2 hình */
+                height: 360px;
+                -o-object-fit: cover;
+                object-fit: cover;
+                transition: 0.5s;
+                margin: 10px auto auto auto;
+                border: 2px solid #007ade;
+                box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.09019607843137255);
+            }
+
+        .lstperson .person_item .person_img_HU {
+            float: left;
+            text-align: center;
+            width: 100%;
+        }
+
+            .lstperson .person_item .person_img_HU img {
+                width: 100%;
+                height: 300px;
+                -o-object-fit: cover;
+                object-fit: cover;
+                transition: 0.5s;
+                margin-top: 10px;
+                border: 2px solid #007ade;
+                border-radius: 14px;
+                box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.09019607843137255);
+            }
+
+        .lstperson .person_item .person_content {
+            float: right;
+            width: 40%; /* Yêu cầu hiện 2 hình */
+            padding: 10px;
+            padding-left: 15px;
+        }
+
+            .lstperson .person_item .person_content p {
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+
+        .lstperson .person_item:hover,
+        .lstperson .person_item:active {
+            background-image: linear-gradient(-70deg, #bfe9f3, #fff 70%, #fff);
+            transition: 0.2s;
+        }
+
+</style>
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+
+<div class="body-content">
+    <div class="container">
+        <div class="content-title text-center">
+            <div class="c-title">
+                <span>@ViewBag.Title</span>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs nav-custom-tab col-sm-12 row" id="custom-content-below-tab" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link " id="nav1-tab" data-toggle="pill" href="#nav1">
+                    <span>HIỆU TRƯỞNG</span>
+                </a>
+            </li>
+            <li  class="nav-item">
+                <a class="nav-link" id="nav2-tab" data-toggle="pill" href="#nav2"
+                   role="tab">
+                    <span>PHÓ HIỆU TRƯỞNG</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="custom-content-below-tabContent">
+            <div class="tab-pane active in" id="nav1">
+                <div class="lstperson row col-sm-12" id="hieutruong">
+                    
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav2">
+                <div class="lstperson row col-sm-12" id="phohieutruong">
+           
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script id="itemTieuSu" type="x-tmpl-mustache">
+    {{#dataList}}
+    <div class="col-sm-6">
+        <div class="person_item">
+            <a href="{{{URL_LINK}}}">
+                <div class="person_info">
+                    <div class="person_img">
+                        <img src="{{URL_IMG_NEW}}" alt="Ảnh của {{HoTen}}"  />
+                    </div>
+                </div>
+
+                <div class="person_name">
+                    Đ/c <span style="text-transform: uppercase;">{{HoTen}}</span>
+                    <div class="person_subname">
+                        {{TenChucVu}}
+                        {{#NhiemKy}} <!-- Kiểm tra nếu có Nhiệm Kỳ -->
+                            {{Ten}} ({{TuNam}} - {{DenNam}})
+                        {{/NhiemKy}}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {{/dataList}}
+</script>
+
+@section scripts {
+    <script type="text/javascript">
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+        var urlTemplate = "@Url.Site("phong-truyen-thong/chi-tiet-can-bo", parameter: new { param = "__canboid__" })";
+        const template = $("#itemTieuSu").html();
+
+        var main = {
+            loadHieuTruongs: function () {
+                var obj = {
+                    CodeChucVu: "HIEUTRUONG",
+                    UnitCode: "@information.PortalCode"
+                };
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    url: '/api/TieuSu/GetTieuSuLanhDao',
+                    contentType: "application/json", // ✅ Gửi dữ liệu dạng JSON
+                    dataType: "json", // ✅ Đảm bảo nhận JSON từ server
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+                        const processedData = res.Result.map(item => {
+
+                            const regExp = /^(http|https|ftp):\/\//i;
+                            let imageUrl = item.UrlAvt1 && regExp.test(item.UrlAvt1) ? item.UrlAvt1 : item.UrlAvt1;
+
+                            if (item.UrlAvt1 && item.UrlAvt1 != 'null') {
+                                imageUrl = domainMedia + imageUrl;
+                            } else {
+                                imageUrl = "/Images/NoImage400x266.png";
+                            }
+
+                            return {
+                                ...item,
+                                URL_IMG_NEW: imageUrl,
+                                URL_LINK: urlTemplate.replace("__canboid__", item.Id)
+                            };
+                        });
+
+                        const rendered = Mustache.render(template, { dataList: processedData });
+                        $("#hieutruong").html(rendered);
+                    },
+                });
+            },
+            loadPhoHieuTruongs: function () {
+                var obj = {
+                    CodeChucVu: "PHOHIEUTRUONG",
+                    UnitCode: "@information.PortalCode"
+                };
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    url: '/api/TieuSu/GetTieuSuLanhDao',
+                    contentType: "application/json", // ✅ Gửi dữ liệu dạng JSON
+                    dataType: "json", // ✅ Đảm bảo nhận JSON từ server
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+                        const processedData = res.Result.map(item => {
+
+                            const regExp = /^(http|https|ftp):\/\//i;
+                            let imageUrl = item.UrlAvt1 && regExp.test(item.UrlAvt1) ? item.UrlAvt1 : item.UrlAvt1;
+
+                            if (item.UrlAvt1 && item.UrlAvt1 != 'null') {
+                                imageUrl = domainMedia + imageUrl;
+                            } else {
+                                imageUrl = "/Images/NoImage400x266.png";
+                            }
+
+                            return {
+                                ...item,
+                                URL_IMG_NEW: imageUrl,
+                                URL_LINK: urlTemplate.replace("__canboid__", item.Id)
+                            };
+                        });
+
+                        const rendered = Mustache.render(template, { dataList: processedData });
+                        $("#phohieutruong").html(rendered)
+                    },
+                });
+            },
+        }
+
+        $(document).ready(function () {
+            main.loadHieuTruongs();
+            main.loadPhoHieuTruongs();
+            //$('#custom-content-below-tab a').on('click', function (e) {
+            //    e.preventDefault(); // Ngăn chặn reload trang
+            //    console.log("Tab đã được click:", $(this).attr("href")); // Kiểm tra tab nào được click
+            //    $(this).tab('show'); // Hiển thị tab mà không thay đổi URL
+            //});
+        })
+    </script>
+}

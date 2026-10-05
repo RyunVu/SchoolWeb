@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12">
+    <fieldset style="min-height: 100px;">
+      <legend><b>Câu hỏi</b></legend>
+      <div class="form-group">
+        <label for="Name">{{item.Content}}</label>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-md-12">
+    <fieldset style="min-height: 100px;">
+      <legend><b>Câu trả lời</b></legend>
+      <div [innerHTML]="item.AnswerContent">
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div class="p-footer">
+  <div class="f-contains">
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

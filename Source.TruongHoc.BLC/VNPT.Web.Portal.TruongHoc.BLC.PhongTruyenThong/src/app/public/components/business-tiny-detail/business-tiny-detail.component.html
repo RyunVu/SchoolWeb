@@ -1,0 +1,87 @@
+<div class="card business-tiny-detail">
+    <div class="card-body pt-0">
+        <h5 class="card-title mt-3">{{ entity?.TenNguoiNopThue }}</h5>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <p><b>Tên Chủ Hộ:</b> {{ entity?.TenNguoiNopThue }}</p>
+                <p><b>Mã Số Thuế:</b> {{ entity?.MaSoThue }}</p>
+                <p><b>Địa Chỉ:</b> {{ populateBusinessFullAddress(entity) }}</p>
+                <!-- <p><b>Số Điện Thoại:</b> {{ entity?.PhoneNumber || 'N/A' }}</p>
+        <p>
+          <b>Doanh Thu:</b>
+          {{ entity?.DoanhThuTNCN || 0 | currency: 'VND':'symbol':undefined:'vi' }}
+        </p> -->
+                <p>
+                    <b>Trạng thái:</b> {{ entity?.TenTrangThaiDKTToChuc }}
+                </p>
+                <p *ngIf="(entity?.LoaiHinhNopThue == 1 || entity?.LoaiHinhNopThue == 2) && entity?.DoanhThuBQThang">
+                    <b>Doanh thu bình quân tháng:</b> {{ entity?.DoanhThuBQThang | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+
+                <p *ngIf="entity?.LoaiHinhNopThue == 1 && entity?.HThueMonBai">
+                    <!-- <b>Thuế GTGT 1 tháng:</b> {{ entity?.TienThueGTGT | currency: 'VND':'symbol':undefined:'vi' }} -->
+                    <b>Thuế Môn Bài/tháng:</b> {{ entity?.HThueMonBai | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="entity?.LoaiHinhNopThue == 1 && entity?.HThueTTDB">
+                    <!-- <b>Thuế TNCN 1 tháng:</b> {{ entity?.TienThueTNCN | currency: 'VND':'symbol':undefined:'vi' }} -->
+                    <b>Thuế TTDB/tháng:</b> {{ entity?.HThueTTDB | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p>
+                    <b>Ngành nghề KD: </b> {{ entity?.LinhVucs || entity?.NganhNghe }}
+                </p>
+                <p>
+                    <b>Số Giấy Chứng Nhận:</b> {{ entity?.SoGiayChungNhan || 'N/A' }}
+                </p>
+                <p><b>Ngày Cấp:</b> {{ entity?.NgayCapGCN | date: 'dd/MM/yyyy' }}</p>
+                <p>
+                    <b>Loại hình: </b> {{ entity?.LoaiHinhNopThue == 0 ? 'Chưa xác định' : entity?.LoaiHinhNopThue == 1 ? 'Hộ khoán' : entity?.LoaiHinhNopThue == 2 ? 'Hộ thu nhập thấp' : 'Hộ kê khai' || 'N/A' }}
+                </p>
+                <p *ngIf="entity?.LoaiHinhNopThue == 1 && entity?.HThueGTGT">
+                    <b>Thuế GTGT/tháng:</b> {{ entity?.HThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="entity?.LoaiHinhNopThue == 1 && entity?.HThueTNCN">
+                    <b>Thuế TNCN/tháng:</b> {{ entity?.HThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}
+                </p>
+                <p *ngIf="
+            entity?.TenTrangThaiDKTToChuc == 'NNT tạm ngừng KD có thời hạn'
+          ">
+                    <b>Thời gian nghỉ từ ngày:</b> {{ entity?.TamNghiTuNgay | date: 'dd/MM/yyyy' }}
+                </p>
+                <p *ngIf="
+            entity?.TenTrangThaiDKTToChuc == 'NNT tạm ngừng KD có thời hạn'
+          ">
+                    <b>Thời gian nghỉ đến ngày:</b> {{ entity?.TamNghiDenNgay | date: 'dd/MM/yyyy' }}
+                </p>
+                <!-- <p>
+          <b>Vốn Kinh Doanh:</b>
+          {{ entity?.VonKinhDoanh | currency: 'VND':'symbol':undefined:'vi' }}
+        </p> -->
+
+                <!-- <p>
+          <b>Thuế:</b>
+          {{ entity?.ThueTNCN || 0 | currency: 'VND':'symbol':undefined:'vi' }}
+        </p> -->
+            </div>
+            <div class="col-12 col-md-12" *ngIf="entity?.ListKeKhai && entity?.LoaiHinhNopThue == 3">
+                <table class="table">
+                    <tr>
+                        <th>Kỳ</th>
+                        <th>Doanh thu</th>
+                        <th>Thuế GTGT</th>
+                        <th>Thuế TNCN</th>
+                    </tr>
+                    <tr *ngFor="let item of entity.ListKeKhai">
+                        <td>{{item.Ky}}</td>
+                        <td>{{item.DoanhThu | currency: 'VND':'symbol':undefined:'vi' }}</td>
+                        <td>{{item.ThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}</td>
+                        <td>{{item.ThueTNCN | currency: 'VND':'symbol':undefined:'vi' }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

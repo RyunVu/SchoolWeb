@@ -1,0 +1,207 @@
+﻿.list-content .heading-direct, .detail-content .heading-direct {
+    background: #D10000;
+    line-height: 16px;
+}
+.list-content .heading-direct .item-block:hover a, .detail-content .heading-direct .item-block:hover a {
+    color: #FEFE0F;
+}
+
+.slide-video .item.popup-youtube h3.title {
+    background: rgba(209,0,0, 0.7)!important;
+}
+
+.detail-content .heading-direct, .list-content .heading-direct {
+    height: 36px
+}
+.detail-content .heading-direct h3 i, .list-content .heading-direct h3 i {
+    font-size: 14px;
+    width: 21px;
+    height: 26px;
+    flex: 0 0 26px;
+}
+.list-content .heading-direct h3 {
+    font-size: 16px;
+    width: 100%
+}
+
+header {
+    border-top: none!important;
+}
+nav.menu ul > li.active a {
+    background-image: linear-gradient(#FF4E4E, #F4271F);
+    background-color: #FD4644!important;
+}
+nav.menu ul > li.active a:before {
+    height: 0
+}
+
+nav.menu ul > li.active a, nav.menu ul > li:hover a {
+    background-color: #f4f4f2;
+}
+
+nav.menu ul li:hover a:before {
+    background-color: #F4F4F2
+}
+header nav.menu {
+    background-image: linear-gradient(#FF4E4E, #F4271F);
+}
+nav.menu ul > li.active:nth-child(1) a i {
+    color: #FEFE0F
+}
+header .top-header .pgd-mobile {
+    position: absolute;
+    right: 10px;
+}
+header .top-header .pgd-mobile > * {
+    background: #fff
+}
+header .top-header {
+    padding: 0px;
+}
+#lstLinkBotton {
+    margin: 0;
+    margin-top: 10px;
+}
+#menu_ver .menu-cs {
+    background: #F8342F;
+}
+
+/*component*/
+.news-pgd_block-title {
+  background: #d10000;
+  height: 36px;
+}
+.news-pgd_block-title h3 {
+  background: #fff;
+  margin: 0;
+  height: 28px;
+  display: inline-block;
+  position: relative;
+  top: 8px;
+  left: 10px;
+  padding: 0px 8px
+}
+.news-pgd_block-title .ico-title {
+    color: #d10000;
+}
+.news-pgd_block-title .ico-title {
+  font-size: 18px;
+  padding: 0px 5px;
+}
+.news-pgd_block-title h3 a {
+  color: #d10000;
+}
+.news-pgd_block-title h3 a {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+} 
+/*end*/
+/*component left*/
+.pgd_block-title {
+  height: 36px;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  background: #eee;
+  border-color: #D10000;
+}
+.pgd_block-title h3 {
+  background: #D10000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  line-height: 32px;
+  display: inline-block;
+  position: relative;
+}
+.pgd_block-title i {
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  float: left
+}
+.pgd_block-title h3 a {
+  color: #fff;
+  display: block;
+  float: left;
+  padding: 0 10px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.pgd_block-title h3::after {
+  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #D10000 rgba(0, 0, 0, 0);
+  content: '';
+  bottom: 0px;
+  right: -26px;
+  display: inline-block;
+  border-width: 0 26px 32px 0px;
+  border-style: solid;
+  position: absolute;
+  z-index: 0;
+}
+/*end*/
+/*tab*/
+.showitem_tab ul.cls-item {
+    padding: 5px 5px 0px 5px;
+    background: #D10000;
+}
+.showitem_tab ul.cls-item li a {
+    padding: 6px 10px;
+    border-radius: 0;
+    font-weight: bold;
+    color: #fff
+}
+.showitem_tab ul li.active a {
+    background: #fff!important;
+    color: #555!important
+}
+.showitem_tab .tab-content {
+    background: #fff;
+}
+.nav-pills>li.active>a {
+    background-color: #F8342F;
+}
+.nav-pills>li.active>a:focus {
+    background-color: #F8342F;
+}
+.block-notifi-sidebar.document ul li a {
+    max-height: initial;
+}
+.block-notifi-sidebar.document ul li a::before {
+    content: ''
+}
+.block-notifi-sidebar.document ul li a i {
+    display: block;
+    font-weight: normal;
+}
+.showitem_tab .box-news-home {
+    border: 0
+}
+/*end*/
+#menu_ver .block-notifi-sidebar {
+    background-color: #F9E5E5;
+}
+#menu_ver .mainmenu li:hover {
+  background-color: #D10000
+}
+#menu_ver .sub-menu li:hover {
+    background-color: #fff
+}
+#menu_ver .sub-menu li {
+    background-color: #FFFF97
+}
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+@media (max-width: 1199px) {
+    .top-header {
+        padding: 0px;
+    }
+}

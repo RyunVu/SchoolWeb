@@ -1,0 +1,68 @@
+<div class="card card-outline card-primary" style="width: 450px;">
+    <div class="card-header text-center">
+        <a [routerLink]="['/']" class="h1"><b>WEBSITE<br>TRƯỜNG HỌC</b></a>
+    </div>
+    <div class="card-body">
+        <p class="login-box-msg">Trang Quản Trị Thông Tin</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()" *ngIf="!isLoginOtp">
+            <div class="input-group mb-3">
+                <input formControlName="username" type="text" class="form-control" placeholder="Username" />
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+                <validation-msg [control]="loginForm.controls.username"> </validation-msg>
+            </div>
+            <div class="input-group mb-3">
+                <input
+                    formControlName="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    class="form-control"
+                    placeholder="Password"
+                />
+                <div class="input-group-append">
+                    <div class="input-group-text" (click)="togglePasswordVisibility()">
+                      <span class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></span>
+                    </div>
+                  </div>
+                <validation-msg [control]="loginForm.controls.password"> </validation-msg>
+            </div>
+            <p *ngIf="phoneError" class="text-danger text-center">{{phoneError}}</p>
+            <div class="row">
+                <div class="col-5">
+                    <app-button [type]="'submit'" [block]="true" [loading]="isAuthLoading" *ngIf="enablePhone">
+                        Đăng Nhập
+                    </app-button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <form [formGroup]="otpForm" (ngSubmit)="login()" *ngIf="isLoginOtp">
+            <div class="input-group mb-3">
+                <input formControlName="otp" type="text" class="form-control" placeholder="OTP 6 số" minlength="6" maxlength="6"/>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+                <validation-msg [control]="otpForm.controls.otp"> </validation-msg>
+            </div>
+            <p *ngIf="phoneError" class="text-danger text-center">{{phoneError}}</p>
+            <div class="row">
+                <div class="col-5">
+                    <app-button [type]="'submit'" [block]="true" [loading]="isAuthLoading" *ngIf="enablePhone">
+                        Đăng Nhập
+                    </app-button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        
+        <p class="mb-1" style="text-align: right;">
+            <a routerLink="/quen-mat-khau">Quên mật khẩu</a>
+        </p>
+    </div>
+    <!-- /.login-card-body -->
+</div>

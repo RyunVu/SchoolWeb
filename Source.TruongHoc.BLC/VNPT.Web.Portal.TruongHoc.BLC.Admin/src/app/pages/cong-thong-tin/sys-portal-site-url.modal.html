@@ -1,0 +1,71 @@
+<!-- <p-toast></p-toast> -->
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="box box-default">
+            <div class="box-header with-border" style="padding-bottom: 5px;">
+                <div class="box-tools" style="text-align: right;">
+                    <button type="button" class="btn bg-pro color-white" (click)="add()">
+                        <i class="fa fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                [paginator]="true" [rows]="pageSize"
+                [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading"
+                    responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="headerTable" style="width: 5%">STT</th>
+                            <th class="headerTable" style="width:30%">Tên</th>
+                            <th class="headerTable" style="width:20%">Subdomain</th>
+                            <th class="headerTable" style="width:20%">Tên file .cshtml</th>
+                            <th class="headerTable" style="width:20%">Chủ đề</th>
+                            <th class="headerTable" style="width:15%">Hành động</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+                        <tr>
+                            <td style="text-align: center;">{{i+1}}</td>
+                            <td>
+                                {{ rowData.Name }}
+                            </td>
+                            <td>
+                                {{ rowData.Subdomain }}
+                            </td>
+                            <td>{{ rowData.SiteUrl}}</td>
+                            <td>{{ rowData.LayoutName}}</td>
+                            <td style="text-align: center;">
+                                <div class="dropdown">
+                                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Thao tác
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a class="dropdown-item" (click)="edit(rowData)">Cập nhật</a>
+                                        <a class="dropdown-item" (click)="delete(rowData)">Xóa</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6">No items found.</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft" let-state>
+                        <span>Tổng cộng: {{state.totalRecords}}</span>
+                      </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <!-- <button class="btn bg-pro color-white" type="submit" (click)="submit()">Lưu thay đổi</button> -->
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

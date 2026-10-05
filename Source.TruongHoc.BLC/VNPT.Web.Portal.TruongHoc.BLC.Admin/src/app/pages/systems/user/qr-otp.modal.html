@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-lg-12" *ngIf="imageUrl">
+        <img [src]="imageUrl" style="width: 100%;">
+        <p>Sử dụng ứng dụng Google Authenticator hoặc Microsoft Authenticator để quét</p>
+        <p style="word-wrap: break-word;">Khóa: {{keyQr}}</p>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

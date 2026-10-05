@@ -1,0 +1,239 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Helper
+@{
+    Layout = "~/Views/Shared/Portals/Layouts/PhongTruyenThongTheme/_PhongTruyenThongLayout2.cshtml";
+    var information = Session["PortalInformation"] as PortalInformation;
+
+    var nameCongThongTin = SystemParameterDto.GetParameter("FOOTER", "NAME", information.PortalCode.ToUpper()).Value2;
+    //var logo = Url.Image(SystemParameterDto.GetParameter("FOOTER", "LOGO", information.PortalCode.ToUpper()).Value2);
+    var codeFromUrl = Request.QueryString["Code"]; // Lấy Code từ URL
+}
+
+@{
+    var code = Request.QueryString["param"] != null ? Request.QueryString["param"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    string lang = "vi";
+
+    if (cookie != null)
+    {
+        lang = cookie.Value;
+    }
+
+    var menuSite = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper());
+
+    var codename = menuSite?.Name;
+    var codesite = menuSite?.Value;
+
+    if (lang != "vi")
+    {
+        codename = GeneralCategoryDto.GetNameNewsType(code, information.PortalCode.ToUpper()).Name_En;
+    }
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@section pluginStyles {
+
+}
+
+<input id="nameCongThongTin" value="@nameCongThongTin" type="hidden" />
+
+<div class="body-content">
+    <div class="container">
+        <div class="content-title text-center">
+            <div class="c-title">
+                <span>@codename</span>
+            </div>
+        </div>
+
+        <div class="lstperson row col-sm-12" id="lstperson">
+
+        </div>
+
+
+        @*@Html.Action("DanhSachBaiVietPtt", "PhongTruyenThong", new { area = "Modules", Code = codesite })*@
+    </div>
+</div>
+
+
+
+@section scripts {
+
+
+    <script id="lstpersonNews" type="x-tmpl-mustache">
+    {{#dataList}}
+        <div class="col-sm-6 {{item.CBCVNKlst.length == 1 ? 'offset-sm-3':''}}" *ngFor="let itemc of item.CBCVNKlst">
+            <div class="person_item" (click)="showTieuSu(itemc.TieuSuId)">
+
+            <div class="person_info">
+                <div class="person_img">
+                <img src="{{imageUrl + itemc.UrlAvt1}}" onerror="onerror=null;src='assets/img/Noimage.jpg';" />
+                </div>
+                <div class="person_content hidden-sm-down">
+                <div class="person_name">{{itemc.HoTen}}</div>
+                <p>Ngày sinh: {{itemc.NgaySinh | date: 'dd/MM/yyyy'}}</p>
+                <p>Quê quán: {{itemc.QueQuan}}</p>
+                <p>Chỗ ở hiện nay: {{itemc.NoiThuongTru}}</p>
+
+                </div>
+
+            </div>
+            </div>
+
+        </div>
+    {{/dataList}}
+    </script>
+
+    <script type="text/javascript">
+
+        var domainMedia = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]';
+        var urlTemplate = "@Url.Site("phong-truyen-thong/chi-tiet-tin-tuc", parameter: new { param = "__value__" })";
+        const template = $("#listNews").html();
+
+        var commonConfig = {
+            pageSize: 12,
+            page: 1,
+            isClear: 0,
+        }
+
+        var codeAlias = '@code'.split('.')[0];
+
+        var obj = {
+            PageIndex: commonConfig.page,
+            PageSize: commonConfig.pageSize,
+            UnitCode: "@information.PortalCode",
+            Code: codeAlias ? codeAlias : ''
+        };
+
+        var main = {
+            loadListNews: function () {
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: '/api/NewGuest/GetList',
+                    beforeSend: function () {
+                        //if (isloading) {
+                        //    loading.showLoading();
+                        //}
+                    },
+                    success: function (res) {
+                        if (res.Result.length > 0) {
+                            console.log(res);
+
+                            const regExp = /^(http|https|ftp):\/\//i;
+
+                            const processedData = res.Result.map(item => {
+                                let imageUrl = item.ImageUrl && regExp.test(item.ImageUrl) ? item.ImageUrl : item.ImageUrl;
+
+                                if (item.ImageUrl && item.ImageUrl !== 'null') {
+                                    imageUrl = domainMedia + imageUrl;
+                                } else {
+                                    imageUrl = "/Images/NoImage400x266.png";
+                                }
+
+                                //// Kiểm tra xem Description có dữ liệu hình ảnh không
+                                //let isImagePost = false;
+                                //let imageGallery = [];
+
+                                //if (item.Description) {
+                                //    try {
+                                //        const images = JSON.parse(item.Description);
+                                //        if (Array.isArray(images) && images.length > 0) {
+                                //            isImagePost = true;
+                                //            imageGallery = images.map(img => ({
+                                //                url: domainMedia + img.Url,
+                                //                thumb: domainMedia + img.ThumbUrl
+                                //            }));
+                                //        }
+                                //    } catch (e) {
+                                //        console.error("Lỗi parse JSON Description:", e);
+                                //    }
+                                //}
+
+                                //// Kiểm tra xem bài viết có phải là video không
+                                //let isVideoPost = false;
+                                //let videoUrl = "";
+
+                                //if (!isImagePost && item.ShortContent && regExp.test(item.ShortContent)) {
+                                //    isVideoPost = true;
+                                //    videoUrl = item.ShortContent;
+                                //}
+
+                                return {
+                                    ...item,
+                                    ImageUrlNew: imageUrl,
+                                    //UrlBaiViet: urlTemplate.replace("__value__", item.Alias).replace("__code__", item.Code),
+                                    //isImagePost,
+                                    //imageGallery,
+                                    //isVideoPost,
+                                    //videoUrl
+                                };
+                            });
+
+                            const template = $("#lstpersonNews").html();
+                            const rendered = Mustache.render(template, { dataList: processedData });
+                            $("#lstperson").html(rendered);
+
+                            main.pagingPage(res.TotalRow, commonConfig.isClear, function () {
+                                main.loadListNews();
+                            });
+
+                        } else {
+                            $("#listNews").html('<h2 class="text-center">Không có dữ liệu</h2>');
+                        }
+                    }
+                });
+            },
+
+            //NgaySinhString: cbcv.NgaySinh
+            //    ? new Date(cbcv.NgaySinh).toLocaleDateString("vi-VN")
+            //    : "N/A",
+            //UrlCanBo: urlTemplate.replace("__value__", cbcv.TieuSuId),
+            //offsetClass: item.CBCVNKlst.length == 1 ? "col-sm-offset-3" : "",
+            pagingPage: function (totalRow, isClear, callback) {
+                var totalRowP = parseInt(totalRow);
+                var totalPage = Math.ceil(totalRowP / commonConfig.pageSize);
+                if (totalPage >= 0 && commonConfig.isClear == 0) {
+                    if (totalPage == 0) {
+                        totalPage = 1;
+                    }
+                    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+                }
+
+                $('#paginationholder #pagination').twbsPagination({
+                    totalPages: totalPage,
+                    visiblePages: 4,
+                    first: '<i class="fa fa-caret-left"></i><i class="fa fa-caret-left"></i>',
+                    next: '<i class="fa fa-caret-right"></i>',
+                    last: '<i class="fa fa-caret-right"></i><i class="fa fa-caret-right"></i>',
+                    prev: '<i class="fa fa-caret-left"></i>',
+                    initiateStartPageClick: false,
+                    onPageClick: function (event, page) {
+                        commonConfig.page = page;
+                        commonConfig.isClear = 1
+                        obj = {
+                            Code: "@code",
+                            PageIndex: commonConfig.page,
+                            PageSize: commonConfig.pageSize,
+                            UnitCode: "@information.PortalCode",
+                        };
+                        setTimeout(callback, 200);
+                    }
+                });
+
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadListNews();
+        })
+
+    </script>
+}

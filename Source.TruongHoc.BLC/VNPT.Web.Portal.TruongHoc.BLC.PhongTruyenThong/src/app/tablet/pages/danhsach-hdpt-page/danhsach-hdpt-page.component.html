@@ -1,0 +1,29 @@
+<div class="body-content">
+
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="content-title text-center">
+      <div class="c-title">{{subtitle}}</div>
+    </div>
+    <div class="search-content">
+      <div class="list-news-cate" *ngFor="let i of lstBV">
+        <div class="box-news-cate" (click)="clickChTietBV(i.Code,i.Id,i.Alias)">
+          <a class="img" title=""><img src="{{i.ImageUrl}}" alt=""></a>
+          <div class="title">
+            <h3><a  title="">{{i.Title}}</a></h3>
+            <span class="time-primary"><i class="fa fa-clock-o"></i>{{i.CreateDate | date: 'dd/MM/yyyy'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

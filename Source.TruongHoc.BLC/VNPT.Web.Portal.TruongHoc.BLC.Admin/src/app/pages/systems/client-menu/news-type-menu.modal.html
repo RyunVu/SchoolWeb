@@ -1,0 +1,22 @@
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Title">Tiêu đề <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title" (keyup)="changeTitle($event)">
+        </div>
+    </div>   
+     <div class="col-md-12">
+        <div class="form-group">
+            <label for="Parameter">Alias</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Parameter" [readonly]="true">
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()" [disabled]="isSaving">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

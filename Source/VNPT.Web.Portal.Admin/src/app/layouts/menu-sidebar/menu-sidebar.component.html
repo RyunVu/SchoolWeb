@@ -1,0 +1,49 @@
+<aside #mainSidebar class="main-sidebar elevation-4 sidebar-light-primary">
+    <!-- Brand Logo -->
+    <a [routerLink]="['/']" class="brand-link">
+        <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8;" />
+        <span class="brand-text font-weight-light">QUẢN LÝ TIN TỨC</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+        <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img [src]="user.image" class="img-circle elevation-2" alt="User Image" />
+      </div>
+      <div class="info">
+        <a [routerLink]="['/profile']" class="d-block">{{user.firstName}} {{user.lastName}}</a>
+      </div>
+    </div> -->
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item" *ngFor="let item of menus" [ngClass]="{'has-treeview':item.Children != null && item.Children.length > 0, 'menu-is-opening':currentUrl&&item.Action === currentUrl, 'menu-open':currentUrl&&item.Action === currentUrl}" (click)="toggleMenu($event)">
+                    <a (click)="toggleMenu($event)" class="nav-link" [ngClass]="{'active':currentUrl&&item.Action === currentUrl}" *ngIf="item.Children != null && item.Children.length > 0; else notChild" style="padding: 10px 0px 8px 5px;">
+                        <i class="nav-icon" [ngClass]="item.Icon"></i>
+                        <p>{{item.Title}}<i class="right fas fa-angle-left" *ngIf="item.Children != null && item.Children.length > 0"></i></p>
+                    </a>
+                    <ng-template #notChild>
+                        <a routerLinkActive="active"  [routerLink]="'/' + item.Action" class="nav-link" [ngClass]="{'active':currentUrl&&item.Action === currentUrl}" style="padding: 10px 0px 8px 5px;">
+                            <i class="nav-icon" [ngClass]="item.Icon"></i>
+                            <p>{{item.Title}}</p>
+                        </a>
+                    </ng-template>
+                    <ul class="nav nav-treeview" *ngIf="item.Children != null && item.Children.length > 0">
+                        <li class="nav-item" *ngFor="let item2 of item.Children">
+                            <a routerLinkActive="active"  [routerLink]="item2.Action" class="nav-link" [ngClass]="{'active':currentUrl&&item2.Action === currentUrl}" style="padding: 10px 0px 8px 0px;">
+                                <i class="nav-icon" [ngClass]="item2.Icon"></i>
+                                <p>{{item2.Title}}</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

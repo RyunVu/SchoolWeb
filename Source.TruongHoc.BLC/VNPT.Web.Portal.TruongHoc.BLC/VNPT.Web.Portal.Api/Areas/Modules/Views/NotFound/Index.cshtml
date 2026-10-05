@@ -1,0 +1,104 @@
+﻿@{
+	ViewBag.Title = "Trang không tìm thấy";
+	Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Trang không tìm thấy</title>
+    <link href="~/Content/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/themify-icons/themify-icons.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/elegantIcon/elegantIcon.css" type="text/css" rel="stylesheet">
+    @*<link href="~/Content/main-error.css" type="text/css" rel="stylesheet">
+        <link href="~/Content/custom-error.css" type="text/css" rel="stylesheet">*@
+
+    
+    <style>
+
+        .wrap {
+            background: #dc373726
+        }
+        .notfoundpage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 611px;
+            margin: auto;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .notfound-title {
+            font-size: 140px;
+            color: #e81123;
+            display: block;
+            font-weight: bold;
+            text-shadow: 5px 0 0 #fff, -1px 0px 0 #fff, 0 1px 0 #fff, 0px -1px 0 #fff, 4px 2px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff
+        }
+
+        .notfound-subtitle {
+            font-size: 50px;
+            margin-top: 0;
+            font-weight: bold;
+        }
+
+        .notfound-message {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .notfound-description {
+            font-size: 18px; 
+        }
+
+        .notfound-link {
+            font-size: 20px;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+            .notfound-link:hover {
+                color: #0056b3;
+            }
+
+        .notfound-image {
+            height: 469px;
+            max-width: 100%;
+            object-fit: cover;
+            margin-top: 12px;
+        }
+
+    </style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="container">
+			<main>
+				<div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="notfoundpage">
+                                <h1 class="notfound-title">404!</h1>
+                                <h3 class="notfound-subtitle">Oops…</h3>
+                                <h5 class="notfound-message">Bạn chắc đã nhập đúng đường dẫn chứ?</h5>
+                                <p class="notfound-description">
+                                    Đường dẫn bạn vừa truy cập không tồn tại hoặc đang bảo trì, vui lòng liên hệ với quản trị viên hoặc:
+                                </p>
+                                <a href="/" class="notfound-link">Bạn tìm lại trang khác nhé!</a>
+                                <img src="~/Images/404-error.png" class="notfound-image" alt="404 Error">
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</main>
+		</div>
+	</div>
+</body>
+</html>

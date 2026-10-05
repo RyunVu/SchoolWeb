@@ -1,0 +1,14 @@
+.permit-left-panel-container {
+  position: relative;
+  max-height: 650px;
+  overflow-y: scroll;
+
+  .search-bg {
+    display: flex;
+    justify-content: center;
+  }
+
+  .permit-list {
+    margin-top: 20px;
+  }
+}

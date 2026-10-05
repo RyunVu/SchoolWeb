@@ -1,0 +1,35 @@
+CREATE PROCEDURE [dbo].[Reviews_list] 
+@p_unitcode nvarchar(500) = NULL,
+@p_reviewtype int = 1,
+@p_status int = 1,
+@p_page_index int = 1,
+@p_page_size int = 10
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+    SELECT spr.* FROM SysPortalReviews spr
+	WHERE  
+	(@p_status IS NULL
+		OR spr.Status = @p_status)
+	AND
+	(@p_unitcode IS NULL
+		OR spr.UnitCode = @p_unitcode)
+	AND
+	(@p_reviewtype IS NULL
+		OR spr.ReviewType = @p_reviewtype)
+	ORDER BY spr.CreateDate DESC;
+   
+    SELECT COUNT(*) FROM SysPortalReviews spr 
+	WHERE  
+	(@p_status IS NULL
+		OR spr.Status = @p_status)
+	AND
+	(@p_unitcode IS NULL
+		OR spr.UnitCode = @p_unitcode)
+	AND
+	(@p_reviewtype IS NULL
+		OR spr.ReviewType = @p_reviewtype);
+END 

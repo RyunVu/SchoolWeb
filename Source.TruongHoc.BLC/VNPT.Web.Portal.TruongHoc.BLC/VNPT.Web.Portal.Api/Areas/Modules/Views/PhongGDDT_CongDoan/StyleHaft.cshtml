@@ -1,0 +1,48 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Base
+
+@model List<News>
+
+
+<div class="box-news-haft">
+    <div class="item_box_img">
+        @foreach (var item in Model.Take(1))
+        {
+            <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">
+                <img src="@(item.ImageUrl != null ? Url.Image(item.ImageUrl) : Html.Raw("/Images/noimage.png"))" alt="@item.Title" style="object-position: center; object-fit: cover">
+            </a>
+            <div class="title_box">
+                <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })">@item.Title</a>
+
+            </div>
+        }
+    </div>
+    <div class="item_box_text">
+        <ul>
+            @foreach (var item in Model.Skip(1).Take(4))
+            {
+                <li>
+                    <a href="@Url.Site("chi-tiet-tin-tuc", parameter: new { param = item.Alias })" title="@item.Title">
+                        @item.Title
+                    </a>
+                </li>
+
+            }
+        </ul>
+    </div>
+
+    <div class="pagination-primary">
+        <ul class="pagination">
+            <li><a href="#"><i class="fa fa-caret-left"></i></a></li>
+            <li><a class="active" href="#">1</a></li>
+            <li><a class="" href="#">2</a></li>
+            <li><a class="" href="#">3</a></li>
+            <li><a class="" href="#">4</a></li>
+            <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+        </ul>
+    </div>
+</div>
+

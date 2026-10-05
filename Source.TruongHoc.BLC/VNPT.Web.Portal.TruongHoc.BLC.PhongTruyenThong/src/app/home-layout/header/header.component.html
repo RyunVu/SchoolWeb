@@ -1,0 +1,262 @@
+<!-- 
+<header>
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8 col-sm-8">
+                    <div class="top-bar-left">
+                        <ul class="socials">
+                            <li> <a class="social-icon text-dark ng-binding" href="#"><i class="fa fa-phone"></i>
+                                    1234.555.666</a> </li>
+                            <li> <a class="social-icon text-dark ng-binding" href="#"><i class="fa fa-envelope"></i>
+                                    soyte@lamdong.gov.vn</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-4 col-sm-4">
+                    <div class="text-right" style="margin: 10px 0;">
+                        <a href="#" class="btn btn-sm green-steel"> <span>Đăng
+                                nhập</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-header visible-xs">
+        
+                    <a (click)="toggleMenu()" class="icon-reponsive pgd-mobile">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+
+                    <a class="home-mobile">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <nav class="menu" id="menu-pc">
+                    <a href="#/public" title="">
+                        <img src="assets/template/images/logo.jpg">
+                    </a>
+                    <ul>
+                 
+                        <li>
+                            <a href="#">Văn bản</a>
+                        </li>
+                        <li>
+                            <a href="#/public/tracuu">Tra cứu</a>
+                        </li>
+                        <li>
+                            <a href="#/public/canhbao">Cảnh báo</a>
+                        </li>
+                        <li>
+                            <button (click)="guiCanhBao()" class="btn btn-sm btn-warning-1"><i class="fa fa-exclamation-triangle"
+                                    aria-hidden="true"></i> Gửi cảnh báo</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <nav id="menu-mobile" class="" style="display: none;">
+                <ul>
+                    <li>
+                        <a href="#">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="#">Văn bản</a>
+                    </li>
+                    <li>
+                        <a href="#">Tra cứu</a>
+                    </li>
+                    <li>
+                        <a href="#">Cảnh báo</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</header> -->
+
+<header>
+
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-4 col-sm-4">
+                    <div class="top-bar-left">
+                        <ul class="socials">
+                            <li><a class="social-icon text-dark ng-binding" href="#">ỦY BAN KIỂM TRA TỈNH ỦY LÂM ĐỒNG</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-8 col-sm-8">
+                    <div class="top-bar-right">
+                        <ul class="socials">
+                            <li><a class="social-icon text-dark ng-binding" href="#"><i class="fa fa-map-marker"
+                                        aria-hidden="true"></i> 10 Lê Hồng Phong, phường 4, tp Đà Lạt, Lâm
+                                    Đồng</a> </li>
+
+                            <li> <a class="social-icon text-dark ng-binding" href="#"><i class="fa fa-envelope"></i>
+                                    ubkttu@lamdong.gov.vn</a>
+                            </li>
+
+                            <li> <a class="social-icon text-dark ng-binding" href="#"><i class="fa fa-phone"></i>
+                                    0263.3822.567</a> </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- <div class="text-right" style="margin: 10px 0;">
+                        <a href="#" class="btn btn-sm green-steel"> <span>Đăng
+                                nhập</span></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-header visible-xs">
+                    <!-- <div class="logo">
+                        <img src="images/download.png" class="visible-xs" width="100%" />
+                    </div> -->
+                    
+                    <a (click)="toggleMenu()" class="icon-reponsive pgd-mobile">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+
+                    <a class="home-mobile">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <nav class="menu" id="menu-pc">
+                    <a href="#" title="">
+                        <img height="75px" src="assets/template/images/logo3.png">
+                    </a>
+                    <ul class="p-menu-c">
+                        <!-- <li>
+                            <a href="#">Trang chủ</a>
+                        </li> -->
+                        <li>
+                            <a>Giới thiệu <i class="fa fa-angle-down"></i></a>
+                            <ul class="sub-menu">
+                                <li><a routerLink="/public/gioithieu" [queryParams]="{type:1}"><i
+                                            class="fa fa-caret-right"></i>Ngày
+                                        Thành lập</a></li>
+                                <li><a routerLink="/public/gioithieu" [queryParams]="{type:2}"><i
+                                            class="fa fa-caret-right"></i>Trưởng
+                                        ban, Chủ nhiệm Ủy ban Kiểm tra Tỉnh ủy qua các thời kỳ</a></li>
+                                <li><a routerLink="/public/gioithieu" [queryParams]="{type:3}"><i
+                                            class="fa fa-caret-right"></i>Ủy ban
+                                        Kiểm tra Tỉnh ủy qua các thời kỳ</a></li>
+                                <li><a routerLink="/public/gioithieu" [queryParams]="{type:4}"><i
+                                            class="fa fa-caret-right"></i>Ủy ban
+                                        Kiểm tra Huyện ủy, Thành ủy và tương đương qua các thời kỳ</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a routerLink="/public/danhsach" [queryParams]="{type:1}">Giáo dục truyền thống</a>
+                        </li>
+                        <li>
+                            <a routerLink="/public/danhsach" [queryParams]="{type:2}">Các hoạt động phong trào</a>
+                        </li>
+                        <li>
+                            <a routerLink="/public/danhsach" [queryParams]="{type:3}">Thành tích</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <nav id="menu-mobile" style="display: none;">
+
+                <ul>
+                    <li>
+                        <a href="#">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="#">Văn bản</a>
+                    </li>
+                    <li>
+                        <a href="#">Tra cứu</a>
+                    </li>
+                    <li>
+                        <a href="#">Cảnh báo</a>
+                    </li>
+                </ul>
+
+                <!-- <ul>
+                    <li class="active"><a href="index.html" title="">Trang chủ</a></li>
+                    <li>
+                        <a>Giới thiệu <i class="fa fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="news-detail.html" title=""><i class="fa fa-caret-right"></i>sơ đồ cơ cấu tổ
+                                    chức</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>chức năng & nhiệm vụ</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>đơn vị trực thuộc</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>quá trình hình thành & phát triển</a>
+                            </li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>tiểu sử & nhiệm vụ của lãnh đạo</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="#" title="">Tin tức - sự kiện<i class="fa fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Trồng trọt và bảo vệ thực vật</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Phát triển nông thôn</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Vật tư nông nghiệp và An toàn thực
+                                    phẩm</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Thủy lợi, nước sạch nông thôn</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Phòng chống lụt bão</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Xây dựng nông thôn mới</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Quản lý bảo vệ rừng - PCCCR</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Phát triển và sử dụng rừng</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Dự án Lâm nghiệp</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Dịch vụ và môi trường rừng</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Xúc tiến thương mại</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" title="">Tái cơ cấu nông nghiệp <i class="fa fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Thông tin tái cơ cấu</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Chính sách</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Hỏi đáp tái cơ cấu</a></li>
+    
+                        </ul>
+                    </li>
+                    <li><a href="du-an.html" title="">Chỉ đạo điều hành<i class="fa fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Thông tin chỉ đạo điều hành</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Kế hoạch sản xuất</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Báo cáo - thống kê</a></li>
+    
+                        </ul>
+                    </li>
+                    <li><a href="he-thong-van-ban.html" title="">hệ thống văn bản <i class="fa fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Văn bản của chính phủ</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Văn bản của Bộ</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Văn bản của UBND tỉnh</a></li>
+                            <li><a href="#" title=""><i class="fa fa-caret-right"></i>Văn bản của Sở</a></li>
+    
+                        </ul>
+                    </li>
+                    <li><a href="thong-tin-can-biet.html" title="">Lịch làm việc</a></li>
+                    <li><a href="thong-tin-can-biet.html" title="">Liên hệ</a></li>
+                </ul> -->
+
+            </nav>
+
+        </div>
+    </div>
+</header>

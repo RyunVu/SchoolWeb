@@ -1,0 +1,143 @@
+<!-- <p-toast></p-toast> -->
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Name">Đơn vị <span style="color: red;">*</span></label>
+      <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+        filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Title">Id <span style="color: red;">*</span></label>
+      <input [readonly]="!isAdd" type="text" class="form-control" [(ngModel)]="id" />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="Title">Code <span style="color: red;">*</span></label>
+      <input [readonly]="!isAdd" type="text" class="form-control" [(ngModel)]="code" />
+    </div>
+  </div>
+  <div class="col-md-4" *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER') && item.Code != 'LINK_MENU'">
+    <div class="form-group">
+      <label for="Title">Value</label>
+      <input type="number" class="form-control" [(ngModel)]="value" />
+    </div>
+  </div>
+  <div class="col-md-4" *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER')">
+    <div class="form-group">
+      <label for="Title" *ngIf="item.Code != 'LINK_MENU'">Value 3</label>
+      <label style="color: red;" *ngIf="item.Code == 'LINK_MENU'" for="Title">Loại hiển thị <i style="color: black;">(Nhập '4' để xem trong trang website hoặc để trống để đến trang ngoài website)</i></label>
+      <input type="number" class="form-control" [(ngModel)]="value3" />
+    </div>
+  </div>
+  <div class="col-md-4" *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER') && item.Code != 'LINK_MENU'">
+    <div class="form-group">
+      <label>Value 5</label>
+      <p-checkbox [binary]="true" [(ngModel)]="value5"></p-checkbox>
+    </div>
+  </div>
+  <div class="col-md-12"
+    *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER') && item.Code != 'LINK_MENU' && item.Code != 'LINK_WEBSITE' 
+    && !item.Id.includes('LOGO') && !item.Id.includes('TINNHIEMMANG')">
+    <div class="form-group">
+      <label *ngIf="!item.Id.includes('PHONE') && !item.Id.includes('ADDRESS')
+       && !item.Id.includes('DESCRIPTION') && !item.Id.includes('EMAIL') && !item.Id.includes('NAME')" for="Title">Value 2</label>
+      <label style="color: red;" *ngIf="item.Id.includes('PHONE')" for="Title">Số điện thoại</label>
+      <label style="color: red;" *ngIf="item.Code == 'LINK_WEBSITE'" for="Title">Link website</label>
+      <label style="color: red;" *ngIf="item.Id.includes('ADDRESS')" for="Title">Địa chỉ</label>
+      <label style="color: red;" *ngIf="item.Id.includes('DESCRIPTION')" for="Title">Cơ quan quản lý</label>
+      <label style="color: red;" *ngIf="item.Id.includes('EMAIL')" for="Title">Email</label>
+      <label style="color: red;" *ngIf="item.Id.includes('NAME')" for="Title">Tên phường/xã/thị trấn</label>
+      <input type="text" class="form-control" [(ngModel)]="value2" />
+    </div>
+  </div>
+  <div class="col-md-12"
+    *ngIf="item.Code == 'BANNER_HEADER' || item.Code.includes('BANNER_CENTER') || item.Code == 'LINK_MENU' || item.Id.includes('LOGO') || item.Id.includes('TINNHIEMMANG')">
+    <div class="form-group">
+      <label style="color: red;">Hình ảnh</label>
+      <div>
+        <div class="btn bg-pro color-white" (click)="openFileDilog()">
+          Chọn hình ảnh
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12"
+    *ngIf="item.Code == 'BANNER_HEADER' || item.Code.includes('BANNER_CENTER') || item.Code == 'LINK_MENU' || item.Id.includes('LOGO') || item.Id.includes('TINNHIEMMANG')">
+    <div class="form-group">
+      <div class="row-custom">
+        <div style="background-color: #ececec; width: 500px; height: 100px; padding: 10px;">
+          <img [src]="imageUrl | imageUrlPipe: 'thumb'" style="width: 100%; height: 100%" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" *ngIf="item.Code != 'BANNER_HEADER' && item.Code != 'LINK_WEBSITE' && !item.Id.includes('NAME') && item.Code != 'LINK_MENU'">
+    <div class="form-group">
+      <label *ngIf="!item.Id.includes('ADDRESS') && !item.Code.includes('BANNER_CENTER')" for="Title">Value 4</label>
+      <label style="color: red;" *ngIf="item.Id.includes('ADDRESS')" for="Title">Mã đơn vị Igate (VD: H36.88.23.70)</label>
+      <label style="color: red;" *ngIf="item.Code.includes('BANNER_CENTER')" for="Title">Link website</label>
+      <label style="color: red;" *ngIf="item.Code == 'LINK_WEBSITE'" for="Title">Tên website</label>
+      <input type="text" class="form-control" [(ngModel)]="value4" />
+    </div>
+  </div>
+  <div class="col-md-12"
+    *ngIf="item.Id.includes('NAME')">
+    <div class="form-group">
+      <label style="color: red;">Hình ảnh</label>
+      <div>
+        <div class="btn bg-pro color-white" (click)="openFileDilog_Name()">
+          Chọn hình ảnh
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12"
+    *ngIf="item.Id.includes('NAME')">
+    <div class="form-group">
+      <div class="row-custom">
+        <div style="background-color: #ececec; width: 500px; height: 100px; padding: 10px;">
+          <img [src]="imageUrl_Name | imageUrlPipe: 'thumb'" style="width: 100%; height: 100%" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6" *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER')">
+    <div class="form-group">
+      <label *ngIf="!item.Id.includes('ADDRESS') && item.Code != 'LINK_MENU'" for="Title">Value 6</label>
+      <label style="color: red;" *ngIf="item.Id.includes('ADDRESS')" for="Title">Token Office</label>
+      <label style="color: red;" *ngIf="item.Code == 'LINK_MENU'" for="Title">Link website</label>
+      <input type="text" class="form-control" [(ngModel)]="value6" />
+    </div>
+  </div>
+  <div class="col-md-6" *ngIf="item.Code != 'BANNER_HEADER' && !item.Code.includes('BANNER_CENTER') && item.Code != 'LINK_MENU'">
+    <div class="form-group">
+      <label for="Address">Value 7</label>
+      <input type="text" class="form-control" [(ngModel)]="value7" />
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="Description">Mô tả</label>
+      <textarea class="form-control" [(ngModel)]="description" rows="5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="p-footer">
+  <div class="f-contains">
+    <!-- <button class="btn btn-success" type="submit" (click)="openFileDilog()">
+      Hình ảnh
+    </button> -->
+    <button class="btn btn-info" type="submit" (click)="submit()">
+      Lưu thay đổi
+    </button>
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

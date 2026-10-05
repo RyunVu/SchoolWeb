@@ -1,0 +1,17 @@
+.hp-left-panel-container {
+    position: relative;
+    max-height: 650px;
+    overflow-y: scroll;
+    .search-bg {
+        display: flex;
+        justify-content: center;
+    }
+    .business-list {
+        margin-top: 20px;
+    }
+    .badge-warning {
+        color: #1f2d3d;
+        background-color: #ffc107;
+        margin-left: 5px;
+    }
+}

@@ -1,0 +1,50 @@
+<!-- <p-toast></p-toast> -->
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Tên<span class="text-danger">(*)</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="item.Name">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Code<span class="text-danger">(*)</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="item.Code">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Android Version</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.VersionAndroid">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Android Function</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.VersionFunctionAndroid">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">IOS Version</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.VersionIos">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">IOS Function</label>
+                    <input type="text" class="form-control" [(ngModel)]="item.VersionFunctionIos">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<form class="row" [formGroup]="entityForm" (ngSubmit)="submit()">
+    <div class="col-sm-12">
+        <fieldset style="min-height: 100px;">
+            <legend><b>Thông tin cơ sở</b></legend>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="TenDoanhNghiep">Tên cơ sở <span class="text-danger">*</span></label>
+                    <input type="text" id="TenDoanhNghiep" class="form-control" formControlName="TenDoanhNghiep" />
+                    <validation-msg [control]="entityForm.controls.TenDoanhNghiep"></validation-msg>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="MaSoDoanhNghiep">Mã số doanh nghiệp <span class="text-danger">*</span></label>
+                    <input type="text" id="MaSoDoanhNghiep" class="form-control" formControlName="MaSoDoanhNghiep" />
+                    <validation-msg [control]="entityForm.controls.MaSoDoanhNghiep"></validation-msg>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="Name">Lĩnh vực</label>
+                    <p-multiSelect [options]="linhvucs" formControlName="LinhVucIds" defaultLabel="Chọn lĩnh vực"
+                        optionLabel="Name" optionValue="Id"></p-multiSelect>
+                    <validation-msg [control]="entityForm.controls.LinhVucIds"></validation-msg>
+                </div>
+                <!-- <div class="form-group col-md-3">
+                    <label for="permitDate">Ngày cấp phép </label>
+                    <p-calendar inputId="permitDate" formControlName="permitDate" appendTo="body" dateFormat="dd/mm/yy"></p-calendar>
+                    <validation-msg [control]="entityForm.controls.permitDate">
+                    </validation-msg>
+                </div> -->
+
+                <div class="form-group col-md-3">
+                    <label for="MaQuanHuyen">Huyện/TP <span class="text-danger">*</span></label>
+                    <p-dropdown [options]="districts" formControlName="MaQuanHuyen" appendTo="body"
+                        (onChange)="loadWards()" optionValue="Id" optionLabel="Name">
+                    </p-dropdown>
+
+                    <validation-msg [control]="entityForm.controls.MaQuanHuyen"></validation-msg>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="MaPhuongXa">Xã/Phường <span class="text-danger">*</span></label>
+                    <p-dropdown [options]="wards" formControlName="MaPhuongXa" appendTo="body" optionValue="Id"
+                        optionLabel="Name">
+                    </p-dropdown>
+                    <validation-msg [control]="entityForm.controls.MaPhuongXa"></validation-msg>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="SoNha">Số nhà</label>
+                    <input type="text" id="SoNha" class="form-control" formControlName="SoNha" placeholder="" />
+                    <validation-msg [control]="entityForm.controls.SoNha"></validation-msg>
+                </div>
+
+                <div class="form-group col-md-5">
+                    <label for="ChuCoSo">Chủ cơ sở</label>
+                    <input type="text" id="ChuCoSo" class="form-control" formControlName="ChuCoSo" />
+                    <validation-msg [control]="entityForm.controls.ChuCoSo"></validation-msg>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="DienThoai">Điện thoại</label>
+                    <input type="text" id="DienThoai" class="form-control" formControlName="DienThoai"
+                        placeholder="Số điện thoại" />
+                    <validation-msg [control]="entityForm.controls.DienThoai"></validation-msg>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="Email">Email</label>
+                    <input type="text" id="Email" class="form-control" formControlName="Email" />
+                    <validation-msg [control]="entityForm.controls.Email"></validation-msg>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="CapQuanLyId">Cấp quản lý <span class="text-danger">*</span></label>
+                    <p-dropdown [options]="capQls" formControlName="CapQuanLyId" appendTo="body" optionValue="Id"
+                        optionLabel="Name">
+                    </p-dropdown>
+                    <validation-msg [control]="entityForm.controls.CapQuanLyId"></validation-msg>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="DonViQuanLyId">Cơ quan quản lý <span class="text-danger">*</span></label>
+                    <p-dropdown [options]="coQuans" formControlName="DonViQuanLyId" appendTo="body" optionValue="Id"
+                        optionLabel="Name">
+                    </p-dropdown>
+                    <validation-msg [control]="entityForm.controls.DonViQuanLyId"></validation-msg>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="CanBoQuanLyId">Cán bộ quản lý</label>
+                    <p-dropdown [options]="canBos" formControlName="CanBoQuanLyId" appendTo="body" optionValue="Id"
+                        optionLabel="Name">
+                    </p-dropdown>
+                    <validation-msg [control]="entityForm.controls.CanBoQuanLyId"></validation-msg>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="p-footer">
+        <div class="f-contains">
+            <button class="btn btn-success" [disabled]="saving" (click)="submit()">
+                <span *ngIf="saving" class="spinner-border spinner-border-sm"></span>
+                Lưu 
+            </button>
+            <button class="btn btn-outline-danger" type="button" (click)="cancel()">
+                Thoát
+            </button>
+        </div>
+    </div>
+</form>

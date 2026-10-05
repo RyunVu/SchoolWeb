@@ -1,0 +1,30 @@
+<!-- <p-toast></p-toast> -->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Tiêu đề <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title" placeholder="Tiêu đề">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Nội dung <span class="text-danger">(*)</span></label>
+            <textarea class="form-control" [(ngModel)]="item.Content" rows="5" placeholder="Nội dung"></textarea>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Huyện/Thành phố</label>
+            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

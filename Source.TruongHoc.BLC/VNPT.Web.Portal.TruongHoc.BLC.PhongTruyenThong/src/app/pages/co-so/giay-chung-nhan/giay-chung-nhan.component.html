@@ -1,0 +1,259 @@
+<!-- <p-toast [style]="{marginTop: '80px'}"></p-toast> -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Quản lý hộ kinh doanh</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Hộ kinh doanh</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="card-title">Danh sách hộ kinh doanh</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <button *ngIf="checkPermission('Add')" (click)="add()" type="button"
+                                    class="btn btn-info btn-sm float-right">
+                                    <i class="fas fa-plus"></i> Thêm mới
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-2 col-2-em">
+                                    <div class="form-group">
+                                        <label>Từ ngày</label>
+                                        <p-calendar [(ngModel)]="fromDate" [maxDate]="toDate" dateFormat="dd/mm/yy"
+                                            (onBlur)="setDate($event,'fromDate')"></p-calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-2-em">
+                                    <div class="form-group">
+                                        <label>Đến ngày</label>
+                                        <p-calendar [(ngModel)]="toDate" [minDate]="fromDate" dateFormat="dd/mm/yy"
+                                            (onBlur)="setDate($event,'toDate')"></p-calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" *ngIf="isShow">
+                                    <div class="form-group">
+                                        <label for="Name">Thành phố</label>
+                                        <p-dropdown [options]="cities" [(ngModel)]="city" optionLabel="Name"
+                                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
+                                            (onChange)="loadWards()">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" *ngIf="isShow">
+                                    <div class="form-group">
+                                        <label for="Name">Phường/xã</label>
+                                        <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name"
+                                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
+                                            (onChange)="loadStreets()">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" *ngIf="isShow">
+                                    <div class="form-group">
+                                        <label for="Name">Đường</label>
+                                        <p-dropdown [options]="streets" [(ngModel)]="street" optionLabel="Name"
+                                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" *ngIf="isShow">
+                                    <div class="form-group">
+                                        <label for="Name">Lĩnh vực</label>
+                                        <p-dropdown [options]="linhVucs" [(ngModel)]="linhVuc" optionLabel="Name"
+                                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3 col-md-2" *ngIf="isShow">
+                                    <label for="keyword">Trạng thái</label>
+                                    <p-dropdown [options]="hkdStatuses" styleClass="w-100" [(ngModel)]="trangThai"
+                                        optionValue="value" optionLabel="label" placeholder=""
+                                        emptyMessage="Không có dữ liệu"
+                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                </div>
+                                <div class="form-group col-3 col-md-2" *ngIf="isShow">
+                                    <label for="keyword">Loại hình</label>
+                                    <p-dropdown [options]="loaiHinhs" styleClass="w-100" [(ngModel)]="loaiHinh"
+                                        optionValue="Id" optionLabel="Label" placeholder=""
+                                        emptyMessage="Không có dữ liệu"
+                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                </div>
+                                <div class="form-group col-3 col-md-2" *ngIf="isShow">
+                                    <label>Có giấy phép KD</label>
+                                    <p-dropdown [options]="coGCN" styleClass="w-100" [(ngModel)]="loaiGCN"
+                                        optionValue="Id" optionLabel="Label" placeholder=""
+                                        emptyMessage="Không có dữ liệu"
+                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                </div>
+                                <div class="form-group col-3 col-md-2" *ngIf="isShow">
+                                    <label>Mã số thuế</label>
+                                    <p-dropdown [options]="loaiMaSoThue" styleClass="w-100" [(ngModel)]="coMst"
+                                        optionValue="Id" optionLabel="Label" placeholder=""
+                                        emptyMessage="Không có dữ liệu"
+                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                </div>
+                                <div class="col-md-{{isShow ? 4 : 4}}">
+                                    <div class="form-group">
+                                        <label for="Name">Từ khóa tìm kiếm</label>
+                                        <input type="text" class="form-control" [(ngModel)]="keywordInput"
+                                            placeholder="Từ khóa tìm kiếm" />
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="Name">TT hoạt động</label>
+                    <p-dropdown
+                      [options]="xayStatus"
+                      [(ngModel)]="xay"
+                      optionLabel="Name"
+                      optionValue="Id"
+                      [filter]="true"
+                      filterBy="Name"
+                      appendTo="body"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="Name">TT nộp thuế</label>
+                    <p-dropdown
+                      [options]="nopStatus"
+                      [(ngModel)]="nop"
+                      optionLabel="Name"
+                      optionValue="Id"
+                      [filter]="true"
+                      filterBy="Name"
+                      appendTo="body"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div> -->
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <button (click)="exportCSV()" type="button"
+                                        class="btn btn-success btn-sm float-right mr-3"
+                                        *ngIf="checkPermission('Xuất Excel')">
+                                        <i class="fa fa-download"></i> Xuất Excel
+                                    </button>
+                                    <button (click)="search()" type="button"
+                                        class="btn btn-primary btn-sm float-right mr-3">
+                                        <i class="fa fa-filter"></i> Tìm kiếm
+                                    </button>
+
+                                    <button (click)="showHide()" type="button"
+                                        class="btn btn-outline-{{isShow ? 'secondary' : 'primary'}} btn-sm float-left">
+                                        <i class="fa fa-cogs"></i> {{isShow ? 'Thu gọn tìm kiếm' : 'Mở rộng tìm kiếm'}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <p-table #dt [showCurrentPageReport]="true"
+                            currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục"
+                            [value]="items" [lazy]="true" [sortOrder]="-1" (onLazyLoad)="paginate($event)"
+                            [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading"
+                            [autoLayout]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="80px">STT</th>
+                                    <th>
+                                        <div class="flex justify-content-between align-items-center">
+                                            Tên cơ sở
+                                            <p-sortIcon field="TenDoanhNghiep"></p-sortIcon>
+                                        </div>
+
+                                    </th>
+                                    <th>
+                                        Mã số DN/ HKD
+                                    </th>
+                                    <th>
+                                        Địa chỉ
+                                    </th>
+                                    <th>
+                                        Điện thoại
+                                    </th>
+                                    <th>
+                                        Lĩnh vực
+                                    </th>
+                                    <th style="width: 10rem">Thao tác</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                                <tr>
+                                    <td>{{rowIndex + 1}}</td>
+                                    <td>
+                                        {{item.TenDoanhNghiep}}
+                                    </td>
+                                    <td>
+                                        {{item.MaSoDoanhNghiep}}
+                                    </td>
+                                    <td>
+                                        {{item.DiaChi}}
+                                    </td>
+                                    <td>
+                                        {{item.DienThoai}}
+                                    </td>
+                                    <td>
+                                        {{item.LinhVuc}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info" *ngIf="checkPermission('Edit')"
+                                                (click)="edit(item)">Cập nhật</button>
+                                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon"
+                                                data-toggle="dropdown">
+                                                <span class="sr-only"></span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" (click)="edit(item)"
+                                                    *ngIf="checkPermission('Edit')">Cập nhật</a>
+                                                <a (click)="googleMap(item)" class="dropdown-item"
+                                                    *ngIf="checkPermission('Edit')&& item.ToaDo" target="_blank">Chỉ
+                                                    đường</a>
+                                                <a class="dropdown-item" (click)="delete(item)"
+                                                    *ngIf="checkPermission('Delete')">Xóa</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a *ngIf="checkPermission('View')" class="dropdown-item"
+                                                    (click)="history(item)">Lịch sử thay đổi</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="7">No items found.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

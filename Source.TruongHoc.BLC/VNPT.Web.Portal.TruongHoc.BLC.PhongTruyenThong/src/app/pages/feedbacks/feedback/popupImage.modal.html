@@ -1,0 +1,27 @@
+<!-- <p-toast></p-toast> -->
+<div class="customStyle">
+    <p-galleria [(value)]="items" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="4">
+        <ng-template pTemplate="item" let-item>
+            <a href="{{item.Url | imageUrlPipe}}" target="_blank">
+                <img [src]="item.Url | imageUrlPipe" style="width: 100%; display: block;" />
+            </a>
+            <div class="download" (click)="downloadFile(item)">
+                <i class="fas fa-download"></i>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="thumbnail" let-item>
+            <div class="p-grid p-nogutter p-justify-center">
+                <img [src]="item.ThumbUrl | imageUrlPipe" />
+            </div>
+        </ng-template>
+    </p-galleria>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn bg-pro color-white" type="submit" (click)="downloadFiles()" [ngClass]="ldButton ? 'stop-click' : ''">
+            <i class="fa fa-spinner fa-spin" *ngIf="ldButton"></i>Down tất cả hình
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

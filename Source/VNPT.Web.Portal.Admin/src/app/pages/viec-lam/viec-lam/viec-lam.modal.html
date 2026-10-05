@@ -1,0 +1,176 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Tên công việc</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Name" placeholder="Tên công việc" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Nhà tuyển dụng</label>
+            <p-dropdown [options]="business" [(ngModel)]="item.BusinessId" optionLabel="Name" optionValue="Id"
+                [filter]="true" filterBy="Name" placeholder="Chọn nhà tuyển dụng" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Thời gian hết hạn</label>
+            <p-calendar [(ngModel)]="item.TimeExpired" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body">
+            </p-calendar>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Nơi làm việc</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Place" placeholder="Nơi làm việc" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Hồ sơ</label>
+            <textarea class="form-control" [(ngModel)]="item.HosoContent" rows="4" placeholder="Hồ sơ"></textarea>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Lợi ích</label>
+            <textarea class="form-control" [(ngModel)]="item.BenefitContent" rows="4" placeholder="Lợi ích"></textarea>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Yêu cầu</label>
+            <textarea class="form-control" [(ngModel)]="item.RequiredContent" rows="4" placeholder="Yêu cầu"></textarea>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Bằng cấp</label>
+            <textarea class="form-control" [(ngModel)]="item.Degree" rows="4" placeholder="Bằng cấp"></textarea>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="SortNo">Số lượng</label>
+            <input type="number" class="form-control" [(ngModel)]="item.Quantity" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="SortNo">Số lượng nữ</label>
+            <input type="number" class="form-control" [(ngModel)]="item.FemaleQuantity" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="OrderNo">Lương thỏa thuận</label>
+            <p-checkbox [(ngModel)]="item.IsAgreementSalary" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group" [(hidden)]="item.IsAgreementSalary">
+            <label for="Name" class="d-block">Lương từ </label>
+            <p-inputNumber [(ngModel)]="item.FromSalary" mode="currency" currency="VND" locale="vi-VN"></p-inputNumber>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group" [(hidden)]="item.IsAgreementSalary">
+            <label for="Name" class="d-block">Lương đến </label>
+            <p-inputNumber [(ngModel)]="item.ToSalary" mode="currency" currency="VND" locale="vi-VN"></p-inputNumber>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="OrderNo">Lương theo doanh thu</label>
+            <p-checkbox [(ngModel)]="item.IsSaleSalary" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Loại lương </label>
+            <p-dropdown [options]="typeSala" [(ngModel)]="item.TypeSalary" optionLabel="Id" optionValue="Id"
+                [filter]="true" filterBy="Id" placeholder="Loại lương" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="OrderNo">Có hoa hồng</label>
+            <p-checkbox [(ngModel)]="item.IsPoundageSalary" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="SortNo">Độ tuổi từ</label>
+            <input type="number" class="form-control" [(ngModel)]="item.FromAge" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="SortNo">Độ tuổi đến</label>
+            <input type="number" class="form-control" [(ngModel)]="item.ToAge" />
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="Name">Vị trí tuyển dụng</label>
+            <p-dropdown [options]="workPosi" [(ngModel)]="item.WorkPositionId" optionLabel="Name" optionValue="Id"
+                [filter]="true" filterBy="Name" placeholder="Chọn vị trí tuyển dụng" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+          <label for="Name">Lĩnh vực tuyển dụng</label>
+          <p-multiSelect
+            [options]="workFields"
+            [(ngModel)]="workFieldSelecteds"
+            defaultLabel="Chọn lĩnh vực tuyển dụng"
+            optionLabel="Name"
+            optionValue="Id"
+          ></p-multiSelect>
+        </div>
+      </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Address">Địa chỉ</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Address" placeholder="Địa chỉ" />
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Thành phố/huyện</label>
+            <p-dropdown [options]="districts" [(ngModel)]="item.LocationDistrictId" optionLabel="Name" optionValue="Id"
+                [filter]="true" filterBy="Name" placeholder="Chọn thành phố/huyện" appendTo="body"
+                (onChange)="selectDistrict($event)">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="Name">Phường xã/thị trấn</label>
+            <p-dropdown [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name" optionValue="Id"
+                [filter]="true" filterBy="Name" placeholder="Chọn phường xã/thị trấn" appendTo="body">
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="Name">Mô tả</label>
+            <textarea class="form-control" [(ngModel)]="item.Description" rows="7" placeholder="Mô tả"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+import { Component, ViewEncapsulation } from "@angular/core";
+
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+
+import { HttpService } from "src/app/services";
+import { HttpClient } from "@angular/common/http";
+import { ToastrService } from "ngx-toastr";
+import { ResultCode, ResultModel } from "src/app/models";
+
+@Component({
+    selector: "feedback-chuyendonvi-modal",
+    templateUrl: 'feedback-chuyendonvi.modal.html',
+    styleUrls: ['./feedback-chuyendonvi.modal.scss'],
+    encapsulation: ViewEncapsulation.None,
+})
+
+export class FeedbackChuyenDonViModal {
+    items: any;
+    item: any;
+
+    command: any;
+
+    locations: any[] = [];
+    units: any[] = [];
+    fields: any[] = [];
+
+    location: any;
+    unit: any;
+    field: any;
+
+    constructor(
+        public ref: DynamicDialogRef,
+        public config: DynamicDialogConfig,
+        public http: HttpService,
+        public dialogService: DialogService,
+        public httpClient: HttpClient,
+        private toastr: ToastrService,
+    ) {
+
+    }
+
+    ngOnInit() {
+        this.item = this.config.data.items;
+        this.loadLocations();
+    }
+    cancel() {
+        this.ref.close();
+    }
+
+    loadLocations() {
+        this.http.post("unit/districts", {
+
+        }, (result: ResultModel) => {
+            if (result.Code == ResultCode.Success) {
+                this.locations = result.Result;
+                this.location = this.locations[0].UnitCode;
+                this.loadUnits();
+                this.loadFields();
+            }
+        }, () => {
+        });
+    }
+    loadUnits() {
+        this.http.post("FeedbackAdmin/units", {
+            "UnitCode": this.location
+        }, (result: ResultModel) => {
+            if (result.Code == ResultCode.Success) {
+                this.units = result.Result;
+            }
+        }, () => {
+        });
+    }
+    loadFields() {
+        this.http.post("FeedbackAdmin/Fields", {
+            "UnitCode": this.location
+        }, (result: ResultModel) => {
+            if (result.Code == ResultCode.Success) {
+                this.fields = result.Result;
+            }
+        }, () => {
+        });
+    }
+
+    save() {
+        if (this.command == null || this.command == "") {
+            this.toastr.error('Thiếu trường nội dung chỉ đạo', 'Cảnh báo', {
+                timeOut: 3000,
+            });
+            return;
+        }
+        this.http.post("FeedbackAdmin/SaveChangeUnitField",
+            {
+                "FeedbackId": this.item,
+                "UnitId": this.unit,
+                "FieldId": this.field,
+                "Reason" :this.command
+            },
+            (result: ResultModel) => {
+                if (result.Code == ResultCode.Success) {
+                    this.ref.close({ confirm: 'yes' });
+                }
+            }, () => {
+            });
+    }
+
+    selectLocation(event: any) {
+        this.unit = null;
+        this.units = [];
+        this.field = null;
+        this.fields = [];
+        this.loadUnits();
+    }
+}

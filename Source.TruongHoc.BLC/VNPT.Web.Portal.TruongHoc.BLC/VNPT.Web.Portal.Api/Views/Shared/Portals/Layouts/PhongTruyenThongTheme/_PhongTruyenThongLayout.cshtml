@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Image(@SystemParameterDto.GetParameter("FOOTER", "LOGO", (Session["PortalInformation"] as PortalInformation).PortalCode.ToUpper()).Value2)" rel="Shortcut Icon">
+    @RenderSection("MetaData", required: false)
+    @RenderSection("pluginStyles", required: false)
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery.mmenu.all.css" rel="stylesheet" />
+    <link href="~/Content/jquery.mmenu.themes.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    <link href="~/Content/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/Content/custom2.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <link href="~/Content/define.css" rel="stylesheet" />
+    <link href="~/Content/slider-pro.min.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/themify-icons/themify-icons.css" type="text/css" rel="stylesheet">
+    <link href="~/fonts/elegantIcon/elegantIcon.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.simplyscroll.css" />
+    <link href="~/Content/custom2.css" rel="stylesheet" />
+    <meta name="google-site-verification" content="FULY_TEX_nUmnIxIRjmCfOdhVtEmIwFjG4F8doxt2mA" />
+    <link href="~/Content/sgdcustom.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-rating.css" rel="stylesheet" />
+
+    <!-- Thêm thư viện Slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+    @*<link href="~/Content/style.min.css" rel="stylesheet" />*@
+    <script src="~/Scripts/jquery.js"></script>
+    @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    @if (!string.IsNullOrEmpty(ViewBag.GoogleMapKey))
+    {
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapKey"></script>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.GoogleAnalytics))
+    {
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@ViewBag.GoogleAnalytics"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '@ViewBag.GoogleAnalytics');
+        </script>
+    }
+
+    <link href="~/Content/ptt.css" rel="stylesheet" />
+
+</head>
+<body>
+    @using VNPT.Web.Portal.Api.Helper
+    @using VNPT.Web.Portal.Api.Models
+    @using VNPT.Web.Portal.Api.DTO
+    @{
+        var information = Session["PortalInformation"] as PortalInformation;
+
+        var portalCode = information.PortalCode;
+
+        var xuat_xu_vb = SystemParameterDto.GetParameter("XUAT_XU", "vb_cdgd", information.PortalCode.ToUpper()).Description;
+
+        var color = SystemParameterDto.GetParameter("COLOR", "COLOR", information.PortalCode.ToUpper()).Value2;
+    }
+
+    <div class="" style="height: 100vh;">
+        <input id="portalCode" value="@portalCode" type="hidden" />
+        <input id="xuat_xu_vb" value="@xuat_xu_vb" type="hidden" />
+        <input id="color" value="@color" type="hidden" />
+        @RenderBody()
+
+        @*<audio id="bg-music" autoplay loop>
+            <source src="~/Content/buiphan.m4a" type="audio/mpeg">
+        </audio>*@
+    </div>
+
+    <script src="~/Scripts/tether.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/wow.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/owl.carousel.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.mmenu.all.js" type="text/javascript"></script>
+    <script src="~/Scripts/common.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.sliderPro.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/slide.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.magnific-popup.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.simpleWeather.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/mustache.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/bootstrap-rating.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+    <script type="text/javascript">
+        var xuat_xu_vb = document.getElementById("xuat_xu_vb").value;
+        var color = document.getElementById("color").value;
+
+        $(document).ready(function ($) {
+
+            //var audio = document.getElementById("bg-music");
+
+            //// Lưu thời gian phát nhạc khi rời trang
+            //window.addEventListener("beforeunload", function () {
+            //    localStorage.setItem("musicTime", audio.currentTime);
+            //});
+
+            //// Khi tải lại trang, tiếp tục từ thời gian đã lưu
+            //window.addEventListener("load", function () {
+            //    var savedTime = localStorage.getItem("musicTime");
+            //    if (savedTime) {
+            //        audio.currentTime = savedTime;
+            //    }
+            //});
+
+
+   //         $('#menu-pc').css("background", color); // css menu
+   //         $('.site_block_title_top h3').css("background-color", color); //css top news
+
+   //         setTimeout(function () {
+   //             $('#featured .left .box-img h4').css('color', color); //css top news 1 tin đang hiển thị
+   //         }, 10)
+
+   //         $('.site_block_title').css("border-color", color); //css border title phải
+			//$('.site_block_title h3').css("background-color", color); // css title phải
+
+			//$('.site_block_title h2').css("background-color", color); // css title văn bản chỉ đạo điều hành
+			//$('.label_van_ban_dieu_hanh ').css("color", color); // css văn bản điều hành
+			//$('.border_van_ban_dieu_hanh').css("color", color); // css văn bản điều hành
+			//$('.background_van_ban_dieu_hanh').css("background-color", color); // css văn bản điều hành
+
+   //         $('.leftmenu ul.nav-left li a i').css("color", color); // css caret bên phải
+
+   //         $('.showitem_tab ul.cls-item').css("background-color", color);//css tab new ở giữa trái
+
+   //         $('footer .bottom-footer').css("background-color", color); // css footer
+
+
+   //         $('.heading-direct').css("background-color", color); //css title chi tiết bài viết
+
+   //         $('section.news-home.other-news .heading-other-news').css("color", color); // css title orther news
+
+   //         $('.search-doc .icon').css("background-color", color); // css icon search button
+
+   //         setTimeout(function () {
+   //             $('.pagination li.active a').css("background", color); // css phân trang danh sách
+   //         }, 500)
+
+
+	      //  $('#slide_news').sliderPro({
+	      //      width: 670,
+	      //      autoplayDelay: 2000,
+			    //height: 400,
+			    //orientation: 'vertical',
+			    //loop: false,
+			    //arrows: true,
+			    //buttons: false,
+			    //thumbnailsPosition: 'right',
+			    //thumbnailPointer: true,
+			    //thumbnailWidth: 290,
+			    //breakpoints: {
+				   // 800: {
+					  //  thumbnailsPosition: 'bottom',
+					  //  thumbnailWidth: 270,
+					  //  thumbnailHeight: 100
+				   // },
+				   // 500: {
+					  //  thumbnailsPosition: 'bottom',
+					  //  thumbnailWidth: 120,
+					  //  thumbnailHeight: 50
+				   // }
+			    //}
+	      //  });
+	        //$('.slide-images').owlCarousel({
+	        //    loop: false,
+	        //    margin: 0,
+	        //    dots: false,
+         //       nav: false,
+	        //    autoplay: false,
+	        //    autoplayTimeout: 5000,
+	        //    smartSpeed: 800,
+	        //    responsiveClass: true,
+	        //    responsive: {
+	        //        0: {
+	        //            items: 1,
+         //               nav: false
+	        //        },
+	        //        600: {
+	        //            items: 1,
+	        //            nav: false
+	        //        },
+	        //        1000: {
+	        //            items: 1,
+         //               nav: false,
+         //               loop: false,
+	        //            margin: 16,
+	        //        }
+	        //    }
+	        //});
+
+
+            $('.news-carousel').slick({
+                slidesToShow: 1,         // Số slide hiển thị cùng một lúc
+                slidesToScroll: 1,       // Số slide chuyển khi nhấn nút next/prev
+                autoplay: true,          // Tự động chạy
+                autoplaySpeed: 5000,     // Thời gian hiển thị mỗi slide (ms)
+                dots: true,              // Hiển thị chấm chấm dưới để chuyển đến từng slide
+                infinite: true,
+                speed: 500,
+            });
+        });
+
+        function getVanBan() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    pageNum: 1,
+                    pageSize: 5,
+                    Code: "vb_cdgd",
+                    XuatXu: xuat_xu_vb
+                },
+                @*url: "@Url.Action("GetVanBan", "CongDoan", new { area = "Modules" })",*@
+                url: "@Url.Action("GetDocument", "CongDoan", new { area = "Modules" })",
+                success: function (res) {
+                    @*if (res.length > 0) {
+                        var html = '';
+
+                        $.each(res, function (key, item) {
+                            html += '<div class="item-sch cus-box-news-home_right">'
+		                                + '<a href="@Url.Site("sgd-chi-tiet-van-ban", parameter: new { param = 0})" data-pl="' + item.MA_CONG_VAN + '&sodi=' + item.SO_DI + '&code=' + item.CODE + '&alias=' + item.ALIAS + '" title="">' + item.SO_HIEU + '</a>'
+		                                + '<p class="item-p">' + item.TRICH_YEU + '</p>'
+	                                +'</div>'
+
+                        })
+
+                        $("#documentApp").prepend(html);
+
+                        $("#documentApp .item-sch").find("a").each(function () {
+                            var href = $(this).attr("href"), data = $(this).attr("data-pl");
+                            if (data != undefined) {
+                                $(this).attr("href", href + data);
+                            }
+                        })
+                    }*@
+                }
+            });
+        }
+
+    </script>
+    @RenderSection("pluginScripts", required: false)
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="Name">Ngày đăng </label>
+            <p-calendar [(ngModel)]="item.NgayDang" [showIcon]="true" dateFormat="dd/mm/yy" [monthNavigator]="true"
+                [yearNavigator]="true" appendTo="body" yearRange="1900:2300" ></p-calendar>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="Name">Tiêu đề <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.TieuDe" placeholder="Tiêu đề"
+                [readonly]="readonlyText" />
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="Name">Mô tả ngắn</label>
+            <input type="text" class="form-control" [(ngModel)]="item.MoTaNgan" placeholder="Mô tả ngắn" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="Name">Nội dung</label>
+            <ckeditor [value]="item.NoiDung" (onEditorKeyup)="changeContent($event)">
+            </ckeditor>
+        </div>
+    </div>
+
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">
+            Lưu thay đổi
+        </button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

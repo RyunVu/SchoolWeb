@@ -1,0 +1,96 @@
+<!-- <p-toast></p-toast> -->
+<div class="card card-primary">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Quản trị viên<span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="quanTriViens" [(ngModel)]="quanTriVien" optionLabel="Name"
+                            optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Chủ đề <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id"
+                            [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code"
+                            [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Trang chủ</label>
+                        <p-dropdown [options]="trangChus" [(ngModel)]="trangChu" optionLabel="Name" optionValue="Id"
+                            [filter]="true" filterBy="Name" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row-custom"><b>Logo</b></div>
+                    <div class="row-custom">
+                        <div class="btn bg-pro color-white" (click)="openFileDilog()">
+                            Chọn logo
+                        </div>
+                    </div>
+                    <div class="row-custom">
+                        <div style="
+                    background-color: #ececec;
+                    width: 100px;
+                    height: 100px;
+                    padding: 10px;
+                  ">
+                            <img [src]="imageUrl | imageUrlPipe: 'thumb'" style="width: 100%; height: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="config.data.IsAdd" class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Sao chép từ cổng <span class="text-danger">(*)</span></label>
+                        <p-dropdown [options]="portals" [(ngModel)]="portal" optionLabel="Name" optionValue="UnitCode"
+                            [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Tên cổng <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="defaultTenCong">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Tag</label>
+                        <input type="text" class="form-control" [(ngModel)]="defaultTag">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Name">Mô tả</label>
+                        <ckeditor [value]="defaultMoTa" (onEditorKeyup)="changeMoTa($event)">
+
+                        </ckeditor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="submit" (click)="submit()">Lưu thay đổi</button>
+        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+    </div>
+</div>

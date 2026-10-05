@@ -1,0 +1,31 @@
+<div *ngIf="isLoading" class="loading-overlay111">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Đang tải...</span>
+  </div>
+</div>
+
+<div class="row" [class.disabled111]="isLoading">
+  <div class="col-md-12">
+    <input #fileInput class="d-none" type="file" accept="audio/*" (change)="chooseFile($event)" />
+    <label for="file">Tệp đính kèm</label>
+    <div class="row mx-0">
+      <div class="col-11 pr-2 pl-0">
+        <input type="text" class="form-control" [(ngModel)]="fileName" placeholder="Tên File" readonly />
+      </div>
+      <button (click)="clickFile()" class="btn btn-info col-1">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="p-footer">
+  <div class="f-contains">
+    <button class="btn btn-info" type="submit" (click)="submit()">
+      Lưu thay đổi
+    </button>
+    <button class="btn btn-outline-danger" type="submit" (click)="cancel()">
+      Thoát
+    </button>
+  </div>
+</div>

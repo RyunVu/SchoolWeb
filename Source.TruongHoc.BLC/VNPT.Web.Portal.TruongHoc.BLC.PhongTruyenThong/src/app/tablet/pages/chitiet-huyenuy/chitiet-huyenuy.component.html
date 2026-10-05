@@ -1,0 +1,423 @@
+<div class="body-content">
+
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/logoub.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>{{contentPage.ShortContent}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+          <div class="tieusu_content text-center" [innerHtml]="contentPage.Content">
+            <!-- <img src="assets/template/images/HuyenUy/Hội nghị cán bộ công chức Cơ quan Thành ủy Đà Lạt năm 2018.jpg">
+          <p class="captionImg text-center"><i>Hội nghị cán bộ công chức Cơ quan Thành ủy Đà Lạt năm 2018</i></p>
+          <img src="assets/template/images/HuyenUy/Đại hội Chi bộ Cơ quan Ủy ban Kiểm tra Thành ủy Đà Lạt.jpg">
+          <p class="captionImg text-center"><i>Đại hội Chi bộ Cơ quan Ủy ban Kiểm tra Thành ủy Đà Lạt</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Đà Lạt họp UB.jpg">
+          <p class="captionImg text-center"><i>Ủy ban kiểm tra Đà Lạt họp</i></p>
+          <img src="assets/template/images/HuyenUy/Đà Lạt. Tổng kết nhiệm kỳ.jpg">
+          <p class="captionImg text-center"><i>Đà Lạt tổng kết nhiệm kỳ</i></p>
+          <img src="assets/template/images/HuyenUy/DL1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Thành ủy Đà Lạt</i></p> -->
+          </div>
+        </div>
+        <div class="col-sm-1"></div>
+      </div>
+    </div>
+  </div>
+  <!--   
+  <div class="container" *ngIf="huyenuy == 2">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ LẠC DƯƠNG</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/Đồng chí Nguyễn Quang Nhiên - UVBTV Huyện ủy, Chủ nhiệm UBKT Huyện ủy Lạc Dương triển khai công tác kiểm tra, giám sát năm 2018.jpg">
+          <p class="captionImg text-center"><i>Đồng chí Nguyễn Quang Nhiên - UVBTV Huyện ủy, Chủ nhiệm UBKT Huyện ủy Lạc Dương triển khai công tác kiểm tra, giám sát năm 2018</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Huyện ủy Lạc Dương2.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Lạc Dương</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Huyện ủy Lạc Dương.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Lạc Dương</i></p>
+          <img src="assets/template/images/HuyenUy/LD1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Lạc Dương</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 3">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ ĐỨC TRỌNG</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/DT1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Đức Trọng</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 4">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ ĐƠN DƯƠNG</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/Chi bộ UBKT Huyện ủy Đơn Dương kiểm tra đảng viên chấp hành đối với đảng viên của Chi bộ.jpg">
+          <p class="captionImg text-center"><i>Chi bộ UBKT Huyện ủy Đơn Dương kiểm tra đảng viên chấp hành đối với đảng viên của Chi bộ</i></p>
+          <img src="assets/template/images/HuyenUy/Ngành Kiểm tra Đảng bộ huyện Đơn Dương họp giao ban định kỳ và quán triệt Quy định 102.jpg">
+          <p class="captionImg text-center"><i>Ngành Kiểm tra Đảng bộ huyện Đơn Dương họp giao ban định kỳ và quán triệt Quy định 102</i></p>
+          <img src="assets/template/images/HuyenUy/DD1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Đơn Dương</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 5">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ LÂM HÀ</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/LH1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Lâm Hà</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 6">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ ĐAM RÔNG</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/DR3.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Đam Rông</i></p>
+          <img src="assets/template/images/HuyenUy/DR4.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Đam Rông</i></p>
+          <img src="assets/template/images/HuyenUy/DR5.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Đam Rông</i></p>
+          <img src="assets/template/images/HuyenUy/LD1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Đam Rông</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 7">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ DI LINH</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/DH Chi bo UBKT Huyen uy Di Linh.jpg">
+          <p class="captionImg text-center"><i>Đại hội chi bộ UBKT Huyện Ủy Di Linh</i></p>
+          <img src="assets/template/images/HuyenUy/Hội nghị tổng kết nhiệm kỳ. Di Linh.jpg">
+          <p class="captionImg text-center"><i>Hội nghị tổng kết nhiệm kỳ Di Linh</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Huyện ủy Di Linh họp xem xét kết luận cuộc kiểm tra khi có dấu hiệu vi phạm .jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Di Linh họp xem xét kết luận cuộc kiểm tra khi có dấu hiệu vi phạm</i></p>
+          <img src="assets/template/images/HuyenUy/DLH1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Di Linh</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 8">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA THÀNH UỶ BẢO LỘC</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/UBKT Thành ủy Bảo Lộc NK 2020-2025.jpg">
+          <p class="captionImg text-center"><i>UBKT Thành ủy Bảo Lộc NK 2020-2025</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Thành ủy Bảo Lộc NK 2020-2025.2.jpg">
+          <p class="captionImg text-center"><i>UBKT Thành ủy Bảo Lộc NK 2020-2025</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT BẢO LỘC KHOA VII 2001-2005.jpg">
+          <p class="captionImg text-center"><i>UBKT BẢO LỘC KHOA VII 2001-2005</i></p>
+          <img src="assets/template/images/HuyenUy/Lễ kỷ niệm 55 truyền thống Ngành KT của Đảng bộ Bảo Lộc.jpg">
+          <p class="captionImg text-center"><i>Lễ kỷ niệm 55 truyền thống Ngành KT của Đảng bộ Bảo Lộc</i></p>
+          <img src="assets/template/images/HuyenUy/HN Tổng kết NK. Bảo Lộc.jpg">
+          <p class="captionImg text-center"><i>HN Tổng kết nhiệm kỳ</i></p>
+          <img src="assets/template/images/HuyenUy/BL1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Bảo Lộc</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 9">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ BẢO LÂM</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/ubkt bảo lam nhiệm kỳ 2020-2025.jpg">
+          <p class="captionImg text-center"><i>UBKT Bảo Lâm nhiệm kỳ 2020-2025</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT bảo lâm 2020-2025.jpg">
+          <p class="captionImg text-center"><i>UBKT bảo lâm 2020-2025</i></p>
+          <img src="assets/template/images/HuyenUy/ubkt bao lam 2015-2020.jpg">
+          <p class="captionImg text-center"><i>UBKT Bảo Lâm nhiệm kỳ 2015-2020</i></p>
+          <img src="assets/template/images/HuyenUy/Đồng chí Nguyễn Đức Loan - UVBTV, Chủ nhiệm UBKT Huyện ủy chủ trì kỳ họp UBKT Huyện ủy Bảo Lâm.jpg">
+          <p class="captionImg text-center"><i>Đồng chí Nguyễn Đức Loan - UVBTV, Chủ nhiệm UBKT Huyện ủy chủ trì kỳ họp UBKT Huyện ủy Bảo Lâm</i></p>
+          <img src="assets/template/images/HuyenUy/BLM1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Bảo Lâm</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 10">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ ĐẠ HUOAI</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/UBKT Huyện ủy Đạ Huoai nk 2020-2025.jpg">
+          <p class="captionImg text-center"><i>UBKT Huyện ủy Đạ Huoai nk 2020-2025</i></p>
+          <img src="assets/template/images/HuyenUy/DH1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Đạ Hoai</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 11">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ ĐẠ TẺH</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/Hội thi cán bộ kiểm tra giỏi của Đảng bộ Huyện Đạ Tẻh.jpg">
+          <p class="captionImg text-center"><i>Hội thi cán bộ kiểm tra giỏi của Đảng bộ Huyện Đạ Tẻh</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Đạ Tẻ họp giao ban đầu tuần.jpg">
+          <p class="captionImg text-center"><i>UBKT Đạ Tẻ họp giao ban đầu tuần</i></p>
+          <img src="assets/template/images/HuyenUy/DTH1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Đạ Tẻh</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 12">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA HUYỆN UỶ CÁT TIÊN</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/anh Uy ban kiem tra  Cát Tiên khóa VIII.jpg">
+          <p class="captionImg text-center"><i>UBKT Cát Tiên khóa VIII</i></p>
+          <img src="assets/template/images/HuyenUy/CT1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Huyện ủy Cát Tiên</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 13">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA ĐẢNG UỶ CÔNG AN TỈNH</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/Lễ bế giảng lớp bồi dưỡng nghiệp vụ KT, GS của Đảng ủy Công an tỉnh.jpg">
+          <p class="captionImg text-center"><i>Lễ bế giảng lớp bồi dưỡng nghiệp vụ KT, GS của Đảng ủy Công an Tỉnh</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Đảng ủy Công an tỉnh tọa đàm trao đổi kinh nghiệm.jpg">
+          <p class="captionImg text-center"><i>UBKT Đảng ủy Công an Tỉnh tọa đàm trao đổi kinh nghiệm</i></p>
+          <img src="assets/template/images/HuyenUy/CAT1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Công an Tỉnh</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 14">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA ĐẢNG UỶ QUÂN SỰ TỈNH</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/QST1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Quân sự Tỉnh</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 15">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA ĐẢNG UỶ KHỐI CÁC CƠ QUAN</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/CQ1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Khối các cơ quan</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 16">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>UỶ BAN KIỂM TRA ĐẢNG ỦY KHỐI DOANH NGHIỆP</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/HN Giao ban cụm tại Đảng ủy Khối DN.jpg">
+          <p class="captionImg text-center"><i>HN Giao ban cụm tại Đảng ủy Khối DN</i></p>
+          <img src="assets/template/images/HuyenUy/UBKT Đảng ủy Khối DN.jpg">
+          <p class="captionImg text-center"><i>UBKT Đảng ủy Khối DN</i></p>
+          <img src="assets/template/images/HuyenUy/DN1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Khối doanh nghiệp</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 17">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>TRƯỜNG ĐẠI HỌC ĐÀ LẠT</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/DHDL1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Đại học Đà Lạt</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="huyenuy == 18">
+    <div class="container_content">
+      <div class="col-sm-12 banner_logo">
+        <img src="assets/template/images/quochuy.png">
+      </div>
+      <div class="content-title text-center">
+        <div class="c-title">
+          <span>VIỆN NGHIÊN CỨU HẠT NHÂN</span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="tieusu_content text-center">
+          <img src="assets/template/images/HuyenUy/VNCHN1.jpg">
+          <p class="captionImg text-center"><i>Thông tin uỷ ban kiểm tra Đảng uỷ Viện Nghiên cứu Hạt nhân</i></p>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</div>

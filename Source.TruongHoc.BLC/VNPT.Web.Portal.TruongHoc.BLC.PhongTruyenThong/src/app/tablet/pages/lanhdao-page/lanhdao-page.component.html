@@ -1,0 +1,177 @@
+<div class="body-content">
+  <div class="side_nav">
+    <a (click)="backPage()" class="item_nav">
+      <i class="fa fa-reply" aria-hidden="true"></i>
+    </a>
+
+    <a href="#/tablet" class="item_nav">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <nav id="menu-filter" class="sidenavfilter">
+
+    <div (click)="closeFilter()" class="bg-close"></div>
+
+    <div class="close-menu-filter close-menu" (click)="closeFilter()"><span><i class="fa fa-window-close"
+          aria-hidden="true"></i></span></div>
+
+    <div class="container_filter" *ngIf="type == 11">
+      <div class="filter_item">
+        <h5>Thể loại</h5>
+        <div class="item_content">Huân, huy chương</div>
+        <div class="item_content">Cờ, bằng khen</div>
+        <div class="item_content">Hiện vật</div>
+        <div class="item_content">Phim ảnh</div>
+        <div class="item_content">Sách, tư liệu</div>
+      </div>
+
+      <div class="filter_item">
+        <h5>Nguồn gốc</h5>
+        <div class="item_content">Thi đua</div>
+        <div class="item_content">Hoạt động phong trào</div>
+        <div class="item_content">Sưu tầm</div>
+      </div>
+    </div>
+
+    <div class="container_filter" *ngIf="type == 2 || type == 4">
+      <div class="filter_item">
+        <h5>Nhiệm kỳ</h5>
+        <div class="item_content">Nhiệm kỳ I</div>
+        <div class="item_content">Nhiệm kỳ II</div>
+        <div class="item_content">Nhiệm kỳ III</div>
+        <div class="item_content">Nhiệm kỳ IV</div>
+        <div class="item_content">Nhiệm kỳ V</div>
+        <div class="item_content">Nhiệm kỳ VI</div>
+        <div class="item_content">Nhiệm kỳ VII</div>
+        <div class="item_content">Nhiệm kỳ VIII</div>
+        <div class="item_content">Nhiệm kỳ IX</div>
+        <div class="item_content">Nhiệm kỳ X</div>
+      </div>
+
+      <div class="filter_item">
+        <h5>Chức vụ</h5>
+        <div class="item_content">Chủ nhiệm</div>
+        <div class="item_content">Phó Chủ nhiệm</div>
+      </div>
+    </div>
+
+    <div class="filter_action">
+      <button class="btn-sm btn btn-outline-secondary"><i class="fas fa-ban"></i> Reset all</button>
+      <button class="btn-sm btn btn-success"><i class="fas fa-check"></i> Áp dụng</button>
+    </div>
+
+  </nav>
+
+  <div class="container">
+
+    <div class="content-title text-center">
+      <div class="c-title">
+        <span>Lãnh đạo qua các thời kỳ</span>
+        <!-- <div (click)="openFilter()" class="filterBtn"><i class="fas fa-filter"></i></div> -->
+      </div>
+    </div>
+
+    <ul class="nav nav-tabs nav-custom-tab col-sm-12 row" id="custom-content-below-tab" role="tablist">
+      <li (click)="tabActive(1)" class="nav-item " [ngClass]="{'active': activeTab === 1}">
+        <a class="nav-link " [ngClass]="{'active': activeTab === 1}" id="nav1-tab" data-toggle="pill" href="#nav1">
+          <span>GIÁM ĐỐC</span>
+        </a>
+      </li>
+      <li (click)="tabActive(2)" class="nav-item" [ngClass]="{'active': activeTab === 2}">
+        <a class="nav-link" [ngClass]="{'active': activeTab === 2}" id="nav2-tab" data-toggle="pill" href="#nav2"
+          role="tab">
+          <span>PHÓ GIÁM ĐỐC</span>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+      <div class="tab-pane active in" [ngClass]="{'active show': activeTab === 1}" id="nav1" role="tabpanel"
+        aria-labelledby="nav1-tab">
+        <div class="lstperson row col-sm-12">
+          <div class="col-sm-6" *ngFor="let item of contentPage1">
+
+            <div class="person_item" (click)="showTieuSu(item.Id)">
+
+
+              <div class="person_info">
+                <div class="person_img">
+                  <img *ngIf="item.UrlAvt1" src="{{item.UrlAvt1}}" />
+                  <img *ngIf="item.UrlAvt2" class="hidden-sm-down" src="{{item.UrlAvt2}}" />
+                </div>
+
+                <!--<div class="person_content">
+                   <p>Ngày sinh: 15/8/1941</p>
+                  <p>Quê quán: xã Tứ Liên, huyện Từ Liêm, thành phố Hà Nội.</p>
+                  <p>Chỗ ở hiện nay: Phường 8, TP Đà Lạt, Lâm Đồng.</p>
+                  <p>Chức vụ: Chủ nhiệm khóa V 1993-1995</p>
+                  <p>Ngày vào Đảng: 20/10/1958
+                    <br />
+                    - Ngày chính thức: 01/8/1960
+                  </p> -->
+                <!-- <p>
+                    Chức vụ:
+                    <br />
+                    - Ủy viên Trung ương Đảng: khóa XIII
+                    - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+                  </p> 
+                </div>-->
+
+              </div>
+
+              <div class="person_name">Đ/c <span style="text-transform: uppercase;">{{item.HoTen}}</span>
+                <div class="person_subname">{{item.TenChucVu}} {{item.NhiemKy?.Ten}} ({{item.NhiemKy?.TuNam}} -
+                  {{item.NhiemKy?.DenNam}})</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane fade" [ngClass]="{'active show': activeTab === 2}" id="nav2" role="tabpanel"
+        aria-labelledby="nav2-tab">
+        <div class="lstperson row col-sm-12">
+          <div class="col-sm-6" *ngFor="let item of contentPage2">
+            <div class="person_item" (click)="showTieuSu(item.Id)">
+              <div class="person_info">
+                <div class="person_img">
+                  <img *ngIf="item.UrlAvt1" src="{{item.UrlAvt1}}" />
+                  <img *ngIf="item.UrlAvt2" class="hidden-sm-down" src="{{item.UrlAvt2}}" />
+                </div>
+
+                <!--<div class="person_content">
+                  <p>Ngày sinh: 15/8/1941</p>
+                  <p>Quê quán: xã Tứ Liên, huyện Từ Liêm, thành phố Hà Nội.</p>
+                  <p>Chỗ ở hiện nay: Phường 8, TP Đà Lạt, Lâm Đồng.</p>
+                  <p>Chức vụ: Chủ nhiệm khóa V 1993-1995</p>
+                  <p>Ngày vào Đảng: 20/10/1958
+                    <br />
+                    - Ngày chính thức: 01/8/1960
+                  </p> -->
+                <!-- <p>
+                    Chức vụ:
+                    <br />
+                    - Ủy viên Trung ương Đảng: khóa XIII
+                    - Bí thư Tỉnh ủy, Chủ tịch HĐND tỉnh Lâm Đồng
+                  </p> 
+                </div>-->
+
+              </div>
+
+              <div class="person_name">Đ/c <span style="text-transform: uppercase;">{{item.HoTen}}</span>
+                <div class="person_subname">{{item.TenChucVu}} {{item.NhiemKy?.Ten}} ({{item.NhiemKy?.TuNam}} -
+                  {{item.NhiemKy?.DenNam}})</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
