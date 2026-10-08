@@ -1,20 +1,18 @@
 import { Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-    ConfirmationService,
-    LazyLoadEvent,
-    MessageService,
-} from "primeng/api";
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from "primeng/dynamicdialog";
 import { ResultCode, ResultModel } from "src/app/models";
 import { BasePage, HttpService } from "src/app/services";
 import { OTPCheckModal } from "../systems/user/otpcheck.modal";
 import { UserModal } from "../systems/user/user.modal";
 
-import * as moment from "moment";
+import moment from 'moment';
 import { DanhMucModal } from "./danh-muc.modal";
 
 @Component({
+    standalone: false,
     selector: "app-danh-muc",
     templateUrl: "./danh-muc.component.html",
     styleUrls: ["./danh-muc.component.scss"],
@@ -63,7 +61,7 @@ export class DanhMucComponent extends BasePage {
         });
     }
 
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -74,7 +72,7 @@ export class DanhMucComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         
         setTimeout(() => {
@@ -93,7 +91,7 @@ export class DanhMucComponent extends BasePage {
                 },
                 header: "Thêm mới danh mục",
                 width: "50%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();
@@ -111,7 +109,7 @@ export class DanhMucComponent extends BasePage {
                 },
                 header: "Cập nhật lĩnh vực: " + item.Name,
                 width: "50%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();

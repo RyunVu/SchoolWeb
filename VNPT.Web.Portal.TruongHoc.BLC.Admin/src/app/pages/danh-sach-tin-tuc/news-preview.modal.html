@@ -1,0 +1,41 @@
+<div class="modal-wrapper news-preview">
+    <div class="preview-toolbar">
+        <span class="badge" [ngClass]="item.Status == 1 ? 'badge-success' : 'badge-warning'">
+            {{ item.Status == 1 ? 'Đã duyệt' : 'Chưa duyệt' }}
+        </span>
+        <span *ngIf="item.NewTypeName" class="badge badge-light ml-1">{{ item.NewTypeName }}</span>
+        <span *ngIf="item.UnitName" class="badge badge-light ml-1">{{ item.UnitName }}</span>
+        <button *ngIf="hasEnglish" type="button" class="btn btn-outline-secondary btn-sm ml-auto" (click)="toggleLanguage()">
+            <i class="fas fa-language mr-1"></i>{{ showEnglish ? 'Tiếng Việt' : 'English' }}
+        </button>
+    </div>
+
+    <!-- Bố cục giống trang chi tiết tin ngoài website -->
+    <article class="preview-article">
+        <h3 class="preview-title">{{ showEnglish ? (item.Title_En || item.Title) : item.Title }}</h3>
+        <div class="preview-meta">
+            <i class="far fa-calendar-alt mr-1"></i>{{ item.CreateDateString }}
+        </div>
+
+        <img *ngIf="item.ImageUrl" class="preview-cover" [src]="item.ImageUrl | imageUrlPipe" alt=""
+            onerror="this.style.display='none'" />
+
+        <div *ngIf="item.ShortContent && !showEnglish" class="preview-summary" [innerHTML]="item.ShortContent"></div>
+
+        <div *ngIf="item.OtherUrl" class="preview-link">
+            <i class="fas fa-link mr-1"></i> Liên kết: <a [href]="item.OtherUrl" target="_blank" rel="noopener">{{ item.OtherUrl }}</a>
+        </div>
+
+        <div class="preview-content" [innerHTML]="content"></div>
+        <div *ngIf="!content" class="text-center text-muted py-4">Bài viết chưa có nội dung.</div>
+    </article>
+
+    <div class="p-footer">
+        <div class="f-contains">
+            <a *ngIf="websiteUrl" class="btn btn-info" [href]="websiteUrl" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt mr-1"></i> Mở trên website
+            </a>
+            <button class="btn btn-outline-danger" type="button" (click)="cancel()">Đóng</button>
+        </div>
+    </div>
+</div>

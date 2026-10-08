@@ -1,0 +1,227 @@
+﻿@using VNPT.Core.Constants
+@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Code
+@using VNPT.Web.Portal.Api.Providers
+@using VNPT.Web.Portal.Base
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+    var menus = MenuDal.MenuHome(information);
+    var hotNews = menus.Any(m => m.MenuType == 1)
+        ? NewsDal.GetHotNews(NewsCode.CHUYENMUC_TINTUC, 7, Session, Request)
+        : new List<News>();
+
+    // Các khối chuyên mục (MenuType 2: "Tên 1;Tên 2" - "ma-1;ma-2") gom thành danh sách phẳng để xếp lưới
+    var categories = new List<Tuple<string, string>>();
+    foreach (var menu in menus.Where(m => m.MenuType == 2))
+    {
+        var names = (menu.Title ?? "").Split(';');
+        var codes = (menu.Parameter ?? "").Split(';');
+        for (var i = 0; i < Math.Min(names.Length, codes.Length); i++)
+        {
+            if (!string.IsNullOrWhiteSpace(codes[i]))
+            {
+                categories.Add(Tuple.Create(names[i].Trim(), codes[i].Trim()));
+            }
+        }
+    }
+    // Lấy trước tin của từng chuyên mục; chuyên mục chưa có bài thì không hiển thị
+    var categoryNews = new Dictionary<string, List<News>>();
+    foreach (var cat in categories)
+    {
+        if (!categoryNews.ContainsKey(cat.Item2))
+        {
+            categoryNews[cat.Item2] = cat.Item2.StartsWith("tin-tuc-tu-phong-gddt", StringComparison.OrdinalIgnoreCase)
+                ? null
+                : NewsDal.GetNews(cat.Item2, 4, 1, Session, Request);
+        }
+    }
+    categories = categories.Where(c => categoryNews[c.Item2] == null || categoryNews[c.Item2].Any()).ToList();
+}
+
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+
+@helper NewsMeta(News item)
+{
+    <span class="hd-meta"><i class="fa fa-calendar-o"></i>@ThemeHelper.ShortDate(item)</span>
+    if (item.CountView > 0)
+    {
+        <span class="hd-meta"><i class="fa fa-eye"></i>@item.CountView</span>
+    }
+}
+
+@if (hotNews.Any())
+{
+    var lead = hotNews.First();
+    <section class="hd-featured">
+        <div class="container">
+            <div class="hd-section-head">
+                <h2><span>Tin nổi bật</span></h2>
+            </div>
+            <div class="hd-featured-grid">
+                <article class="hd-featured-lead">
+                    <a class="hd-cover" href="@Url.NewsLink(lead)" @ThemeHelper.Target(lead)>
+                        <img src="@Url.NewsImage(lead)" alt="@lead.Title" onerror="this.onerror=null;this.src='@ThemeHelper.NoImage'" />
+                        <span class="hd-cover-shade"></span>
+                        <span class="hd-cover-body">
+                            <span class="hd-badge">Mới nhất</span>
+                            <span class="hd-cover-title">@lead.Title</span>
+                            <span class="hd-cover-meta">@NewsMeta(lead)</span>
+                        </span>
+                    </a>
+                </article>
+                <div class="hd-featured-side">
+                    @foreach (var item in hotNews.Skip(1).Take(4))
+                    {
+                        <article class="hd-card hd-card-sm">
+                            <a class="hd-card-img" href="@Url.NewsLink(item)" @ThemeHelper.Target(item)>
+                                <img src="@Url.NewsImage(item)" alt="@item.Title" loading="lazy" onerror="this.onerror=null;this.src='@ThemeHelper.NoImage'" />
+                            </a>
+                            <div class="hd-card-body">
+                                <h3 class="hd-card-title"><a href="@Url.NewsLink(item)" @ThemeHelper.Target(item)>@item.Title</a></h3>
+                                <div>@NewsMeta(item)</div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<div class="container hd-body">
+    <div class="row">
+        <div class="col-md-8 body-page">
+            @foreach (var systemMenu in menus.Where(m => m.MenuType == 3))
+            {
+                var slides = NewsDal.GetNews(systemMenu.Parameter, 12, 1, Session, Request);
+                if (slides.Any())
+                {
+                    <section class="hd-block">
+                        <div id="hd-slides" class="owl-carousel hd-slides">
+                            @foreach (var item in slides)
+                            {
+                                var href = !string.IsNullOrWhiteSpace(item.Description) ? item.Description : Url.NewsLink(item);
+                                <a class="hd-slide" href="@href">
+                                    <img src="@Url.NewsImage(item)" alt="@item.Title" />
+                                    @if (!string.IsNullOrWhiteSpace(item.Title))
+                                    {
+                                        <span class="hd-slide-caption">@item.Title</span>
+                                    }
+                                </a>
+                            }
+                        </div>
+                    </section>
+                }
+            }
+
+            @if (categories.Any())
+            {
+                <div class="hd-cat-grid">
+                    @foreach (var cat in categories)
+                    {
+                        var listUrl = Url.Site("danh-sach-tin-tuc", parameter: new { param = cat.Item2 });
+                        <section class="hd-cat">
+                            <div class="hd-cat-head">
+                                <h2><a href="@listUrl">@SystemParameterDto.Translate(cat.Item1)</a></h2>
+                                <a class="hd-more" href="@listUrl">Xem tất cả <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                            @if (cat.Item2.StartsWith("tin-tuc-tu-phong-gddt", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <div class="hd-cat-legacy">
+                                    @Html.Action("StyleHaft", "CongDoan", new { area = "Modules", Code = cat.Item2, number = 4 })
+                                </div>
+                            }
+                            else
+                            {
+                                var items = categoryNews[cat.Item2];
+                                if (!items.Any())
+                                {
+                                    <p class="hd-empty">Chưa có bài viết.</p>
+                                }
+                                else
+                                {
+                                    var first = items.First();
+                                    <article class="hd-cat-lead">
+                                        <a class="hd-card-img hd-ratio" href="@Url.NewsLink(first)" @ThemeHelper.Target(first)>
+                                            <img src="@Url.NewsImage(first)" alt="@first.Title" loading="lazy" onerror="this.onerror=null;this.src='@ThemeHelper.NoImage'" />
+                                        </a>
+                                        <h3 class="hd-card-title"><a href="@Url.NewsLink(first)" @ThemeHelper.Target(first)>@first.Title</a></h3>
+                                        <div>@NewsMeta(first)</div>
+                                        <p class="hd-excerpt">@ThemeHelper.Excerpt(first, 140)</p>
+                                    </article>
+                                    <ul class="hd-cat-list">
+                                        @foreach (var item in items.Skip(1))
+                                        {
+                                            <li>
+                                                <a href="@Url.NewsLink(item)" @ThemeHelper.Target(item)>@item.Title</a>
+                                                <span class="hd-meta"><i class="fa fa-calendar-o"></i>@ThemeHelper.ShortDate(item)</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </section>
+                    }
+                </div>
+            }
+
+            @foreach (var systemMenu in menus.Where(m => m.MenuType == 4 || m.MenuType == 5).OrderBy(m => m.SortNo))
+            {
+                if (systemMenu.MenuType == 4)
+                {
+                    var media = NewsDal.GetNews(systemMenu.Parameter, 6, 1, Session, Request);
+                    if (media.Any())
+                    {
+                        var mediaUrl = Url.Site("danh-sach-tin-tuc", parameter: new { param = systemMenu.Parameter });
+                        <section class="hd-block">
+                            <div class="hd-section-head hd-section-head-sm">
+                                <h2><span><i class="fa fa-camera"></i> @SystemParameterDto.Translate(systemMenu.Title)</span></h2>
+                                <a class="hd-more" href="@mediaUrl">Xem tất cả <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                            <div class="hd-gallery">
+                                @foreach (var item in media)
+                                {
+                                    <figure class="hd-gallery-item">
+                                        <a class="hd-gallery-img" href="@Url.NewsLink(item)">
+                                            <img src="@Url.NewsImage(item)" alt="@item.Title" loading="lazy" onerror="this.onerror=null;this.src='@ThemeHelper.NoImage'" />
+                                        </a>
+                                        <a class="hd-gallery-zoom" href="@Url.NewsImage(item)" title="@item.Title" aria-label="Phóng to"><i class="fa fa-search-plus"></i></a>
+                                        <figcaption><a href="@Url.NewsLink(item)">@item.Title</a></figcaption>
+                                    </figure>
+                                }
+                            </div>
+                        </section>
+                    }
+                }
+                else
+                {
+                    <section class="hd-block hd-banner">
+                        <a target="_blank" rel="noopener" href="@systemMenu.Action"><img src="@Url.Image(systemMenu.Description)" alt="@systemMenu.Title" /></a>
+                    </section>
+                }
+            }
+        </div>
+        <div class="col-md-4 sidebar-mobile-ontop">
+            @Html.Partial("~/Views/Shared/Portals/Layouts/TruongHocHienDai/_Sidebar.cshtml")
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            if ($("#hd-slides .hd-slide").length) {
+                $("#hd-slides").owlCarousel({
+                    items: 1, loop: $("#hd-slides .hd-slide").length > 1, autoplay: true, autoplayTimeout: 4500,
+                    autoplayHoverPause: true, dots: true, nav: true,
+                    navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>']
+                });
+            }
+        });
+    </script>
+}

@@ -55,7 +55,11 @@
                             [ngClass]="{'active': currentUrl && item.Action === currentUrl}"
                             style="padding: 10px 0px 8px 5px;">
                             <i class="nav-icon" [ngClass]="item.Icon"></i>
-                            <p>{{ item.Title }}</p>
+                            <p>
+                                {{ item.Title }}
+                                <span *ngIf="(isSuperAdminSystem || isUserDuyetTin) && item.CountNewsApprove > 0"
+                                    class="right badge badge-danger">{{ item.CountNewsApprove }}</span>
+                            </p>
                         </a>
                     </ng-template>
 

@@ -4,9 +4,9 @@
   <div class="col-md-4">
     <div class="form-group">
       <label for="Name">Đơn vị <span style="color: red;">*</span></label>
-      <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+      <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
         filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-      </p-dropdown>
+      </p-select>
     </div>
   </div>
   <div class="col-md-4">

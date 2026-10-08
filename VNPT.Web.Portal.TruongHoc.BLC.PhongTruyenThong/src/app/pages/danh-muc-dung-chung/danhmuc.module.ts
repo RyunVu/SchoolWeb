@@ -20,7 +20,6 @@ import { SharedModule } from "src/app/services/shared.module";
     DanhMucRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DanhMucModal],
   providers: [ToastrService],
 })
 export class DanhMucModule {}

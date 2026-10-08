@@ -11,6 +11,7 @@ import { AuthService, BaseService, HttpService } from 'src/app/services';
 import { ChangeUserInfoModal } from '../change-user-info/change-user-info.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-user-dropdown-menu',
     templateUrl: './user-dropdown-menu.component.html',
     styleUrls: ['./user-dropdown-menu.component.scss'],
@@ -65,8 +66,8 @@ export class UserDropdownMenuComponent implements OnInit {
             },
             header: 'Thay đổi mật khẩu',
             width: '70%',
-            style: 'max-width:500px'
-        }).onClose.subscribe((data: any) => {
+            style: { 'max-width': '500px' }
+        })!.onClose.subscribe((data: any) => {
             if (data) {
             }
         });

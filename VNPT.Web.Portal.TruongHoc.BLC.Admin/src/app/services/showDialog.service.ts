@@ -25,7 +25,7 @@ export class ShowDialogService {
             width: width,
             height: height,
             closeOnEscape: true
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             onClose(data);
         });
     }

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="card-body p-0">
-    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
       [rows]="10" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
       <ng-template pTemplate="header">
         <tr>

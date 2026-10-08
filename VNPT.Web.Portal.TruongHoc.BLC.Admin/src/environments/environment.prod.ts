@@ -3,6 +3,7 @@ export const environment = {
   apiUrl: '/',
   iocUrl: 'http://localhost:51884/',
   
+  // Link media thật lấy theo DomainMedia trong Web.config của API (api/System/ClientConfig); giá trị dưới đây chỉ là dự phòng
   mediaUrl: "https://media3.lamdongtructuyen.vn/"
   // mediaUrl: "https://mediabaolam.lamdongtructuyen.vn/"
   // mediaUrl: "https://mediadilinh.lamdongtructuyen.vn/"

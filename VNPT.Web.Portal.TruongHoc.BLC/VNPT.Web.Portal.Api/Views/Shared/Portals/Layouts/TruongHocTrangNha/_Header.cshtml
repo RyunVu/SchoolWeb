@@ -1,0 +1,67 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var code = infomation.PortalCode.ToUpper();
+    var banners = SystemParameterDto.GetParameters("BANNER_HEADER", code).ToList();
+    var logo = SystemParameterDto.GetParameter("FOOTER", "LOGO", code).Value2;
+    var schoolName = SystemParameterDto.GetParameter("FOOTER", "NAME", code).Value2;
+    var address = SystemParameterDto.GetParameter("FOOTER", "ADDRESS", code).Value2;
+    var isHome = string.IsNullOrEmpty(ViewBag.CurrentSite as string) || ViewBag.CurrentSite == "/" || ViewBag.CurrentSite == "home";
+}
+
+<nav id="menu-mobile" class="mm-menu mm-offcanvas mm-pagedim-black">
+    <ul>
+        <li class="active"><a href="/" title="">Trang chủ</a></li>
+        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+    </ul>
+</nav>
+
+<div class="tn-topline">
+    <div class="container tn-topline-inner">
+        <span class="tn-date"><i class="fa fa-calendar"></i><span id="timeCurrent"></span></span>
+        <form class="tn-search-form" role="search">
+            <input type="search" name="th-keyword" placeholder="Tìm kiếm..." aria-label="Tìm kiếm" />
+            <button type="submit" aria-label="Tìm"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div class="tn-masthead">
+    <div class="container">
+        <a href="#menu-mobile" class="tn-burger" aria-label="Mở menu"><span></span><span></span><span></span></a>
+        <a class="tn-brand" href="/" title="@schoolName">
+            <img class="tn-brand-logo" src="@Url.Image(logo)" alt="Logo" />
+            <span class="tn-brand-kicker">Cổng thông tin điện tử</span>
+            <span class="tn-brand-name">@schoolName</span>
+            @if (!string.IsNullOrWhiteSpace(address))
+            {
+                <span class="tn-brand-sub">@address</span>
+            }
+        </a>
+    </div>
+</div>
+
+<div class="tn-header">
+    <nav class="tn-nav" id="menu-pc">
+        <div class="container">
+            <ul id="menu-list">
+                <li class="isHomePc @(isHome ? "is-active" : "")"><a class="menu-a" href="/" title="Trang chủ">Trang chủ</a></li>
+                @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+            </ul>
+        </div>
+    </nav>
+</div>
+
+@if (isHome && banners.Any())
+{
+    <section class="container tn-hero-wrap">
+        <div id="tn-hero" class="owl-carousel tn-hero">
+            @foreach (var banner in banners)
+            {
+                <div class="tn-hero-item"><img src="@Url.Image(banner.Value2)" alt="@schoolName" /></div>
+            }
+        </div>
+    </section>
+}

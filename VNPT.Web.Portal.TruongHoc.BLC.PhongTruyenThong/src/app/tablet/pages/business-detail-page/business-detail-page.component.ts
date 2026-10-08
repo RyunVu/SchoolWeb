@@ -1,5 +1,5 @@
-import { AgmGeocoder } from '@agm/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { GoogleMapsLoaderService } from 'src/app/components/gmap/google-maps-loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
@@ -17,6 +17,7 @@ import { defaultLocation } from 'src/app/shared/constants';
 import { HomePageService } from '../../services';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-detail-page',
   templateUrl: './business-detail-page.component.html',
@@ -53,8 +54,7 @@ export class BusinessDetailPageComponent implements OnInit, OnDestroy {
     private hpService: HomePageService,
     private router: Router,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder
-  ) {}
+    private mapsLoader: GoogleMapsLoaderService) {}
   public changeMapType(){
     if(this.mapTypeId=="roadmap") this.mapTypeId ='satellite';
     else this.mapTypeId ='roadmap';
@@ -148,27 +148,8 @@ export class BusinessDetailPageComponent implements OnInit, OnDestroy {
       });
     }
 
-    // tslint:disable-next-line: one-variable-per-declaration
-    return new Promise((resolve) => {
-      this.agmGeocoder
-        .geocode({
-          address: populateBusinessFullAddress(entity),
-        })
-        .subscribe(
-          (results: any) => {
-            const lat =
-              get(results, '0.geometry.location.lat') &&
-              get(results, '0.geometry.location.lat')();
-            const lng =
-              get(results, '0.geometry.location.lng') &&
-              get(results, '0.geometry.location.lng')();
-
-            return resolve({ lat, lng });
-          },
-          (err: any) => {
-            return resolve({ lat: 0, lng: 0 });
-          }
-        );
-    });
+    return this.mapsLoader
+      .geocode(populateBusinessFullAddress(entity))
+      .catch(() => ({ lat: 0, lng: 0 }));
   }
 }

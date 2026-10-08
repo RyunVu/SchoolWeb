@@ -15,6 +15,7 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { HttpService } from 'src/app/services';
 
 @Component({
+  standalone: false,
   selector: 'app-menu-sidebar',
   templateUrl: './menu-sidebar.component.html',
   styleUrls: ['./menu-sidebar.component.scss'],

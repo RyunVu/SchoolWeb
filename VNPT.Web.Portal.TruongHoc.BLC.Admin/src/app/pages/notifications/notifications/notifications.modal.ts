@@ -6,6 +6,7 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { HttpService } from 'src/app/services';
 
 @Component({
+  standalone: false,
   selector: 'notifications-modal',
   templateUrl: './notifications.modal.html',
   styleUrls: ['./notifications.modal.scss'],

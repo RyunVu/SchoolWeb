@@ -71,5 +71,46 @@ namespace VNPT.Web.Portal.Api.Providers
             return new List<News>();
         }
 
+        /// <summary>Tin nổi bật của cổng (cùng store với khối "Tin mới nhất" trang chủ).</summary>
+        public static List<News> GetHotNews(string code, int pageSize, HttpSessionStateBase session, HttpRequestBase request)
+        {
+            var information = session["PortalInformation"] as PortalInformation;
+
+            if (information == null || string.IsNullOrEmpty(information.PortalCode))
+            {
+                return new List<News>();
+            }
+
+            var lang = request.Cookies["Language_Portal"]?.Value ?? "vi";
+
+            using (var context = new WebDbContext())
+            {
+                var cmd = context.Database.Connection.CreateCommand();
+
+                cmd.CommandText = "[dbo].[Portal_CongDoan_CongDoanHotNews]";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@p_code", code));
+                cmd.Parameters.Add(new SqlParameter("@p_unitcode", information.PortalCode.ToLower()));
+                cmd.Parameters.Add(new SqlParameter("@p_lang", lang));
+                cmd.Parameters.Add(new SqlParameter("@p_page_index", 1));
+                cmd.Parameters.Add(new SqlParameter("@p_page_size", pageSize));
+                var connection = context.Database.Connection;
+
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    var listNews = ((IObjectContextAdapter)context).ObjectContext
+                        .Translate<News>(reader)
+                        .ToList();
+
+                    connection.Close();
+
+                    return listNews;
+                }
+            }
+        }
+
     }
 }

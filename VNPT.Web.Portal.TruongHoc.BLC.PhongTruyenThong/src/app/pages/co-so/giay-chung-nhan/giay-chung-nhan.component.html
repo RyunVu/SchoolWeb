@@ -39,78 +39,78 @@
                                 <div class="col-md-2 col-2-em">
                                     <div class="form-group">
                                         <label>Từ ngày</label>
-                                        <p-calendar [(ngModel)]="fromDate" [maxDate]="toDate" dateFormat="dd/mm/yy"
-                                            (onBlur)="setDate($event,'fromDate')"></p-calendar>
+                                        <p-datepicker [(ngModel)]="fromDate" [maxDate]="toDate" dateFormat="dd/mm/yy"
+                                            (onBlur)="setDate($event,'fromDate')"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-2-em">
                                     <div class="form-group">
                                         <label>Đến ngày</label>
-                                        <p-calendar [(ngModel)]="toDate" [minDate]="fromDate" dateFormat="dd/mm/yy"
-                                            (onBlur)="setDate($event,'toDate')"></p-calendar>
+                                        <p-datepicker [(ngModel)]="toDate" [minDate]="fromDate" dateFormat="dd/mm/yy"
+                                            (onBlur)="setDate($event,'toDate')"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-2" *ngIf="isShow">
                                     <div class="form-group">
                                         <label for="Name">Thành phố</label>
-                                        <p-dropdown [options]="cities" [(ngModel)]="city" optionLabel="Name"
+                                        <p-select [options]="cities" [(ngModel)]="city" optionLabel="Name"
                                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
                                             (onChange)="loadWards()">
-                                        </p-dropdown>
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-2" *ngIf="isShow">
                                     <div class="form-group">
                                         <label for="Name">Phường/xã</label>
-                                        <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name"
+                                        <p-select [options]="wards" [(ngModel)]="ward" optionLabel="Name"
                                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
                                             (onChange)="loadStreets()">
-                                        </p-dropdown>
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-2" *ngIf="isShow">
                                     <div class="form-group">
                                         <label for="Name">Đường</label>
-                                        <p-dropdown [options]="streets" [(ngModel)]="street" optionLabel="Name"
+                                        <p-select [options]="streets" [(ngModel)]="street" optionLabel="Name"
                                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                                        </p-dropdown>
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-2" *ngIf="isShow">
                                     <div class="form-group">
                                         <label for="Name">Lĩnh vực</label>
-                                        <p-dropdown [options]="linhVucs" [(ngModel)]="linhVuc" optionLabel="Name"
+                                        <p-select [options]="linhVucs" [(ngModel)]="linhVuc" optionLabel="Name"
                                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                                        </p-dropdown>
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="form-group col-3 col-md-2" *ngIf="isShow">
                                     <label for="keyword">Trạng thái</label>
-                                    <p-dropdown [options]="hkdStatuses" styleClass="w-100" [(ngModel)]="trangThai"
+                                    <p-select [options]="hkdStatuses" styleClass="w-100" [(ngModel)]="trangThai"
                                         optionValue="value" optionLabel="label" placeholder=""
                                         emptyMessage="Không có dữ liệu"
-                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                        emptyFilterMessage="Không có dữ liệu"></p-select>
                                 </div>
                                 <div class="form-group col-3 col-md-2" *ngIf="isShow">
                                     <label for="keyword">Loại hình</label>
-                                    <p-dropdown [options]="loaiHinhs" styleClass="w-100" [(ngModel)]="loaiHinh"
+                                    <p-select [options]="loaiHinhs" styleClass="w-100" [(ngModel)]="loaiHinh"
                                         optionValue="Id" optionLabel="Label" placeholder=""
                                         emptyMessage="Không có dữ liệu"
-                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                        emptyFilterMessage="Không có dữ liệu"></p-select>
                                 </div>
                                 <div class="form-group col-3 col-md-2" *ngIf="isShow">
                                     <label>Có giấy phép KD</label>
-                                    <p-dropdown [options]="coGCN" styleClass="w-100" [(ngModel)]="loaiGCN"
+                                    <p-select [options]="coGCN" styleClass="w-100" [(ngModel)]="loaiGCN"
                                         optionValue="Id" optionLabel="Label" placeholder=""
                                         emptyMessage="Không có dữ liệu"
-                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                        emptyFilterMessage="Không có dữ liệu"></p-select>
                                 </div>
                                 <div class="form-group col-3 col-md-2" *ngIf="isShow">
                                     <label>Mã số thuế</label>
-                                    <p-dropdown [options]="loaiMaSoThue" styleClass="w-100" [(ngModel)]="coMst"
+                                    <p-select [options]="loaiMaSoThue" styleClass="w-100" [(ngModel)]="coMst"
                                         optionValue="Id" optionLabel="Label" placeholder=""
                                         emptyMessage="Không có dữ liệu"
-                                        emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+                                        emptyFilterMessage="Không có dữ liệu"></p-select>
                                 </div>
                                 <div class="col-md-{{isShow ? 4 : 4}}">
                                     <div class="form-group">
@@ -122,7 +122,7 @@
                                 <!-- <div class="col-md-2">
                   <div class="form-group">
                     <label for="Name">TT hoạt động</label>
-                    <p-dropdown
+                    <p-select
                       [options]="xayStatus"
                       [(ngModel)]="xay"
                       optionLabel="Name"
@@ -131,13 +131,13 @@
                       filterBy="Name"
                       appendTo="body"
                     >
-                    </p-dropdown>
+                    </p-select>
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
                     <label for="Name">TT nộp thuế</label>
-                    <p-dropdown
+                    <p-select
                       [options]="nopStatus"
                       [(ngModel)]="nop"
                       optionLabel="Name"
@@ -146,7 +146,7 @@
                       filterBy="Name"
                       appendTo="body"
                     >
-                    </p-dropdown>
+                    </p-select>
                   </div>
                 </div> -->
                             </div>
@@ -174,8 +174,7 @@
                         <p-table #dt [showCurrentPageReport]="true"
                             currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục"
                             [value]="items" [lazy]="true" [sortOrder]="-1" (onLazyLoad)="paginate($event)"
-                            [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading"
-                            [autoLayout]="true">
+                            [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th width="80px">STT</th>

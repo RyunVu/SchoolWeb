@@ -11,9 +11,17 @@
     </li> -->
   </ul>
 
-  <form class="form-inline ml-3" [formGroup]="searchForm">
+  <!-- Dán link bài viết/chuyên mục ngoài portal để mở đúng menu và bài viết -->
+  <form class="form-inline ml-3 header-search" [formGroup]="searchForm" (ngSubmit)="searchLink()">
     <div class="input-group input-group-sm">
-      <h4 style="color: white; margin-top: 8px;"></h4>
+      <input class="form-control" type="search" formControlName="search" autocomplete="off"
+        placeholder="Dán link bài viết, VD: .../chi-tiet-tin-tuc/?param=..."
+        title="Dán link bài viết (chi-tiet-tin-tuc) hoặc chuyên mục (danh-sach-tin-tuc) để mở đúng menu quản trị" />
+      <div class="input-group-append">
+        <button class="btn btn-navbar" type="submit" [disabled]="searching" title="Tìm và mở bài viết">
+          <i class="fas" [ngClass]="searching ? 'fa-spinner fa-spin' : 'fa-search'"></i>
+        </button>
+      </div>
     </div>
   </form>
 

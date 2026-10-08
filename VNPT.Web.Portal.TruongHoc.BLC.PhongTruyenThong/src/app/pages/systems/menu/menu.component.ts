@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
@@ -9,6 +10,7 @@ import { FunctionMenuModal } from './function.modal';
 import { MenuModal } from './menu.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss']
@@ -83,7 +85,7 @@ export class MenuComponent extends BasePage {
             data: item,
             header: 'Quyền: ' + item.Title,
             width: '60%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             //this.loadData();
         });
     }
@@ -97,7 +99,7 @@ export class MenuComponent extends BasePage {
             },
             header: 'Thêm mới',
             width: '60%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             this.loadData();
         });
         //     this.showDialogService.showDialog(MenuModal, 'Thêm mới',

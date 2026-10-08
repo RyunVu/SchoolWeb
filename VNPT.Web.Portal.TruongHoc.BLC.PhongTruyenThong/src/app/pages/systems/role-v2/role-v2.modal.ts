@@ -6,9 +6,10 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { HttpService } from "src/app/services";
 import { ResultCode, ResultModel } from "src/app/models";
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
+    standalone: false,
     selector: "role-v2-modal",
     templateUrl: 'role-v2.modal.html',
     encapsulation: ViewEncapsulation.None,

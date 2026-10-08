@@ -8,6 +8,7 @@ import { HttpService } from 'src/app/services';
 import { getCurrentPeriodByType, unsignVietnamese } from 'src/app/utils';
 
 @Component({
+    standalone: false,
     selector: 'app-template-input-modal',
     templateUrl: './template-input.modal.html',
     styleUrls: ['./template-input.modal.scss']

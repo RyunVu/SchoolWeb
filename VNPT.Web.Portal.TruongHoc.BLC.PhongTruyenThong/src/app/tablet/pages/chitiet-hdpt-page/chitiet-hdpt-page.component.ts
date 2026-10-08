@@ -3,10 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 import { BaseService, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import {
   gmDefaultStyles,
@@ -22,6 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-chitiet-hdpt-page',
   templateUrl: './chitiet-hdpt-page.component.html',
   styleUrls: ['./chitiet-hdpt-page.component.scss'],
@@ -38,7 +38,6 @@ export class ChiTietHDPTPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
     private activatedRoute: ActivatedRoute,
     private location: Location,

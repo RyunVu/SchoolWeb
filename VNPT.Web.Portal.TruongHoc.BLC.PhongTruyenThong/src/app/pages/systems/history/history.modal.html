@@ -22,7 +22,7 @@
             <div class="col-md-12" *ngIf="changes && changes.length > 0">
                 <div class="form-group">
                     <label for="Name">Thông tin thay đổi</label>
-                    <p-table [value]="changes" [autoLayout]="true">
+                    <p-table [value]="changes">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Thuộc tính</th>
@@ -55,7 +55,7 @@
             <div class="col-md-12" *ngIf="childChanges && childChanges.length > 0">
                 <div class="form-group">
                     <label for="Name">Thông tin liên quan</label>
-                    <p-table [value]="childChanges" [autoLayout]="true">
+                    <p-table [value]="childChanges">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Thuộc tính</th>
@@ -88,7 +88,7 @@
             <div class="col-md-12" *ngIf="childDesciption && childDesciption.length > 0">
                 <div class="form-group">
                     <label for="Name">Mô tả thông tin liên quan</label>
-                    <p-table [value]="childDesciption" [autoLayout]="true">
+                    <p-table [value]="childDesciption">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Thuộc tính</th>

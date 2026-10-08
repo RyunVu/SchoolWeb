@@ -21,7 +21,6 @@ import { CaptionImageModel } from "./caption-image.modal";
     DanhSachTinTucRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DanhSachTinTucModal, CaptionImageModel],
   providers: [ToastrService],
 })
 export class DanhSachTinTucPttModule { }

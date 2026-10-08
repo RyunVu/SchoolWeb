@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { Parameter } from "src/app/services/staticparameters.service";
 
 @Component({
+    standalone: false,
     selector: "news-type-menu-modal",
     templateUrl: 'news-type-menu.modal.html',
     encapsulation: ViewEncapsulation.None,

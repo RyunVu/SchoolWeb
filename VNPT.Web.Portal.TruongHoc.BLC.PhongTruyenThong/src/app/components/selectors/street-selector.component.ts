@@ -17,10 +17,11 @@ import { HttpService } from 'src/app/services';
  * Custom selector for Street List
  */
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'street-selector',
   template: `
-    <p-dropdown
+    <p-select
       [options]="streets"
       styleClass="w-100"
       [(ngModel)]="selectedValue"
@@ -32,10 +33,9 @@ import { HttpService } from 'src/app/services';
       [placeholder]="placeholder"
       [inputId]="inputId"
       [appendTo]="appendTo"
-      [autoDisplayFirst]="false"
       emptyMessage="Không có dữ liệu"
       emptyFilterMessage="Không có dữ liệu"
-    ></p-dropdown>
+    ></p-select>
   `,
   providers: [
     {

@@ -18,80 +18,86 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 col-12">
-                <div class="card card-primary card-outline">
+                <div class="card card-primary card-outline news-card">
                     <div class="card-header">
-                        <div class="row">
-                            <div *ngIf="isSuperAdminSystem" class="col-md-2">
-                                <div class="form-group">
-                                    <label class="d-block" for="Name">Đơn vị: </label>
-                                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name"
-                                        optionValue="Code" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị"
-                                        appendTo="body">
-                                    </p-dropdown>
+                        <!-- Bộ lọc -->
+                        <div class="news-filter-bar">
+                            <div *ngIf="isSuperAdminSystem" class="filter-item filter-unit">
+                                <label for="newsUnit">Đơn vị</label>
+                                <p-select inputId="newsUnit" [options]="units" [(ngModel)]="unit" optionLabel="Name"
+                                    optionValue="Code" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị"
+                                    appendTo="body" (onChange)="search()">
+                                </p-select>
+                            </div>
+
+                            <div class="filter-item filter-keyword">
+                                <label for="newsKeyword">Từ khóa</label>
+                                <input id="newsKeyword" type="text" class="form-control" [(ngModel)]="keywordInput"
+                                    (keyup.enter)="search()" placeholder="Tiêu đề bài viết, nhấn Enter để tìm" />
+                            </div>
+
+                            <div class="filter-item filter-status">
+                                <label for="newsStatus">Trạng thái</label>
+                                <p-select inputId="newsStatus" [options]="statuses" [(ngModel)]="status"
+                                    optionLabel="Name" optionValue="Id" placeholder="Chọn trạng thái" appendTo="body"
+                                    (onChange)="search()">
+                                </p-select>
+                            </div>
+
+                            <div class="filter-item filter-dates">
+                                <label for="newsFromDate">Ngày đăng</label>
+                                <div class="date-range">
+                                    <p-datepicker inputId="newsFromDate" [(ngModel)]="TuNgay" dateFormat="dd/mm/yy"
+                                        [showIcon]="true" placeholder="Từ ngày" appendTo="body">
+                                    </p-datepicker>
+                                    <span class="date-sep">–</span>
+                                    <p-datepicker [(ngModel)]="DenNgay" dateFormat="dd/mm/yy" [showIcon]="true"
+                                        placeholder="Đến ngày" appendTo="body">
+                                    </p-datepicker>
                                 </div>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="d-block" for="Name">Trạng thái: </label>
-                                    <p-dropdown [options]="statuses" [(ngModel)]="status" optionLabel="Name"
-                                        optionValue="Id" placeholder="Chọn trạng thái" appendTo="body">
-                                    </p-dropdown>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="d-block" for="Name">Từ ngày: </label>
-                                    <p-calendar [(ngModel)]="TuNgay" [showIcon]="false" dateFormat="dd/mm/yy"
-                                        appendTo="body">
-                                    </p-calendar>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="d-block" for="Name">Đến ngày: </label>
-                                    <p-calendar [(ngModel)]="DenNgay" [showIcon]="false" dateFormat="dd/mm/yy"
-                                        appendTo="body">
-                                    </p-calendar>
-                                </div>
-                            </div>
-                            <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
-                                <div class="form-group">
-                                    <label for="Name">Từ khóa tìm kiếm</label>
-                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
-                                        placeholder="Từ khóa tìm kiếm" />
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="padding-top: 37px;">
-                                <button (click)="search()" type="button" class="btn btn-info btn-sm mr-3">
-                                    <i class="fa fa-filter"></i> Tìm kiếm
+                            <div class="filter-buttons">
+                                <button (click)="search()" type="button" class="btn btn-info">
+                                    <i class="fa fa-search mr-1"></i> Tìm kiếm
                                 </button>
-                                <button
-                                    *ngIf="isAddButtonVisible"
-                                    (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
-                                    <i class="fas fa-plus"></i> Thêm mới
+                                <button (click)="resetFilter()" type="button" class="btn btn-outline-secondary"
+                                    title="Xoá điều kiện lọc">
+                                    <i class="fas fa-undo mr-1"></i> Bỏ lọc
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Thanh công cụ -->
+                        <div class="news-toolbar">
+                            <div class="toolbar-info">
+                                <i class="far fa-newspaper mr-1"></i><b>{{ totalRow || 0 }}</b> tin tức
+                                <span *ngIf="selectedItems.length" class="text-primary ml-2">
+                                    · đã chọn <b>{{ selectedItems.length }}</b>
+                                </span>
+                            </div>
+                            <div class="toolbar-actions">
                                 <button *ngIf="checkPermission('Delete') && selectedItems && selectedItems.length > 0"
-                                    (click)="deleteMultiple()" type="button" class="btn btn-danger btn-sm mr-3">
-                                    <i class="fas fa-trash"></i> Xoá các mục đã chọn ({{ selectedItems.length }})
+                                    (click)="deleteMultiple()" type="button" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash mr-1"></i> Xoá đã chọn ({{ selectedItems.length }})
                                 </button>
                                 <button *ngIf="isUserDuyetTin && isDuyetTin" (click)="duyetbai()" type="button"
-                                    class="btn btn-warning btn-sm mr-3">
-                                    <i class="fas fa-check-circle"></i> Duyệt bài viết
+                                    class="btn btn-warning btn-sm">
+                                    <i class="fas fa-check-circle mr-1"></i> Duyệt bài viết
                                 </button>
-
                                 <button *ngIf="isUserDuyetTinFromTruong && title == 'Tin tức từ trường'"
-                                    (click)="duyetbaitutruong()" type="button" class="btn btn-warning btn-sm mr-3">
-                                    <i class="fas fa-check-circle"></i> Duyệt bài viết từ trường
+                                    (click)="duyetbaitutruong()" type="button" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-check-circle mr-1"></i> Duyệt bài viết từ trường
                                 </button>
-
-
+                                <button *ngIf="isAddButtonVisible" (click)="add()" type="button"
+                                    class="btn btn-success btn-sm">
+                                    <i class="fas fa-plus mr-1"></i> Thêm mới
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
                 <div class="card-body p-0">
-                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
                         [paginator]="true" [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]"
                         [totalRecords]="totalRow" [loading]="loading" appendTo="body" paginatorDropdownAppendTo="body"
                         [(selection)]="selectedItems" dataKey="Id">
@@ -101,28 +107,23 @@
                                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                 </th>
                                 <th class="headerTable" style="width: 5%; text-align: center;">STT</th>
-                                <th class="headerTable" width="10%">Hình ảnh</th>
+                                <th class="headerTable" style="width: 140px;">Hình ảnh</th>
                                 <th class="headerTable">Thông tin tin tức</th>
-                                <th class="headerTable" width="20%">Thời gian</th>
+                                <th class="headerTable" width="15%">Thời gian</th>
                                 <th class="headerTable" width="10%">Trạng thái</th>
+                                <th class="headerTable" width="8%">Lượt xem</th>
                                 <th *ngIf="isSuperAdminSystem" class="headerTable" width="10%">Đơn vị</th>
                                 <th class="headerTable" width="10%">Thao tác</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-i="rowIndex">
-                            <tr>
+                            <tr [class.news-row-found]="highlightNewsId && (rowData.Id + '').toLowerCase() === highlightNewsId.toLowerCase()">
                                 <td style="text-align: center;">
                                     <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                                 </td>
                                 <td style="text-align: center;">{{i+1}}</td>
                                 <td class="text-center">
-                                    <img *ngIf="rowData.ImageUrl" alt="{{rowData.ImageUrl|imageUrlPipe}}"
-                                        [src]="rowData.ImageUrl|imageUrlPipe"
-                                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"
-                                        class="img-responsive" style="width: 100px; height: 100px;"
-                                        onerror="this.onerror=null;this.src='/assets/img/noimage.png';" />
-                                    <img *ngIf="!rowData.ImageUrl" src="/assets/img/noimage.png" class="img-responsive"
-                                        style="width: 100px; height: 100px;" />
+                                    <app-thumb [src]="rowData.ImageUrl | imageUrlPipe" [empty]="!rowData.ImageUrl" [alt]="rowData.Title"></app-thumb>
                                 </td>
                                 <td class="text-left">
                                     <!-- <b>Loại tin tức:</b> {{ rowData.NewTypeName }}<br> -->
@@ -130,8 +131,15 @@
                                 </td>
                                 <td style="text-align: center;">{{ rowData.CreateDateString }}</td>
                                 <td style="text-align: center;">{{ rowData.Status == 1 ? 'Đã duyệt':'Chưa duyệt' }}</td>
+                                <td class="text-center" title="Số lượt xem bài viết trên website">
+                                    <i class="far fa-eye text-muted mr-1"></i>{{ (rowData.CountView || 0) | number:'1.0-0':'vi' }}
+                                </td>
                                 <td *ngIf="isSuperAdminSystem">{{ rowData.UnitName }}</td>
                                 <td style="text-align: center;">
+                                    <button type="button" (click)="preview(rowData)" title="Xem trước tin bài"
+                                        class="p-element p-button-rounded p-button-info mr-2 p-button p-component p-button-icon-only">
+                                        <span class="p-button-icon pi pi-search" aria-hidden="true"></span>
+                                    </button>
                                     <button pbutton="" pripple="" icon="pi pi-pencil" (click)="edit(rowData)"
                                         title="Chỉnh sửa tin tức" *ngIf="checkPermission('Edit')"
                                         class="p-element p-button-rounded p-button-success mr-2 p-button p-component p-button-icon-only">
@@ -156,8 +164,8 @@
                                         class="p-element p-button-rounded p-button-warning mr-2 p-button p-component p-button-icon-only">
                                         <span class="p-button-icon pi pi-trash" aria-hidden="true"></span>
                                     </button>
-                                    <button *ngIf="isSuperAdminSystem" pbutton="" pripple="" icon="fas fa-history"
-                                        (click)="history(rowData)" title="Lịch sử chỉnh sửa"
+                                    <button *ngIf="canViewHistory" pbutton="" pripple="" icon="fas fa-history"
+                                        (click)="viewDataHistory(rowData)" title="Lịch sử dữ liệu (các phiên bản)"
                                         class="p-element p-button-rounded p-button-warning mr-2 p-button p-component p-button-icon-only mt-2">
                                         <span class="p-button-icon fas fa-history" aria-hidden="true"></span>
                                     </button>
@@ -168,6 +176,7 @@
                             <span>Tổng cộng: {{state.totalRecords}} tin tức</span>
                         </ng-template>
                     </p-table>
+                </div>
                 </div>
             </div>
         </div>

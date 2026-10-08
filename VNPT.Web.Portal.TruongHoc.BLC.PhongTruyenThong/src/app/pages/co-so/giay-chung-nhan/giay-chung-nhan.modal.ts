@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DialogService } from 'primeng/dynamicdialog';
 import { hkdStatuses, loaiHinhs, traGiayPhepKDs } from 'src/app/shared/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -13,6 +13,7 @@ import { CustomValidators } from 'src/app/modules';
 import { get } from 'lodash';
 
 @Component({
+    standalone: false,
     selector: 'giay-chung-nhan-modal',
     templateUrl: 'giay-chung-nhan.modal.html',
     styleUrls: ['./giay-chung-nhan.modal.scss'],

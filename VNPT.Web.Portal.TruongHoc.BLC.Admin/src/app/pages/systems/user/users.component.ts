@@ -1,6 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
@@ -9,6 +10,7 @@ import { UserModal } from './user.modal';
 import { QrOtpModal } from './qr-otp.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-user',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
@@ -45,7 +47,7 @@ export class UserComponent extends BasePage {
         super(router, route, http, message);
     }
 
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -56,7 +58,7 @@ export class UserComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -75,7 +77,7 @@ export class UserComponent extends BasePage {
             data: item,
             header: 'Cập nhật tài khoản',
             width: '50%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -89,7 +91,7 @@ export class UserComponent extends BasePage {
             },
             header: 'Thêm mới người dùng',
             width: '50%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -100,7 +102,7 @@ export class UserComponent extends BasePage {
             data: item,
             header: 'Xem mã xác mình 2 bước',
             width: '500px'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
 
         });
     }
@@ -240,7 +242,7 @@ export class UserComponent extends BasePage {
                     },
                     header: 'Mã OTP hiện tại',
                     width: '260px'
-                }).onClose.subscribe((data: any) => {
+                })!.onClose.subscribe((data: any) => {
                     
                 });
             }

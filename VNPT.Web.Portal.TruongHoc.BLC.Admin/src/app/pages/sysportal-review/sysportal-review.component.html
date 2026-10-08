@@ -24,26 +24,26 @@
               <div *ngIf="isSuperAdminSystem" class="col-md-2">
                 <div class="form-group">
                     <label class="d-block" for="Name">Đơn vị: </label>
-                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name"
+                    <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name"
                         optionValue="Code" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị"
                         appendTo="body">
-                    </p-dropdown>
+                    </p-select>
                 </div>
             </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label class="d-block" for="Name">Trả lời: </label>
-                  <p-dropdown [options]="types" [(ngModel)]="typeId" optionLabel="Name" optionValue="Id" [filter]="true"
+                  <p-select [options]="types" [(ngModel)]="typeId" optionLabel="Name" optionValue="Id" [filter]="true"
                     filterBy="Name" placeholder="Chọn loại trả lời" appendTo="body">
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label class="d-block" for="Name">Công khai: </label>
-                  <p-dropdown [options]="status" [(ngModel)]="statusId" optionLabel="Name" optionValue="Id" [filter]="true"
+                  <p-select [options]="status" [(ngModel)]="statusId" optionLabel="Name" optionValue="Id" [filter]="true"
                     filterBy="Name" placeholder="Chọn loại công khai" appendTo="body">
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="card-body p-0">
-          <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+          <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
           [paginator]="true" [rows]="pageSize"
           [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading" responsiveLayout="scroll">
             <ng-template pTemplate="header">

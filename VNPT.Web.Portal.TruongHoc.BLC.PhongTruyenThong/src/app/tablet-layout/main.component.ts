@@ -10,6 +10,7 @@ declare var $: any;
 import { DisableRightClickService } from '../tablet/services/disable-right-click.service';
 
 @Component({
+  standalone: false,
   selector: 'app-tablet-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],

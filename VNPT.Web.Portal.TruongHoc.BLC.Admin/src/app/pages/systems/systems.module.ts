@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { SystemsRoutingModule } from './systems-routing.module';
 import { SharedModule } from 'src/app/services/shared.module';
@@ -24,7 +24,7 @@ import { PositionComponent } from './position/position.component';
 import { PositionModal } from './position/position.modal';
 import { TreeModule } from 'primeng/tree';
 import { DividerModule } from 'primeng/divider';
-import { ChartsModule } from 'ng2-charts';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { HistoryComponent } from './history/history.component';
 import { HistoryModal } from './history/history.modal';
 import { LocationModal } from './user/location.modal';
@@ -74,34 +74,15 @@ import { QrOtpModal } from './user/qr-otp.modal';
         HttpClientModule,
         DialogModule,
         DynamicDialogModule,
-        DropdownModule,
-        CalendarModule,
+        SelectModule,
+        DatePickerModule,
         ColorPickerModule,
         TreeModule,
         DividerModule,
+        ToggleSwitchModule,
         SharedModule,
         SystemsRoutingModule,
-        ToastrModule.forRoot(),
-        ChartsModule
-    ],
-    entryComponents: [
-        UserModal,
-        HistoryLoginModal,
-        HistoryLoginAdminModal,
-        RoleModal,
-        MenuModal,
-        FunctionMenuModal,
-        RoleMenuModal,
-        UnitModal,
-        PositionModal,
-        FileManagerModal,
-        FMMiniWindowModal,
-        HistoryModal,
-        LocationModal,
-        ClientMenuModal,
-        CategoryMenuModal,
-        NewsTypeMenuModal,
-        QrOtpModal
+        ToastrModule.forRoot()
     ],
     providers: [
         ToastrService,

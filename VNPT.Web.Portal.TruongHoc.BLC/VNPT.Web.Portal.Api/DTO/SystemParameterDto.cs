@@ -42,7 +42,8 @@ namespace VNPT.Web.Portal.Api.DTO
             {
                 var param = contex.SystemParameters.Where(s => s.Code.ToLower() == code.ToLower() && s.Status != StatusEnum.Deleted && s.UnitCode == unitCode);
 
-                return param.ToList().Select(s => new PortalParameterModel(s)).ToList();
+                // Sắp theo Id để thứ tự ổn định (VD banner BANNER_HEADER_01, _02... theo thứ tự trong màn Cấu hình website)
+                return param.OrderBy(s => s.Id).ToList().Select(s => new PortalParameterModel(s)).ToList();
             }
         }
 

@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+  standalone: false,
   selector: "upload-media-modal",
   templateUrl: "upload-media.modal.html",
   styleUrls: ["./upload-media.modal.scss"],

@@ -6,11 +6,12 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { HttpService } from "src/app/services";
 import { ResultCode, ResultModel } from "src/app/models";
-import * as moment from 'moment';
+import moment from 'moment';
 import { LocationModal } from "./location.modal";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "user-modal",
     templateUrl: 'user.modal.html',
     encapsulation: ViewEncapsulation.None,
@@ -31,6 +32,11 @@ export class UserModal {
     fields: any[] = [];
     selectedRoles: any[] = [];
     selectedFields: any[] = [];
+
+    /** Đang chọn quyền hệ thống (SuperAdmin, RoleLevel <= 0) */
+    get hasSystemRole(): boolean {
+        return (this.selectedRoles || []).some(id => this.roles.some(r => r.Id == id && r.RoleLevel <= 0));
+    }
 
     locations: any[] = [];
 
@@ -234,7 +240,7 @@ export class UserModal {
             },
             header: 'Thêm mới khu vực',
             width: '50%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 var checExist = this.checkExist(data.ProvinceId, data.DistrictId, data.WardId);
                 if (checExist >= 0) {

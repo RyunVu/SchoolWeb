@@ -2,37 +2,31 @@ app-file-manager {
   .p-dropdown {
     width: 100%;
   }
-
   .p-autocomplete {
     width: 100%;
   }
-
-  .p-autocomplete>ul {
+  .p-autocomplete > ul {
     width: 100%;
   }
 
   .p-calendar {
     width: 100%;
   }
-
   .p-multiselect {
     width: 100%;
   }
-
   .text-right {
     text-align: right;
   }
-
   .modal-footer {
     position: absolute;
     bottom: 0;
   }
 
-
+  
   .card-primary {
     position: relative;
   }
-
   .p-footer {
     width: 100%;
     height: 70px;
@@ -46,36 +40,25 @@ app-file-manager {
     padding: 1rem;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
-
     .f-contains {
-      display: block;
+      display: flex;
       width: 100%;
       height: 100%;
       justify-content: flex-end;
-
       button {
         margin-left: 15px;
       }
-
-      .f-contains-right {
-        text-align: right;
-      }
     }
-
   }
-
   .bg-pro {
     background: #007bff;
   }
-
   .color-white {
     color: #fff;
   }
-
   .hidden {
     display: none;
   }
-
   .input-group-addon {
     border: 1px solid #dadada;
     border-left: none;
@@ -104,7 +87,7 @@ app-file-manager {
     float: left;
     overflow: scroll;
     padding-right: 15px;
-    padding: 0;
+    padding:0;
     border-right: 1px solid #dadada;
     border-bottom: none;
   }
@@ -117,8 +100,7 @@ app-file-manager {
   }
 
   .p-tree {
-    padding: 5px 0;
-    border: none;
+    padding: 5px 0;border:none;
   }
 
   .my-container-item {
@@ -127,7 +109,6 @@ app-file-manager {
     margin-bottom: 15px;
     overflow: hidden;
     padding: 3px;
-
     &:hover {
       cursor: pointer;
       background: #dadada;
@@ -143,20 +124,17 @@ app-file-manager {
       word-break: break-word;
       text-align: center;
     }
-
     .my-file-image {
       width: 100%;
       height: 120px;
       display: flex;
       justify-content: center;
       align-items: center;
-
       img {
         width: auto;
         height: 100%;
       }
     }
-
     .my-btn-delete {
       position: absolute;
       top: 0;
@@ -166,12 +144,10 @@ app-file-manager {
       background: #fff;
     }
   }
-
   .mark-item {
     background: #007bff;
     color: #fff;
     border: 1px dashed #fff;
-
     .my-btn-delete {
       color: #007bff;
     }
@@ -192,7 +168,7 @@ app-file-manager {
       border-right: none;
       border-bottom: 1px solid #dadada;
     }
-
+  
     .containerviewright {
       width: 100%;
       height: 250px;

@@ -98,7 +98,7 @@ namespace VNPT.Web.Portal.Api.Providers
                 var param = GetParameter(code, null, unitCode);
                 return param?.Value5 ?? false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -112,7 +112,7 @@ namespace VNPT.Web.Portal.Api.Providers
                 var param = GetParameter(code, null, unitCode);
                 return param?.Value5 ?? false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }

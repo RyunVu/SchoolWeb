@@ -13,6 +13,7 @@ import { FileManagerModal } from "src/app/components/file-manager/file-manager.c
 declare var $: any;
 
 @Component({
+    standalone: false,
     selector: "upload-file-modal",
     templateUrl: 'upload-file.modal.html',
     styleUrls: ['./upload-file.modal.scss'],

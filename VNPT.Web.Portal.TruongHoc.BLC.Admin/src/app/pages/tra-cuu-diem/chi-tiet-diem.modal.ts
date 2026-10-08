@@ -12,6 +12,7 @@ import { FileManagerModal } from "src/app/components/file-manager/file-manager.c
 import { UnitModal } from "../systems/units/units.modal";
 
 @Component({
+    standalone: false,
     selector: "chi-tiet-diem-modal",
     templateUrl: 'chi-tiet-diem.modal.html',
     styleUrls: ['./chi-tiet-diem.modal.scss'],

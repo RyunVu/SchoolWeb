@@ -28,20 +28,20 @@
                             <div class="col-md-2 col-2-em">
                                 <div class="form-group">
                                     <label>Từ ngày</label>
-                                    <p-calendar [(ngModel)]="fromDate" [maxDate]="toDate" dateFormat="dd/mm/yy" (onBlur)="setDate($event,'fromDate')"></p-calendar>
+                                    <p-datepicker [(ngModel)]="fromDate" [maxDate]="toDate" dateFormat="dd/mm/yy" (onBlur)="setDate($event,'fromDate')"></p-datepicker>
                                 </div>
                             </div>
                             <div class="col-md-2 col-2-em">
                                 <div class="form-group">
                                     <label>Đến ngày</label>
-                                    <p-calendar [(ngModel)]="toDate" [minDate]="fromDate" dateFormat="dd/mm/yy" (onBlur)="setDate($event,'toDate')"></p-calendar>
+                                    <p-datepicker [(ngModel)]="toDate" [minDate]="fromDate" dateFormat="dd/mm/yy" (onBlur)="setDate($event,'toDate')"></p-datepicker>
                                 </div>
                             </div>
                             <div class="col-md-2 col-2-em">
                                 <div class="form-group">
                                     <label>Hành động</label>
-                                    <p-dropdown [options]="actions" [(ngModel)]="action" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn loại danh sách" appendTo="body">
-                                    </p-dropdown>
+                                    <p-select [options]="actions" [(ngModel)]="action" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn loại danh sách" appendTo="body">
+                                    </p-select>
                                 </div>
                             </div>
                             <div class="col-md-2 col-2-em">
@@ -49,7 +49,7 @@
                                 <button class="btn btn-block btn-success" (click)="search()">Search</button>
                             </div>
                         </div>
-                        <p-table [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading" [autoLayout]="true">
+                        <p-table [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Ngày</th>

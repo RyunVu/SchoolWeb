@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
+  standalone: false,
   selector: 'app-default-page',
   templateUrl: './default-page.component.html',
   styleUrls: ['./default-page.component.scss'],

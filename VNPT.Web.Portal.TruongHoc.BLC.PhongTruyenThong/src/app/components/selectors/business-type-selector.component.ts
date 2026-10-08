@@ -7,10 +7,11 @@ import { HttpService } from 'src/app/services';
  * Custom selector for Cities List
  */
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-type-selector',
   template: `
-    <p-dropdown
+    <p-select
       [options]="businessTypes"
       styleClass="w-100"
       [(ngModel)]="selectedValue"
@@ -19,11 +20,10 @@ import { HttpService } from 'src/app/services';
       [optionValue]="optionValue"
       [optionLabel]="optionLabel"
       [placeholder]="placeholder"
-      [autoDisplayFirst]="false"
       [appendTo]="appendTo"
       emptyMessage="Không có dữ liệu"
       emptyFilterMessage="Không có dữ liệu"
-    ></p-dropdown>
+    ></p-select>
   `,
   providers: [
     {

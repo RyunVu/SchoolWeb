@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Google.Authenticator;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
@@ -27,8 +28,29 @@ namespace VNPT.Web.Portal.Api.Providers
         private string _phone;
 
         private string _deviceId;
-        private string _requestIp;
         private string _userId;
+
+        /// <summary>
+        /// IP của request: ưu tiên X-Forwarded-For (qua proxy), không có thì REMOTE_ADDR.
+        /// Lấy theo từng request thay vì lưu vào field, vì provider dùng chung cho mọi request.
+        /// </summary>
+        private static string GetRequestIp(IOwinContext owinContext)
+        {
+            var httpContext = owinContext.Environment.TryGetValue("System.Web.HttpContextBase", out var value)
+                ? value as HttpContextBase
+                : null;
+            if (httpContext == null)
+            {
+                return owinContext.Request.RemoteIpAddress ?? "";
+            }
+
+            var forwardedFor = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (!string.IsNullOrEmpty(forwardedFor))
+            {
+                return forwardedFor.Split(',')[0];
+            }
+            return httpContext.Request.ServerVariables["REMOTE_ADDR"];
+        }
         public ApplicationOAuthProvider(string publicClientId)
         {
             _publicClientId = publicClientId ?? throw new ArgumentNullException(@"publicClientId");
@@ -64,24 +86,8 @@ namespace VNPT.Web.Portal.Api.Providers
 
                 //todo: 1. Lấy Ip login
                 var isLoginWithPassword = false;
-                var _requestIp = "";
-                var httpContextWrapper = context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextWrapper;
+                var requestIp = GetRequestIp(context.OwinContext);
 
-                string ipAddress = httpContextWrapper.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
-                if (!string.IsNullOrEmpty(ipAddress))
-                {
-                    string[] addresses = ipAddress.Split(',');
-                    if (addresses.Length != 0)
-                    {
-                        _requestIp = addresses[0];
-                    }
-                }
-                else
-                {
-                    _requestIp = httpContextWrapper.Request.ServerVariables["REMOTE_ADDR"];
-                }
-               
                 _deviceId = context.Request.Headers["DeviceId"] ?? "";
                 if (!string.IsNullOrEmpty(_provider) &&
                          (_provider.ToLower() == "otp" || _provider.ToLower() == "otpNotCheckTime".ToLower()))
@@ -196,7 +202,7 @@ namespace VNPT.Web.Portal.Api.Providers
                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
                 //todo: 5: thay đổi request Ip
-                AuthenticationProperties properties = CreateProperties(user, _requestIp);
+                AuthenticationProperties properties = CreateProperties(user, requestIp);
                 AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
                 context.Validated(ticket);
                 context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -456,7 +462,7 @@ namespace VNPT.Web.Portal.Api.Providers
                     Status = StatusEnum.Used,
                     ExpiredDate = ex,
                     UserId = _userId,
-                    Tag = _requestIp
+                    Tag = GetRequestIp(context.OwinContext)
                 };
                 db.UserLoginHistories.Add(item);
                 db.SaveChanges();

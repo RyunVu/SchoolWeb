@@ -1,20 +1,356 @@
-<!-- <p-toast></p-toast> -->
-<div class="card card-primary">
-    <div class="card-body">
+<div class="card card-primary border-0 shadow-none mb-0">
+    <div class="card-body p-3">
+        <!-- Khi tạo Thư mục mới -->
         <div class="row" *ngIf="objectType=='folder'">
             <div class="col-md-12">
-                <div class="form-group">
-                    <label for="Name">Tên thư mục</label>
-                    <input type="text" class="form-control" [(ngModel)]="item.Name">
+                <div class="form-group mb-0">
+                    <label for="Name" class="font-weight-bold">Tên thư mục <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="item.Name" placeholder="Nhập tên thư mục mới..." (keyup.enter)="submit()" autofocus>
                 </div>
             </div>
         </div>
+
+        <!-- Khi tải Tập tin / Chỉnh sửa ảnh -->
         <div class="row" *ngIf="objectType=='file'">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="Name">Tên tập tin</label>
-                    <input *ngIf="filetype == 'file'" type="file" class="form-control" id="file-upload" (change)="changeImage($event)" multiple accept=".pdf, .doc, .docx, .xls, .xlsx"/>
-                    <input *ngIf="filetype == 'image'" type="file" class="form-control" id="file-upload" (change)="changeImage($event)" multiple accept="image/*"/>
+            <!-- Khu vực chọn file khi chưa chọn ảnh -->
+            <div class="col-md-12" *ngIf="!isImageMode">
+                <!-- Tab chuyển đổi giữa Tải từ máy tính và Nhập Link URL -->
+                <div class="d-flex align-items-center justify-content-center mb-3">
+                    <div class="btn-group source-type-toggle" role="group">
+                        <button type="button" class="btn" [ngClass]="inputSourceType === 'file' ? 'btn-primary' : 'btn-outline-secondary'" (click)="inputSourceType = 'file'">
+                            <i class="fas fa-desktop mr-1"></i> Tải từ máy tính
+                        </button>
+                        <button type="button" class="btn" [ngClass]="inputSourceType === 'url' ? 'btn-primary' : 'btn-outline-secondary'" (click)="inputSourceType = 'url'">
+                            <i class="fas fa-link mr-1"></i> Nhập link / URL hình ảnh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. Tải từ máy tính -->
+                <div *ngIf="inputSourceType === 'file'">
+                    <div class="upload-drop-zone" (click)="fileInput.click()" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <div class="drop-title">Nhấp để chọn ảnh / tập tin hoặc kéo thả vào đây</div>
+                        <div class="drop-sub">Hỗ trợ định dạng: JPG, PNG, WEBP, GIF, PDF, DOCX, XLSX, ZIP...</div>
+                        <div class="mt-2">
+                            <span class="badge badge-primary px-3 py-1 font-weight-bold" style="font-size: 0.85rem;">
+                                <i class="fas fa-paste mr-1"></i> Hoặc nhấn Ctrl + V để dán ảnh chụp màn hình / bộ nhớ tạm
+                            </span>
+                        </div>
+                        <input #fileInput type="file" class="d-none" id="file-upload" (change)="changeImage($event)" multiple />
+                    </div>
+
+                    <!-- Danh sách file thường nếu không phải ảnh đơn -->
+                    <div *ngIf="uploadFile.length > 0 && !isImageMode" class="mt-3">
+                        <div class="font-weight-bold mb-2">Đã chọn {{ uploadFile.length }} tập tin:</div>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2" *ngFor="let f of uploadFile">
+                                <span><i class="fas fa-file mr-2 text-primary"></i> {{ f.name }}</span>
+                                <span class="badge badge-secondary badge-pill">{{ formatFileSize(f.size) }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. Nhập link URL hình ảnh -->
+                <div *ngIf="inputSourceType === 'url'" class="url-input-container">
+                    <div class="card bg-light border p-4 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-globe-americas fa-3x text-primary"></i>
+                            <h5 class="mt-2 font-weight-bold">Tải ảnh từ đường dẫn trực tuyến (URL)</h5>
+                            <p class="text-muted small mb-3">Nhập liên kết (URL) của hình ảnh từ internet để tải về, chỉnh sửa (cắt, đổi kích thước, nén) và lưu lên thư mục.</p>
+                        </div>
+
+                        <div class="input-group input-group-lg mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                            </div>
+                            <input type="text" class="form-control" [(ngModel)]="imageUrlInput" placeholder="https://example.com/hinh-anh.jpg hoặc URL ảnh..." (keyup.enter)="loadImageFromUrl()" [disabled]="isLoadingUrl" autofocus>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary font-weight-bold px-4" type="button" (click)="loadImageFromUrl()" [disabled]="isLoadingUrl || !imageUrlInput">
+                                    <i class="fas fa-spinner fa-spin mr-1" *ngIf="isLoadingUrl"></i>
+                                    <i class="fas fa-download mr-1" *ngIf="!isLoadingUrl"></i>
+                                    <span>{{ isLoadingUrl ? 'Đang tải ảnh...' : 'Tải về & Chỉnh sửa' }}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center flex-wrap gap-2 text-muted small">
+                            <span class="badge badge-light border mr-1"><i class="fas fa-check-circle text-success mr-1"></i> Xử lý nạp ảnh 100% tại Client</span>
+                            <span class="badge badge-light border mr-1"><i class="fas fa-crop-alt text-info mr-1"></i> Đầy đủ công cụ Cắt & Nén</span>
+                            <span class="badge badge-light border"><i class="fas fa-file-image text-primary mr-1"></i> Hỗ trợ JPG, PNG, WEBP, GIF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khu vực Image Editor khi đã chọn hình ảnh -->
+            <div class="col-md-12" *ngIf="isImageMode">
+                <div class="image-editor-wrap">
+                    <!-- Header Bar -->
+                    <div class="editor-header-bar">
+                        <div class="d-flex align-items-center flex-grow-1 mr-3" style="min-width: 200px;">
+                            <span class="text-muted mr-2 small font-weight-bold">Tên file:</span>
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="outputFileName" placeholder="Tên tệp tin">
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-sm" [ngClass]="isExpandedCanvas ? 'btn-info' : 'btn-outline-secondary'" (click)="toggleCanvasSize()" [title]="isExpandedCanvas ? 'Thu nhỏ khung ảnh để tiết kiệm không gian' : 'Mở rộng khung ảnh xem chi tiết'">
+                                <i class="fas" [ngClass]="isExpandedCanvas ? 'fa-compress-alt' : 'fa-expand-alt'"></i>
+                                <span class="ml-1">{{ isExpandedCanvas ? 'Thu gọn' : 'Phóng to' }}</span>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="resetToOriginal()" title="Khôi phục lại ảnh gốc ban đầu">
+                                <i class="fas fa-undo mr-1"></i> Ảnh gốc
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="fileInput.click()" title="Chọn file ảnh khác từ máy tính">
+                                <i class="fas fa-exchange-alt mr-1"></i> Chọn ảnh khác
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-info" (click)="showUrlPromptInEditor = !showUrlPromptInEditor" title="Tải ảnh khác từ đường dẫn URL">
+                                <i class="fas fa-link mr-1"></i> Nhập link khác
+                            </button>
+                            <input #fileInput type="file" class="d-none" accept="image/*" (change)="changeImage($event)" />
+                        </div>
+                    </div>
+
+                    <!-- In-editor URL prompt bar -->
+                    <div *ngIf="showUrlPromptInEditor" class="editor-url-prompt-bar p-2 bg-light border-bottom">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-link"></i> URL:</span>
+                            </div>
+                            <input type="text" class="form-control" [(ngModel)]="urlInputInEditor" placeholder="https://example.com/hinh-anh.jpg..." (keyup.enter)="loadImageFromUrl(urlInputInEditor)" [disabled]="isLoadingUrl">
+                            <div class="input-group-append">
+                                <button class="btn btn-info font-weight-bold" type="button" (click)="loadImageFromUrl(urlInputInEditor)" [disabled]="isLoadingUrl || !urlInputInEditor">
+                                    <i class="fas fa-spinner fa-spin mr-1" *ngIf="isLoadingUrl"></i>
+                                    <i class="fas fa-download mr-1" *ngIf="!isLoadingUrl"></i>
+                                    <span>{{ isLoadingUrl ? 'Đang tải...' : 'Tải về' }}</span>
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" (click)="showUrlPromptInEditor = false">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Size Comparison Dashboard (Hiển thị dung lượng gốc vs dung lượng đã thay đổi) -->
+                    <div class="size-comparison-dashboard">
+                        <div class="size-col orig-col">
+                            <div class="size-icon"><i class="fas fa-file-image"></i></div>
+                            <div class="size-details">
+                                <span class="size-title">Dung lượng gốc</span>
+                                <span class="size-number">{{ originalSizeText }}</span>
+                                <span class="size-dim">{{ originalWidth }} x {{ originalHeight }} px</span>
+                            </div>
+                        </div>
+                        <div class="size-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="size-col new-col">
+                            <div class="size-icon"><i class="fas fa-compress-arrows-alt"></i></div>
+                            <div class="size-details">
+                                <span class="size-title">Dung lượng đã thay đổi</span>
+                                <span class="size-number">{{ compressedSizeText || 'Đang tính...' }}</span>
+                                <span class="size-dim">{{ currentWidth }} x {{ currentHeight }} px</span>
+                            </div>
+                        </div>
+                        <div class="size-col saved-col" *ngIf="savedPercentText">
+                            <div class="saved-card">
+                                <span class="saved-label"><i class="fas fa-arrow-down mr-1"></i> Tiết kiệm:</span>
+                                <span class="saved-value">{{ savedPercentText }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Workspace Container -->
+                    <div class="editor-canvas-container" #canvasContainer [class.expanded]="isExpandedCanvas">
+                        <div class="canvas-stage">
+                            <canvas #imageCanvas></canvas>
+
+                            <!-- Crop Overlay Box (khi ở tab Cắt ảnh) -->
+                            <div class="crop-overlay" *ngIf="activeTab === 'crop'"
+                                [style.left.px]="cropBox.x"
+                                [style.top.px]="cropBox.y"
+                                [style.width.px]="cropBox.width"
+                                [style.height.px]="cropBox.height"
+                                (mousedown)="startCropDrag($event, 'move')"
+                                (touchstart)="startCropDrag($event, 'move')">
+                                
+                                <div class="crop-grid-line-h crop-grid-line-h-1"></div>
+                                <div class="crop-grid-line-h crop-grid-line-h-2"></div>
+                                <div class="crop-grid-line-v crop-grid-line-v-1"></div>
+                                <div class="crop-grid-line-v crop-grid-line-v-2"></div>
+
+                                <div class="crop-handle handle-nw" (mousedown)="startCropDrag($event, 'nw')" (touchstart)="startCropDrag($event, 'nw')"></div>
+                                <div class="crop-handle handle-ne" (mousedown)="startCropDrag($event, 'ne')" (touchstart)="startCropDrag($event, 'ne')"></div>
+                                <div class="crop-handle handle-sw" (mousedown)="startCropDrag($event, 'sw')" (touchstart)="startCropDrag($event, 'sw')"></div>
+                                <div class="crop-handle handle-se" (mousedown)="startCropDrag($event, 'se')" (touchstart)="startCropDrag($event, 'se')"></div>
+                                <div class="crop-handle handle-n" (mousedown)="startCropDrag($event, 'n')" (touchstart)="startCropDrag($event, 'n')"></div>
+                                <div class="crop-handle handle-s" (mousedown)="startCropDrag($event, 's')" (touchstart)="startCropDrag($event, 's')"></div>
+                                <div class="crop-handle handle-w" (mousedown)="startCropDrag($event, 'w')" (touchstart)="startCropDrag($event, 'w')"></div>
+                                <div class="crop-handle handle-e" (mousedown)="startCropDrag($event, 'e')" (touchstart)="startCropDrag($event, 'e')"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool Panel -->
+                    <div class="editor-tool-panel">
+                        <!-- Navigation tabs -->
+                        <ul class="nav nav-pills mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'resize'" (click)="activeTab = 'resize'">
+                                    <i class="fas fa-expand-arrows-alt"></i> 1. Đổi kích thước (Resize)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'crop'" (click)="activeTab = 'crop'">
+                                    <i class="fas fa-crop-alt"></i> 2. Cắt ảnh (Crop)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'quality'" (click)="activeTab = 'quality'">
+                                    <i class="fas fa-compress-arrows-alt"></i> 3. Nén & Định dạng (Quality)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'transform'" (click)="activeTab = 'transform'">
+                                    <i class="fas fa-sync-alt"></i> 4. Xoay & Lật
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab 1: Đổi kích thước -->
+                        <div class="tool-section" *ngIf="activeTab === 'resize'">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div>
+                                            <label class="small mb-1 text-muted">Rộng (px):</label>
+                                            <input type="number" class="form-control form-control-sm" [(ngModel)]="resizeWidth" (input)="onResizeWidthChange()">
+                                        </div>
+                                        <div class="text-center pt-3">
+                                            <button type="button" class="btn btn-sm" [ngClass]="aspectRatioLocked ? 'btn-primary' : 'btn-outline-secondary'" 
+                                                (click)="aspectRatioLocked = !aspectRatioLocked" [title]="aspectRatioLocked ? 'Đang khóa tỷ lệ' : 'Tỷ lệ tự do'">
+                                                <i class="fas" [ngClass]="aspectRatioLocked ? 'fa-link' : 'fa-unlink'"></i>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <label class="small mb-1 text-muted">Cao (px):</label>
+                                            <input type="number" class="form-control form-control-sm" [(ngModel)]="resizeHeight" (input)="onResizeHeightChange()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 mb-2">
+                                    <label class="small mb-1 text-muted d-block">Kích thước mẫu:</label>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset(1.0)">100% (Gốc)</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset(0.75)">75%</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset(0.5)">50%</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset(0.25)">25%</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset('1920')">1920px</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset('1280')">1280px</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset('800')">800px</button>
+                                    <button type="button" class="btn-preset" (click)="setResizePreset('400')">400px</button>
+                                </div>
+                                <div class="col-md-3 mb-2 text-md-right pt-md-3">
+                                    <button type="button" class="btn btn-sm btn-success" (click)="applyResize()">
+                                        <i class="fas fa-check mr-1"></i> Áp dụng kích thước
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Cắt ảnh -->
+                        <div class="tool-section" *ngIf="activeTab === 'crop'">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 mb-2">
+                                    <span class="small font-weight-bold mr-2 text-muted">Tỷ lệ cắt:</span>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === 'free'" (click)="setCropRatio('free')">Tự do</button>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === '1:1'" (click)="setCropRatio('1:1')">1:1 (Vuông)</button>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === '4:3'" (click)="setCropRatio('4:3')">4:3</button>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === '16:9'" (click)="setCropRatio('16:9')">16:9</button>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === '3:2'" (click)="setCropRatio('3:2')">3:2</button>
+                                    <button type="button" class="btn-preset" [class.active]="cropRatio === '2:3'" (click)="setCropRatio('2:3')">2:3 (Dọc)</button>
+                                </div>
+                                <div class="col-md-4 mb-2 text-md-right">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="resetCrop()">
+                                        <i class="fas fa-undo mr-1"></i> Khung đầy đủ
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-success" (click)="applyCrop()">
+                                        <i class="fas fa-check mr-1"></i> Áp dụng cắt
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Nén & Định dạng -->
+                        <div class="tool-section" *ngIf="activeTab === 'quality'">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 mb-2">
+                                    <label class="small font-weight-bold mb-1 text-muted">Định dạng xuất:</label>
+                                    <div class="btn-group btn-group-sm w-100" role="group">
+                                        <button type="button" class="btn" [ngClass]="outputFormat === 'image/jpeg' ? 'btn-primary' : 'btn-outline-secondary'" (click)="outputFormat = 'image/jpeg'; onQualityOrFormatChange()">
+                                            JPG (Khuyên dùng)
+                                        </button>
+                                        <button type="button" class="btn" [ngClass]="outputFormat === 'image/webp' ? 'btn-primary' : 'btn-outline-secondary'" (click)="outputFormat = 'image/webp'; onQualityOrFormatChange()">
+                                            WEBP
+                                        </button>
+                                        <button type="button" class="btn" [ngClass]="outputFormat === 'image/png' ? 'btn-primary' : 'btn-outline-secondary'" (click)="outputFormat = 'image/png'; onQualityOrFormatChange()">
+                                            PNG
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 mb-2" *ngIf="outputFormat !== 'image/png'">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="small font-weight-bold text-muted">Chất lượng ảnh:</span>
+                                        <span class="badge badge-primary">{{ quality }}%</span>
+                                    </div>
+                                    <input type="range" class="custom-range" min="10" max="100" step="5" [(ngModel)]="quality" (input)="onQualityOrFormatChange()">
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>10% (Nhẹ nhất)</span>
+                                        <span>80% (Khuyên dùng)</span>
+                                        <span>100% (Cao nhất)</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-2" *ngIf="outputFormat === 'image/png'">
+                                    <small class="text-muted d-block pt-3">
+                                        <i class="fas fa-info-circle mr-1"></i> Định dạng PNG giữ nguyên độ sắc nét và trong suốt (không nén chất lượng).
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 4: Xoay & Lật -->
+                        <div class="tool-section" *ngIf="activeTab === 'transform'">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="rotate(-90)">
+                                    <i class="fas fa-undo mr-1"></i> Xoay trái 90°
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="rotate(90)">
+                                    <i class="fas fa-redo mr-1"></i> Xoay phải 90°
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="flip(true, false)">
+                                    <i class="fas fa-arrows-alt-h mr-1"></i> Lật ngang
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="flip(false, true)">
+                                    <i class="fas fa-arrows-alt-v mr-1"></i> Lật dọc
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Information Badges -->
+                        <div class="stats-badge-wrap mt-3 pt-2 border-top">
+                            <span class="stat-badge stat-orig">
+                                <i class="fas fa-image mr-1"></i> Gốc: <strong>{{ originalWidth }}x{{ originalHeight }} px</strong> ({{ originalSizeText }})
+                            </span>
+                            <span class="stat-badge stat-new">
+                                <i class="fas fa-magic mr-1"></i> Hiện tại: <strong>{{ currentWidth }}x{{ currentHeight }} px</strong>
+                            </span>
+                            <span class="stat-badge stat-new" *ngIf="compressedSizeText">
+                                <i class="fas fa-weight-hanging mr-1"></i> Sau xử lý: <strong>{{ compressedSizeText }}</strong>
+                            </span>
+                            <span class="stat-badge stat-saved" *ngIf="savedPercentText">
+                                <i class="fas fa-arrow-down mr-1"></i> Giảm: <strong>{{ savedPercentText }}</strong>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,10 +359,13 @@
 
 <div class="p-footer">
     <div class="f-contains">
-        <button class="btn bg-pro color-white" type="submit" [disabled]="isLoading" (click)="submit()">
-            {{ isLoading ? 'Đang tải...' : 'Tạo' }}
-            <span *ngIf="isLoading" class="loading-dots"></span>
-          </button>
-        <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+        <button class="btn btn-outline-danger" type="button" (click)="cancel()" [disabled]="isUploading">
+            <i class="fas fa-times mr-1"></i> Hủy
+        </button>
+        <button class="btn bg-pro color-white" type="button" (click)="submit()" [disabled]="isUploading">
+            <i class="fas fa-spinner fa-spin mr-1" *ngIf="isUploading"></i>
+            <i class="fas fa-upload mr-1" *ngIf="!isUploading"></i>
+            <span>{{ objectType == 'folder' ? 'Tạo thư mục' : (isImageMode ? 'Lưu & Tải lên' : 'Tải lên') }}</span>
+        </button>
     </div>
-</div>
+</div>

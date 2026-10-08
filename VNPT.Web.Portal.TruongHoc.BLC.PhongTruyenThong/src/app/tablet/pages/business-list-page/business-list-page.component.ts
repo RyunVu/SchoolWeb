@@ -5,6 +5,7 @@ import { SearchEntity } from 'src/app/shared';
 import { HomePageService } from '../../services';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-list-page',
   templateUrl: './business-list-page.component.html',

@@ -268,7 +268,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
 			}
 		}
 		//todo: chưa chuyển store
-		public async Task<JsonResult> GetNewsList2(NewsInput input)
+		public JsonResult GetNewsList2(NewsInput input)
 		{
 			input.Code = string.IsNullOrEmpty(input.Code) ? NewsCode.TINHOATDONGCUAXA : input.Code;
 			input.Code = input.Code.TrimEnd('/');

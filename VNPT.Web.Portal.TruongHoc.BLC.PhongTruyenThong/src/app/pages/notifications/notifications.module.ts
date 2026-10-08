@@ -28,9 +28,6 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
     DynamicDialogModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [
-    NotificationsModal
-  ],
   providers: [
     ToastrService
   ]

@@ -20,7 +20,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
 {
     public class TraCuuDiemController : Controller
     {
-        public async Task<JsonResult> ExportFile(TraCuuDiemModel model)
+        public JsonResult ExportFile(TraCuuDiemModel model)
         {
             try
             {

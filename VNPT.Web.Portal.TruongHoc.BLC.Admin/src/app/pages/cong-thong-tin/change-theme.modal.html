@@ -1,0 +1,77 @@
+<div class="change-theme">
+    <div class="ct-portal">
+        <div>
+            <div class="ct-portal-name">{{ portal?.Name }}</div>
+            <div class="text-muted small">Mã đơn vị: <b>{{ portal?.UnitCode }}</b> · Giao diện hiện tại: <b>{{ portal?.ThemeName || '---' }}</b></div>
+        </div>
+    </div>
+
+    @if (!result) {
+        <div class="ct-hint">
+            <i class="fas fa-info-circle mr-1"></i>
+            Khi áp dụng: nếu chưa có thư mục <code>Views/Shared/Portals/{{ portal?.UnitCode }}</code> thì hệ thống tạo mới;
+            nếu đã có thì sao lưu toàn bộ vào <code>{{ portal?.UnitCode }}/backup/&lt;thời gian&gt;</code>
+            rồi chép thư mục giao diện mặc định (<code>Default/&lt;giao diện&gt;</code>) vào. Mọi trang của cổng chuyển sang giao diện mới.
+        </div>
+
+        @if (loading) {
+            <div class="text-center text-muted py-4"><i class="fas fa-spinner fa-spin mr-1"></i> Đang tải danh sách giao diện...</div>
+        } @else {
+            <div class="ct-grid">
+                @for (theme of themes; track theme.Id) {
+                    <div class="ct-card" [class.is-selected]="sameId(theme.Id, selectedThemeId)" [class.is-current]="isCurrent(theme)"
+                        (click)="select(theme)" role="radio" [attr.aria-checked]="sameId(theme.Id, selectedThemeId)" tabindex="0"
+                        (keyup.enter)="select(theme)">
+                        <div class="ct-card-top">
+                            <span class="ct-radio"><i class="fas fa-check"></i></span>
+                            <span class="ct-card-name">{{ theme.Name }}</span>
+                            @if (isCurrent(theme)) {
+                                <span class="badge badge-success">Đang dùng</span>
+                            }
+                        </div>
+                        <div class="ct-card-url"><i class="fas fa-folder mr-1"></i>Default/{{ theme.Url }}</div>
+                        @if (theme.Description) {
+                            <div class="ct-card-desc">{{ theme.Description }}</div>
+                        }
+                        @if (previewUrl(theme); as url) {
+                            <a class="ct-card-preview" [href]="url" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+                                <i class="fas fa-external-link-alt mr-1"></i>Xem thử trên cổng
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    } @else {
+        <div class="ct-result">
+            <div class="ct-result-title"><i class="fas fa-check-circle mr-1"></i> Đã đổi sang giao diện <b>{{ result.ThemeName }}</b></div>
+            <ul>
+                <li>Thư mục giao diện của cổng: <code>{{ result.UnitFolder }}</code>
+                    {{ result.CreatedUnitFolder ? '(tạo mới)' : '' }}</li>
+                @if (result.BackupFolder) {
+                    <li>Bản sao lưu: <code>{{ result.BackupFolder }}</code></li>
+                } @else {
+                    <li>Chưa có thư mục cũ nên không cần sao lưu.</li>
+                }
+                <li>Đã chuyển layout cho <b>{{ result.SiteCount }}</b> trang của cổng.</li>
+            </ul>
+            @if (portalUrl) {
+                <a class="btn btn-outline-primary btn-sm" [href]="portalUrl" target="_blank" rel="noopener">
+                    <i class="fas fa-external-link-alt mr-1"></i> Mở cổng
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<div class="p-footer">
+    <div class="f-contains">
+        @if (!result) {
+            <button class="btn btn-info" type="button" (click)="apply()"
+                [disabled]="saving || !selectedThemeId || sameId(selectedThemeId, currentThemeId)">
+                @if (saving) { <i class="fas fa-spinner fa-spin mr-1"></i> } Áp dụng giao diện
+            </button>
+        }
+        <button class="btn btn-outline-danger" type="button" (click)="close()">{{ result ? 'Đóng' : 'Thoát' }}</button>
+    </div>
+</div>

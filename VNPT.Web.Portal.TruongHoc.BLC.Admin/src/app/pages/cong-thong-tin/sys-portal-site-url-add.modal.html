@@ -19,9 +19,9 @@
 
             <div class="form-group">
                 <label for="Name">Chủ đề <span class="text-danger">(*)</span></label>
-                <p-dropdown [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id" [filter]="true"
+                <p-select [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id" [filter]="true"
                     filterBy="Name" appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>

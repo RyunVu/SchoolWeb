@@ -1,13 +1,15 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
 import { PositionModal } from './position.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-position',
     templateUrl: './position.component.html',
     styleUrls: ['./position.component.scss'],
@@ -52,7 +54,7 @@ export class PositionComponent extends BasePage {
             },
             header: 'Thêm mới chức vụ',
             width: '40%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -66,7 +68,7 @@ export class PositionComponent extends BasePage {
             },
             header: 'Cập nhật chức vụ',
             width: '40%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -113,7 +115,7 @@ export class PositionComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();

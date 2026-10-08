@@ -1,0 +1,200 @@
+﻿@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.DTO
+
+@{
+    Layout = ViewBag.Layout;
+    var information = Session["PortalInformation"] as PortalInformation;
+    var keyStr = Request.QueryString["keyword"] != null ? Request.QueryString["keyword"].ToLower() : "";
+    var linkImg = SystemParameterDto.GetParameter("MEDIAURL", null, information.PortalCode.ToUpper()).Value2;
+
+    HttpCookie cookie = Request.Cookies["Language_Portal"];
+
+    string lang = "vi";
+
+    if (cookie != null)
+    {
+        lang = cookie.Value;
+        // Use the cookie value as needed
+    }
+
+    var codename = "Tìm kiếm cho từ khóa: " + keyStr;
+
+    if (lang != "vi")
+    {
+        codename = "Search for keyword: " + keyStr;
+    }
+}
+@section MetaData {
+    @Html.Action("Index", "Metadata", new { area = "Modules", Type = MetaDataType.Portal, Keywords = ViewBag.Tag, Title = ViewBag.Title, Description = ViewBag.Description })
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-push-4">
+            <div class="site_block_title">
+                <h3>
+                    <a>
+                        <i class="fa fa-file-text"></i>
+                        @codename
+                    </a>
+                </h3>
+            </div>
+            <div class="list-news-cate" id="lstVanBanPl">
+            </div>
+            <div class="pagination-primary" id="paginationholder">
+                <ul class="pagination" id="pagination"></ul>
+            </div>
+            <div class="loading-box" aria-hidden="true" style="display: none;">
+                <div class="box-show">
+                    <div class="loading-page"></div>
+                    <div class="box-content">Đang tải ...</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-md-pull-8 sidebar-mobile-ontop">
+            @Html.Partial("~/Views/Shared/Portals/Layouts/TruongHocTrangNha/_Sidebar.cshtml")
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery.twbsPagination.min.js"></script>
+
+@section scripts {
+    <script type="text/javascript">
+        function CutString(number, stringContent) {
+            var content = $(stringContent).text();
+            var c = content.substr(0, number);
+            return c;
+        }
+        function convertDate(dateString) {
+            // Extracting the timestamp from the provided string
+            const timestamp = parseInt(dateString.match(/\d+/)[0]);
+
+            // Creating a new Date object using the timestamp
+            const date = new Date(timestamp);
+
+            // Extracting day, month, and year from the Date object
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to month because January is 0
+            const year = date.getFullYear();
+
+            // Returning the formatted date string
+            return `${day}/${month}/${year}`;
+        }
+
+        var commonConfig = {
+            pageSize: 10,
+            page: 1,
+            number: 100000,
+            isClear: 0,
+        }
+
+        var linkImg = '@linkImg';
+        var url_api = '@Url.Action("SearchNews", "CongDoan", new { area = "Modules" })';
+
+        var obj = {
+            page: commonConfig.page,
+            pageSize: commonConfig.pageSize,
+            keyword: '@Html.Raw(keyStr)',
+            number: commonConfig.number
+        };
+
+        var main = {
+            loadData: function () {
+                $.ajax({
+                    type: "POST",
+                    data: obj,
+                    url: url_api,
+                    beforeSend: function () {
+                        loading.showLoading();
+                    },
+                    success: function (response) {
+                        const res = response.data || [];
+
+                        if (res.length > 0) {
+                            var html = '';
+                            $.each(res, function (key, item) {
+                                var content = CutString(300, item.Content) + '...';
+                                var imgUrl = item.ImageUrl ? config.UrlImage(item.ImageUrl) : '/Images/noimage.png';
+                                var detailUrl = '@Url.Site("chi-tiet-tin-tuc", parameter: new { param = "alias" })'.replace('alias', item.Alias);
+                                html += '<div class="box-news-cate">'
+                                            + '<a class="img" href="' + detailUrl + '" title="' + item.Title + '" >'
+                                            + '<img src="' + imgUrl + '" alt="' + item.Title + '" >'
+                                            + '</a>'
+                                            + '<div class="title">'
+                                                + '<h3><a  href="' + detailUrl + '" title="' + item.Title + '">' + item.Title + '</a></h3>'
+                                                + '<span class="time-primary"><i class="fa fa-clock-o"></i>' + convertDate(item.CreateDate) + '</span>'
+                                                + '<span class="desc-primary" > ' + content + ' </span>'
+                                            + '</div>'
+                                        + '</div>';
+                            });
+
+                            main.pagingPage(response.total, commonConfig.isClear, function () {
+                                main.loadData();
+                            });
+
+                            $("#lstVanBanPl").html(html);
+
+                            $("#lstVanBanPl").find("a").each(function () {
+                                var href = $(this).attr("href"), data = $(this).attr("data-href");
+                                if (data != undefined) {
+                                    $(this).attr("href", href + data);
+                                }
+                            });
+
+                        } else {
+                            var parentHtml = '<div class="table-text-system table-responsive ">'
+                                + '<h4>Không tìm thấy dữ liệu</h4>'
+                            + '</div>';
+                            main.pagingPage(0, commonConfig.isClear, function () {
+                                main.loadData();
+                            });
+                            $("#lstVanBanPl").html(parentHtml);
+                        }
+                        loading.hideLoading();
+                    }
+                });
+            },
+            pagingPage: function (totalRow,isClear, callback) {
+                //if (totalRow == 1 || totalRow == 0) {
+                //    totalRow = 1;
+                //    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+                //}
+                var totalPage = Math.ceil(totalRow / commonConfig.pageSize);
+                if (totalPage >= 0 && commonConfig.isClear == 0) {
+                    if (totalPage == 0) {
+                        totalPage = 1;
+                    }
+                    $('#paginationholder').html('<ul id="pagination" class="pagination"></ul>');
+
+                }
+
+                $("#paginationholder #pagination").twbsPagination({
+
+                    totalPages: totalPage,
+                    visiblePages: 6,
+					first: "<<",
+					next: ">",
+					last: ">>",
+					prev: "<",
+                    initiateStartPageClick: false,
+                    onPageClick: function (event, page) {
+                        commonConfig.page = page;
+                        commonConfig.isClear = 1;
+                        obj = {
+                            page: commonConfig.page,
+                            pageSize: commonConfig.pageSize,
+                            keyword: '@Html.Raw(keyStr)',
+                            number: commonConfig.number
+                        };
+                        setTimeout(callback, 200);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            main.loadData();
+        });
+    </script>
+}

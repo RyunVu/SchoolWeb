@@ -17,13 +17,12 @@
         <div class="col-md-9 col-12">
             <!-- this creates a google map on the page with the given lat/lng from -->
             <!-- the component as the initial center of the map: -->
-            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId">
-                <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="mapOptions.iconHome">
-                    <agm-info-window [isOpen]="viewedPermit?.Id === marker?.entity?.Id">
-                        <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
-                    </agm-info-window>
-                </agm-marker>
-            </agm-map>
+            <app-gmap [lat]="mapOptions.lat" [lng]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId"
+                [markers]="mapOptions.markers" [icon]="mapOptions.iconHome" [infoOpen]="isViewedMarker">
+                <ng-template #info let-marker>
+                    <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
+                </ng-template>
+            </app-gmap>
             <div class="btn-icon">
                 <div class="a-icon" (click)="changeMapType()">
                     <a title="Thay đổi chế độ bản đồ" target="_blank"><img src="assets/img/{{mapTypeId=='roadmap'?'btnMapTypeStreet.png':'btnMapType.png'}}"></a>

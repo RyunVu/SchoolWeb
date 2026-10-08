@@ -8,6 +8,7 @@ import { BasePage, HttpService } from 'src/app/services';
 import { NotificationsModal } from './notifications.modal';
 
 @Component({
+  standalone: false,
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
@@ -52,7 +53,7 @@ export class NotificationsComponent extends BasePage {
       },
       header: 'Thêm mới thông báo',
       width: '70%'
-    }).onClose.subscribe((data: any) => {
+    })!.onClose.subscribe((data: any) => {
       if (data) {
         this.loadData();
       }
@@ -66,7 +67,7 @@ export class NotificationsComponent extends BasePage {
       },
       header: 'Cập nhật thông báo',
       width: '70%',
-    }).onClose.subscribe((data: any) => {
+    })!.onClose.subscribe((data: any) => {
       if (data) {
         this.loadData();
       }

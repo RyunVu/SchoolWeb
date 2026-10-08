@@ -11,3 +11,39 @@
 .main-header{
   z-index: 809;
 }
+.header-search {
+  flex: 1 1 auto;
+  max-width: 560px;
+
+  .input-group {
+    width: 100%;
+  }
+
+  .form-control {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 0;
+    color: #fff;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    &:focus {
+      background-color: #fff;
+      color: #495057;
+      box-shadow: none;
+    }
+  }
+
+  .btn-navbar {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 0;
+    color: #fff;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .header-search {
+    display: none !important;
+  }
+}

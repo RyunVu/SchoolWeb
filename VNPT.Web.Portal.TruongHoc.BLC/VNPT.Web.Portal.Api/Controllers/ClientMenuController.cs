@@ -16,6 +16,19 @@ namespace VNPT.Web.Portal.Api.Controllers
     [VnptAuthorization]
     public class ClientMenuController : ApiController
     {
+        /// <summary>
+        /// Đơn vị (cổng) cần thao tác: SuperAdminSystem được chọn cổng qua UnitCode gửi lên,
+        /// các tài khoản khác luôn dùng đơn vị của chính mình.
+        /// </summary>
+        private string ResolveUnitCode(string requestedUnitCode)
+        {
+            if (User.IsInRole(RoleCode.SuperAdminSystem) && !string.IsNullOrEmpty(requestedUnitCode))
+            {
+                return requestedUnitCode;
+            }
+            return User.Identity.GetValue(UserCode.UnitCode, "");
+        }
+
         [HttpPost]
         public IHttpActionResult ParentMenus(MenuModel model)
         {
@@ -25,7 +38,7 @@ namespace VNPT.Web.Portal.Api.Controllers
                 {
                     var minRoleLevel = User.Identity.GetValue<int>(UserCode.RoleLevel);
                     var menuCode = "PORTAL".ToLower();
-                    var unitCode = User.Identity.GetValue(UserCode.UnitCode, "").ToLower();
+                    var unitCode = ResolveUnitCode(model.UnitCode).ToLower();
                     var items = context.SystemMenus.Where(s => s.Status != StatusEnum.Deleted && s.RoleLevel >= minRoleLevel && s.MenuCode.ToLower() == menuCode && s.UnitCode.ToLower() == unitCode);
 
                     if (!string.IsNullOrEmpty(model.Keyword))
@@ -68,7 +81,7 @@ namespace VNPT.Web.Portal.Api.Controllers
                 {
                     var minRoleLevel = User.Identity.GetValue<int>(UserCode.RoleLevel);
                     var menuCode = "PORTAL".ToLower();
-                    var unitCode = User.Identity.GetValue(UserCode.UnitCode, "").ToLower();
+                    var unitCode = ResolveUnitCode(model.UnitCode).ToLower();
 
                     var items = context.SystemMenus.Where(s => s.Status != StatusEnum.Deleted
                                                                && s.RoleLevel >= minRoleLevel
@@ -165,7 +178,7 @@ namespace VNPT.Web.Portal.Api.Controllers
             {
                 using (var context = new WebDbContext())
                 {
-                    var unitCode = User.Identity.GetValue(UserCode.UnitCode, "").ToLower();
+                    var unitCode = ResolveUnitCode(model.UnitCode).ToLower();
                     var news = context.News.Where(s => s.Status != StatusEnum.Deleted && s.Code == model.Parameter && s.UnitCode.ToLower() == unitCode).ToList();
                     return Json(new ResultModel()
                     {
@@ -214,7 +227,7 @@ namespace VNPT.Web.Portal.Api.Controllers
                 model.Value = code;
                 using (var context = new WebDbContext())
                 {
-                    var currentUnitCode = User.Identity.GetValue(UserCode.UnitCode, "");
+                    var currentUnitCode = ResolveUnitCode(model.UnitCode);
                     if (currentUnitCode == "LDG")
                     {
 
@@ -299,7 +312,7 @@ namespace VNPT.Web.Portal.Api.Controllers
                 {
                     parentId = Guid.Parse(model.ParentId);
                 }
-                var currentUnitCode = User.Identity.GetValue(UserCode.UnitCode, "");
+                var currentUnitCode = ResolveUnitCode(model.UnitCode);
                 model.MenuCode = "PORTAL";
                 using (var context = new WebDbContext())
                 {
@@ -484,6 +497,68 @@ namespace VNPT.Web.Portal.Api.Controllers
                 });
             }
         }
+        /// <summary>
+        /// Bật/tắt hiển thị menu (IsShowMenu 0/1) mà không thay đổi các thông tin khác.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult ChangeShowMenu(MenuModel model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.Id) || !Guid.TryParse(model.Id, out var id))
+                {
+                    return Json(new ResultModel()
+                    {
+                        Code = ResultCode.DataNotEnough,
+                        Message = "Menu không tồn tại"
+                    });
+                }
+                using (var context = new WebDbContext())
+                {
+                    var item = context.SystemMenus.FirstOrDefault(s => s.Status == StatusEnum.Used && s.Id == id);
+                    if (item == null)
+                    {
+                        return Json(new ResultModel()
+                        {
+                            Code = ResultCode.UnSuccess,
+                            Message = "Menu đã bị xoá hoặc không tồn tại!"
+                        });
+                    }
+
+                    // Chỉ SuperAdminSystem được đổi menu của cổng khác
+                    var unitCode = ResolveUnitCode(item.UnitCode);
+                    if (!string.Equals(item.UnitCode, unitCode, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return Json(new ResultModel()
+                        {
+                            Code = ResultCode.UnSuccess,
+                            Message = "Bạn không có quyền thay đổi menu của đơn vị khác!"
+                        });
+                    }
+
+                    item.IsShowMenu = model.IsShowMenu;
+                    item.UpdateDate = DateTime.Now;
+                    item.UpdateUserId = User.Identity.GetUserId();
+                    context.Entry(item).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    return Json(new ResultModel()
+                    {
+                        Code = ResultCode.Success,
+                        Result = item.IsShowMenu
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel()
+                {
+                    Code = ResultCode.UnknowError,
+                    Message = e.Message
+                });
+            }
+        }
+
         [HttpPost]
         public IHttpActionResult SaveDanhMuc(MenuModel model)
         {

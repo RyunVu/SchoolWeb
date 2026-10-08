@@ -25,7 +25,6 @@ import { BaiVietTieuSuModal } from './bai-viet-tieu-su.modal';
     DanhSachTieuSuRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DanhSachTieuSuModal, BaiVietTieuSuModal],
   providers: [ToastrService],
 })
 export class DanhSachTieuSuModule {}

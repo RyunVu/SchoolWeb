@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { stringify } from '@angular/compiler/src/util';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
+    standalone: false,
     name: 'datetimePipe',
 })
 export class datetimePipe implements PipeTransform {

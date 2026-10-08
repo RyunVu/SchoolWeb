@@ -1,12 +1,14 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
 import { UnitModal } from './units.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-units',
     templateUrl: './units.component.html',
     styleUrls: ['./units.component.scss'],
@@ -50,7 +52,7 @@ export class UnitComponent extends BasePage {
             },
             header: 'Thêm mới đơn vị',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -64,7 +66,7 @@ export class UnitComponent extends BasePage {
             },
             header: 'Cập nhật đơn vị',
             width: '70%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -101,7 +103,7 @@ export class UnitComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();

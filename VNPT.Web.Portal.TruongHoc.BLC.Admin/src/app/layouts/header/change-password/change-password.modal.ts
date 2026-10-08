@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
 @Component({
+    standalone: false,
     selector: "change-password-modal",
     templateUrl: 'change-password.modal.html',
     styleUrls: ['./change-password.modal.scss'],

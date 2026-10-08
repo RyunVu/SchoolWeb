@@ -20,8 +20,8 @@
   <div class="col-md-4">
     <div class="form-group">
       <label for="ngayBanHanh">Ngày ban hành <span class="text-danger">(*)</span></label>
-      <p-calendar [(ngModel)]="ngayBanHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
-        appendTo="body"></p-calendar>
+      <p-datepicker [(ngModel)]="ngayBanHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+        appendTo="body"></p-datepicker>
     </div>
   </div>
   <div class="col-md-6">
@@ -34,18 +34,18 @@
     <div class="form-group">
       <label for="coQuanBanHanh">Cơ quan ban hành</label>
       <!-- <input type="text" class="form-control" [(ngModel)]="coQuanBanHanh" /> -->
-      <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="coQuanBanHanh"
+      <p-select optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="coQuanBanHanh"
         [options]="docCoQuanBhs" appendTo="body">
-      </p-dropdown>
+      </p-select>
     </div>
   </div>
   <div class="col-md-6">
     <div class="form-group">
       <label for="docType">Loại văn bản</label>
       <div>
-        <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="loaiVanBan" [options]="docTypes"
+        <p-select optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="loaiVanBan" [options]="docTypes"
           appendTo="body">
-        </p-dropdown>
+        </p-select>
       </div>
     </div>
   </div>
@@ -53,9 +53,9 @@
     <div class="form-group">
       <label for="linhVuc">Lĩnh vực</label>
       <!-- <input type="text" class="form-control" [(ngModel)]="linhVuc" /> -->
-      <p-dropdown optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="linhVuc" [options]="docLinhVucs"
+      <p-select optionLabel="Name" optionValue="Name" [filter]="true" [(ngModel)]="linhVuc" [options]="docLinhVucs"
         appendTo="body">
-      </p-dropdown>
+      </p-select>
     </div>
   </div>
   <div class="col-md-6">
@@ -67,8 +67,8 @@
   <div class="col-md-6">
     <div class="form-group">
       <label for="ngayPhatHanh">Ngày phát hành</label>
-      <p-calendar [(ngModel)]="ngayPhatHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
-        appendTo="body"></p-calendar>
+      <p-datepicker [(ngModel)]="ngayPhatHanh" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+        appendTo="body"></p-datepicker>
     </div>
   </div>
 

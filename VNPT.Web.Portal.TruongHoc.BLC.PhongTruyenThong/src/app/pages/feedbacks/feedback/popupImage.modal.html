@@ -1,6 +1,6 @@
 <!-- <p-toast></p-toast> -->
 <div class="customStyle">
-    <p-galleria [(value)]="items" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="4">
+    <p-galleria [value]="items" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="4">
         <ng-template pTemplate="item" let-item>
             <a href="{{item.Url | imageUrlPipe}}" target="_blank">
                 <img [src]="item.Url | imageUrlPipe" style="width: 100%; display: block;" />

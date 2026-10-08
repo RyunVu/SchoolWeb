@@ -13,6 +13,7 @@ import { ChangePasswordModal } from "../change-password/change-password.modal";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 @Component({
+    standalone: false,
     selector: "app-user-dropdown-menu",
     templateUrl: "./user-dropdown-menu.component.html",
     styleUrls: ["./user-dropdown-menu.component.scss"],
@@ -83,7 +84,7 @@ export class UserDropdownMenuComponent implements OnInit {
                 header: "Lịch sử đăng nhập",
                 width: "70%",
                 baseZIndex: -700,
-            })
+            })!
             .onClose.subscribe((data: any) => { });
     }
 
@@ -94,7 +95,7 @@ export class UserDropdownMenuComponent implements OnInit {
     //         },
     //         header: 'Thay đổi mật khẩu',
     //         width: '60%'
-    //     }).onClose.subscribe((data: any) => {
+    //     })!.onClose.subscribe((data: any) => {
     //         if (data) {
 
     //         }

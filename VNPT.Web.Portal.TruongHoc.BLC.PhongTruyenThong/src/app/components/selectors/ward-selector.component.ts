@@ -17,10 +17,11 @@ import { HttpService } from 'src/app/services';
  * Custom selector for Ward List
  */
 @Component({
+    standalone: false,
     // tslint:disable-next-line: component-selector
     selector: 'ward-selector',
     template: `
-    <p-dropdown
+    <p-select
       [options]="wards"
       styleClass="w-100"
       [(ngModel)]="selectedValue"
@@ -32,10 +33,9 @@ import { HttpService } from 'src/app/services';
       [placeholder]="placeholder"
       [appendTo]="appendTo"
       [inputId]="inputId"
-      [autoDisplayFirst]="false"
       emptyMessage="Không có dữ liệu"
       emptyFilterMessage="Không có dữ liệu"
-    ></p-dropdown>
+    ></p-select>
   `,
     providers: [
         {

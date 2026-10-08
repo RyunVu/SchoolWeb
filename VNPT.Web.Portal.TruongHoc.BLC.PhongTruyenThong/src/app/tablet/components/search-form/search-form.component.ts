@@ -13,6 +13,7 @@ import { SearchEntity } from 'src/app/shared';
 import { tinhTrangXayDung, feeStatuses } from 'src/app/shared/constants';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'search-form',
   templateUrl: './search-form.component.html',

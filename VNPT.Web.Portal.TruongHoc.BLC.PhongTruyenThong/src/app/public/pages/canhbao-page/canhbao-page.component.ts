@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 
 import {
   gmDefaultStyles,
@@ -18,6 +17,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { CanhBaoModal } from './canhbao-modal/canhbao.modal';
 
 @Component({
+  standalone: false,
   selector: 'app-canhbao-page',
   templateUrl: './canhbao-page.component.html',
   styleUrls: ['./canhbao-page.component.scss'],
@@ -30,7 +30,6 @@ export class CanhBaoPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
   ) { }
 
@@ -46,7 +45,7 @@ export class CanhBaoPageComponent implements OnInit, OnDestroy {
         },
         header: 'Cảnh báo vệ sinh an toàn thực phẩm',
         width: '55%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           //this.loadData();

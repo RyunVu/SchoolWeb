@@ -10,6 +10,7 @@ import { PermitPageService } from '../../services';
 
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'permit-page',
   templateUrl: './permit-page.component.html',
@@ -36,6 +37,7 @@ export class PermitPageComponent implements OnInit, OnDestroy {
   mapTypeId: any = 'roadmap';
   initSearch = false;
   viewedPermit: any;
+  isViewedMarker = (marker: any): boolean => this.viewedPermit?.Id === marker?.entity?.Id;
   params: any;
   routeSub: Subscription | undefined;
 

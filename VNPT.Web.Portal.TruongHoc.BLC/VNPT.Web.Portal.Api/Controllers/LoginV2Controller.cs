@@ -506,7 +506,7 @@ namespace VNPT.Web.Portal.Api.Controllers
         }
         [VnptAuthorization(IsForAll = true)]
         [HttpPost]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
+        public IHttpActionResult ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
             {

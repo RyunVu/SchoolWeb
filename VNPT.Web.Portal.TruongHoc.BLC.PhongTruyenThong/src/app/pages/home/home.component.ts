@@ -3,6 +3,7 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { BaseService, HttpService } from 'src/app/services';
 
 @Component({
+  standalone: false,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

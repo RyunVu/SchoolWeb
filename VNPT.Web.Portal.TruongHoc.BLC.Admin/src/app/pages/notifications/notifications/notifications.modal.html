@@ -16,8 +16,8 @@
     <div class="col-md-12">
         <div class="form-group">
             <label for="Name">Huyện/Thành phố</label>
-            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body">
-            </p-dropdown>
+            <p-select [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body">
+            </p-select>
         </div>
     </div>
 </div>

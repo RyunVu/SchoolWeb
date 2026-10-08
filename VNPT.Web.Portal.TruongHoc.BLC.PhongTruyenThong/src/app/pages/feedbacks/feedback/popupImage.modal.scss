@@ -1,5 +1,5 @@
 popupimage-modal {
-  .p-dropdown {
+  .p-select {
     width: 100%;
   }
   .p-autocomplete {
@@ -9,7 +9,7 @@ popupimage-modal {
     width: 100%;
   }
 
-  .p-calendar {
+  .p-datepicker {
     width: 100%;
   }
   .p-multiselect {
@@ -60,13 +60,13 @@ popupimage-modal {
     margin-top: 8px;
   }
 
-  .p-galleria .p-galleria-thumbnail-container {
+  .p-galleria .p-galleria-thumbnails-content {
     background: rgba(255, 255, 255, 1);
     padding: 0;
     position: relative;
   }
-  .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
-  .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
+  .p-galleria .p-galleria-thumbnails-content .p-galleria-thumbnail-prev-button,
+  .p-galleria .p-galleria-thumbnails-content .p-galleria-thumbnail-next-button {
     color: #777;
   }
   .p-galleria-item {
@@ -88,32 +88,32 @@ popupimage-modal {
     }
   }
 
-  .p-galleria-thumbnail-wrapper {
+  .p-galleria-thumbnails {
     align-items: center;
     margin-top: 5px;
   }
-  .p-galleria-thumbnail-prev {
+  .p-galleria-thumbnail-prev-button {
     position: absolute;
     left: -32px;
     z-index: 999;
   }
-  .p-galleria-thumbnail-next {
+  .p-galleria-thumbnail-next-button {
     position: absolute;
     right: -32px;
     z-index: 999;
   }
 
   @media screen and (max-width: 920px) {
-    .p-galleria .p-galleria-thumbnail-container {
+    .p-galleria .p-galleria-thumbnails-content {
       position: unset;
     }
-    .p-galleria .p-galleria-thumbnail-wrapper {
+    .p-galleria .p-galleria-thumbnails {
       position: relative;
     }
-    .p-galleria-thumbnail-prev {
+    .p-galleria-thumbnail-prev-button {
       left: -1px;
     }
-    .p-galleria-thumbnail-next {
+    .p-galleria-thumbnail-next-button {
       right: -1px;
     }
   }

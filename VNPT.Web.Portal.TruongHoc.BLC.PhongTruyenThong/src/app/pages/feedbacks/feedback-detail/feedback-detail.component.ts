@@ -1,6 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
@@ -9,8 +10,8 @@ import { UserModal } from '../../systems/user/user.modal';
 import { FeedbackDetailModal } from './feedback-detail.modal';
 
 import { HttpClient } from '@angular/common/http';
-import * as JSZip from 'jszip';
-import * as moment from 'moment';
+import JSZip from 'jszip';
+import moment from 'moment';
 import * as fs from 'file-saver';
 import { FeedbackChiDaoModal } from './feedback-chidao.modal';
 import { FeedbackChiaSeModal } from './feedback-chiase.modal';
@@ -20,6 +21,7 @@ import { FeedbackBaoCaoModal } from './feedback-baocao.modal';
 import { FeedbackPhatHanhModal } from './feedback-phathanh.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-feedback-detail',
     templateUrl: './feedback-detail.component.html',
     styleUrls: ['./feedback-detail.component.scss'],
@@ -98,7 +100,7 @@ export class FeedbackDetailComponent extends BasePage {
             },
             header: 'Thông tin cán bộ',
             width: '600px'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             
         });
     }
@@ -145,7 +147,7 @@ export class FeedbackDetailComponent extends BasePage {
                 },
                 header: 'Nội dung chỉ đạo',
                 width: '70%'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }
@@ -159,7 +161,7 @@ export class FeedbackDetailComponent extends BasePage {
                 },
                 header: 'Chia sẻ',
                 width: '70%'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }
@@ -173,7 +175,7 @@ export class FeedbackDetailComponent extends BasePage {
                 },
                 header: 'Đổi đơn vị và lĩnh vực xử lý',
                 width: '70%'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }
@@ -188,7 +190,7 @@ export class FeedbackDetailComponent extends BasePage {
                 header: 'Báo cáo quá trình xử lý công việc',
                 width: '70%',
                 styleClass: 'custom-dialog'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }
@@ -202,7 +204,7 @@ export class FeedbackDetailComponent extends BasePage {
                 },
                 header: 'Quá trình xử lý',
                 width: '70%'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }
@@ -394,7 +396,7 @@ export class FeedbackDetailComponent extends BasePage {
                 data: this.item,
                 header: 'Phát hành phản ánh',
                 width: '70%'
-            }).onClose.subscribe((data: any) => {
+            })!.onClose.subscribe((data: any) => {
                 this.loadData();
             });
         }

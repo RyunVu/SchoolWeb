@@ -80,12 +80,13 @@
 
     <div class="sliImage">
 
-      <swiper #swiper [config]="config" class="mySwiper">
-        <ng-template *ngFor="let item of Images" swiperSlide class="itemswiper">
+      <!-- Swiper >= 9 bỏ swiper/angular: dùng Swiper Element (web component) -->
+      <swiper-container #swiper *ngIf="Images?.length" init="false" class="mySwiper">
+        <swiper-slide *ngFor="let item of Images" class="itemswiper">
           <div class="itemSli" [ngStyle]="{'background-image': 'url(' + item.ImageUrl + ')'}">
           </div>
-        </ng-template>
-      </swiper>
+        </swiper-slide>
+      </swiper-container>
 
     </div>
 

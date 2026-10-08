@@ -15,10 +15,11 @@ import { Parameter } from 'src/app/services/staticparameters.service';
  * Custom selector for Cities List
  */
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'city-selector',
   template: `
-    <p-dropdown
+    <p-select
       [options]="cities"
       styleClass="w-100"
       [(ngModel)]="selectedValue"
@@ -30,10 +31,9 @@ import { Parameter } from 'src/app/services/staticparameters.service';
       [appendTo]="appendTo"
       [inputId]="inputId"
       [disabled]="disabled"
-      [autoDisplayFirst]="false"
       emptyMessage="Không có dữ liệu"
       emptyFilterMessage="Không có dữ liệu"
-    ></p-dropdown>
+    ></p-select>
   `,
   providers: [
     {

@@ -13,6 +13,7 @@ import { NewsTypeMenuModal } from "./news-type-menu.modal";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
 @Component({
+    standalone: false,
     selector: "client-menu-modal",
     templateUrl: 'client-menu.modal.html',
     encapsulation: ViewEncapsulation.None,
@@ -23,7 +24,7 @@ import { FileManagerModal } from "src/app/components/file-manager/file-manager.c
 export class ClientMenuModal {
     item: any;
     isSaving: boolean = false;
-    parent: any = "";
+    parent: any = null;
     menus: any[] = [];
     menuTypes: any[] = [];
     actions: any[] = [];
@@ -222,12 +223,17 @@ export class ClientMenuModal {
 
     loadmenus() {
         this.http.post("ClientMenu/menus", {
-            menuPosition: this.item.MenuPosition
+            menuPosition: this.item.MenuPosition,
+            UnitCode: this.item.UnitCode
         }, (result: ResultModel) => {
             if (result.Code == ResultCode.Success) {
-                this.menus = result.Result;
-                this.menus.unshift({ Name: "", Id: "" })
-                if (this.item.ParentId == "" || this.item.ParentId == null) {
+                this.menus = result.Result || [];
+                if (this.config.data?.IsEdit && this.item.Id) {
+                    this.menus = this.menus.filter((m: any) => m.Id != this.item.Id);
+                }
+                this.menus.unshift({ Name: "-- Không chọn --", Id: null });
+                if (!this.item.ParentId) {
+                    this.parent = null;
                 } else {
                     this.parent = this.item.ParentId;
                 }
@@ -264,7 +270,7 @@ export class ClientMenuModal {
     }
 
     submit() {
-        this.item.ParentId = this.parent;
+        this.item.ParentId = this.parent ? this.parent : null;
         this.isSaving = true;
         console.log(this.item.ParentId)
         if (this.item.MenuPosition == null || this.item.MenuPosition == 0) {
@@ -550,7 +556,8 @@ export class ClientMenuModal {
 
     loadLoaiTinTuc(news: any, no: any) {
         this.http.post("ClientMenu/ListLoaiTinTuc", {
-            Value: news
+            Value: news,
+            UnitCode: this.item.UnitCode
         }, (result: ResultModel) => {
             if (result.Code == ResultCode.Success) {
                 if (no == 1) {
@@ -575,7 +582,8 @@ export class ClientMenuModal {
         console.log(this.news)
         if (this.item.Action == 'chi-tiet-tin-tuc') {
             this.http.post("ClientMenu/GetNews", {
-                Parameter: this.news
+                Parameter: this.news,
+                UnitCode: this.item.UnitCode
             }, (result: ResultModel) => {
                 if (result.Code == ResultCode.Success) {
                     this.newsDetails = result.Result;
@@ -623,7 +631,7 @@ export class ClientMenuModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;

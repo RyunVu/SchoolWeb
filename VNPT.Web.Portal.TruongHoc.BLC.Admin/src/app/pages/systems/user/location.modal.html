@@ -3,9 +3,9 @@
     <div class="col-lg-12">
         <div class="form-group">
             <label for="Province">Tỉnh/Tp</label>
-            <p-dropdown [options]="provinces" [(ngModel)]="province" optionLabel="Name" [filter]="true" 
+            <p-select [options]="provinces" [(ngModel)]="province" optionLabel="Name" [filter]="true" 
                 filterBy="Name" placeholder="Chọn tỉnh" appendTo="body" disable="true">
-            </p-dropdown>
+            </p-select>
         </div>
     </div>
 </div>
@@ -14,9 +14,9 @@
     <div class="col-lg-12">
         <div class="form-group">
             <label for="Username">Quận/Huyện</label>
-            <p-dropdown [options]="districts" [(ngModel)]="district" optionLabel="Name" [filter]="true" 
+            <p-select [options]="districts" [(ngModel)]="district" optionLabel="Name" [filter]="true" 
                 filterBy="Name" placeholder="Chọn Quận/Huyện" appendTo="body" (onChange)="selectDistrict($event)">
-            </p-dropdown>
+            </p-select>
         </div>
     </div>
 </div>
@@ -25,9 +25,9 @@
     <div class="col-lg-12">
         <div class="form-group">
             <label for="PositionId">Phường/Xã</label>
-            <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" 
+            <p-select [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" 
                 filterBy="Name" placeholder="Chọn Phường/Xã" appendTo="body">
-            </p-dropdown>
+            </p-select>
         </div>
     </div>
 </div>

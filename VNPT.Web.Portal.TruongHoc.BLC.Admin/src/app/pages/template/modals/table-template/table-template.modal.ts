@@ -13,6 +13,7 @@ import { TableColumnModal } from '../table-column/table-column.modal';
 import { TableCellModal } from '../table-cell/table-cell.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-table-template-modal',
     templateUrl: './table-template.modal.html',
     styleUrls: ['./table-template.modal.scss']

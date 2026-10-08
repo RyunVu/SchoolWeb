@@ -1,4 +1,3 @@
-<!-- <p-toast [style]="{marginTop: '80px'}"></p-toast> -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -17,85 +16,164 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-12">
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label for="Name">Từ khóa tìm kiếm</label>
-                                    <input type="text" class="form-control" [(ngModel)]="keywordInput"
-                                        placeholder="Từ khóa tìm kiếm" />
-                                </div>
-                            </div>
-                            <div class="col-md-3" style="padding-top: 37px;">
-                                <button (click)="search()" type="button" class="btn btn-info btn-sm"
-                                    style="margin-right: 5px;">
-                                    <i class="fa fa-filter"></i> Tìm kiếm
-                                </button>
-                                <button (click)="add()" type="button" class="btn btn-success btn-sm mr-3">
-                                    <i class="fas fa-plus"></i> Thêm mới
-                                </button>
-                                <button (click)="uploadFile()" type="button" class="btn btn-info btn-sm mr-3" style="float: right;">
-                                    <i class="fas fa-cloud-upload-alt"></i> Upload File
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card card-primary card-outline ctt-card">
+            <!-- Thanh công cụ -->
+            <div class="card-header ctt-toolbar">
+                <div class="ctt-search">
+                    <i class="fas fa-search ctt-search-icon"></i>
+                    <input type="text" class="form-control" [(ngModel)]="keywordInput" (keyup.enter)="search()"
+                        placeholder="Tìm theo tên cổng, mã đơn vị... (Enter)" aria-label="Tìm kiếm cổng" />
+                    @if (keywordInput) {
+                        <button type="button" class="ctt-search-clear" (click)="clearfilter()" title="Xoá từ khoá">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    }
                 </div>
-                <div class="card-body p-0">
-                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
-                    [paginator]="true" [rows]="pageSize"
-                    [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading"
-                        responsiveLayout="scroll">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th class="headerTable" style="width: 10rem; text-align: center;">STT</th>
-                                <th class="headerTable">Tên cổng</th>
-                                <th class="headerTable">Đơn vị</th>
-                                <th class="headerTable">Chủ đề</th>
-                                <th class="headerTable" style="width: 10rem">Thao tác</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-rowData let-i="rowIndex">
-                            <tr>
-                                <td style="text-align: center;">{{i+1}}</td>
-                                <td>{{ rowData.Name }}</td>
-                                <td>{{ rowData.UnitName }} ({{rowData.UnitCode}})</td>
-                                <td>{{ rowData.ThemeName }}</td>
-                                <td style="text-align: center;">
-                                    <div class="dropdown">
-                                        <button class="btn btn-info dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            Thao tác
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                            <a class="dropdown-item" (click)="edit(rowData)"
-                                                *ngIf="checkPermission('Edit')">Cập nhật</a>
-                                            <a class="dropdown-item" (click)="delete(rowData)"
-                                                *ngIf="checkPermission('Delete')">Xóa</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a *ngIf="checkPermission('View')" class="dropdown-item"
-                                                (click)="addalias(rowData)">Quản lý tên miền</a>
-                                                <a *ngIf="checkPermission('View')" class="dropdown-item"
-                                                (click)="addsiteurl(rowData)">Quản lý tên miền con</a>
+                <button type="button" class="btn btn-info" (click)="search()">
+                    <i class="fas fa-search mr-1"></i> Tìm
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="loadData()" title="Tải lại">
+                    <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+                </button>
+
+                <div class="ctt-toolbar-right">
+                    <button type="button" class="btn btn-outline-info" (click)="uploadFile()">
+                        <i class="fas fa-cloud-upload-alt mr-1"></i> Upload file
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="add()">
+                        <i class="fas fa-plus mr-1"></i> Thêm cổng
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lọc nhanh theo giao diện -->
+            @if (themeStats.length) {
+                <div class="ctt-chips">
+                    <span class="ctt-chips-label">Giao diện:</span>
+                    <button type="button" class="ctt-chip" [class.active]="!themeFilter" (click)="setThemeFilter(null)">
+                        Tất cả <b>{{ items.length }}</b>
+                    </button>
+                    @for (t of themeStats; track t.key) {
+                        <button type="button" class="ctt-chip" [class.active]="themeFilter === t.key" (click)="setThemeFilter(t.key)">
+                            <span class="ctt-dot" [style.background]="themeColor(t.key)"></span>{{ t.name }} <b>{{ t.count }}</b>
+                        </button>
+                    }
+                </div>
+            }
+
+            <div class="card-body p-0">
+                <p-table #dt [value]="visibleItems" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+                    [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow"
+                    [loading]="loading" responsiveLayout="scroll" styleClass="ctt-table">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3.5rem; text-align: center;">#</th>
+                            <th style="min-width: 16rem">Cổng thông tin</th>
+                            <th style="min-width: 15rem">Tên miền</th>
+                            <th style="min-width: 12rem">Giao diện</th>
+                            <th style="width: 1%; text-align: center; white-space: nowrap;">Thao tác</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row let-i="rowIndex">
+                        <tr>
+                            <td class="text-center text-muted">{{ i + 1 }}</td>
+                            <td>
+                                <div class="ctt-portal">
+                                    <div class="ctt-avatar" [style.background]="themeColor(themeKey(row))">
+                                        {{ initials(row.Name) }}
+                                    </div>
+                                    <div class="ctt-portal-info">
+                                        <a class="ctt-portal-name" (click)="edit(row)" *ngIf="checkPermission('Edit'); else plainName">{{ row.Name }}</a>
+                                        <ng-template #plainName><span class="ctt-portal-name">{{ row.Name }}</span></ng-template>
+                                        <div class="ctt-portal-meta">
+                                            <span class="ctt-code" title="Mã đơn vị">{{ row.UnitCode }}</span>
+                                            @if (row.UnitName && row.UnitName !== row.Name) {
+                                                <span>{{ row.UnitName }}</span>
+                                            }
+                                            @if (row.AdministratorUserName) {
+                                                <span title="Quản trị cổng"><i class="fas fa-user-shield mr-1"></i>{{ row.AdministratorUserName }}</span>
+                                            }
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="emptymessage">
-                            <tr>
-                              <td colspan="3">No items found.</td>
-                            </tr>
-                          </ng-template>
-                          <ng-template pTemplate="paginatorleft" let-state>
-                            <span>Tổng cộng: {{state.totalRecords}}</span>
-                          </ng-template>
-                    </p-table>
-                </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (row.Domains?.length) {
+                                    <div class="ctt-domains">
+                                        @for (d of row.Domains; track d.Url) {
+                                            <a class="ctt-domain" [href]="d.Url" target="_blank" rel="noopener" [title]="'Mở ' + d.Url">
+                                                <i class="fas fa-globe-asia"></i>{{ d.Domain }}
+                                                @if (d.IsMain) { <span class="ctt-main">chính</span> }
+                                            </a>
+                                        }
+                                    </div>
+                                } @else {
+                                    <a class="ctt-empty-link" (click)="addalias(row)" *ngIf="checkPermission('View')">
+                                        <i class="fas fa-plus-circle mr-1"></i>Thêm tên miền
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <div class="ctt-theme">
+                                    <span class="ctt-theme-badge" [style.borderColor]="themeColor(themeKey(row))">
+                                        <span class="ctt-dot" [style.background]="themeColor(themeKey(row))"></span>
+                                        {{ row.ThemeName || 'Chưa chọn' }}
+                                    </span>
+                                    @if (checkPermission('Edit')) {
+                                        <button type="button" class="btn btn-link btn-sm ctt-theme-change" (click)="changeTheme(row)">
+                                            Đổi
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ctt-actions">
+                                    @if (mainUrl(row); as url) {
+                                        <a class="ctt-act" [href]="url" target="_blank" rel="noopener" pTooltip="Mở cổng" tooltipPosition="top">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    }
+                                    @if (checkPermission('Edit')) {
+                                        <button type="button" class="ctt-act" (click)="edit(row)" pTooltip="Cập nhật thông tin" tooltipPosition="top">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                        <button type="button" class="ctt-act act-theme" (click)="changeTheme(row)" pTooltip="Đổi giao diện" tooltipPosition="top">
+                                            <i class="fas fa-palette"></i>
+                                        </button>
+                                        <button type="button" class="ctt-act act-refresh" (click)="refreshTemplate(row)" [disabled]="refreshingId === row.Id"
+                                            pTooltip="Cập nhật lại template (chép lại bản mặc định của giao diện)" tooltipPosition="top">
+                                            <i class="fas fa-sync-alt" [class.fa-spin]="refreshingId === row.Id"></i>
+                                        </button>
+                                    }
+                                    @if (checkPermission('View')) {
+                                        <button type="button" class="ctt-act" (click)="addalias(row)" pTooltip="Quản lý tên miền" tooltipPosition="top">
+                                            <i class="fas fa-globe"></i>
+                                        </button>
+                                        <button type="button" class="ctt-act" (click)="addsiteurl(row)" pTooltip="Quản lý trang / tên miền con" tooltipPosition="top">
+                                            <i class="fas fa-sitemap"></i>
+                                        </button>
+                                    }
+                                    @if (checkPermission('Delete')) {
+                                        <button type="button" class="ctt-act act-danger" (click)="delete(row)" pTooltip="Xoá cổng" tooltipPosition="top">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="5" class="ctt-empty">
+                                <i class="fas fa-inbox"></i>
+                                <div>{{ themeFilter ? 'Không có cổng nào dùng giao diện này.' : 'Không tìm thấy cổng thông tin nào.' }}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="paginatorleft" let-state>
+                        <span>Tổng cộng: {{ state.totalRecords }} cổng</span>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
     </div>

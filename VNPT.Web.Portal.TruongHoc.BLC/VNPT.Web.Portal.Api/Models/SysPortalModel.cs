@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,7 +25,10 @@ namespace VNPT.Web.Portal.Api.Models
         public string Description { get; set; }
         public string UnitName { get; set; }
         public string UnitCodeClone { get; set; }
+        /// <summary>Tạo cổng: có chép cả bài viết của cổng mẫu không (mặc định không – chỉ chép cấu trúc)</summary>
+        public bool CopyNews { get; set; }
         public string ThemeName { get; set; }
+        public List<SysPortalDomainItem> Domains { get; set; } = new List<SysPortalDomainItem>();
 
         public SysPortalModel()
         {
@@ -47,5 +50,13 @@ namespace VNPT.Web.Portal.Api.Models
             ThemeId = sysPortal.ThemeId;
             UnitCode = sysPortal.UnitCode;
         }
+    }
+
+    public class SysPortalDomainItem
+    {
+        public string Domain { get; set; }
+        public string Protocol { get; set; }
+        public string Url { get; set; }
+        public bool IsMain { get; set; }
     }
 }

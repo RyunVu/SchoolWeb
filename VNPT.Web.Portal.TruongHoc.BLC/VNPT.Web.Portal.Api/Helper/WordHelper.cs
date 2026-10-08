@@ -414,9 +414,6 @@ public class TableValueT
 
 public class TableHandlerT
 {
-    private List<TableColumnT> tableColumns;
-    private List<TableCellT> tableCells;
-    private List<TableValueT> tableValues;
 
     public class TableCellValueT
     {

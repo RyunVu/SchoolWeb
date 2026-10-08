@@ -25,17 +25,17 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Từ ngày: </label>
-                                    <p-calendar [(ngModel)]="TuNgay" [showIcon]="false" dateFormat="dd/mm/yy"
+                                    <p-datepicker [(ngModel)]="TuNgay" [showIcon]="false" dateFormat="dd/mm/yy"
                                         appendTo="body">
-                                    </p-calendar>
+                                    </p-datepicker>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Đến ngày: </label>
-                                    <p-calendar [(ngModel)]="DenNgay" [showIcon]="false" dateFormat="dd/mm/yy"
+                                    <p-datepicker [(ngModel)]="DenNgay" [showIcon]="false" dateFormat="dd/mm/yy"
                                         appendTo="body">
-                                    </p-calendar>
+                                    </p-datepicker>
                                 </div>
                             </div>
                             <div [ngClass]="'col-md-6'">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
                     [paginator]="true" [rows]="pageSize"
                     [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading" appendTo="body"
                     paginatorDropdownAppendTo="body">

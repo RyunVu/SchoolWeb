@@ -67,7 +67,7 @@
                         <div class="dropdown-divider mb-3"></div>
                         <div class="row d-flex flex-row-reverse bd-highlight p-4">
                             <div [class]="images == null || images.length == 0 ? 'col-md-12' : 'col-md-6'">
-                                <p-galleria [(value)]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="3">
+                                <p-galleria [value]="images" [responsiveOptions]="responsiveOptions" [containerStyle]="{'max-width': '100%'}" [numVisible]="3">
                                     <ng-template pTemplate="item" let-itemimage>
                                         <a href="{{itemimage?.Url | imageUrlPipe}}" target="_blank">
                                             <img [src]="itemimage.Url | imageUrlPipe" style="width: 100%;" />

@@ -53,22 +53,22 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Khu vực</label>
-                                        <p-dropdown optionLabel="Name" optionValue="UnitCode" [(ngModel)]="unitCode" placeholder="Chọn khu vực" [options]="unitCodes" appendTo="body" [filter]="true" filterBy="Name" (onChange)="changeUnitCode()">
-                                        </p-dropdown>
+                                        <p-select optionLabel="Name" optionValue="UnitCode" [(ngModel)]="unitCode" placeholder="Chọn khu vực" [options]="unitCodes" appendTo="body" [filter]="true" filterBy="Name" (onChange)="changeUnitCode()">
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Đơn vị</label>
-                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput" placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true" filterBy="Name">
-                                        </p-dropdown>
+                                        <p-select optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput" placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Lĩnh vực</label>
-                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="fieldInput" placeholder="Chọn lĩnh vực" [options]="fields" appendTo="body" [filter]="true" filterBy="Name">
-                                        </p-dropdown>
+                                        <p-select optionLabel="Name" optionValue="Id" [(ngModel)]="fieldInput" placeholder="Chọn lĩnh vực" [options]="fields" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-select>
                                     </div>
                                 </div>
                             </div>
@@ -76,20 +76,20 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Name">Từ ngày</label>
-                                        <p-calendar [(ngModel)]="startDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                        <p-datepicker [(ngModel)]="startDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Name">Đến ngày</label>
-                                        <p-calendar [(ngModel)]="endDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                        <p-datepicker [(ngModel)]="endDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Name">Trạng thái xử lý</label>
-                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="statusInput" placeholder="Chọn trạng thái" [options]="statuses" appendTo="body" [filter]="true" filterBy="Name">
-                                        </p-dropdown>
+                                        <p-select optionLabel="Name" optionValue="Id" [(ngModel)]="statusInput" placeholder="Chọn trạng thái" [options]="statuses" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-select>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading" [autoLayout]="true">
+                        <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th width="5%">

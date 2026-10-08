@@ -1,5 +1,12 @@
-<p-tabView>
-    <p-tabPanel header="Thông tin tiểu sử">
+<p-tabs value="0">
+    <p-tablist>
+        <p-tab value="0">Thông tin tiểu sử</p-tab>
+        <p-tab value="1">Quá trình công tác</p-tab>
+        <p-tab value="2">Hình ảnh hoạt động</p-tab>
+        <p-tab value="3">Bài phát biểu</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+        <p-tabpanel value="0">
         <div class="row">
             <div class="col-lg-12">
                 <fieldset style="min-height: 100px">
@@ -28,17 +35,17 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="Name">Dân tộc <span class="text-danger">(*)</span></label>
-                                <p-dropdown [options]="itemDanTocs" [(ngModel)]="item.DanTocId" optionLabel="Name"
+                                <p-select [options]="itemDanTocs" [(ngModel)]="item.DanTocId" optionLabel="Name"
                                     optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                                </p-dropdown>
+                                </p-select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="Name">Tôn giáo <span class="text-danger">(*)</span></label>
-                                <p-dropdown [options]="itemTonGiaos" [(ngModel)]="item.TonGiaoId" optionLabel="Name"
+                                <p-select [options]="itemTonGiaos" [(ngModel)]="item.TonGiaoId" optionLabel="Name"
                                     optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                                </p-dropdown>
+                                </p-select>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -51,25 +58,22 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="Name">Ngày sinh </label>
-                                <p-calendar [(ngModel)]="item.NgaySinh" [showIcon]="true" dateFormat="dd/mm/yy"
-                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
-                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                                <p-datepicker [(ngModel)]="item.NgaySinh" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" appendTo="body"></p-datepicker>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="Name">Ngày vào đảng </label>
-                                <p-calendar [(ngModel)]="item.NgayVaoDang" [showIcon]="true" dateFormat="dd/mm/yy"
-                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
-                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                                <p-datepicker [(ngModel)]="item.NgayVaoDang" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" appendTo="body"></p-datepicker>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="Name">Ngày chính thức vào đảng </label>
-                                <p-calendar [(ngModel)]="item.NgayChinhThuc" [showIcon]="true" dateFormat="dd/mm/yy"
-                                    placeholder="dd/mm/yyyy" [monthNavigator]="true" [yearNavigator]="true"
-                                    yearRange="1900:2300" appendTo="body"></p-calendar>
+                                <p-datepicker [(ngModel)]="item.NgayChinhThuc" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    placeholder="dd/mm/yyyy" appendTo="body"></p-datepicker>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -174,8 +178,8 @@
                 </fieldset>
             </div>
         </div>
-    </p-tabPanel>
-    <p-tabPanel header="Quá trình công tác">
+    </p-tabpanel>
+        <p-tabpanel value="1">
         <div class="row">
             <div class="col-lg-12">
                 <fieldset style="min-height: 100px">
@@ -224,8 +228,8 @@
                 </fieldset>
             </div>
         </div>
-    </p-tabPanel>
-    <p-tabPanel header="Hình ảnh hoạt động">
+    </p-tabpanel>
+        <p-tabpanel value="2">
         <div class="row">
             <div class="col-lg-12">
                 <fieldset style="min-height: 100px">
@@ -290,8 +294,8 @@
                 </fieldset>
             </div>
         </div>
-    </p-tabPanel>
-    <p-tabPanel header="Bài phát biểu">
+    </p-tabpanel>
+        <p-tabpanel value="3">
         <div class="row">
             <div class="col-lg-12">
                 <fieldset style="min-height: 100px">
@@ -353,8 +357,9 @@
                 </fieldset>
             </div>
         </div>
-    </p-tabPanel>
-</p-tabView>
+    </p-tabpanel>
+    </p-tabpanels>
+</p-tabs>
 
 
 <div class="p-footer">

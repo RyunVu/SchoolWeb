@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "feedback-phathanh-modal",
     templateUrl: 'feedback-phathanh.modal.html',
     styleUrls: ['./feedback-phathanh.modal.scss'],

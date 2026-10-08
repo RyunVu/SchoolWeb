@@ -3,13 +3,14 @@ import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BaseService, HttpService } from 'src/app/services';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { FMMiniWindowModal } from './fm-mini-window.modal';
 
 declare var $: any;
 
 @Component({
+    standalone: false,
     selector: 'app-file-manager',
     templateUrl: './file-manager.component.html',
     styleUrls: ['./file-manager.component.scss'],
@@ -232,7 +233,7 @@ export class FileManagerModal {
             },
             header: 'Thư mục',
             width: '50%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadViews();
                 this.loadFolders(this.selectedfolder);
@@ -249,7 +250,7 @@ export class FileManagerModal {
             },
             header: 'Tập tin',
             width: '50%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadFolders(this.selectedfolder);
             }

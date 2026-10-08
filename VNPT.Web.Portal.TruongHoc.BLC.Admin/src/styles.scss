@@ -12,15 +12,28 @@
     }
 }
 
-p-calendar {
+p-datepicker {
     input {
         height: 38px;
     }
 }
 
-p-dropdown {
-    .p-dropdown {
-        height: 38px;
+p-select, .p-select {
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+
+    .p-select-label {
+        font-size: 13px;
+        line-height: normal;
+        display: flex;
+        align-items: center;
+
+        &.p-select-label-empty {
+            display: inline-flex;
+            min-height: 1.2em;
+        }
     }
 }
 
@@ -46,14 +59,14 @@ form {
             @include border-error;
         }
 
-        p-calendar.ng-invalid.ng-touched {
+        p-datepicker.ng-invalid.ng-touched {
             input {
                 @include border-error;
             }
         }
 
         .ng-invalid.ng-touched {
-            .p-dropdown {
+            .p-select {
                 @include border-error;
             }
         }
@@ -119,11 +132,11 @@ label {
     margin-bottom: 5px;
 }
 
-.p-tree .p-tree-container .p-treenode {
+.p-tree .p-tree-root-children .p-tree-node {
     padding: 1px;
 }
 
-.p-tree .p-tree-container .p-treenode .p-treenode-content {
+.p-tree .p-tree-root-children .p-tree-node .p-tree-node-content {
     border-radius: 4px;
     transition: box-shadow 0.15s;
     padding: 0px;
@@ -138,7 +151,7 @@ label {
     border-radius: 4px;
 }
 
-.p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
+.p-tree .p-tree-root-children .p-tree-node .p-tree-node-content.p-tree-node-selectable:not(.p-tree-node-selected):hover {
     background: transparent;
     color: #256a92;
 }
@@ -157,13 +170,15 @@ label {
     background: #256a92 !important;
 }
 
-.p-button {
+// PrimeNG 21: các nút nội bộ (đóng dialog, chuyển tháng của datepicker...) là .p-button dạng text,
+// không áp màu nền đặc cho chúng.
+.p-button:where(:not(.p-button-text, .p-button-link, .p-button-outlined)) {
     color: #ffffff;
     background: #3c8dbc !important;
     border: #3c8dbc !important;
 }
 
-.p-button:hover {
+.p-button:where(:not(.p-button-text, .p-button-link, .p-button-outlined)):hover {
     background: #256a92 !important;
 }
 
@@ -184,7 +199,7 @@ label {
     background: #ff0000 !important;
     border: 1px solid #ff0000 !important;
 }
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+.p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected {
     background: #3c8dbc !important;
     border-color: #3c8dbc !important;
 }
@@ -245,14 +260,6 @@ label {
     background: #3c8dbc;
 }
 
-.p-dialog .p-dialog-header {
-    padding: 5px;
-}
-
-.p-dialog .p-dialog-header {
-    background-color: #3c8dbc;
-}
-
 .p-datatable .p-datatable-tbody>tr>td {
     border: 1px solid #ddd;
     border-width: 1px;
@@ -267,12 +274,12 @@ label {
     color: red;
 }
 
-.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
+.p-tree .p-tree-root-children .p-tree-node .p-tree-node-content.p-tree-node-selected {
     background: #3c8dbc;
     color: #ffffff;
 }
 
-.p-tree .p-tree-container .p-treenode .p-treenode-content:focus {
+.p-tree .p-tree-root-children .p-tree-node .p-tree-node-content:focus {
     outline: 0 none;
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem #256a92;
@@ -283,19 +290,15 @@ label {
     color: #3c8dbc;
 }
 
-.p-confirm-dialog-reject {
+.p-confirmdialog-reject-button {
     color: #dc3545;
     background: #ffffff !important;
     border: #dc3545 1px solid !important;
 }
 
-.p-confirm-dialog-reject:hover {
+.p-confirmdialog-reject-button:hover {
     color: #ffffff;
     background: #dc3545 !important;
-}
-
-.p-dialog .p-dialog-header .p-dialog-header-icon {
-    color: white;
 }
 
 .my-container-item:hover {
@@ -312,17 +315,17 @@ label {
     background: transparent !important;
 }
 
-.p-checkbox .p-checkbox-box.p-highlight {
+.p-checkbox.p-checkbox-checked .p-checkbox-box {
     border-color: #256a92 !important;
     background: #256a92 !important;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+.p-select-overlay .p-select-list .p-select-option.p-select-option-selected {
     color: #ffffff;
     background: #3c8dbc;
 }
 
-.p-dropdown .p-dropdown-trigger {
+.p-select .p-select-dropdown {
     background: transparent;
     color: #3c8dbc;
 }
@@ -352,13 +355,18 @@ label {
 }
 
 .p-dialog .p-dialog-header {
-    padding: 5px;
+    padding: 8px 15px;
     background-color: #3c8dbc;
     color: white;
 }
 
-.p-dialog .p-dialog-header .p-dialog-header-icon {
+.p-dialog .p-dialog-header .p-dialog-close-button {
     color: white;
+}
+
+.p-dialog .p-dialog-header .p-dialog-close-button:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .p-dialog {
@@ -379,7 +387,7 @@ hr {
 }
 
 quan-ly-van-ban-modal {
-    .p-calendar, .p-dropdown {
+    .p-datepicker, .p-select {
         width: 100%;
     }
 }
@@ -410,4 +418,14 @@ quan-ly-van-ban-modal {
             }
         }
     }
+}
+
+
+// PrimeNG 21: ô chọn số dòng / nhảy trang của paginator cũng là .p-select,
+// không để các quy tắc ".p-select { width: 100% }" của từng trang kéo dãn làm vỡ footer bảng.
+.p-paginator .p-select.p-paginator-rpp-dropdown,
+.p-paginator .p-select.p-paginator-jtp-dropdown {
+    width: auto !important;
+    min-width: 5rem;
+    flex: 0 0 auto;
 }

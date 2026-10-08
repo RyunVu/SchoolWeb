@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services';
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-tablet-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
@@ -61,7 +62,7 @@ export class TabletHeaderComponent implements OnInit {
         },
         header: 'Cảnh báo vệ sinh an toàn thực phẩm',
         width: '55%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           //this.loadData();

@@ -136,6 +136,16 @@ const routes: Routes = [
     data: { role: 'AdminPage' }
   },
   {
+    // Cấu hình website trực quan (logo, banner, chân trang...) – thay cho việc sửa tay Tham số hệ thống
+    path: 'cau-hinh-website',
+    canActivate: [AuthGuardService],
+    canActivateChild: [AuthGuardService],
+    loadChildren: () => import(`./pages/site-config/site-config.module`).then(
+      module => module.SiteConfigModule
+    ),
+    data: { role: 'AdminPage' }
+  },
+  {
     path: 'tham-so-he-thong',
     canActivate: [AuthGuardService],
     canActivateChild: [AuthGuardService],

@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+  standalone: false,
   selector: "quan-ly-van-ban-modal",
   templateUrl: "quan-ly-van-ban.modal.html",
   styleUrls: ["./quan-ly-van-ban.modal.scss"],

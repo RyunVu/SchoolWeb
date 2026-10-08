@@ -50,16 +50,6 @@ import { FeedbackApprovedComponent } from './feedback-approved/feedback-approved
         TimelineModule,
         ToastrModule.forRoot(),
     ],
-    entryComponents: [
-        PopupImageModal,
-        FeedbackDetailModal,
-        FeedbackChiDaoModal,
-        FeedbackChiaSeModal,
-        FeedbackChuyenDonViModal,
-        FeedbackQuaTrinhXuLyModal,
-        FeedbackBaoCaoModal,
-        FeedbackPhatHanhModal,
-    ],
     providers: [
         ToastrService
     ]

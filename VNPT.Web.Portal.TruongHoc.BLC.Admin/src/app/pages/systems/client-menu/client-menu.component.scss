@@ -2,7 +2,155 @@ app-client-menu {
     .p-column-filter-menu-button {
         display: none;
     }
-    .p-dropdown {
-        width: 100%;
+
+    .client-menu-card {
+        .card-header {
+            padding: 12px 15px;
+        }
+    }
+
+    // Bộ lọc: các ô cùng hàng, canh đáy; tự xuống dòng trên màn hình nhỏ
+    .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 12px;
+
+        label {
+            display: block;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .p-select {
+            width: 100%;
+            height: 38px;
+        }
+
+        .filter-unit {
+            flex: 1 1 240px;
+            max-width: 320px;
+        }
+
+        .filter-position {
+            flex: 0 1 200px;
+        }
+
+        .filter-keyword {
+            flex: 2 1 280px;
+        }
+
+        .filter-actions {
+            margin-left: auto;
+            white-space: nowrap;
+        }
+    }
+
+    .list-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border-bottom: 1px solid #dee2e6;
+        background: #f8f9fa;
+    }
+
+    .client-menu-table {
+        .col-show {
+            width: 100px;
+        }
+
+        th {
+            white-space: nowrap;
+        }
+
+        .col-action {
+            width: 28%;
+        }
+
+        .col-creator {
+            width: 16%;
+        }
+
+        .col-buttons {
+            width: 110px;
+        }
+
+        .p-treetable-tbody > tr:hover {
+            background: #f1f7fb;
+        }
+
+        .p-treetable-tbody > tr > td {
+            vertical-align: middle;
+        }
+    }
+
+    .title-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .order-badge {
+        display: inline-block;
+        min-width: 24px;
+        padding: 1px 6px;
+        border-radius: 10px;
+        background: #e9f2f8;
+        color: #256a92;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .menu-title {
+        font-weight: 500;
+    }
+
+    .param {
+        word-break: break-all;
+    }
+
+    .empty-message {
+        padding: 40px 12px !important;
+        text-align: center;
+        color: #6c757d;
+
+        i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            opacity: 0.6;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        // Bảng cuộn ngang thay vì bóp cột
+        .client-menu-table {
+            .p-treetable-table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 720px;
+            }
+        }
+
+        .filter-bar {
+            .filter-unit,
+            .filter-position,
+            .filter-keyword {
+                flex: 1 1 100%;
+                max-width: none;
+            }
+
+            .filter-actions {
+                margin-left: 0;
+                width: 100%;
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        }
     }
 }

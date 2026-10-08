@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-notifications-dropdown-menu',
   templateUrl: './notifications-dropdown-menu.component.html',
   styleUrls: ['./notifications-dropdown-menu.component.scss'],

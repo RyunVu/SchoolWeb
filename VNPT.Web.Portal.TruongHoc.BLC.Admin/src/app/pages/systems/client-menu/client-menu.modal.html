@@ -1,198 +1,241 @@
-<!-- <div class="card card-primary"> -->
-<!-- <div class="card-body"> -->
-    <div class="row">
-        <div class="col-md-2">
-            <div class="form-group">
-                <label>Vị trí menu</label>
-                <div>
-                    <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuPosition"
-                        [options]="menuPositions" (onChange)="changeViTriMenu()" appendTo="body">
-                    </p-dropdown>
+<!-- Modal Body Content -->
+<div class="row">
+    <!-- Cột 1: Vị trí menu -->
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Vị trí menu <span class="text-danger">(*)</span></label>
+            <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuPosition"
+                [options]="menuPositions" (onChange)="changeViTriMenu()" appendTo="body" class="w-100">
+            </p-select>
+        </div>
+    </div>
+
+    <!-- Cột 2: Menu cha -->
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Menu cha</label>
+            <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"
+                placeholder="-- Không chọn --" [showClear]="true" appendTo="body" class="w-100">
+            </p-select>
+        </div>
+    </div>
+
+    <!-- Cột 3: Loại menu (khi vị trí là Menu Dọc hoặc Trang chủ) -->
+    <div class="col-md-3" *ngIf="item.MenuPosition == 2 || item.MenuPosition == 3">
+        <div class="form-group">
+            <label>Loại menu <span class="text-danger">(*)</span></label>
+            <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuType"
+                [options]="menuDocTypes" appendTo="body" (onChange)="changeAction()" class="w-100"
+                placeholder="-- Chọn loại --">
+            </p-select>
+        </div>
+    </div>
+
+    <!-- Cột 4: Thứ tự hiển thị -->
+    <div [ngClass]="(item.MenuPosition == 2 || item.MenuPosition == 3) ? 'col-md-3' : 'col-md-6'">
+        <div class="form-group">
+            <label>Thứ tự <span class="text-danger">(*)</span></label>
+            <input type="number" class="form-control" [(ngModel)]="item.OrderNo" placeholder="Nhập số thứ tự...">
+        </div>
+    </div>
+</div>
+
+<!-- Hàng Tiêu đề (hiển thị khi không phải là khối Tin tức 2) -->
+<div class="row" *ngIf="!(item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22))">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Tiêu đề menu <span class="text-danger">(*)</span></label>
+            <input type="text" class="form-control" [(ngModel)]="item.Title" (keyup)="changeTitle($event)"
+                placeholder="Nhập tiêu đề hiển thị...">
+        </div>
+    </div>
+</div>
+
+<!-- Hình ảnh đơn lẻ (MenuPosition == 3 && MenuType == 5) -->
+<div class="row" *ngIf="item.MenuPosition == 3 && item.MenuType == 5">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Hình ảnh</label>
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-primary btn-sm mr-3" (click)="openFileDilog()">
+                    <i class="fa fa-folder-open-o mr-1"></i> Chọn hình ảnh
+                </button>
+                <div *ngIf="imageUrl" style="background-color: #f4f6f9; border: 1px solid #ced4da; padding: 4px; border-radius: 4px; max-height: 80px;">
+                    <img [src]="imageUrl | imageUrlPipe: 'thumb'" style="max-height: 70px; max-width: 250px; object-fit: contain;" alt="Hình ảnh" />
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label>Menu cha</label>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"
-                    appendTo="body">
-                </p-dropdown>
-            </div>
-        </div>
-    
-        <div class="col-md-2" *ngIf="(item.MenuPosition == 2 || item.MenuPosition == 3)">
-            <div class="form-group">
-                <label>Loại menu</label>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuType"
-                    [options]="menuDocTypes" appendTo="body" (onChange)="changeAction()">
-                </p-dropdown>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="OrderNo">Thứ tự <span class="text-danger">(*)</span></label>
-                <input type="number" class="form-control" [(ngModel)]="item.OrderNo">
-            </div>
-        </div>
-    
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="Parameter">Hiển thị</label>
-                <p-checkbox [binary]="true" [(ngModel)]="item.IsShowMenu"></p-checkbox>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="Parameter">Mở ra trang mới</label>
-                <p-checkbox [binary]="true" [(ngModel)]="item.IsOpenBlankPage"></p-checkbox>
-            </div>
+    </div>
+</div>
+
+<!-- Khối Điều hướng, Liên kết, Danh mục bài viết -->
+<div class="row" *ngIf="item.MenuPosition == 1 || item.MenuPosition == 5 || (item.MenuPosition == 3 && item.MenuType == 5) || item.MenuPosition == 2 || (item.MenuPosition == 3 && (item.MenuType == 3 || item.MenuType == 4 || item.MenuType == 44))">
+    <!-- Action link nhập tự do -->
+    <div class="col-md-4" *ngIf="(item.IsNewsImage && item.MenuPosition == 1) || (item.IsNewsImage && item.MenuPosition == 5) || (item.MenuPosition == 3 && item.MenuType == 5)">
+        <div class="form-group">
+            <label>Liên kết / Action URL</label>
+            <input type="text" class="form-control" [(ngModel)]="item.Action" placeholder="https://... hoặc đường dẫn">
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4"
-            *ngIf="item.MenuPosition == 1 || item.MenuPosition == 5 || item.MenuPosition == 2 ||(item.MenuPosition == 3&& (item.MenuType == 1 || item.MenuType == 3 || item.MenuType == 4 || item.MenuType == 44 || item.MenuType == 6))">
-            <div class="form-group">
-                <label for="Title">Tiêu đề <span class="text-danger">(*)</span></label>
-                <input type="text" class="form-control" [(ngModel)]="item.Title" (keyup)="changeTitle($event)">
-            </div>
-        </div>
-        <div class="col-md-2" *ngIf="item.MenuPosition == 1 || item.MenuPosition == 5">
-            <div class="form-group">
-                <label for="Parameter">Mở link khác</label>
-                <p-checkbox [binary]="true" [(ngModel)]="item.IsNewsImage"></p-checkbox>
-            </div>
-        </div>
-        <div class="col-md-12"
-        *ngIf="item.MenuPosition == 3 && item.MenuType == 5">
-        <div class="form-group">
-          <label style="color: red;">Hình ảnh</label>
-          <div>
-            <div class="btn bg-pro color-white" (click)="openFileDilog()">
-              Chọn hình ảnh
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12"
-        *ngIf="item.MenuPosition == 3 && item.MenuType == 5">
-        <div class="form-group">
-          <div class="row-custom">
-            <div style="background-color: #ececec; width: 500px; height: 100px; padding: 10px;">
-              <img [src]="imageUrl | imageUrlPipe: 'thumb'" style="width: 100%; height: 100%" />
-            </div>
-          </div>
-        </div>
-      </div>
-        <div class="col-md-3" *ngIf="(item.IsNewsImage && item.MenuPosition == 1) || (item.IsNewsImage && item.MenuPosition == 5) || (item.MenuPosition == 3 && item.MenuType == 5)">
-            <div class="form-group">
-                <label for="Action">Action</label>
-                <input type="text" class="form-control" [(ngModel)]="item.Action">
-            </div>
-        </div>
-        <div class="col-md-3" *ngIf="(!item.IsNewsImage && item.MenuPosition == 1) || (!item.IsNewsImage && item.MenuPosition == 5)">
-            <div class="form-group">
-                <label>Action</label>
-                <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="item.Action"
-                    [options]="actions" (onChange)="changeAction()" appendTo="body">
-                </p-dropdown>
-            </div>
-        </div>
 
-        <div class="col-md-3" *ngIf="item.MenuPosition == 5 && item.Action == 'co-quan-nhiem-ky'">
-            <div class="form-group">
-                <label>Chọn cơ quan nhiệm kỳ</label>
-                <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="coQuanNhiemKyModel"
-                    [options]="coQuanNhiemKys" appendTo="body">
-                </p-dropdown>
-                <!-- <button class="btn btn-success btn-xs" (click)="addDanhMuc()">Thêm danh mục</button> -->
-            </div>
+    <!-- Action chọn từ danh sách -->
+    <div class="col-md-4" *ngIf="(!item.IsNewsImage && item.MenuPosition == 1) || (!item.IsNewsImage && item.MenuPosition == 5)">
+        <div class="form-group">
+            <label>Action / Chức năng</label>
+            <p-select optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="item.Action"
+                [options]="actions" (onChange)="changeAction()" appendTo="body" class="w-100"
+                placeholder="-- Chọn action --">
+            </p-select>
         </div>
+    </div>
 
-        <div class="col-md-3"
-            *ngIf="(item.MenuPosition == 1 && (item.Action == 'danh-sach-tin-tuc' || item.Action == 'chi-tiet-tin-tuc')) || (item.MenuPosition == 5 && (item.Action == 'danh-sach-tin-tuc' || item.Action == 'chi-tiet-tin-tuc')) || item.MenuPosition == 2 ||(item.MenuPosition == 3 && (item.MenuType == 3 || item.MenuType == 4 || item.MenuType == 44))">
-            <div class="form-group">
+    <!-- Cơ quan nhiệm kỳ -->
+    <div class="col-md-4" *ngIf="item.MenuPosition == 5 && item.Action == 'co-quan-nhiem-ky'">
+        <div class="form-group">
+            <label>Chọn cơ quan nhiệm kỳ</label>
+            <p-select optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="coQuanNhiemKyModel"
+                [options]="coQuanNhiemKys" appendTo="body" class="w-100" placeholder="-- Chọn cơ quan --">
+            </p-select>
+        </div>
+    </div>
+
+    <!-- Danh mục -->
+    <div class="col-md-4"
+        *ngIf="(item.MenuPosition == 1 && (item.Action == 'danh-sach-tin-tuc' || item.Action == 'chi-tiet-tin-tuc')) || (item.MenuPosition == 5 && (item.Action == 'danh-sach-tin-tuc' || item.Action == 'chi-tiet-tin-tuc')) || item.MenuPosition == 2 || (item.MenuPosition == 3 && (item.MenuType == 3 || item.MenuType == 4 || item.MenuType == 44))">
+        <div class="form-group">
+            <div class="d-flex justify-content-between align-items-center">
                 <label>Danh mục</label>
-                <p-dropdown optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="news"
-                    [options]="newses" (onChange)="changeNews()" appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addDanhMuc()">Thêm danh mục</button>
+                <button type="button" class="btn btn-success btn-xs" (click)="addDanhMuc()">+ Thêm danh mục</button>
             </div>
+            <p-select optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="news"
+                [options]="newses" (onChange)="changeNews()" appendTo="body" class="w-100" placeholder="-- Chọn danh mục --">
+            </p-select>
         </div>
-    
-        <div class="col-md-3" *ngIf="(item.MenuPosition == 1 || item.MenuPosition == 5) && item.Action == 'chi-tiet-tin-tuc'">
-            <div class="form-group">
-                <label>Bài viết</label>
-                <p-dropdown optionLabel="Title" optionValue="Alias" [filter]="true" [(ngModel)]="newsDetail"
-                    [options]="newsDetails" appendTo="body">
-                </p-dropdown>
-            </div>
+    </div>
+
+    <!-- Bài viết chi tiết -->
+    <div class="col-md-4" *ngIf="(item.MenuPosition == 1 || item.MenuPosition == 5) && item.Action == 'chi-tiet-tin-tuc'">
+        <div class="form-group">
+            <label>Bài viết</label>
+            <p-select optionLabel="Title" optionValue="Alias" [filter]="true" [(ngModel)]="newsDetail"
+                [options]="newsDetails" appendTo="body" class="w-100" placeholder="-- Chọn tin --">
+            </p-select>
         </div>
-        <div class="col-md-3"
-            *ngIf="(this.item.MenuPosition == 5 && this.item.Action == 'danh-sach-tin-tuc') || (this.item.MenuPosition == 1 && this.item.Action == 'danh-sach-tin-tuc') || this.item.MenuPosition == 2 || (this.item.MenuPosition == 3 && (this.item.MenuType == 3 || this.item.MenuType == 4 || item.MenuType == 44))">
-            <div class="form-group">
+    </div>
+
+    <!-- Loại bài viết -->
+    <div class="col-md-4"
+        *ngIf="(this.item.MenuPosition == 5 && this.item.Action == 'danh-sach-tin-tuc') || (this.item.MenuPosition == 1 && this.item.Action == 'danh-sach-tin-tuc') || this.item.MenuPosition == 2 || (this.item.MenuPosition == 3 && (this.item.MenuType == 3 || this.item.MenuType == 4 || item.MenuType == 44))">
+        <div class="form-group">
+            <div class="d-flex justify-content-between align-items-center">
                 <label>Loại bài viết</label>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="type" [options]="types"
-                    appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addNewsType(news,0)">Thêm loại</button>
+                <button type="button" class="btn btn-success btn-xs" (click)="addNewsType(news,0)">+ Thêm loại</button>
+            </div>
+            <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="type" [options]="types"
+                appendTo="body" class="w-100" placeholder="-- Chọn loại --">
+            </p-select>
+        </div>
+    </div>
+</div>
+
+<!-- Cấu hình khối tin tức 2 (MenuPosition == 3 && MenuType == 2 hoặc 22) -->
+<div *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Tiêu đề 1 <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" [(ngModel)]="item.Title1" placeholder="Tiêu đề 1...">
             </div>
         </div>
-    
-    
-        <div class="col-md-4" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
+        <div class="col-md-4">
             <div class="form-group">
-                <label>Danh mục 1</label>
-                <p-dropdown optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="item.News1"
-                    [options]="newses" (onChange)="changeNewsTrangChu(1)" appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addDanhMuc()">Thêm danh mục</button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <label>Danh mục 1</label>
+                    <button type="button" class="btn btn-success btn-xs" (click)="addDanhMuc()">+ Thêm</button>
+                </div>
+                <p-select optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="item.News1"
+                    [options]="newses" (onChange)="changeNewsTrangChu(1)" appendTo="body" class="w-100">
+                </p-select>
             </div>
         </div>
-        <div class="col-md-4" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
+        <div class="col-md-4">
             <div class="form-group">
-                <label for="Title">Tiêu đề 1<span class="text-danger">(*)</span></label>
-                <input type="text" class="form-control" [(ngModel)]="item.Title1">
-            </div>
-        </div>
-        <div class="col-md-2" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
-            <div class="form-group">
-                <label>Loại bài viết 1</label>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.Type1"
-                    [options]="item.Types1" appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addNewsType(item.News1,1)">Thêm loại</button>
-            </div>
-        </div>
-    
-        <div class="col-md-4" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
-            <div class="form-group">
-                <label>Danh mục 2</label>
-                <p-dropdown optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="item.News2"
-                    [options]="newses" (onChange)="changeNewsTrangChu(2)" appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addDanhMuc()">Thêm danh mục</button>
-            </div>
-        </div>
-        <div class="col-md-4" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
-            <div class="form-group">
-                <label for="Title">Tiêu đề 2<span class="text-danger">(*)</span></label>
-                <input type="text" class="form-control" [(ngModel)]="item.Title2">
-            </div>
-        </div>
-        <div class="col-md-2" *ngIf="item.MenuPosition == 3 && (item.MenuType == 2 || item.MenuType == 22)">
-            <div class="form-group">
-                <label>Loại bài viết 2</label>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.Type2"
-                    [options]="item.Types2" appendTo="body">
-                </p-dropdown>
-                <button class="btn btn-success btn-xs" (click)="addNewsType(item.News2,2)">Thêm loại</button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <label>Loại bài viết 1</label>
+                    <button type="button" class="btn btn-success btn-xs" (click)="addNewsType(item.News1,1)">+ Thêm</button>
+                </div>
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.Type1"
+                    [options]="item.Types1" appendTo="body" class="w-100">
+                </p-select>
             </div>
         </div>
     </div>
-    
-    <div class="p-footer">
-        <div class="f-contains">
-            <button class="btn btn-info" type="submit" (click)="submit()" [disabled]="isSaving">Lưu thay đổi</button>
-            <button class="btn btn-outline-danger" type="submit" (click)="cancel()">Thoát</button>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Tiêu đề 2 <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" [(ngModel)]="item.Title2" placeholder="Tiêu đề 2...">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label>Danh mục 2</label>
+                    <button type="button" class="btn btn-success btn-xs" (click)="addDanhMuc()">+ Thêm</button>
+                </div>
+                <p-select optionLabel="Title_En" optionValue="Parameter" [filter]="true" [(ngModel)]="item.News2"
+                    [options]="newses" (onChange)="changeNewsTrangChu(2)" appendTo="body" class="w-100">
+                </p-select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label>Loại bài viết 2</label>
+                    <button type="button" class="btn btn-success btn-xs" (click)="addNewsType(item.News2,2)">+ Thêm</button>
+                </div>
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.Type2"
+                    [options]="item.Types2" appendTo="body" class="w-100">
+                </p-select>
+            </div>
         </div>
     </div>
+</div>
+
+<!-- Hàng Các tùy chọn Checkbox -->
+<div class="row mt-2">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="checkbox-group-row">
+                <div class="custom-control custom-checkbox mr-4">
+                    <input type="checkbox" class="custom-control-input" id="chk_isShowMenu" [(ngModel)]="item.IsShowMenu">
+                    <label class="custom-control-label font-weight-normal" for="chk_isShowMenu">Hiển thị menu</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mr-4">
+                    <input type="checkbox" class="custom-control-input" id="chk_isOpenBlank" [(ngModel)]="item.IsOpenBlankPage">
+                    <label class="custom-control-label font-weight-normal" for="chk_isOpenBlank">Mở ra trang mới</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mr-4" *ngIf="item.MenuPosition == 1 || item.MenuPosition == 5">
+                    <input type="checkbox" class="custom-control-input" id="chk_isNewsImage" [(ngModel)]="item.IsNewsImage">
+                    <label class="custom-control-label font-weight-normal" for="chk_isNewsImage">Mở link khác (nhập link ngoài)</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Footer -->
+<div class="p-footer">
+    <div class="f-contains">
+        <button class="btn btn-info" type="button" (click)="submit()" [disabled]="isSaving">
+            <i class="fa fa-spinner fa-spin mr-1" *ngIf="isSaving"></i>
+            {{ isSaving ? 'Đang lưu...' : 'Lưu thay đổi' }}
+        </button>
+        <button class="btn btn-outline-danger" type="button" (click)="cancel()">
+            Thoát
+        </button>
+    </div>
+</div>

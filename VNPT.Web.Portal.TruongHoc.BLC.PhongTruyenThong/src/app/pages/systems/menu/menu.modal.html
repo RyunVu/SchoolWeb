@@ -5,9 +5,9 @@
         <div class="form-group">
             <label for="menuTypes">Loại Menu</label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type"
+                <p-select optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type"
                     [options]="menuTypes" appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>
@@ -15,9 +15,9 @@
         <div class="form-group">
             <label for="DayOfBirth">Menu cha</label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"
                     appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>
@@ -108,9 +108,9 @@
                     <p-inputNumber [(ngModel)]="prop.Order" [min]="0"></p-inputNumber>
                 </td>
                 <td>
-                    <p-dropdown optionLabel="Id" optionValue="Id" [(ngModel)]="prop.Type" [options]="typeProperties"
+                    <p-select optionLabel="Id" optionValue="Id" [(ngModel)]="prop.Type" [options]="typeProperties"
                         appendTo="body" (onChange)="ontypeChange(prop)">
-                    </p-dropdown>
+                    </p-select>
                 </td>
                 <td>
                     <div class="form-group">

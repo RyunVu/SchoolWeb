@@ -28,17 +28,17 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="Name">Thành phố/ Huyện <span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="district" [(ngModel)]="item.LocationDistrictId" optionLabel="Name"
+                        <p-select [options]="district" [(ngModel)]="item.LocationDistrictId" optionLabel="Name"
                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="Name">Phường/ Xã <span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name"
+                        <p-select [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name"
                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -115,7 +115,7 @@
                         </div>
                         <div class="card-body p-0" *ngIf="answers.length > 0">
                             <p-table [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục" [value]="answers" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
-                                [rows]="10" [totalRecords]="totalRow" [loading]="loading" [autoLayout]="true">
+                                [rows]="10" [totalRecords]="totalRow" [loading]="loading">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Mã số thuế</th>

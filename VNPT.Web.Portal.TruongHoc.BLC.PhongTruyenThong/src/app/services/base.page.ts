@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ResultModel } from '../models/resultModel';
 import { HttpService } from './http.service';
 import { Subscription } from 'rxjs';
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 @Injectable()

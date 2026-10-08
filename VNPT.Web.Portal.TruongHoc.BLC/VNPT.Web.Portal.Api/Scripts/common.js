@@ -129,7 +129,8 @@ var config = {
             //value = "https://media.baoloctructuyen.vn/" + url;
             //value = "https://mediabaolam.baoloctructuyen.vn/" + url;
             //value = "https://mediadilinh.lamdongtructuyen.vn/" + url;
-            value = '@System.Configuration.ConfigurationManager.AppSettings["DomainMedia"]' + url;
+            // DomainMedia do layout gán (window.DomainMedia) – file .js không chạy được cú pháp Razor
+            value = (window.DomainMedia || "") + url;
         } else {
             value = url;
         }

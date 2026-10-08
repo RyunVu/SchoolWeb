@@ -9,9 +9,10 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { s } from "src/app/services/s.service";
 import { ToastrService } from "ngx-toastr";
 import { HistoryModel } from "./history.model";
-import * as moment from "moment";
+import moment from 'moment';
 
 @Component({
+    standalone: false,
     selector: "history-modal",
     templateUrl: 'history.modal.html',
     styleUrls: ['./history.modal.scss'],

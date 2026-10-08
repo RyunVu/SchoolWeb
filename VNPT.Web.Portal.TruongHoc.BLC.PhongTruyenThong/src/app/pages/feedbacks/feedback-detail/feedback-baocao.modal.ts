@@ -10,6 +10,7 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
 @Component({
+    standalone: false,
     selector: "feedback-baocao-modal",
     templateUrl: 'feedback-baocao.modal.html',
     styleUrls: ['./feedback-baocao.modal.scss'],
@@ -95,7 +96,7 @@ export class FeedbackBaoCaoModal {
             },
             header: 'Quản lý file',
             width: '70%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 var fileUrls = data.urls;
                 fileUrls.forEach((element:any) => {

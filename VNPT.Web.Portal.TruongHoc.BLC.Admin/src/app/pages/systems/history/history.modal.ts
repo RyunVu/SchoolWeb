@@ -6,11 +6,12 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { BasePage, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ToastrService } from "ngx-toastr";
 import { HistoryModel } from "./history.model";
 
 @Component({
+    standalone: false,
     selector: "history-modal",
     templateUrl: 'history.modal.html',
     styleUrls: ['./history.modal.scss'],

@@ -24,11 +24,11 @@
     </div>
     <div class="form-group col-6 col-md-2">
         <label>Tình trạng xây</label>
-        <p-dropdown [options]="constructionStatuses" styleClass="w-100" formControlName="constructionStatus" optionValue="Id" optionLabel="Name" placeholder="Xây dựng" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="constructionStatuses" styleClass="w-100" formControlName="constructionStatus" optionValue="Id" optionLabel="Name" placeholder="Xây dựng" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div class="form-group col-6 col-md-2">
         <label>Tình trạng nộp thuế</label>
-        <p-dropdown [options]="feeStatuses" styleClass="w-100" formControlName="feeStatus" optionValue="value" optionLabel="label" placeholder="Nộp thuế" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="feeStatuses" styleClass="w-100" formControlName="feeStatus" optionValue="value" optionLabel="label" placeholder="Nộp thuế" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div class="form-group text-right col-12 col-md-2 d-flex align-items-end justify-content-end">
         <button type="submit" class="btn btn-primary">Tìm kiếm</button>

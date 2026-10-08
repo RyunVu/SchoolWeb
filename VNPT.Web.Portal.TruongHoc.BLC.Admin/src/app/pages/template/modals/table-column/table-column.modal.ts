@@ -8,6 +8,7 @@ import { HttpService } from 'src/app/services';
 import { unsignVietnamese, uuidv4 } from 'src/app/utils';
 
 @Component({
+    standalone: false,
     selector: 'app-table-column-modal',
     templateUrl: './table-column.modal.html',
     styleUrls: ['./table-column.modal.scss']

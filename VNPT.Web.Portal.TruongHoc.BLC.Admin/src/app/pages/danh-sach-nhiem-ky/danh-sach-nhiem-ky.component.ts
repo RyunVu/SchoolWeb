@@ -1,10 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ConfirmationService,
-  LazyLoadEvent,
-  MessageService,
-} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, BaseService, HttpService } from 'src/app/services';
@@ -12,11 +9,12 @@ import { OTPCheckModal } from '../systems/user/otpcheck.modal';
 import { UserModal } from '../systems/user/user.modal';
 //import { PopupImageModal } from '../feedbacks/feedback/popupImage.modal';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DanhSachNhiemKyModal } from './danh-sach-nhiem-ky.modal';
 import { CanBoNhiemKyModal } from './can-bo-nhiem-ky.modal';
 
 @Component({
+  standalone: false,
   selector: 'app-danh-sach-nhiem-ky',
   templateUrl: './danh-sach-nhiem-ky.component.html',
   styleUrls: ['./danh-sach-nhiem-ky.component.scss'],
@@ -53,7 +51,7 @@ export class DanhSachNhiemKyComponent extends BasePage {
     this.loadNhiemKy();
   }
 
-  paginate(event: LazyLoadEvent) {
+  paginate(event: TableLazyLoadEvent) {
     if (this.oldEvent == null || event == this.oldEvent) {
       this.oldEvent = event;
       return;
@@ -64,7 +62,7 @@ export class DanhSachNhiemKyComponent extends BasePage {
     this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
     this.sortOrder = event.sortOrder == 1 ? true : false;
-    this.sortField = event.sortField ?? '';
+    this.sortField = (event.sortField as string) ?? '';
     this.filters = event.filters;
     setTimeout(() => {
       this.loadData();
@@ -82,7 +80,7 @@ export class DanhSachNhiemKyComponent extends BasePage {
         },
         header: 'Thêm mới nhiệm kỳ',
         width: '90%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();
@@ -115,7 +113,7 @@ export class DanhSachNhiemKyComponent extends BasePage {
         },
         header: 'Cập nhật nhiệm kỳ',
         width: '90%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();
@@ -139,7 +137,7 @@ export class DanhSachNhiemKyComponent extends BasePage {
           },
           header: 'Cập nhật cán bộ nhiệm kỳ',
           width: '50%',
-        })
+        })!
         .onClose.subscribe((data: any) => {
           if (data) {
             this.loadData();

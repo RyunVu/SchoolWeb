@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 
 import {
   gmDefaultStyles,
@@ -21,6 +20,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-chitietuyvien-page',
   templateUrl: './chitietuyvien-page.component.html',
   styleUrls: ['./chitietuyvien-page.component.scss'],
@@ -301,7 +301,6 @@ export class ChiTietUyVienPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     private location: Location,
     private router: Router,
     public http: HttpService,

@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import { AgmGeocoder, AgmCoreModule } from '@agm/core';
-import { NgxDropzoneModule } from 'ngx-dropzone';
 
 import { ValidationMessagesModule } from '../../modules';
 import { SystemsRoutingModule } from './systems-routing.module';
@@ -29,7 +27,6 @@ import { PositionComponent } from './position/position.component';
 import { PositionModal } from './position/position.modal';
 import { TreeModule } from 'primeng/tree';
 import { DividerModule } from 'primeng/divider';
-import { ChartsModule } from 'ng2-charts';
 import { HistoryComponent } from './history/history.component';
 import { HistoryModal } from './history/history.modal';
 import { LocationModal } from './user/location.modal';
@@ -74,37 +71,16 @@ import { RoleV2UserModal } from './role-v2/role-v2-user.modal';
         HttpClientModule,
         DialogModule,
         DynamicDialogModule,
-        DropdownModule,
-        CalendarModule,
+        SelectModule,
+        DatePickerModule,
         ColorPickerModule,
         TreeModule,
         DividerModule,
         SharedModule,
         SystemsRoutingModule,
         ToastrModule.forRoot(),
-        ChartsModule,
         ValidationMessagesModule,
-        NgxDropzoneModule,
-        AgmCoreModule.forRoot({
-            apiKey: environment.googleKey//'AIzaSyB0IURdzlzv2RgXGI-HlqTBp0VMxXeN2BU',
-        }),
     ],
-    entryComponents: [
-        UserModal,
-        RoleModal,
-        MenuModal,
-        FunctionMenuModal,
-        RoleMenuModal,
-        UnitModal,
-        PositionModal,
-        FileManagerModal,
-        FMMiniWindowModal,
-        HistoryModal,
-        LocationModal,
-        RoleV2MenuModal,
-        RoleV2Modal,
-        RoleV2UserModal,
-    ],
-    providers: [ToastrService, AgmGeocoder],
+    providers: [ToastrService],
 })
 export class SystemsModule { }

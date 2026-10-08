@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { SysPortalAliasAddModal } from "./sys-portal-alias-add.modal";
 
 @Component({
+    standalone: false,
     selector: "sys-portal-alias-modal",
     templateUrl: 'sys-portal-alias.modal.html',
     styleUrls: ['./sys-portal-alias.modal.scss'],
@@ -58,7 +59,7 @@ export class SysPortalAliasModal {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -100,7 +101,7 @@ export class SysPortalAliasModal {
             },
             header: 'Thêm mới tên miền',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -115,7 +116,7 @@ export class SysPortalAliasModal {
             },
             header: 'Cập nhật tên miền',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }

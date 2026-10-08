@@ -72,13 +72,12 @@
     </div>
     <div class="row">
         <div class="col-10 offset-1">
-            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles">
-                <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="mapOptions.iconHome">
-                    <agm-info-window [isOpen]="true">
-                        <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
-                    </agm-info-window>
-                </agm-marker>
-            </agm-map>
+            <app-gmap [lat]="mapOptions.lat" [lng]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles"
+                [markers]="mapOptions.markers" [icon]="mapOptions.iconHome" [infoOpen]="true">
+                <ng-template #info let-marker>
+                    <permit-tiny-detail [entity]="marker.entity"></permit-tiny-detail>
+                </ng-template>
+            </app-gmap>
         </div>
     </div>
 </ng-template>

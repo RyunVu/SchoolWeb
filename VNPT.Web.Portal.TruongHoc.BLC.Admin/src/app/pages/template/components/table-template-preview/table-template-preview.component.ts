@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { orderBy, groupBy, filter, debounce } from 'lodash';
 
 @Component({
+    standalone: false,
     selector: 'table-template-preview-component',
     templateUrl: './table-template-preview.component.html',
     styleUrls: ['./table-template-preview.component.scss']

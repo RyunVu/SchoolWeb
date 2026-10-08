@@ -9,10 +9,11 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { ToastrService } from "ngx-toastr";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { MenuSidebarService } from "src/app/layouts/menu-sidebar/menu-sidebar.service";
 
 @Component({
+    standalone: false,
     selector: "danh-sach-tin-tuc-modal",
     templateUrl: "danh-sach-tin-tuc.modal.html",
     styleUrls: ["./danh-sach-tin-tuc.modal.scss"],
@@ -332,7 +333,7 @@ export class DanhSachTinTucModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;

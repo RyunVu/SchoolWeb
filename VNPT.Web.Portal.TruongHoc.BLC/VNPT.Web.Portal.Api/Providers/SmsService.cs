@@ -20,7 +20,7 @@ namespace VNPT.Web.Portal.Api.Providers
             }))(rnd);
             return res;
         }
-        public static async Task<ResultModel> Send(string phoneNumber, string text)
+        public static Task<ResultModel> Send(string phoneNumber, string text)
         {
             //var sms = new SMSServiceWeb.ServiceSMSClient();
             //var res = await sms.InsertSMSAsync("SmsTravel#789", phoneNumber, text, "SMSSchool");
@@ -42,11 +42,11 @@ namespace VNPT.Web.Portal.Api.Providers
             //    return result;
             //}
             //todo: 8. chưa cấu hình brandname riêng thì tắt đi
-            return new ResultModel()
+            return Task.FromResult(new ResultModel()
             {
                 Code = ResultCode.Success,
                 Message = "Chưa cấu hình OTP"
-            };
+            });
         }
     }
 }

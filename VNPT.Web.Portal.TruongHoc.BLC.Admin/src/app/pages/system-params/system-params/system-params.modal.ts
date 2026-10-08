@@ -12,6 +12,7 @@ import { HttpService } from "src/app/services";
 import { Parameter } from "src/app/services/staticparameters.service";
 
 @Component({
+  standalone: false,
   selector: "system-params-modal",
   templateUrl: "./system-params.modal.html",
   styleUrls: ["./system-params.modal.scss"],
@@ -201,7 +202,7 @@ export class SystemParamsModal {
         },
         header: "Quản lý file",
         width: "70%",
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           var fileUrls = data.urls;
@@ -221,7 +222,7 @@ export class SystemParamsModal {
         },
         header: "Quản lý file",
         width: "70%",
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           var fileUrls = data.urls;

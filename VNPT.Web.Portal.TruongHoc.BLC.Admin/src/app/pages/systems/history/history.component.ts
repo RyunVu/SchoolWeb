@@ -1,14 +1,16 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { BasePage, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
-import * as moment from 'moment';
+import moment from 'moment';
 import { HistoryModal } from './history.modal';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
+    standalone: false,
     selector: 'app-history',
     templateUrl: './history.component.html',
     styleUrls: ['./history.component.scss'],
@@ -100,7 +102,7 @@ export class HistoryComponent extends BasePage {
             },
             header: 'Chi tiết thao tác',
             width: '50%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }

@@ -5,12 +5,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BasePage, HttpService } from 'src/app/services';
 import { MessageService } from 'primeng/api';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { ResultCode, ResultModel } from 'src/app/models';
 
 declare var Stimulsoft: any;
 
 @Component({
+  standalone: false,
   selector: 'app-report-quahan-tonghop-paht',
   templateUrl: './report-quahan-tonghop-paht.component.html',
   styleUrls: ['./report-quahan-tonghop-paht.component.scss'],

@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services';
 declare var Stimulsoft: any;
 
 @Component({
+  standalone: false,
   selector: 'app-report-viewer-modal',
   templateUrl: './report-viewer-modal.component.html',
   styleUrls: ['./report-viewer-modal.component.scss']

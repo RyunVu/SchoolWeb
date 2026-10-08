@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 import { BaseService, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 
@@ -21,6 +20,7 @@ declare var $: any;
 import { Location } from '@angular/common';
 
 @Component({
+  standalone: false,
   selector: 'app-danhsach-hdpt-page',
   templateUrl: './danhsach-hdpt-page.component.html',
   styleUrls: ['./danhsach-hdpt-page.component.scss'],
@@ -37,7 +37,6 @@ export class DanhSachHDPTPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
     private location: Location,
     private router: Router,

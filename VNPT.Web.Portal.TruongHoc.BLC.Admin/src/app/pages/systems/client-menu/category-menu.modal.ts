@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { Parameter } from "src/app/services/staticparameters.service";
 
 @Component({
+    standalone: false,
     selector: "category-menu-modal",
     templateUrl: 'category-menu.modal.html',
     encapsulation: ViewEncapsulation.None,

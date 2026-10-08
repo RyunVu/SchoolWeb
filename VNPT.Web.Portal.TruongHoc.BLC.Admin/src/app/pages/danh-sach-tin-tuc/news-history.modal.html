@@ -1,0 +1,103 @@
+<div class="modal-wrapper news-history">
+    <div class="news-history-title">
+        <i class="fas fa-newspaper mr-1"></i> <b>{{ news?.Title }}</b>
+    </div>
+
+    <div class="row no-gutters news-history-body">
+        <!-- Danh sách phiên bản -->
+        <div class="col-md-4 version-list">
+            <div class="version-list-header">
+                <i class="fas fa-history mr-1"></i> Phiên bản
+                <span class="badge badge-light ml-1">{{ versions.length }}</span>
+            </div>
+            <div *ngIf="loadingList" class="text-center text-muted p-3">
+                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+            </div>
+            <div *ngIf="!loadingList && !versions.length" class="text-center text-muted p-3">
+                Bài viết chưa có lịch sử thay đổi.
+            </div>
+            <button *ngFor="let v of versions; let i = index" type="button" class="version-item"
+                [class.active]="v === selected" (click)="select(v)">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge" [ngClass]="action(v).css">{{ action(v).label }}</span>
+                    <small class="text-muted">#{{ versions.length - i }}</small>
+                </div>
+                <div class="version-time"><i class="far fa-clock mr-1"></i>{{ v.CreateDate }}</div>
+                <div class="version-user">
+                    <i class="far fa-user mr-1"></i>{{ v.FullName || v.UserName || 'Không rõ' }}
+                    <span *ngIf="v.UserName && v.FullName" class="text-muted">({{ v.UserName }})</span>
+                </div>
+                <div *ngIf="v.Note" class="version-note">{{ v.Note }}</div>
+            </button>
+        </div>
+
+        <!-- Chi tiết thay đổi -->
+        <div class="col-md-8 version-detail">
+            <ng-container *ngIf="selected">
+                <div class="detail-meta">
+                    <span class="badge mr-1" [ngClass]="action(selected).css">{{ action(selected).label }}</span>
+                    <b>{{ selected.CreateDate }}</b>
+                    <span class="text-muted"> · {{ selected.FullName || selected.UserName }}</span>
+                    <span *ngIf="selected.CurrentIp" class="text-muted"> · IP {{ selected.CurrentIp }}</span>
+                </div>
+                <div *ngIf="!loadingDetail && comparedWithPrevious" class="alert alert-light detail-hint">
+                    Phiên bản này không lưu dữ liệu cũ, đang so sánh với phiên bản liền trước.
+                </div>
+                <div *ngIf="!loadingDetail && !hasOldVersion && changes.length" class="alert alert-light detail-hint">
+                    Phiên bản đầu tiên: hiển thị toàn bộ dữ liệu lúc tạo.
+                </div>
+
+                <div *ngIf="loadingDetail" class="text-center text-muted p-4">
+                    <i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu phiên bản...
+                </div>
+                <div *ngIf="!loadingDetail && !changes.length" class="text-center text-muted p-4">
+                    Không có thay đổi dữ liệu nào ở phiên bản này.
+                </div>
+
+                <div *ngFor="let c of changes" class="change-item">
+                    <div class="change-label">
+                        {{ c.label }}
+                        <button *ngIf="c.isHtml" type="button" class="btn btn-link btn-sm p-0 ml-2"
+                            (click)="showRendered[c.key] = !showRendered[c.key]">
+                            {{ showRendered[c.key] ? 'Xem so sánh chữ' : 'Xem dạng trình bày' }}
+                        </button>
+                    </div>
+
+                    <!-- So sánh từng từ: đỏ gạch = bị xoá, xanh = thêm mới -->
+                    <div *ngIf="c.parts && !showRendered[c.key]" class="diff-text">
+                        <ng-container *ngFor="let p of c.parts">
+                            <span *ngIf="p.type === 'eq'">{{ p.text }}</span>
+                            <del *ngIf="p.type === 'del'">{{ p.text }}</del>
+                            <ins *ngIf="p.type === 'ins'">{{ p.text }}</ins>
+                        </ng-container>
+                    </div>
+
+                    <!-- Nội dung HTML trước / sau -->
+                    <div *ngIf="c.isHtml && showRendered[c.key]" class="row">
+                        <div class="col-md-6">
+                            <div class="side-label text-danger">Trước</div>
+                            <div class="rendered" [innerHTML]="c.oldHtml || '(trống)'"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="side-label text-success">Sau</div>
+                            <div class="rendered" [innerHTML]="c.newHtml || '(trống)'"></div>
+                        </div>
+                    </div>
+
+                    <!-- Trường không phải văn bản: giá trị trước -> sau -->
+                    <div *ngIf="!c.parts" class="value-change">
+                        <del>{{ c.oldText || '(trống)' }}</del>
+                        <i class="fas fa-long-arrow-alt-right mx-2 text-muted"></i>
+                        <ins>{{ c.newText || '(trống)' }}</ins>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="p-footer">
+        <div class="f-contains">
+            <button class="btn btn-outline-danger" type="button" (click)="cancel()">Đóng</button>
+        </div>
+    </div>
+</div>

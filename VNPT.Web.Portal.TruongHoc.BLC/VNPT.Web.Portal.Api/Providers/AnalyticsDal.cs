@@ -69,7 +69,7 @@ namespace VNPT.Web.Portal.Api.Providers
                     return null;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

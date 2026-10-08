@@ -1,0 +1,45 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var menus = MenuDal.MenuDoc(infomation);
+    var analytics = AnalyticsDal.GetAnalyticData(infomation.PortalCode);
+}
+
+<aside class="hd-sidebar">
+    @foreach (var systemMenu in menus)
+    {
+        if (systemMenu.MenuType == 1 || systemMenu.MenuType == 2)
+        {
+            <section class="hd-widget">
+                <h3 class="hd-widget-title"><i class="fa @(systemMenu.MenuType == 2 ? "fa-bullhorn" : "fa-bookmark")"></i>@SystemParameterDto.Translate(systemMenu.Title)</h3>
+                <ul class="hd-widget-list @(systemMenu.MenuType == 2 ? "is-scroll" : "")">
+                    @if (systemMenu.MenuType == 2)
+                    {
+                        @Html.Action("ScrollingNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    }
+                    else
+                    {
+                        @Html.Action("GetNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    }
+                </ul>
+            </section>
+        }
+        else if (systemMenu.MenuType == 3 || systemMenu.MenuType == 4)
+        {
+            <section class="hd-widget hd-widget-banner">
+                @Html.Action("LinkSidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </section>
+        }
+    }
+
+    <section class="hd-widget">
+        <h3 class="hd-widget-title"><i class="fa fa-bar-chart"></i>@SystemParameterDto.Translate("Thống kê truy cập")</h3>
+        <div class="hd-stats">
+            <div class="hd-stat"><b id="homnay">@(analytics?.DayCount ?? 0)</b><span>Hôm nay</span></div>
+            <div class="hd-stat"><b id="thangnay">@(analytics?.MonthCount ?? 0)</b><span>Tháng này</span></div>
+            <div class="hd-stat"><b id="namnay">@(analytics?.YearCount ?? 0)</b><span>Năm nay</span></div>
+        </div>
+    </section>
+</aside>

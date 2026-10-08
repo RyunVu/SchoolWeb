@@ -1,5 +1,5 @@
 upload-file-modal {
-    .p-dropdown {
+    .p-select {
         width: 100%;
     }
 
@@ -11,12 +11,21 @@ upload-file-modal {
         width: 100%;
     }
 
-    .p-calendar {
+    .p-datepicker {
         width: 100%;
     }
 
-    .p-multiselect {
+    p-multiselect, .p-multiselect {
         width: 100%;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+
+        .p-multiselect-label {
+            font-size: 13px;
+            line-height: normal;
+        }
     }
 
     .text-right {

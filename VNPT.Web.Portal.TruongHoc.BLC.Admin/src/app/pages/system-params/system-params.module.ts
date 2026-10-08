@@ -24,7 +24,6 @@ import { ToastrModule, ToastrService } from "ngx-toastr";
     DynamicDialogModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [SystemParamsModal],
   providers: [ToastrService],
 })
 export class SystemParamsModule {}

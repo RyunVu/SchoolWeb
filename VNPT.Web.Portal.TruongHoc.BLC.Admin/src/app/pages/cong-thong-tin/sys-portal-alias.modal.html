@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
                     [paginator]="true" [rows]="10" [totalRecords]="totalRow" [loading]="loading"
                     responsiveLayout="scroll">
                     <ng-template pTemplate="header">

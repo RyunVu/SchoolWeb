@@ -91,7 +91,6 @@ namespace VNPT.Web.Portal.Api.Controllers
                     }
 
                     input.Code = code;
-                    var defaultLanguage = "vi";
 
                     using (var context = new WebDbContext())
                     {
@@ -280,7 +279,6 @@ namespace VNPT.Web.Portal.Api.Controllers
                     }
 
                     input.Code = code;
-                    var defaultLanguage = "vi";
 
                     using (var context = new WebDbContext())
                     {

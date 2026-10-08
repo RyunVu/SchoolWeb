@@ -13,6 +13,7 @@ import { defaultLocation } from 'src/app/shared/constants';
 import { PermitPageService } from '../../services';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'permit-detail-page',
   templateUrl: './permit-detail-page.component.html',

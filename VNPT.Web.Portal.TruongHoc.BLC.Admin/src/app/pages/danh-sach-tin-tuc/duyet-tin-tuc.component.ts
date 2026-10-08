@@ -1,21 +1,19 @@
 import { Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-    ConfirmationService,
-    LazyLoadEvent,
-    MessageService,
-} from "primeng/api";
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from "primeng/dynamicdialog";
 import { ResultCode, ResultModel } from "src/app/models";
 import { BasePage, BaseService, HttpService } from "src/app/services";
 import { OTPCheckModal } from "../systems/user/otpcheck.modal";
 import { UserModal } from "../systems/user/user.modal";
 
-import * as moment from "moment";
+import moment from 'moment';
 import { DuyetTinTucModal } from "./duyet-tin-tuc.modal";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "app-duyet-tin-tuc",
     templateUrl: "./duyet-tin-tuc.component.html",
     styleUrls: ["./duyet-tin-tuc.component.scss"],
@@ -69,13 +67,18 @@ export class DuyetTinTucComponent extends BasePage {
             this.isSuperAdminSystem = true;
         }
 
-        var currentDate = new Date();
-
-        this.TuNgay = moment("01/" + "01/" + currentDate.getFullYear, "DD/MM/YYYY").toDate();
-
-        this.DenNgay = moment().toDate();
+        this.TuNgay = null;
+        this.DenNgay = null;
 
         this.loadUnits();
+    }
+
+    resetFilter() {
+        this.keywordInput = "";
+        this.status = 0;
+        this.TuNgay = null;
+        this.DenNgay = null;
+        this.search();
     }
     override async getPermission() {
         var data2 = {
@@ -126,7 +129,7 @@ export class DuyetTinTucComponent extends BasePage {
        
         
     }
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -137,7 +140,7 @@ export class DuyetTinTucComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -173,7 +176,7 @@ export class DuyetTinTucComponent extends BasePage {
                 },
                 header: "Cập nhật tin tức",
                 width: "100%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();
@@ -259,8 +262,8 @@ export class DuyetTinTucComponent extends BasePage {
             {
                 Code: this.parameter,
                 UnitCode: this.unit,
-                FromDate: this.TuNgay,
-                ToDate: this.DenNgay,
+                FromDate: this.TuNgay || null,
+                ToDate: this.DenNgay || null,
                 Keyword: this.keywordInput == "" ? null : this.keywordInput,
                 PageIndex: this.pageIndex,
                 PageSize: this.pageSize,

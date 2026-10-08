@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
 @Component({
+    standalone: false,
     selector: "danh-muc-modal",
     templateUrl: "danh-muc.modal.html",
     styleUrls: ["./danh-muc.modal.scss"],
@@ -123,7 +124,7 @@ export class DanhMucModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;

@@ -5,6 +5,7 @@ import { SearchEntity } from 'src/app/shared';
 import { PermitPageService } from '../../services';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'permit-list-page',
   templateUrl: './permit-list-page.component.html',

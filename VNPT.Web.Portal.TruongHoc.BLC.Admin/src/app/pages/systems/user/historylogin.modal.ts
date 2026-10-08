@@ -2,16 +2,14 @@ import { Component, ViewEncapsulation } from "@angular/core";
 import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DynamicDialogConfig } from "primeng/dynamicdialog";
 import { ResultCode, ResultModel } from "src/app/models";
-import {
-  MessageService,
-  LazyLoadEvent,
-  ConfirmationService,
-} from "primeng/api";
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { HttpService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
-import * as moment from "moment";
+import moment from 'moment';
 
 @Component({
+  standalone: false,
   selector: "historylogin-modal",
   templateUrl: "historylogin.modal.html",
   encapsulation: ViewEncapsulation.None,
@@ -60,7 +58,7 @@ export class HistoryLoginModal {
     this.ref.close();
   }
 
-  paginate(event: LazyLoadEvent) {
+  paginate(event: TableLazyLoadEvent) {
     if (this.oldEvent == null || event == this.oldEvent) {
       this.oldEvent = event;
       return;
@@ -71,7 +69,7 @@ export class HistoryLoginModal {
     this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
     this.sortOrder = event.sortOrder == 1 ? true : false;
-    this.sortField = event.sortField ?? "";
+    this.sortField = (event.sortField as string) ?? "";
     this.filters = event.filters;
     setTimeout(() => {
       this.loadData();

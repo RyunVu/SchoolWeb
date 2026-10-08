@@ -7,10 +7,11 @@ import { HttpService } from "src/app/services";
 import * as fs from 'file-saver';
 // import * as request from 'request';
 import { HttpClient } from "@angular/common/http";
-import * as JSZip from 'jszip';
-import * as moment from 'moment';
+import JSZip from 'jszip';
+import moment from 'moment';
 
 @Component({
+    standalone: false,
     selector: "feedback-detail-modal",
     templateUrl: 'feedback-detail.modal.html',
     styleUrls: ['./feedback-detail.modal.scss'],

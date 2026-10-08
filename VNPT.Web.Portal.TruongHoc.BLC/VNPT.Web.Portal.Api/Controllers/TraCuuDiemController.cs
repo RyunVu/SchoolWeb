@@ -32,7 +32,7 @@ namespace VNPT.Web.Portal.Api.Controllers
     public class TraCuuDiemController : BaseApiController
     {
         [HttpPost]
-        public async Task<IHttpActionResult> ExportFile(TraCuuDiemModel model)
+        public IHttpActionResult ExportFile(TraCuuDiemModel model)
         {
             try
             {

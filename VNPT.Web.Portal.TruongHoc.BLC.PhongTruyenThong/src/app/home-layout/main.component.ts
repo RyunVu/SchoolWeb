@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-home-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],

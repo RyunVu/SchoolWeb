@@ -24,35 +24,35 @@
                             <div *ngIf="isSuperAdminSystem" class="col-md-2">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Đơn vị: </label>
-                                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name"
+                                    <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name"
                                         optionValue="Code" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị"
                                         appendTo="body">
-                                    </p-dropdown>
+                                    </p-select>
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Trạng thái: </label>
-                                    <p-dropdown [options]="statuses" [(ngModel)]="status" optionLabel="Name"
+                                    <p-select [options]="statuses" [(ngModel)]="status" optionLabel="Name"
                                         optionValue="Id" placeholder="Chọn trạng thái" appendTo="body">
-                                    </p-dropdown>
+                                    </p-select>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Từ ngày: </label>
-                                    <p-calendar [(ngModel)]="TuNgay" [showIcon]="false" dateFormat="dd/mm/yy"
-                                        appendTo="body">
-                                    </p-calendar>
+                                    <p-datepicker [(ngModel)]="TuNgay" [showIcon]="true" dateFormat="dd/mm/yy"
+                                        placeholder="Từ ngày" appendTo="body">
+                                    </p-datepicker>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="d-block" for="Name">Đến ngày: </label>
-                                    <p-calendar [(ngModel)]="DenNgay" [showIcon]="false" dateFormat="dd/mm/yy"
-                                        appendTo="body">
-                                    </p-calendar>
+                                    <p-datepicker [(ngModel)]="DenNgay" [showIcon]="true" dateFormat="dd/mm/yy"
+                                        placeholder="Đến ngày" appendTo="body">
+                                    </p-datepicker>
                                 </div>
                             </div>
                             <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
@@ -67,6 +67,10 @@
                                     style="margin-right: 5px;">
                                     <i class="fa fa-filter"></i> Tìm kiếm
                                 </button>
+                                <button (click)="resetFilter()" type="button" class="btn btn-outline-secondary btn-sm"
+                                    style="margin-right: 5px;" title="Xoá điều kiện lọc">
+                                    <i class="fas fa-undo"></i> Bỏ lọc
+                                </button>
                                 <button (click)="quaylai()" [disabled]="isDisableBack" type="button" class="btn btn-danger btn-sm"
                                     style="margin-right: 5px;">
                                     <i class="fas fa-arrow-left"></i> Quay lại
@@ -76,13 +80,13 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
                         [paginator]="true" [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]"
                         [totalRecords]="totalRow" [loading]="loading" appendTo="body" paginatorDropdownAppendTo="body">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th class="headerTable" style="width: 5%; text-align: center;">STT</th>
-                                <th class="headerTable" width="10%">Hình ảnh</th>
+                                <th class="headerTable" style="width: 140px;">Hình ảnh</th>
                                 <th class="headerTable">Thông tin tin tức</th>
                                 <th class="headerTable" width="20%">Thời gian</th>
                                 <th class="headerTable" width="10%">Trạng thái</th>
@@ -94,13 +98,7 @@
                             <tr>
                                 <td style="text-align: center;">{{i+1}}</td>
                                 <td class="text-center">
-                                    <img *ngIf="rowData.ImageUrl" alt="{{rowData.ImageUrl|imageUrlPipe}}"
-                                        [src]="rowData.ImageUrl|imageUrlPipe"
-                                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"
-                                        class="img-responsive" style="width: 100px; height: 100px;"
-                                        onerror="this.onerror=null;this.src='/assets/img/noimage.png';" />
-                                    <img *ngIf="!rowData.ImageUrl" src="/assets/img/noimage.png" class="img-responsive"
-                                        style="width: 100px; height: 100px;" />
+                                    <app-thumb [src]="rowData.ImageUrl | imageUrlPipe" [empty]="!rowData.ImageUrl" [alt]="rowData.Title"></app-thumb>
                                 </td>
                                 <td class="text-left">
                                     <!-- <b>Loại tin tức:</b> {{ rowData.NewTypeName }}<br> -->

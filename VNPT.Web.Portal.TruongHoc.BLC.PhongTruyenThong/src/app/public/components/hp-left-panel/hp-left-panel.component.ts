@@ -6,6 +6,7 @@ import {
 } from 'src/app/shared';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'hp-left-panel',
   templateUrl: './hp-left-panel.component.html',

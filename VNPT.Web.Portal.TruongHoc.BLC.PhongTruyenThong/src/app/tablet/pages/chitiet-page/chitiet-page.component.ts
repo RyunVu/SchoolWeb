@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 
 import {
   gmDefaultStyles,
@@ -19,6 +18,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-chitiet-page',
   templateUrl: './chitiet-page.component.html',
   styleUrls: ['./chitiet-page.component.scss'],
@@ -236,7 +236,6 @@ export class ChiTietPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     private location: Location,
     public spinner: NgxSpinnerService,
     private router: Router,

@@ -8,10 +8,10 @@
                     <option *ngFor="let item of loaiTinTucs" [(ngModel)]="loaiTinTuc" value="{{item.Id}}">{{item.Name}}
                     </option>
                 </select>
-                <!-- <p-dropdown [options]="loaiTinTucs" [(ngModel)]="loaiTinTuc" optionLabel="Name" optionValue="Id"
+                <!-- <p-select [options]="loaiTinTucs" [(ngModel)]="loaiTinTuc" optionLabel="Name" optionValue="Id"
                     [filter]="true" filterBy="Name" appendTo="body" (onChange)="changeLoaiTinTuc($event)"
                     [readonly]="readonlyText && !config.data.IsAdd">
-                </p-dropdown> -->
+                </p-select> -->
             </div>
         </div>
         <div class="col-md-5" *ngIf="!parent.isNewsImage">
@@ -31,8 +31,8 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label for="Name">Ngày đăng <span class="text-danger">(*)</span></label>
-                <p-calendar disabled [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
-                    [showTime]="true" [showSeconds]="true" appendTo="body"></p-calendar>
+                <p-datepicker disabled [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+                    [showTime]="true" [showSeconds]="true" appendTo="body"></p-datepicker>
             </div>
         </div>
 
@@ -63,8 +63,13 @@
         </div>
 
         <!-- <div class="col-md-12">
-            <p-tabView>
-                <p-tabPanel header="Tiếng Việt">
+            <p-tabs value="0">
+                <p-tablist>
+                    <p-tab value="0">Tiếng Việt</p-tab>
+                    <p-tab value="1">Tiếng Anh</p-tab>
+                </p-tablist>
+                <p-tabpanels>
+                    <p-tabpanel value="0">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="Name">Tiêu đề <span class="text-danger">(*)</span></label>
@@ -79,8 +84,8 @@
                             </ckeditor>
                         </div>
                     </div>
-                </p-tabPanel>
-                <p-tabPanel header="Tiếng Anh">
+                </p-tabpanel>
+                    <p-tabpanel value="1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="Name">Tiêu đề</label>
@@ -95,8 +100,9 @@
                             </ckeditor>
                         </div>
                     </div>
-                </p-tabPanel>
-            </p-tabView>
+                </p-tabpanel>
+                </p-tabpanels>
+            </p-tabs>
         </div> -->
     </div>
 
@@ -122,10 +128,10 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label for="Name">Loại tin tức <span class="text-danger">(*)</span></label>
-                <p-dropdown [options]="loaiTinTucs" [(ngModel)]="loaiTinTuc" optionLabel="Name" optionValue="Id"
+                <p-select [options]="loaiTinTucs" [(ngModel)]="loaiTinTuc" optionLabel="Name" optionValue="Id"
                     [filter]="true" filterBy="Name" appendTo="body" (onChange)="changeLoaiTinTuc($event)"
                     [readonly]="readonlyText && !config.data.IsAdd">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
         <div class="col-md-5" *ngIf="!parent.isNewsImage">
@@ -145,8 +151,8 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label for="Name">Ngày đăng <span class="text-danger">(*)</span></label>
-                <p-calendar [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
-                    [showTime]="true" [showSeconds]="true" appendTo="body"></p-calendar>
+                <p-datepicker [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+                    [showTime]="true" [showSeconds]="true" appendTo="body"></p-datepicker>
             </div>
         </div>
 
@@ -186,8 +192,13 @@
         </div>
 
         <!-- <div class="col-md-12">
-            <p-tabView>
-                <p-tabPanel header="Tiếng Việt">
+            <p-tabs value="0">
+                <p-tablist>
+                    <p-tab value="0">Tiếng Việt</p-tab>
+                    <p-tab value="1">Tiếng Anh</p-tab>
+                </p-tablist>
+                <p-tabpanels>
+                    <p-tabpanel value="0">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="Name">Tiêu đề <span class="text-danger">(*)</span></label>
@@ -202,8 +213,8 @@
                             </ckeditor>
                         </div>
                     </div>
-                </p-tabPanel>
-                <p-tabPanel header="Tiếng Anh">
+                </p-tabpanel>
+                    <p-tabpanel value="1">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="Name">Tiêu đề</label>
@@ -218,8 +229,9 @@
                             </ckeditor>
                         </div>
                     </div>
-                </p-tabPanel>
-            </p-tabView>
+                </p-tabpanel>
+                </p-tabpanels>
+            </p-tabs>
         </div> -->
     </div>
 

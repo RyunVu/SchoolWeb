@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "feedback-quatrinhxuly-modal",
     templateUrl: 'feedback-quatrinhxuly.modal.html',
     styleUrls: ['./feedback-quatrinhxuly.modal.scss'],

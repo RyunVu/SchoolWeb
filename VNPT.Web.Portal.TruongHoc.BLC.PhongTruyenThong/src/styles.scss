@@ -91,14 +91,14 @@ body {
 }
 
 // Customize the style for ng prime components
-p-calendar {
+p-datepicker {
     input {
         height: 38px;
     }
 }
 
-p-dropdown {
-    .p-dropdown {
+p-select {
+    .p-select {
         height: 38px;
     }
 }
@@ -121,13 +121,13 @@ form {
         input.ng-invalid.ng-touched {
             @include border-error;
         }
-        p-calendar.ng-invalid.ng-touched {
+        p-datepicker.ng-invalid.ng-touched {
             input {
                 @include border-error;
             }
         }
         .ng-invalid.ng-touched {
-            .p-dropdown {
+            .p-select {
                 @include border-error;
             }
         }
@@ -207,7 +207,7 @@ label {
     color: #3c8dbc;
 }
 
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+.p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected {
     background: #3c8dbc !important;
     border-color: #3c8dbc !important;
 }
@@ -219,17 +219,17 @@ label {
     color: #3c8dbc !important;
 }
 
-.p-checkbox .p-checkbox-box.p-highlight {
+.p-checkbox.p-checkbox-checked .p-checkbox-box {
     border-color: #256a92 !important;
     background: #256a92 !important;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+.p-select-overlay .p-select-list .p-select-option.p-select-option-selected {
     color: #ffffff;
     background: #3c8dbc;
 }
 
-.p-dropdown .p-dropdown-trigger {
+.p-select .p-select-dropdown {
     background: transparent;
     color: #3c8dbc;
 }
@@ -264,7 +264,7 @@ label {
     color: white;
 }
 
-.p-dialog .p-dialog-header .p-dialog-header-icon {
+.p-dialog .p-dialog-header .p-dialog-close-button {
     color: white;
 }
 
@@ -295,7 +295,7 @@ hr {
     }
 }
 
-.p-datatable-wrapper > table {
+.p-datatable-table-container > table {
     min-height: 250px;
 }
 
@@ -303,7 +303,7 @@ hr {
     width: 100%;
 }
 
-.p-dropdown {
+.p-select {
     width: 100%;
 }
 
@@ -315,7 +315,7 @@ hr {
     width: 100%;
 }
 
-.p-calendar {
+.p-datepicker {
     width: 100%;
 }
 
@@ -454,4 +454,20 @@ hr {
 }
 tr:hover {
     background-color: #eaeaea !important;
+}
+
+// PrimeNG 21: RadioButton không còn input "label" -> label được render riêng ngay sau p-radioButton
+.p-radiobutton-label {
+    margin: 0 0 0 0.5rem;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+// PrimeNG 21: ô chọn số dòng / nhảy trang của paginator cũng là .p-select,
+// không để các quy tắc ".p-select { width: 100% }" của từng trang kéo dãn làm vỡ footer bảng.
+.p-paginator .p-select.p-paginator-rpp-dropdown,
+.p-paginator .p-select.p-paginator-jtp-dropdown {
+    width: auto !important;
+    min-width: 5rem;
+    flex: 0 0 auto;
 }

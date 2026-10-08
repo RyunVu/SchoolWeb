@@ -30,11 +30,11 @@
     </div>
     <div class="form-group col-6 col-md-2">
         <label for="keyword">Trạng thái</label>
-        <p-dropdown [options]="hkdStatuses" styleClass="w-100" formControlName="status" optionValue="value" optionLabel="label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="hkdStatuses" styleClass="w-100" formControlName="status" optionValue="value" optionLabel="label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div class="form-group col-6 col-md-2">
         <label for="keyword">Loại hình</label>
-        <p-dropdown [options]="loaiHinhs" styleClass="w-100" formControlName="loaiHinh" optionValue="Id" optionLabel="Label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="loaiHinhs" styleClass="w-100" formControlName="loaiHinh" optionValue="Id" optionLabel="Label" placeholder="" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div style="margin-top: 10px" class="form-group col-12 col-md-1 d-flex align-items-end ">
         <button type="submit" class="btn btn-primary">Tìm kiếm</button>

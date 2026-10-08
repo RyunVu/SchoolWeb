@@ -6,21 +6,9 @@
                 <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
             </div>
             <div class="col-md-12">
-                <!-- <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code"
-                    [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-                </p-dropdown> -->
                 <p-multiSelect [options]="units" [(ngModel)]="unit" [style]="{'width':'100%'}"
-                    optionLabel="Name" dataKey="Code" appendTo="body" placeholder="Chọn đơn vị">
-                    <ng-template let-value pTemplate="selectedItems">
-                        <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
-                            <span>{{val.Name}}</span>
-                        </div>
-                        <span *ngIf="!value || value.length === 0"
-                            class="ui-multiselected-empty-token ui-corner-all">Chọn đơn vị</span>
-                    </ng-template>
-                    <ng-template let-car pTemplate="item">
-                        <div style="font-size:14px;float:right;margin-top:4px">{{car.Name}}</div>
-                    </ng-template>
+                    optionLabel="Name" dataKey="Code" appendTo="body" placeholder="Chọn đơn vị"
+                    [filter]="true" filterBy="Name" class="w-100">
                 </p-multiSelect>
             </div>
             <div class="col-md-12">

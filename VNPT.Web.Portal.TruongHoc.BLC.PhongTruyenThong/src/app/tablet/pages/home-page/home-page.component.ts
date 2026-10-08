@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 
 import {
   gmDefaultStyles,
@@ -20,6 +19,7 @@ import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
+  standalone: false,
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss'],
@@ -65,7 +65,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     private router: Router,
     public spinner: NgxSpinnerService,
     private location: Location,

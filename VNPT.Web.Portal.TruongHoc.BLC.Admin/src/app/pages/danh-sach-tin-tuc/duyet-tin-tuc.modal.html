@@ -26,8 +26,8 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="Name">Ngày đăng</label>
-            <p-calendar [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
-                disabled="true" [showTime]="true" [showSeconds]="true" appendTo="body"></p-calendar>
+            <p-datepicker [(ngModel)]="defaultNgay" [showIcon]="true" dateFormat="dd/mm/yy" hourFormat="24"
+                disabled="true" [showTime]="true" [showSeconds]="true" appendTo="body"></p-datepicker>
         </div>
     </div>
 
@@ -65,8 +65,13 @@
 
 
     <div *ngIf="paramEnableLanguage" class="col-md-12">
-        <p-tabView>
-            <p-tabPanel header="Tiếng Việt">
+        <p-tabs value="0">
+            <p-tablist>
+                <p-tab value="0">Tiếng Việt</p-tab>
+                <p-tab value="1">Tiếng Anh</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="0">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Tiêu đề <span class="text-danger">(*)</span></label>
@@ -81,8 +86,8 @@
                         </div>
                     </div>
                 </div>
-            </p-tabPanel>
-            <p-tabPanel header="Tiếng Anh">
+            </p-tabpanel>
+                <p-tabpanel value="1">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Tiêu đề</label>
@@ -97,8 +102,9 @@
                         </div>
                     </div>
                 </div>
-            </p-tabPanel>
-        </p-tabView>
+            </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
     </div>
 </div>
 

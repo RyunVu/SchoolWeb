@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -19,41 +20,61 @@ namespace VNPT.Web.Portal.Api
         {
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            string domainMedia = ConfigurationManager.AppSettings["DomainMedia"] + "";
-
-            //Bảo Lộc
-            //MediaService.SetKey(domainMedia, "TruongHocBLC", "7fe5923b8c994dfb8cdd0b671336e249");
-
-            //Bảo Lâm
-            //MediaService.SetKey(domainMedia, "TruongHocBLM", "a0c5a00898504d75bce75fdb7a0072a9");
-
-            //Di Linh
-            //MediaService.SetKey(domainMedia, "TruongHoc", "63fae18d931c49d4bd6885a229f8eaa4");
-
-            //Đạ Huoai
-            //MediaService.SetKey(domainMedia, "WebPX", "dzkrLHpniEoGtcLF4Kaa");
-
-            //Lâm Hà | Đam Rông
-            MediaService.SetKey(domainMedia, "VNPT.Web.Portal.TruongHoc.LHA", "3b6ec8be807743ee88281856077eb6af");
-
-            //Đức Trọng
-            //MediaService.SetKey(domainMedia, "VNPT.Web.Portal.TruongHoc.DTG", "098c4fdad1b24e28b54c0fe79ddc0873");
-
-            //Đà Lạt
-            //MediaService.SetKey(domainMedia, "Website.TruongHoc.DaLat", "8f26f588cc124aedb5ce01f0eaf66d7e");
+            // Cấu hình theo đơn vị nằm trong Web.config (khi Publish được ghi đè bởi Web.{MÃ}_{Tên}.config)
+            ValidateRegionConfig();
+            MediaService.SetKey(
+                ConfigurationManager.AppSettings["DomainMedia"],
+                ConfigurationManager.AppSettings["MediaAppName"],
+                ConfigurationManager.AppSettings["MediaKey"]);
 
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             ConfigureScheduler();
         }
 
+        /// <summary>
+        /// Chặn lỗi build nhầm đơn vị: thiếu cấu hình hoặc Region không khớp với DB thì dừng ngay khi khởi động.
+        /// </summary>
+        private static void ValidateRegionConfig()
+        {
+            var region = (ConfigurationManager.AppSettings["Region"] ?? "").Trim();
+            var missing = new[] { "Region", "DomainMedia", "MediaAppName", "MediaKey" }
+                .Where(k => string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings[k]))
+                .ToList();
+            var connection = ConfigurationManager.ConnectionStrings["WebDbContext"];
+            if (connection == null || string.IsNullOrWhiteSpace(connection.ConnectionString))
+            {
+                missing.Add("connectionStrings/WebDbContext");
+            }
+            if (missing.Count > 0)
+            {
+                throw new ConfigurationErrorsException("Web.config thiếu cấu hình đơn vị: " + string.Join(", ", missing));
+            }
+
+            // Tên DB của mọi đơn vị đều kết thúc bằng mã đơn vị, VD: VNPT.Web.TruongHoc.DLH
+            var database = new SqlConnectionStringBuilder(connection.ConnectionString).InitialCatalog ?? "";
+            if (!database.EndsWith("." + region, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ConfigurationErrorsException(
+                    $"Cấu hình đơn vị không khớp: Region = \"{region}\" nhưng database = \"{database}\". " +
+                    "Kiểm tra lại Web.config hoặc publish profile đã chọn.");
+            }
+        }
+
+        // FluentScheduler 6: giữ tham chiếu để lịch không bị GC thu hồi
+        private static Schedule _getNewsSchedule;
+
         public void ConfigureScheduler()
         {
-            Registry registry = new Registry();
-            //registry.Schedule<EOfficeJob>().ToRunNow().AndEvery(30).Minutes();
-            registry.Schedule<GetNewsJob>().ToRunNow().AndEvery(30).Minutes();
-            //registry.Schedule<FixNewsJob>().ToRunNow().AndEvery(30).Minutes();
-            JobManager.Initialize(registry);
+            //new Schedule(() => new EOfficeJob().Execute(), run => run.Now().AndEvery(30).Minutes()).Start();
+            _getNewsSchedule = new Schedule(() => new GetNewsJob().Execute(), run => run.Now().AndEvery(30).Minutes());
+            _getNewsSchedule.Start();
+            //new Schedule(() => new FixNewsJob().Execute(), run => run.Now().AndEvery(30).Minutes()).Start();
+        }
+
+        protected void Application_End()
+        {
+            _getNewsSchedule?.Stop();
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)

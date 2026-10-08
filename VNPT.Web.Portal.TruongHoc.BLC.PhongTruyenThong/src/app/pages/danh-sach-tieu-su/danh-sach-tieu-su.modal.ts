@@ -9,10 +9,11 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
 import { FileManagerModal } from 'src/app/components/file-manager/file-manager.component';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { BaiVietTieuSuModal } from './bai-viet-tieu-su.modal';
 
 @Component({
+  standalone: false,
   selector: 'danh-sach-tieu-su-modal',
   templateUrl: 'danh-sach-tieu-su.modal.html',
   styleUrls: ['./danh-sach-tieu-su.modal.scss'],
@@ -185,7 +186,7 @@ export class DanhSachTieuSuModal {
         },
         header: 'Thêm mới bài viết',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.item.BPBlst.push({
@@ -207,7 +208,7 @@ export class DanhSachTieuSuModal {
         },
         header: 'Chỉnh sửa bài viết',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.item.BPBlst.splice(this.item.BPBlst.indexOf(item), 1);
@@ -259,7 +260,7 @@ export class DanhSachTieuSuModal {
         },
         header: 'Quản lý file',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           var fileUrls = data.urls;
@@ -278,7 +279,7 @@ export class DanhSachTieuSuModal {
         },
         header: 'Quản lý file',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           var fileUrls = data.urls;

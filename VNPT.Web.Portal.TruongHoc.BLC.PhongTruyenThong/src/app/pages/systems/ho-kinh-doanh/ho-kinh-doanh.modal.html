@@ -54,7 +54,7 @@
                 <div class="col-sm-6">
                     <label class="control-label">Ngày cấp </label>
                     <div>
-                        <p-calendar [disabled]="!parent.checkPermission('Đăng ký thuế')" [(ngModel)]="item.NgayCapGCN" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                        <p-datepicker [disabled]="!parent.checkPermission('Đăng ký thuế')" [(ngModel)]="item.NgayCapGCN" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                 <div class="col-sm-6">
                     <label class="control-label">Ngày cấp MST</label>
                     <div>
-                        <p-calendar [(ngModel)]="item.NgayCapMST" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body" [disabled]="!parent.checkPermission('Đăng ký thuế')"></p-calendar>
+                        <p-datepicker [(ngModel)]="item.NgayCapMST" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body" [disabled]="!parent.checkPermission('Đăng ký thuế')"></p-datepicker>
                     </div>
                 </div>
             </div>
@@ -132,8 +132,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="d-block" *ngFor="let i of tinhTrangQuanLys">
-                                        <p-radioButton name="TinhTrangQuanLy" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TinhTrangQuanLy" (onClick)="changeTinhTrangQuanLy($event)">
-                                        </p-radioButton>
+                                        <p-radioButton name="TinhTrangQuanLy" value="{{i.Id}}" [(ngModel)]="item.TinhTrangQuanLy" (onClick)="changeTinhTrangQuanLy($event)" [inputId]="'TinhTrangQuanLy_' + i.Id">
+                                        </p-radioButton><label [for]="'TinhTrangQuanLy_' + i.Id" class="p-radiobutton-label" [class.p-radiobutton-label-active]="item.TinhTrangQuanLy == i.Id">{{ i.Name }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -145,9 +145,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="d-block" *ngFor="let i of loaiHinhs">
-                                        <p-radioButton name="LoaiHinhNopThue" value="{{i.Id}}" label="{{i.Label}}" [(ngModel)]="item.LoaiHinhNopThue" (onClick)="changeLoaiHinh($event)"></p-radioButton>
-                                        <!-- <p-dropdown [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
-                                </p-dropdown> -->
+                                        <p-radioButton name="LoaiHinhNopThue" value="{{i.Id}}" [(ngModel)]="item.LoaiHinhNopThue" (onClick)="changeLoaiHinh($event)" [inputId]="'LoaiHinhNopThue_' + i.Id"></p-radioButton><label [for]="'LoaiHinhNopThue_' + i.Id" class="p-radiobutton-label" [class.p-radiobutton-label-active]="item.LoaiHinhNopThue == i.Id">{{ i.Label }}</label>
+                                        <!-- <p-select [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
+                                </p-select> -->
 
                                     </div>
                                 </div>
@@ -161,9 +161,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="d-block" *ngFor="let i of lyDoChuaMSTs">
-                                        <p-radioButton name="TrangThaiChuaCoMST" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TrangThaiChuaCoMST" (onClick)="changeTrangThaiChuaCoMST($event)"></p-radioButton>
-                                        <!-- <p-dropdown [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
-                                </p-dropdown> -->
+                                        <p-radioButton name="TrangThaiChuaCoMST" value="{{i.Id}}" [(ngModel)]="item.TrangThaiChuaCoMST" (onClick)="changeTrangThaiChuaCoMST($event)" [inputId]="'TrangThaiChuaCoMST_' + i.Id"></p-radioButton><label [for]="'TrangThaiChuaCoMST_' + i.Id" class="p-radiobutton-label" [class.p-radiobutton-label-active]="item.TrangThaiChuaCoMST == i.Id">{{ i.Name }}</label>
+                                        <!-- <p-select [options]="lyDoChuaMSTs" [disabled]="!parent.checkPermission('TrangThaiChuaCoMST')" [(ngModel)]="item.TrangThaiChuaCoMST" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn lý do" appendTo="body">
+                                </p-select> -->
 
                                     </div>
                                 </div>
@@ -182,8 +182,8 @@
                             <div class="row ">
                                 <div class="col-sm-12 ">
                                     <div class="d-block " *ngFor="let i of trangThaiChuaKhoans ">
-                                        <p-radioButton name="TrangThaiChuaKhoan " value="{{i.Id}} " label="{{i.Name}} " [(ngModel)]="item.TrangThaiChuaKhoan " (onClick)="changeTrangThaiChuaKhoan($event) ">
-                                        </p-radioButton>
+                                        <p-radioButton name="TrangThaiChuaKhoan " value="{{i.Id}} " [(ngModel)]="item.TrangThaiChuaKhoan " (onClick)="changeTrangThaiChuaKhoan($event) " [inputId]="'TrangThaiChuaKhoan_' + i.Id">
+                                        </p-radioButton><label [for]="'TrangThaiChuaKhoan_' + i.Id" class="p-radiobutton-label" [class.p-radiobutton-label-active]="item.TrangThaiChuaKhoan == i.Id">{{ i.Name }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -196,10 +196,10 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="d-block" *ngFor="let i of traGiayPhepKds">
-                                        <p-radioButton name="TraGpKhongKD6Thang" value="{{i.Id}}" label="{{i.Name}}" [(ngModel)]="item.TraGpKhongKD6Thang" (onClick)="changeTraGpKhongKD6Thang($event)">
-                                        </p-radioButton>
-                                        <!-- <p-dropdown [options]="traGiayPhepKds" [disabled]="!parent.checkPermission('TraGpKhongKD6Thang')" [(ngModel)]="item.TraGpKhongKD6Thang" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn dự kiến" appendTo="body">
-            </p-dropdown> -->
+                                        <p-radioButton name="TraGpKhongKD6Thang" value="{{i.Id}}" [(ngModel)]="item.TraGpKhongKD6Thang" (onClick)="changeTraGpKhongKD6Thang($event)" [inputId]="'TraGpKhongKD6Thang_' + i.Id">
+                                        </p-radioButton><label [for]="'TraGpKhongKD6Thang_' + i.Id" class="p-radiobutton-label" [class.p-radiobutton-label-active]="item.TraGpKhongKD6Thang == i.Id">{{ i.Name }}</label>
+                                        <!-- <p-select [options]="traGiayPhepKds" [disabled]="!parent.checkPermission('TraGpKhongKD6Thang')" [(ngModel)]="item.TraGpKhongKD6Thang" optionValue="Id" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn dự kiến" appendTo="body">
+            </p-select> -->
                                     </div>
                                 </div>
                             </div>
@@ -249,15 +249,15 @@
 <!-- <div class="col-sm-3" *ngIf="parent.checkPermission('TrangThaiDKTToChucRef')">
         <div class="form-group">
             <label for="Name">Trạng thái </label>
-            <p-dropdown [options]="hkdStatuses" [(ngModel)]="item.TrangThaiDKTToChucRef" [disabled]="!parent.checkPermission('TrangThaiDKTToChucRef')" optionValue="value" optionLabel="label" [filter]="true" filterBy="Name" placeholder="Chọn loại trạng thái" appendTo="body">
-            </p-dropdown>
+            <p-select [options]="hkdStatuses" [(ngModel)]="item.TrangThaiDKTToChucRef" [disabled]="!parent.checkPermission('TrangThaiDKTToChucRef')" optionValue="value" optionLabel="label" [filter]="true" filterBy="Name" placeholder="Chọn loại trạng thái" appendTo="body">
+            </p-select>
         </div>
     </div>
     <div class="col-sm-3" *ngIf="parent.checkPermission('LoaiHinhNopThue')">
         <div class="form-group">
             <label for="Name">Loại hình </label>
-            <p-dropdown [options]="loaiHinhs" [(ngModel)]="item.LoaiHinhNopThue" [disabled]="!parent.checkPermission('LoaiHinhNopThue')" optionValue="Id" optionLabel="Label" [filter]="true" filterBy="Name" placeholder="Chọn loại tình trạng" appendTo="body">
-            </p-dropdown>
+            <p-select [options]="loaiHinhs" [(ngModel)]="item.LoaiHinhNopThue" [disabled]="!parent.checkPermission('LoaiHinhNopThue')" optionValue="Id" optionLabel="Label" [filter]="true" filterBy="Name" placeholder="Chọn loại tình trạng" appendTo="body">
+            </p-select>
         </div>
     </div> -->
 
@@ -290,29 +290,29 @@
 <!-- <div class="col-sm-3">
         <div class="form-group">
             <label for="Name">Tỉnh </label>
-            <p-dropdown [options]="province" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Tinh')">
-            </p-dropdown>
+            <p-select [options]="province" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Tinh')">
+            </p-select>
         </div>
     </div> -->
 <!-- <div class="col-sm-3">
         <div class="form-group">
             <label for="Name">Quận/ Huyện </label>
-            <p-dropdown [options]="district" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Huyen')">
-            </p-dropdown>
+            <p-select [options]="district" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Huyen')">
+            </p-select>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group">
             <label for="Name">Phường/ Xã </label>
-            <p-dropdown [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" (onChange)="ChangeWard()" [disabled]="!parent.checkPermission('Phuong')">
-            </p-dropdown>
+            <p-select [options]="wards" [(ngModel)]="item.LocationWardId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" (onChange)="ChangeWard()" [disabled]="!parent.checkPermission('Phuong')">
+            </p-select>
         </div>
     </div>
     <div class="col-sm-3">
         <div class="form-group">
             <label for="Name">Tên đường</label>
-            <p-dropdown [options]="streets" [(ngModel)]="item.LocationStreetId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Duong')">
-            </p-dropdown>
+            <p-select [options]="streets" [(ngModel)]="item.LocationStreetId" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" [disabled]="!parent.checkPermission('Duong')">
+            </p-select>
         </div>
     </div>
     <div class="col-sm-3">
@@ -376,7 +376,7 @@
   <div class="col-sm-3">
     <label class="control-label">Ngày in </label>
     <div>
-      <p-calendar [(ngModel)]="item.NgayIn" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+      <p-datepicker [(ngModel)]="item.NgayIn" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
     </div>
   </div> -->
 <!-- <div class="col-12"><hr /></div> -->

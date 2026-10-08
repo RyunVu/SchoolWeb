@@ -50,7 +50,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
             } 
         }
 
-        public async Task<JsonResult> GetTableTemplateByGrId(Guid gpTableId)
+        public JsonResult GetTableTemplateByGrId(Guid gpTableId)
         {
             using (var context = new WebDbContext())
             {
@@ -62,7 +62,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
 
        
 
-        public async Task<JsonResult> GetColOfTableTemplate(Guid tableId)
+        public JsonResult GetColOfTableTemplate(Guid tableId)
         {
             using (var context = new WebDbContext())
             {
@@ -99,7 +99,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
         }
 
    
-        public async Task<JsonResult> GetRowOfTableTemplate2(Guid tableId, string year)
+        public JsonResult GetRowOfTableTemplate2(Guid tableId, string year)
         {
             using (var context = new WebDbContext())
             {
@@ -277,7 +277,7 @@ namespace VNPT.Web.Portal.Api.Areas.Modules.Controllers
             return null;
         }
 
-        public async Task<JsonResult> GetRowOfTableTemplate(Guid tableId)
+        public JsonResult GetRowOfTableTemplate(Guid tableId)
         {
             using (var context = new WebDbContext())
             {

@@ -9,9 +9,10 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { ToastrService } from "ngx-toastr";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
+    standalone: false,
     selector: "duyet-tin-tuc-modal",
     templateUrl: "duyet-tin-tuc.modal.html",
     styleUrls: ["./duyet-tin-tuc.modal.scss"],
@@ -340,7 +341,7 @@ export class DuyetTinTucModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;

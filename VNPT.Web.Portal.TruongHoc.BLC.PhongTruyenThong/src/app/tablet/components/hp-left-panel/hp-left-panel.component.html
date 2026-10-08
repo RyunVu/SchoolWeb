@@ -1,12 +1,12 @@
 <div class="hp-left-panel-container h-100">
     <div *ngIf="!businessDetail" class="default-panel h-100">
         <div *ngIf="loading" class="pt-5 px-3">
-            <ngx-content-loading [width]="180" [height]="250">
-                <svg:g ngx-rect width="180" height="40" y="0" x="0"></svg:g>
-                <svg:g ngx-rect width="180" height="40" y="50" x="0"></svg:g>
-                <svg:g ngx-rect width="180" height="40" y="100" x="0"></svg:g>
-                <svg:g ngx-rect width="180" height="40" y="150" x="0"></svg:g>
-            </ngx-content-loading>
+            <div style="width: 180px; height: 250px;">
+                <p-skeleton width="180px" height="40px" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="180px" height="40px" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="180px" height="40px" styleClass="mb-2"></p-skeleton>
+                <p-skeleton width="180px" height="40px" styleClass="mb-2"></p-skeleton>
+            </div>
         </div>
 
         <div *ngIf="!items && !loading" class="search-bg h-100">

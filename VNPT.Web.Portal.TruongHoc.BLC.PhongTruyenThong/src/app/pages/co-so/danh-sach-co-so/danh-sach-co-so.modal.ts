@@ -5,11 +5,12 @@ import { MessageService } from 'primeng/api';
 import { HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DialogService } from 'primeng/dynamicdialog';
 import { hkdStatuses, loaiHinhs, traGiayPhepKDs } from 'src/app/shared/constants';
 
 @Component({
+    standalone: false,
     selector: 'danh-sach-co-so-modal',
     templateUrl: 'danh-sach-co-so.modal.html',
     styleUrls: ['./danh-sach-co-so.modal.scss'],

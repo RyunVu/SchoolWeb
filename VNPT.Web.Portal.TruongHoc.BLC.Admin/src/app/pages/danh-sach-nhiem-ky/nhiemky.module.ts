@@ -25,7 +25,6 @@ import { CanBoNhiemKyModal } from './can-bo-nhiem-ky.modal';
     DanhSachNhiemKyRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DanhSachNhiemKyModal, CanBoNhiemKyModal],
   providers: [ToastrService],
 })
 export class DanhSachNhiemKyModule {}

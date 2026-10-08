@@ -1,6 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
@@ -8,6 +9,7 @@ import { UploadFileDiemModal } from './upload-file.modal';
 import { ChiTietDiemModal } from './chi-tiet-diem.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-tra-cuu-diem',
     templateUrl: './tra-cuu-diem.component.html',
     styleUrls: ['./tra-cuu-diem.component.scss'],
@@ -79,7 +81,7 @@ export class TraCuuDiemComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -160,7 +162,7 @@ export class TraCuuDiemComponent extends BasePage {
                         data: result.Result,
                         header: 'Thông tin bảng điểm',
                         width: '60%',
-                    }).onClose.subscribe((data: any) => {
+                    })!.onClose.subscribe((data: any) => {
                         if(data) {
                             window.open(data.url)
                         }
@@ -184,7 +186,7 @@ export class TraCuuDiemComponent extends BasePage {
             },
             header: 'Import File',
             width: '40%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }

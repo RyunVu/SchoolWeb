@@ -9,6 +9,7 @@ export const environment = {
   
   googleKey: '',
   unitCode: 'THCSHIEPTHANH',
+  // Link media thật lấy theo DomainMedia trong Web.config của API (api/System/ClientConfig); giá trị dưới đây chỉ là dự phòng
   mediaUrl: "https://mediaductrong.lamdongtructuyen.vn/"
 };
 

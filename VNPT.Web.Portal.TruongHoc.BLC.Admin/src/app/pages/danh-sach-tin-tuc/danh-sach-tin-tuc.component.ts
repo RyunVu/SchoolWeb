@@ -1,21 +1,22 @@
 import { Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import {
-    ConfirmationService,
-    LazyLoadEvent,
-    MessageService,
-} from "primeng/api";
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from "primeng/dynamicdialog";
 import { ResultCode, ResultModel } from "src/app/models";
 import { BasePage, BaseService, HttpService } from "src/app/services";
 import { OTPCheckModal } from "../systems/user/otpcheck.modal";
 import { UserModal } from "../systems/user/user.modal";
 
-import * as moment from "moment";
 import { DanhSachTinTucModal } from "./danh-sach-tin-tuc.modal";
+import { NewsHistoryModal } from "./news-history.modal";
+import { NewsPreviewModal } from "./news-preview.modal";
 import { MenuSidebarService } from "src/app/layouts/menu-sidebar/menu-sidebar.service";
+import { NewsLinkService, OpenNewsRequest } from "src/app/services/news-link.service";
+import { Subscription } from "rxjs";
 
 @Component({
+    standalone: false,
     selector: "app-danh-sach-tin-tuc",
     templateUrl: "./danh-sach-tin-tuc.component.html",
     styleUrls: ["./danh-sach-tin-tuc.component.scss"],
@@ -55,6 +56,12 @@ export class DanhSachTinTucComponent extends BasePage {
 
     isUserDuyetTinFromTruong: boolean = false;
     isAddButtonVisible: boolean = false;
+    /** Xem lịch sử dữ liệu bài viết: chỉ SuperAdminSystem */
+    canViewHistory: boolean = false;
+
+    /** Bài viết đang được tìm từ ô tìm kiếm trên header (để tô sáng dòng) */
+    highlightNewsId: string | null = null;
+    private newsLinkSub: Subscription;
 
     constructor(
         public router: Router,
@@ -65,8 +72,19 @@ export class DanhSachTinTucComponent extends BasePage {
         private confirmationService: ConfirmationService,
         private baseService: BaseService,
         public menuSidebarService: MenuSidebarService,
+        private newsLink: NewsLinkService,
     ) {
         super(router, route, http, message);
+
+        // Đang đứng sẵn ở trang chuyên mục này mà tìm bài khác cùng chuyên mục (component không bị tạo lại)
+        this.newsLinkSub = this.newsLink.requested$.subscribe(() => {
+            if (this.parameter) {
+                const request = this.newsLink.take(this.parameter);
+                if (request) {
+                    this.openNewsFromLink(request);
+                }
+            }
+        });
 
         var mulRole = this.baseService.MulRole;
         // if (mulRole != "" && mulRole != null && (mulRole.includes("SuperAdminSystem"))) {
@@ -77,20 +95,20 @@ export class DanhSachTinTucComponent extends BasePage {
             this.isUserDuyetTin = true;
         }
 
+        if (mulRole != "" && mulRole != null && mulRole.includes("SuperAdminSystem")) {
+            this.canViewHistory = true;
+        }
+
         if (mulRole != "" && mulRole != null && (mulRole.includes("TinTucTuTruong_Duyet"))) {
             this.isUserDuyetTinFromTruong = true;
         }
 
-        var currentDate = new Date();
-
-        this.TuNgay = moment("01/" + "01/" + currentDate.getFullYear, "DD/MM/YYYY").toDate();
-
-        this.DenNgay = moment().toDate();
+        this.setDefaultDates();
 
         this.loadUnits();
     }
 
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -101,7 +119,7 @@ export class DanhSachTinTucComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -169,7 +187,7 @@ export class DanhSachTinTucComponent extends BasePage {
                 },
                 header: "Thêm mới tin tức",
                 width: "100%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();
@@ -188,12 +206,41 @@ export class DanhSachTinTucComponent extends BasePage {
                 },
                 header: "Cập nhật tin tức",
                 width: "100%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();
                 }
             });
+    }
+
+    /** Mặc định không lọc theo thời gian */
+    private setDefaultDates() {
+        this.TuNgay = null;
+        this.DenNgay = null;
+    }
+
+    resetFilter() {
+        this.keywordInput = "";
+        this.status = null;
+        this.setDefaultDates();
+        this.search();
+    }
+
+    preview(item: any) {
+        this.dialogService.open(NewsPreviewModal, {
+            data: { item: item },
+            header: "Xem trước tin bài",
+            width: "80%",
+        });
+    }
+
+    viewDataHistory(item: any) {
+        this.dialogService.open(NewsHistoryModal, {
+            data: { item: item },
+            header: "Lịch sử dữ liệu bài viết",
+            width: "90%",
+        });
     }
 
     delete(item: any) {
@@ -276,18 +323,52 @@ export class DanhSachTinTucComponent extends BasePage {
         if (this.dt != null) {
             this.refresh();
         }
+        const request = this.newsLink.take(this.parameter);
+        if (request) {
+            this.openNewsFromLink(request);
+            return;
+        }
         this.loadData();
     }
 
-    private loadData(): void {
+    override ngOnDestroy(): void {
+        this.newsLinkSub?.unsubscribe();
+        super.ngOnDestroy();
+    }
+
+    /** Lọc danh sách để bài viết hiện ra (theo tiêu đề, mọi thời gian) rồi mở form cập nhật bài đó */
+    private openNewsFromLink(request: OpenNewsRequest): void {
+        this.keywordInput = request.title;
+        this.status = null;
+        this.TuNgay = null;
+        this.DenNgay = null;
+        this.pageIndex = 1;
+        this.highlightNewsId = request.id;
+        if (this.dt != null) {
+            this.refresh();
+        }
+        const previousUnit = this.unit;
+        this.unit = request.unitCode;
+        this.loadData(() => {
+            this.unit = previousUnit;
+            const item = this.items.find((x: any) => (x.Id + '').toLowerCase() === (request.id + '').toLowerCase());
+            if (item) {
+                this.edit(item);
+            } else {
+                this.message.add({ severity: 'warn', summary: 'Tìm bài viết', detail: 'Không tìm thấy bài viết trong chuyên mục này' });
+            }
+        });
+    }
+
+    private loadData(onLoaded?: () => void): void {
         this.loading = true;
         this.http.post(
             "News/GetList",
             {
                 Code: this.parameter,
                 UnitCode: this.unit,
-                FromDate: this.TuNgay,
-                ToDate: this.DenNgay,
+                FromDate: this.TuNgay || null,
+                ToDate: this.DenNgay || null,
                 Keyword: this.keywordInput == "" ? null : this.keywordInput,
                 PageIndex: this.pageIndex,
                 PageSize: this.pageSize,
@@ -300,6 +381,7 @@ export class DanhSachTinTucComponent extends BasePage {
                 }
                 this.loadDuyetTin();
                 this.loading = false;
+                onLoaded?.();
             },
             () => {
                 this.loading = false;
@@ -308,6 +390,7 @@ export class DanhSachTinTucComponent extends BasePage {
     }
 
     search() {
+        this.highlightNewsId = null;
         this.pageIndex = 1;
         this.refresh();
         this.loadData();

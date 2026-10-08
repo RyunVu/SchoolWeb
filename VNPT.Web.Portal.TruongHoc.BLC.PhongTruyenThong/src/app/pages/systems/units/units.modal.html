@@ -15,15 +15,15 @@
     <!-- <div class="col-md-4">
         <div class="form-group">
             <label for="Name">Huyện/Thành phố<b class="red">*</b></label>
-            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
-            </p-dropdown>
+            <p-select [options]="locations" [(ngModel)]="location" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
+            </p-select>
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             <label for="Name">Phường/Xã</label>
-            <p-dropdown [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn phường" appendTo="body" [disabled]="wards.length == 0">
-            </p-dropdown>
+            <p-select [options]="wards" [(ngModel)]="ward" optionLabel="Name" [filter]="true" filterBy="Name" placeholder="Chọn phường" appendTo="body" [disabled]="wards.length == 0">
+            </p-select>
         </div>
     </div> -->
     <div class="col-md-4">

@@ -1,0 +1,45 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Models
+@using VNPT.Web.Portal.Api.Providers
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var menus = MenuDal.MenuDoc(infomation);
+    var analytics = AnalyticsDal.GetAnalyticData(infomation.PortalCode);
+}
+
+<aside class="tn-sidebar">
+    @foreach (var systemMenu in menus)
+    {
+        if (systemMenu.MenuType == 1 || systemMenu.MenuType == 2)
+        {
+            <section class="tn-widget">
+                <h3 class="tn-widget-title"><span>@SystemParameterDto.Translate(systemMenu.Title)</span></h3>
+                <ul class="tn-widget-list @(systemMenu.MenuType == 2 ? "is-scroll" : "")">
+                    @if (systemMenu.MenuType == 2)
+                    {
+                        @Html.Action("ScrollingNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    }
+                    else
+                    {
+                        @Html.Action("GetNews", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+                    }
+                </ul>
+            </section>
+        }
+        else if (systemMenu.MenuType == 3 || systemMenu.MenuType == 4)
+        {
+            <section class="tn-widget tn-widget-banner">
+                @Html.Action("LinkSidebar", "Sidebar", new { area = "Modules", Code = systemMenu.Parameter })
+            </section>
+        }
+    }
+
+    <section class="tn-widget">
+        <h3 class="tn-widget-title"><span>@SystemParameterDto.Translate("Thống kê truy cập")</span></h3>
+        <dl class="tn-stats">
+            <div><dt>Hôm nay</dt><dd id="homnay">@(analytics?.DayCount ?? 0)</dd></div>
+            <div><dt>Tháng này</dt><dd id="thangnay">@(analytics?.MonthCount ?? 0)</dd></div>
+            <div><dt>Năm nay</dt><dd id="namnay">@(analytics?.YearCount ?? 0)</dd></div>
+        </dl>
+    </section>
+</aside>

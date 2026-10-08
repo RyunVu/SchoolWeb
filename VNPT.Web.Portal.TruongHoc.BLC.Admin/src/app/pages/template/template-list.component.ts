@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { AuthService, BasePage, BaseService, HttpService } from 'src/app/services';
@@ -9,6 +10,7 @@ import { TempalteListService } from './template-list.service';
 import { TableTemplateModal, TemplateInputModal } from './modals';
 
 @Component({
+    standalone: false,
     selector: 'app-template-list',
     templateUrl: './template-list.component.html',
     styleUrls: ['./template-list.component.scss'],
@@ -87,7 +89,7 @@ export class TemplateListComponent extends BasePage {
     }
 
     oldEvent: any;
-    async paginate(event: LazyLoadEvent) {
+    async paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;

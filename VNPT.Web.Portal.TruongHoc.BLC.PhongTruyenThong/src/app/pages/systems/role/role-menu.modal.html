@@ -109,7 +109,7 @@
 
 <p-dialog [(visible)]="viewDialog" [style]="{width: '50%'}" [header]="ortherTitle" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <p-table styleClass="p-datatable-gridlines" [value]="ortherItem.OtherPermissions" [autoLayout]="true">
+        <p-table styleClass="p-datatable-gridlines" [value]="ortherItem.OtherPermissions">
             <ng-template pTemplate="header">
                 <tr>
                     <th width="80%">

@@ -78,17 +78,12 @@
             </div>
         </div>
         <div class="col-md-8" [ngClass]="!origin ? 'offset-2' : ''">
-            <agm-map [latitude]="mapOptions.lat" [longitude]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId">
-                <ng-container *ngIf="!origin">
-                    <agm-marker *ngFor="let marker of mapOptions.markers" [latitude]="marker.lat" [longitude]="marker.lng" [iconUrl]="marker.iconHome">
-                        <agm-info-window [isOpen]="openMarker">
-                            <business-tiny-detail [entity]="marker.entity"></business-tiny-detail>
-                        </agm-info-window>
-                    </agm-marker>
-                </ng-container>
-                <agm-direction *ngIf="origin" [origin]="origin" [destination]="destination" [panel]="myPanel">
-                </agm-direction>
-            </agm-map>
+            <app-gmap [lat]="mapOptions.lat" [lng]="mapOptions.lng" [zoom]="mapOptions.zoom" [styles]="mapOptions.styles" [mapTypeId]="mapTypeId"
+                [markers]="mapOptions.markers" [infoOpen]="openMarker" [origin]="origin" [destination]="destination" [panel]="myPanel">
+                <ng-template #info let-marker>
+                    <business-tiny-detail [entity]="marker.entity"></business-tiny-detail>
+                </ng-template>
+            </app-gmap>
             <div class="btn-icon">
                 <div class="a-icon" (click)="changeMapType()">
                     <a title="Thay đổi chế độ bản đồ" target="_blank"><img src="assets/img/{{

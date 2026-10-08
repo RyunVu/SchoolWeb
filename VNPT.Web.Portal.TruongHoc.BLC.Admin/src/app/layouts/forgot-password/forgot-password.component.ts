@@ -21,6 +21,7 @@ import { CustomValidators } from 'src/app/modules';
 import { ResultCode, ResultModel } from 'src/app/models';
 
 @Component({
+    standalone: false,
     selector: 'app-forgot-password',
     templateUrl: './forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss'],

@@ -110,7 +110,7 @@
         </div>
 
       </div>
-      <p-galleria [autoPlay]="true" [transitionInterval]="5000" [(value)]="images_ToNuCong" [(visible)]="displayBasic_TNC"
+      <p-galleria [autoPlay]="true" [transitionInterval]="5000" [value]="images_ToNuCong" [(visible)]="displayBasic_TNC"
       [containerStyle]="{'max-width': '80%'}" [numVisible]="9" [circular]="true" [fullScreen]="true"
       [showThumbnails]="false" [showItemNavigators]="true" [baseZIndex]="100000">
         <ng-template pTemplate="item" let-item>

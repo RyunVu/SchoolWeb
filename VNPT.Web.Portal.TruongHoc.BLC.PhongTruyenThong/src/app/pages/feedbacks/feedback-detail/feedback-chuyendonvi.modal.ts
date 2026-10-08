@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "feedback-chuyendonvi-modal",
     templateUrl: 'feedback-chuyendonvi.modal.html',
     styleUrls: ['./feedback-chuyendonvi.modal.scss'],

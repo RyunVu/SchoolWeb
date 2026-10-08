@@ -1,27 +1,28 @@
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { NgModule } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TextareaModule } from 'primeng/textarea';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
 import { RatingModule } from 'primeng/rating';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { TableModule } from 'primeng/table';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -35,6 +36,11 @@ import { TreeTableModule } from 'primeng/treetable';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ShowDialogService } from './showDialog.service';
+import { AppDialogService } from './app-dialog.service';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { GmapComponent } from '../components/gmap/gmap.component';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ListboxModule } from 'primeng/listbox';
 
@@ -50,6 +56,7 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
 @NgModule({
   declarations: [
     imageUrlPipe,
+    GmapComponent,
     datetimePipe,
     CkEditorComponent,
     BusinessTypeSelectorComponent,
@@ -58,19 +65,23 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
     WardSelectorComponent,
   ],
   imports: [
+    CommonModule,
+    FormsModule,
+    GoogleMapsModule,
+    SkeletonModule,
+    ProgressBarModule,
     CarouselModule,
     ButtonModule,
     DataViewModule,
     PanelModule,
-    TabViewModule,
+    TabsModule,
     InputTextModule,
     RatingModule,
-    DropdownModule,
+    SelectModule,
     DialogModule,
-    InputTextareaModule,
+    TextareaModule,
     SelectButtonModule,
     InputNumberModule,
-    MessagesModule,
     MessageModule,
     KeyFilterModule,
     MenubarModule,
@@ -78,7 +89,7 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
     SplitButtonModule,
     ToastModule,
     ConfirmDialogModule,
-    CalendarModule,
+    DatePickerModule,
     FileUploadModule,
     GalleriaModule,
     MultiSelectModule,
@@ -95,19 +106,22 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
     ListboxModule
   ],
   exports: [
+    GmapComponent,
+    GoogleMapsModule,
+    SkeletonModule,
+    ProgressBarModule,
     CarouselModule,
     ButtonModule,
     DataViewModule,
     PanelModule,
-    TabViewModule,
+    TabsModule,
     InputTextModule,
     RatingModule,
-    DropdownModule,
+    SelectModule,
     DialogModule,
-    InputTextareaModule,
+    TextareaModule,
     SelectButtonModule,
     InputNumberModule,
-    MessagesModule,
     MessageModule,
     KeyFilterModule,
     MenubarModule,
@@ -115,7 +129,7 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
     SplitButtonModule,
     ToastModule,
     ConfirmDialogModule,
-    CalendarModule,
+    DatePickerModule,
     FileUploadModule,
     imageUrlPipe,
     datetimePipe,
@@ -143,7 +157,7 @@ import { datetimePipe, imageUrlPipe } from '../pipes';
     ConfirmationService,
     imageUrlPipe,
     datetimePipe,
-    DialogService,
+    { provide: DialogService, useClass: AppDialogService },
     ShowDialogService,
   ],
   bootstrap: [],

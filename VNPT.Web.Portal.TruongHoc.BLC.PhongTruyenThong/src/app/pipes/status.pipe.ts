@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { BaseService } from '../services';
 
 @Pipe({
+    standalone: false,
     name: 'statusPipe',
 })
 export class statusPipe implements PipeTransform {

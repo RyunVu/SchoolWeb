@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web;
-using FluentScheduler;
 using Newtonsoft.Json;
 using VNPT.Core.Constants;
 using VNPT.Web.Portal.Base;
@@ -22,7 +21,7 @@ using System.Globalization;
 
 namespace VNPT.Web.Portal.Api.Jobs
 {
-    public class GetNewsJob : IJob
+    public class GetNewsJob
     {
         public async void Execute()
         {
@@ -92,12 +91,12 @@ namespace VNPT.Web.Portal.Api.Jobs
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

@@ -8,6 +8,7 @@ import { HttpService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "caption-image-modal",
     templateUrl: "caption-image.modal.html",
     styleUrls: ["./caption-image.modal.scss"],

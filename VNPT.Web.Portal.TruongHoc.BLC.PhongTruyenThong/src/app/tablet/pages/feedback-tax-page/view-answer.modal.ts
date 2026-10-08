@@ -5,9 +5,10 @@ import { MessageService } from 'primeng/api';
 import { HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DialogService } from 'primeng/dynamicdialog';
 @Component({
+  standalone: false,
   selector: 'view-answer-modal',
   templateUrl: 'view-answer.modal.html',
   styleUrls: ['./view-answer.modal.scss'],

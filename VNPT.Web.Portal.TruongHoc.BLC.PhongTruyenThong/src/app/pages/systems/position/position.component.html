@@ -55,7 +55,7 @@
                     </div>
                     <div class="card-body p-0">
                         <p-table #dt [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow"
-                            [loading]="loading" [autoLayout]="true">
+                            [loading]="loading">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Tên</th>

@@ -290,6 +290,38 @@ namespace VNPT.Web.Portal.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Role cấp hệ thống (RoleLevel &lt;= 0, VD: SuperAdminSystem).
+        /// Chỉ SuperAdminSystem được cấp/thu hồi các role này và được thao tác trên tài khoản đang có chúng.
+        /// </summary>
+        private static List<string> GetSystemRoleIds(WebDbContext context)
+        {
+            return context.Roles.Where(r => r.Status != StatusEnum.Deleted && r.RoleLevel <= 0).Select(r => r.Id).ToList();
+        }
+
+        private static bool IsSystemAdminUser(WebDbContext context, string userId, List<string> systemRoleIds)
+        {
+            return !string.IsNullOrEmpty(userId) && context.UserRoles.Any(ur => ur.UserId == userId && systemRoleIds.Contains(ur.RoleId));
+        }
+
+        /// <summary>Trả về lỗi nếu người đang đăng nhập không được thao tác trên tài khoản targetUserId</summary>
+        private ResultModel CheckCanManageUser(WebDbContext context, string targetUserId)
+        {
+            if (User.IsInRole(RoleCode.SuperAdminSystem))
+            {
+                return null;
+            }
+            if (IsSystemAdminUser(context, targetUserId, GetSystemRoleIds(context)))
+            {
+                return new ResultModel
+                {
+                    Code = ResultCode.UnSuccess,
+                    Message = "Chỉ SuperAdmin mới được thao tác trên tài khoản SuperAdmin!"
+                };
+            }
+            return null;
+        }
+
         private void UpdateRole(User user, UserModel model, WebDbContext context)
         {
             var roles = context.UserRoles.Where(s => s.UserId == model.Id).ToList();
@@ -407,6 +439,39 @@ namespace VNPT.Web.Portal.Api.Controllers
                         {
                             Code = ResultCode.UnSuccess,
                             Message = @"Bạn không có quyền tạo user cho tài khoản này!"
+                        });
+                    }
+
+                    // Quyền SuperAdmin: chỉ SuperAdmin được cấp/thu hồi và sửa tài khoản SuperAdmin
+                    var systemRoleIds = GetSystemRoleIds(context);
+                    var requestedRoleIds = model.RoleIds ?? new List<string>();
+                    var grantsSystemRole = requestedRoleIds.Any(systemRoleIds.Contains);
+                    var targetIsSystemAdmin = IsSystemAdminUser(context, model.Id, systemRoleIds);
+                    if (!User.IsInRole(RoleCode.SuperAdminSystem))
+                    {
+                        if (grantsSystemRole)
+                        {
+                            return Json(new ResultModel()
+                            {
+                                Code = ResultCode.UnSuccess,
+                                Message = @"Chỉ SuperAdmin mới được cấp quyền SuperAdmin!"
+                            });
+                        }
+                        if (targetIsSystemAdmin)
+                        {
+                            return Json(new ResultModel()
+                            {
+                                Code = ResultCode.UnSuccess,
+                                Message = @"Bạn không có quyền sửa tài khoản SuperAdmin!"
+                            });
+                        }
+                    }
+                    else if (targetIsSystemAdmin && !grantsSystemRole && model.Id == User.Identity.GetUserId())
+                    {
+                        return Json(new ResultModel()
+                        {
+                            Code = ResultCode.UnSuccess,
+                            Message = @"Không thể tự gỡ quyền SuperAdmin của chính mình!"
                         });
                     }
 
@@ -601,6 +666,11 @@ namespace VNPT.Web.Portal.Api.Controllers
             {
                 using (var context = new WebDbContext())
                 {
+                    var denied = CheckCanManageUser(context, model.Id);
+                    if (denied != null)
+                    {
+                        return Json(denied);
+                    }
                     var user = context.Users.FirstOrDefault(s => s.Id == model.Id && s.Status != StatusEnum.Deleted);
                     if (user == null)
                     {
@@ -642,6 +712,15 @@ namespace VNPT.Web.Portal.Api.Controllers
             {
                 using (var context = new WebDbContext())
                 {
+                    if (model.Id == User.Identity.GetUserId())
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Không thể tự xoá tài khoản của chính mình!" });
+                    }
+                    var denied = CheckCanManageUser(context, model.Id);
+                    if (denied != null)
+                    {
+                        return Json(denied);
+                    }
                     var user = context.Users.FirstOrDefault(s => s.Id == model.Id && s.Status != StatusEnum.Deleted);
                     if (user == null)
                     {
@@ -695,6 +774,11 @@ namespace VNPT.Web.Portal.Api.Controllers
             {
                 using (var context = new WebDbContext())
                 {
+                    var denied = CheckCanManageUser(context, model.Id);
+                    if (denied != null)
+                    {
+                        return Json(denied);
+                    }
                     var user = context.Users.FirstOrDefault(s => s.Id == model.Id && s.Status != StatusEnum.Deleted);
                     if (user == null)
                     {
@@ -738,6 +822,11 @@ namespace VNPT.Web.Portal.Api.Controllers
             {
                 using (var db = new WebDbContext())
                 {
+                    var denied = CheckCanManageUser(db, model.Id);
+                    if (denied != null)
+                    {
+                        return Json(denied);
+                    }
 
                     var userManager = new ApplicationUserManager(new UserStore<User>(db));
                     var newPassword = "Vnpt#$123"; //GeneratePassword(6);
@@ -896,13 +985,16 @@ namespace VNPT.Web.Portal.Api.Controllers
                 using (var context = new WebDbContext())
                 {
                     var currentUnitCode = User.Identity.GetValue(UserCode.UnitCode, "");
-                    var units = context.Roles.Where(s => s.Status != StatusEnum.Deleted && s.RoleLevel > 0);
+                    // Chỉ SuperAdmin mới thấy (và cấp được) quyền hệ thống RoleLevel <= 0
+                    var isSuperAdmin = User.IsInRole(RoleCode.SuperAdminSystem);
+                    var units = context.Roles.Where(s => s.Status != StatusEnum.Deleted && (s.RoleLevel > 0 || isSuperAdmin));
 
-                    var result = units.OrderBy(s => s.Name).ToList().Select(s => new Role()
+                    var result = units.OrderBy(s => s.RoleLevel > 0 ? 1 : 0).ThenBy(s => s.Name).ToList().Select(s => new Role()
                     {
                         Id = s.Id,
                         Name = s.Name,
                         Description = s.Description,
+                        RoleLevel = s.RoleLevel,
                     }).ToList();
                     return Json(new ResultModel()
                     {

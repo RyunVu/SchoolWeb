@@ -3,10 +3,14 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { RuntimeConfig } from './app/services/runtime-config';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+// Lấy cấu hình (link media...) từ Web.config của API trước khi khởi động ứng dụng
+RuntimeConfig.load(environment.apiUrl).finally(() => {
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.error(err));
+});

@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <p-table #dt [responsive]="true" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
+                    <p-table #dt [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)"
                         [paginator]="true" [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]"
                         [totalRecords]="totalRow" [loading]="loading" appendTo="body" paginatorDropdownAppendTo="body">
                         <ng-template pTemplate="header">

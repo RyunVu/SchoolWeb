@@ -38,7 +38,7 @@
                 </p>
                 <p><b>Ngày Cấp:</b> {{ entity?.NgayCapGCN | date: 'dd/MM/yyyy' }}</p>
                 <p>
-                    <b>Loại hình: </b> {{ entity?.LoaiHinhNopThue == 0 ? 'Chưa xác định' : entity?.LoaiHinhNopThue == 1 ? 'Hộ khoán' : entity?.LoaiHinhNopThue == 2 ? 'Hộ thu nhập thấp' : 'Hộ kê khai' || 'N/A' }}
+                    <b>Loại hình: </b> {{ entity?.LoaiHinhNopThue == 0 ? 'Chưa xác định' : entity?.LoaiHinhNopThue == 1 ? 'Hộ khoán' : entity?.LoaiHinhNopThue == 2 ? 'Hộ thu nhập thấp' : 'Hộ kê khai' }}
                 </p>
                 <p *ngIf="entity?.LoaiHinhNopThue == 1 && entity?.HThueGTGT">
                     <b>Thuế GTGT/tháng:</b> {{ entity?.HThueGTGT | currency: 'VND':'symbol':undefined:'vi' }}

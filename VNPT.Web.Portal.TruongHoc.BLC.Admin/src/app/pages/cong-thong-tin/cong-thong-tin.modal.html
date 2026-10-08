@@ -12,42 +12,52 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Quản trị viên<span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="quanTriViens" [(ngModel)]="quanTriVien" optionLabel="Name"
+                        <p-select [options]="quanTriViens" [(ngModel)]="quanTriVien" optionLabel="Name"
                             optionValue="Id" [filter]="true" filterBy="Name" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Chủ đề <span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id"
+                        <p-select [options]="chuDes" [(ngModel)]="chuDe" optionLabel="Name" optionValue="Id"
                             [filter]="true" filterBy="Name" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code"
+                        <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code"
                             [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                         <button class="btn btn-success btn-xs" (click)="addUnit()">Thêm đơn vị</button>
                     </div>
                 </div>
                 <div *ngIf="!config.data.IsAdd" class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Trang chủ</label>
-                        <p-dropdown [options]="trangChus" [(ngModel)]="trangChu" optionLabel="Name" optionValue="Id"
+                        <p-select [options]="trangChus" [(ngModel)]="trangChu" optionLabel="Name" optionValue="Id"
                             [filter]="true" filterBy="Name" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
                     </div>
                 </div>
                 <div *ngIf="config.data.IsAdd" class="col-md-12">
                     <div class="form-group">
                         <label for="Name">Sao chép từ cổng <span class="text-danger">(*)</span></label>
-                        <p-dropdown [options]="portals" [(ngModel)]="portal" optionLabel="Name" optionValue="UnitCode"
+                        <p-select [options]="portals" [(ngModel)]="portal" optionLabel="Name" optionValue="UnitCode"
                             [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-                        </p-dropdown>
+                        </p-select>
+                        <small class="form-text text-muted">
+                            Sao chép cấu trúc: menu, chuyên mục, tham số, giao diện.
+                        </small>
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input type="checkbox" class="custom-control-input" id="copyNews" [(ngModel)]="copyNews">
+                            <label class="custom-control-label" for="copyNews">Sao chép cả bài viết của cổng mẫu</label>
+                        </div>
+                        <small *ngIf="copyNews" class="form-text text-danger">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>Toàn bộ bài viết của cổng mẫu sẽ được chép sang và hiện trên website mới như tin của trường.
+                        </small>
                     </div>
                 </div>
             </div>

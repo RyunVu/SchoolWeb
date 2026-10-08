@@ -24,7 +24,7 @@
                         <button *ngIf="checkPermission('Add')" (click)="add()" type="button" class="btn btn-info btn-sm float-right"><i class="fas fa-plus"></i> Thêm mới</button>
                     </div>
                     <div class="card-body p-0">
-                        <p-treeTable [value]="treeNodes" [autoLayout]="true">
+                        <p-treeTable [value]="treeNodes">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Mã</th>

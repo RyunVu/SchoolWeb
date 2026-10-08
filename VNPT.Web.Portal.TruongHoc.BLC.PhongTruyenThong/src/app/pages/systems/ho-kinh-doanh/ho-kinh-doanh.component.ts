@@ -1,22 +1,20 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-    ConfirmationService,
-    LazyLoadEvent,
-    MessageService,
-} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
 import { HoKinhDoanhModal } from './ho-kinh-doanh.modal';
 import { ToastrService } from 'ngx-toastr';
 import { hkdStatuses, loaiHinhs, coGCN, loaiMaSoThue } from 'src/app/shared/constants';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import * as Excel from 'exceljs';
 import * as fs from 'file-saver';
 
 @Component({
+    standalone: false,
     selector: 'app-ho-kinh-doanh',
     templateUrl: './ho-kinh-doanh.component.html',
     styleUrls: ['./ho-kinh-doanh.component.scss'],
@@ -166,7 +164,7 @@ export class HoKinhDoanhComponent extends BasePage {
                 },
                 header: 'Thêm mới hộ kinh doanh',
                 width: '90%',
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();
@@ -198,7 +196,7 @@ export class HoKinhDoanhComponent extends BasePage {
                 },
                 header: 'Cập nhật hộ kinh doanh',
                 width: '90%',
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     this.loadData();

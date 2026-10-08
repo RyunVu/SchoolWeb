@@ -24,17 +24,17 @@
               <div *ngIf="isSuperAdminSystem" class="col-md-3">
                 <div class="form-group">
                   <label for="Name">Đơn vị</label>
-                  <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+                  <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
                     filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="Name">Code</label>
-                  <p-dropdown optionLabel="Code" optionValue="Code" [(ngModel)]="code" placeholder="Chọn code"
+                  <p-select optionLabel="Code" optionValue="Code" [(ngModel)]="code" placeholder="Chọn code"
                     [options]="codes" appendTo="body" [filter]="true" filterBy="Code">
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="card-body p-0">
-          <p-table #dt [responsive]="true" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
+          <p-table #dt [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true"
             [rows]="pageSize" [rowsPerPageOptions]="[20,50,100,500,1000]" [totalRecords]="totalRow" [loading]="loading"
             responsiveLayout="scroll" [value]="items">
             <ng-template pTemplate="header">

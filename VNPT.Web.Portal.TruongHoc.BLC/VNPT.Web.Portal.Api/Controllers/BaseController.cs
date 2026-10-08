@@ -40,7 +40,11 @@ namespace VNPT.Web.Portal.Api.Controllers
 					//portal = context.SysPortals.First(x => x.UnitCode == "PHONGGDDT");
 					//portal = context.SysPortals.First(x => x.UnitCode == "TTGDTXLD");
 					//portal = context.SysPortals.First(x => x.UnitCode == "THCSHIEPTHANH");
-					portal = context.SysPortals.First(x => x.UnitCode == "MGTANHOI");
+					portal = context.SysPortals.FirstOrDefault(x => x.UnitCode == "MGTANHOI");
+					if (portal == null)
+					{
+						portal = context.SysPortals.First(x => x.Status != StatusEnum.Deleted);
+					}
 					//portal = context.SysPortals.First(x => x.UnitCode == "THCSGIALAM");
 					information.PortalCode = portal.UnitCode;
 					//return Redirect("Modules/NotFound");
@@ -164,10 +168,19 @@ namespace VNPT.Web.Portal.Api.Controllers
 
 				var sysTheme = context.SysThemes.FirstOrDefault(x => x.Status != StatusEnum.Deleted && x.Id == sysThemeLayout.ThemeId);
 
+				// Xem thử giao diện (chỉ trong phiên của người đang xem): ?giao-dien=TruongHocHienDai, ?giao-dien=mac-dinh để tắt
+				var previewTheme = ResolvePreviewTheme(context);
+				if (previewTheme != null)
+				{
+					sysTheme = previewTheme.Item1;
+					sysThemeLayout = previewTheme.Item2;
+				}
+
 				ViewBag.Layout =
 					$"~/Views/Shared/Portals/Layouts/{sysTheme.Url}/_{sysThemeLayout.Url}.cshtml";
+				ViewBag.ThemeUrl = sysTheme.Url;
 
-				var fileCs = $"Portals/{portal.UnitCode}/Sites/{siteHome.SiteUrl}";
+				var fileCs = ResolveSiteView(portal.UnitCode, sysTheme, siteHome.SiteUrl, previewTheme != null && previewTheme.Item1.Id != portal.ThemeId);
 
 
 				//Language
@@ -203,6 +216,83 @@ namespace VNPT.Web.Portal.Api.Controllers
 
 				return View(fileCs);
 			}
+		}
+
+		/// <summary>
+		/// Ưu tiên view riêng của site: Views/Shared/Portals/{UnitCode}/Sites/{SiteUrl}.cshtml
+		/// (thư mục này được tạo/chép lại từ Default/{ThemeUrl} mỗi lần đổi giao diện trong Admin).
+		/// Nếu site chưa có view riêng thì dùng view mặc định theo theme: Views/Shared/Portals/Default/{ThemeUrl}/Sites/{SiteUrl}.cshtml.
+		/// Khi đang xem thử một theme khác theme của cổng thì bỏ qua view riêng (vốn làm cho theme cũ).
+		/// </summary>
+		private string ResolveSiteView(string unitCode, SysTheme theme, string siteUrl, bool isPreviewOtherTheme)
+		{
+			var themeUrl = theme?.Url;
+			var siteView = $"Portals/{unitCode}/Sites/{siteUrl}";
+			var defaultView = $"Portals/Default/{themeUrl}/Sites/{siteUrl}";
+
+			if (isPreviewOtherTheme && !string.IsNullOrEmpty(themeUrl) && ViewExists(defaultView))
+			{
+				return defaultView;
+			}
+
+			if (ViewExists(siteView) || string.IsNullOrEmpty(themeUrl))
+			{
+				return siteView;
+			}
+
+			// Nếu theme cũng không có view này thì giữ đường dẫn của site để thông báo lỗi chỉ đúng chỗ cần bổ sung
+			return ViewExists(defaultView) ? defaultView : siteView;
+		}
+
+		private const string PreviewThemeSessionKey = "PreviewThemeUrl";
+
+		/// <summary>
+		/// Xem thử theme mà không đổi dữ liệu: ?giao-dien={ThemeUrl} lưu vào Session, ?giao-dien=mac-dinh để quay về theme đang cấu hình.
+		/// </summary>
+		private Tuple<SysTheme, SysThemeLayout> ResolvePreviewTheme(WebDbContext context)
+		{
+			var requested = Request.QueryString["giao-dien"];
+			if (requested != null)
+			{
+				if (string.IsNullOrWhiteSpace(requested) || requested.Equals("mac-dinh", StringComparison.OrdinalIgnoreCase))
+				{
+					Session.Remove(PreviewThemeSessionKey);
+				}
+				else
+				{
+					Session[PreviewThemeSessionKey] = requested.Trim();
+				}
+			}
+
+			var themeUrl = Session[PreviewThemeSessionKey] as string;
+			if (string.IsNullOrEmpty(themeUrl))
+			{
+				return null;
+			}
+
+			var theme = context.SysThemes.FirstOrDefault(x => x.Status != StatusEnum.Deleted && x.Url == themeUrl);
+			var layout = theme == null ? null : context.SysThemeLayout
+				.Where(x => x.Status != StatusEnum.Deleted && x.ThemeId == theme.Id)
+				.OrderBy(x => x.MenuOrder).FirstOrDefault();
+			if (layout == null)
+			{
+				Session.Remove(PreviewThemeSessionKey);
+				return null;
+			}
+
+			ViewBag.IsThemePreview = true;
+			return Tuple.Create(theme, layout);
+		}
+
+		private bool ViewExists(string viewName)
+		{
+			var result = ViewEngines.Engines.FindView(ControllerContext, viewName, null);
+			if (result.View == null)
+			{
+				return false;
+			}
+			result.ViewEngine.ReleaseView(ControllerContext, result.View);
+			return true;
 		}
 
 		protected ActionResult RedirectPortal(string site, string SubSite = "", string lang = "")

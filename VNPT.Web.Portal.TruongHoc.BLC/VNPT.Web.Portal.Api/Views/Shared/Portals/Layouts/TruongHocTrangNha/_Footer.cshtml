@@ -1,0 +1,57 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var code = infomation.PortalCode.ToUpper();
+    Func<string, string> footer = key => SystemParameterDto.GetParameter("FOOTER", key, code).Value2;
+    var tinNhiemMang = SystemParameterDto.GetParameter("FOOTER", "TINNHIEMMANG", code);
+    var descriptions = new[] { footer("DESCRIPTION_1"), footer("DESCRIPTION_2"), footer("DESCRIPTION_3") }.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+    var map = footer("MAP");
+}
+
+<div class="tn-footer">
+    <div class="container">
+        <div class="tn-footer-crest">
+            <img src="@Url.Image(footer("LOGO"))" alt="Logo" />
+            <h3>@footer("NAME")</h3>
+            <span class="tn-ornament" aria-hidden="true"><i></i><b>✦</b><i></i></span>
+            @foreach (var line in descriptions)
+            {
+                <p>@line</p>
+            }
+        </div>
+        <div class="row tn-footer-cols">
+            <div class="col-sm-4">
+                <h4>Địa chỉ</h4>
+                <p>@footer("ADDRESS")</p>
+            </div>
+            <div class="col-sm-4">
+                <h4>Liên hệ</h4>
+                <p><i class="fa fa-phone"></i> @footer("PHONE")</p>
+                <p><i class="fa fa-envelope-o"></i> @footer("EMAIL")</p>
+                @if (!string.IsNullOrEmpty(footer("LINK_FACEBOOK")))
+                {
+                    <p><i class="fa fa-facebook-square"></i> <a target="_blank" rel="noopener" href="@footer("LINK_FACEBOOK")">Facebook nhà trường</a></p>
+                }
+            </div>
+            <div class="col-sm-4">
+                @if (!string.IsNullOrEmpty(map))
+                {
+                    <h4>Bản đồ</h4>
+                    <iframe class="tn-footer-map" src="@map" loading="lazy" allowfullscreen></iframe>
+                }
+                @* Chỉ hiển thị khi đơn vị đã có chứng nhận Tín Nhiệm Mạng (ảnh + link xác thực cụ thể) *@
+                @if (ThemeHelper.HasTinNhiemMang(tinNhiemMang.Value2, tinNhiemMang.Value4))
+                {
+                    <a class="tn-footer-badge" target="_blank" rel="noopener" href="@tinNhiemMang.Value4" title="Chứng nhận Tín Nhiệm Mạng">
+                        <img src="@Url.Image(tinNhiemMang.Value2)" alt="Tín Nhiệm Mạng" />
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="tn-footer-bottom">
+        <div class="container">© @DateTime.Now.Year @footer("NAME") @(string.IsNullOrEmpty(footer("LICENSE")) ? "" : "· " + footer("LICENSE"))</div>
+    </div>
+</div>

@@ -1,14 +1,16 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
-import { BasePage, HttpService } from 'src/app/services';
+import { BasePage, BaseService, HttpService } from 'src/app/services';
 import { ShowDialogService } from 'src/app/services/showDialog.service';
 import { ClientMenuModal } from './client-menu.modal';
 import { MenuModal } from '../menu/menu.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-client-menu',
     templateUrl: './client-menu.component.html',
     styleUrls: ['./client-menu.component.scss'],
@@ -46,15 +48,65 @@ export class ClientMenuComponent extends BasePage {
     menuTypes: any[] = [];
     type: any = "";
 
+    /** SuperAdminSystem được chọn cổng (đơn vị) để xem/quản lý menu của cổng đó */
+    isSuperAdminSystem: boolean = false;
+
     constructor(
         public router: Router,
         public route: ActivatedRoute,
         public http: HttpService,
         public message: MessageService,
         public showDialogService: ShowDialogService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private baseService: BaseService
     ) {
         super(router, route, http, message);
+
+        var mulRole = this.baseService.MulRole;
+        if (mulRole != "" && mulRole != null && mulRole.includes("SuperAdminSystem")) {
+            this.isSuperAdminSystem = true;
+            this.loadUnits();
+        }
+    }
+
+    /** Bật/tắt hiển thị menu (IsShowMenu 0/1); hoàn tác nếu lưu thất bại */
+    toggleShowMenu(item: any, checked: boolean) {
+        var oldValue = item.IsShowMenu;
+        item.IsShowMenu = checked;
+        item._savingShow = true;
+        this.http.post("ClientMenu/ChangeShowMenu", {
+            Id: item.Id,
+            IsShowMenu: checked
+        }, (result: ResultModel) => {
+            item._savingShow = false;
+            if (result.Code == ResultCode.Success) {
+                this.message.add({ severity: 'success', summary: 'Thông báo', detail: (checked ? 'Đã hiển thị menu "' : 'Đã ẩn menu "') + item.Title + '"' });
+            } else {
+                item.IsShowMenu = oldValue;
+                this.message.add({ severity: 'error', summary: 'Lỗi', detail: result.Message || 'Không cập nhật được trạng thái hiển thị!' });
+            }
+        }, () => {
+            item._savingShow = false;
+            item.IsShowMenu = oldValue;
+            this.message.add({ severity: 'error', summary: 'Lỗi', detail: 'Không cập nhật được trạng thái hiển thị!' });
+        });
+    }
+
+    getUnitName(): string {
+        var u = this.units.filter(s => s.Code == this.unit)[0];
+        return u ? u.Name : 'Đơn vị đăng nhập';
+    }
+
+    loadUnits() {
+        this.http.post("user/Units", {
+        }, (result: ResultModel) => {
+            if (result.Code == ResultCode.Success) {
+                this.units = result.Result;
+                // null: backend dùng đơn vị của tài khoản đăng nhập
+                this.units.unshift({ Code: null, Name: "Đơn vị đăng nhập" });
+            }
+        }, () => {
+        });
     }
 
     onInit(): void {
@@ -134,7 +186,9 @@ export class ClientMenuComponent extends BasePage {
                 IsEdit: false,
                 MenuCode: this.type,
                 MenuPosition: this.menuPosition,
-                IsShowMenu: true
+                IsShowMenu: true,
+                // Cổng đang chọn (SuperAdminSystem); null => đơn vị của tài khoản đăng nhập
+                UnitCode: this.unit
             }, (data: any) => {
                 if (data) {
                     if(this.menuPosition == 4)

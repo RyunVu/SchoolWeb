@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 import { Location } from '@angular/common';
 import { BaseService, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
@@ -24,6 +23,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
+  standalone: false,
   selector: 'app-hinhanhvideo-page',
   templateUrl: './hinhanhvideo-page.component.html',
   styleUrls: ['./hinhanhvideo-page.component.scss'],
@@ -46,7 +46,6 @@ export class HinhAnhVideoPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
     public sanitizer: DomSanitizer,
     public http: HttpService,

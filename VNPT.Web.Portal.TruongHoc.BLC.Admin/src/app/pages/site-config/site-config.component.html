@@ -1,0 +1,290 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4 class="m-0 text-dark">Cấu hình website</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Cấu hình website</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content sc-page">
+    <div class="container-fluid">
+        <!-- Chọn đơn vị -->
+        <div class="card sc-unitbar">
+            <div class="sc-unitbar-inner">
+                <div class="sc-unit-select">
+                    <label>Website cần cấu hình</label>
+                    <p-select [options]="portals" [ngModel]="unitCode" (ngModelChange)="selectUnit($event)"
+                        optionLabel="Label" optionValue="UnitCode" [filter]="true" filterBy="Label"
+                        placeholder="Chọn trường / đơn vị..." appendTo="body" styleClass="w-100"></p-select>
+                </div>
+                @if (unitCode) {
+                    <div class="sc-unit-actions">
+                        <button type="button" class="btn btn-outline-secondary" (click)="loadData()" title="Tải lại">
+                            <i class="fas fa-sync-alt" [class.fa-spin]="loadingData"></i>
+                        </button>
+                        @if (portalUrl) {
+                            <a class="btn btn-outline-primary" [href]="portalUrl" target="_blank" rel="noopener">
+                                <i class="fas fa-external-link-alt mr-1"></i> Xem website
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (!unitCode) {
+            <div class="sc-empty">
+                <i class="fas fa-hand-pointer"></i>
+                <h5>Chọn trường / đơn vị để bắt đầu cấu hình</h5>
+                <p>Sau khi chọn, các mục cấu hình (đầu trang, chân trang, trang chủ...) sẽ hiện ra bên dưới.</p>
+            </div>
+        } @else {
+            <div class="row">
+                <!-- Xem nhanh bố cục website -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card sc-mock-card">
+                        <div class="card-header"><b><i class="fas fa-desktop mr-1"></i> Xem nhanh</b>
+                            <span class="text-muted small ml-1">bấm vào từng phần để sửa</span></div>
+                        <div class="card-body">
+                            <div class="sc-mock">
+                                <div class="sc-mock-header" (click)="openKey('header')" title="Sửa đầu trang">
+                                    <div class="sc-mock-brand">
+                                        @if (value('header', 'LOGO')) {
+                                            <img [src]="value('header', 'LOGO') | imageUrlPipe" alt="Logo" />
+                                        } @else {
+                                            <span class="sc-mock-logo-empty">Logo</span>
+                                        }
+                                        <span class="sc-mock-name">{{ value('header', 'NAME') || portal?.Name || 'Tên trường' }}</span>
+                                    </div>
+                                    <div class="sc-mock-menu" [style.background]="value('header', 'COLOR', 'Value2') || '#3c8dbc'">
+                                        <span></span><span></span><span></span><span></span>
+                                    </div>
+                                    <div class="sc-mock-banner">
+                                        @if (firstBanner(); as banner) {
+                                            <img [src]="banner | imageUrlPipe" alt="Banner" />
+                                        } @else {
+                                            <span>Chưa có ảnh banner</span>
+                                        }
+                                    </div>
+                                    <span class="sc-mock-tag"><i class="fas fa-pen"></i> Đầu trang</span>
+                                </div>
+                                <div class="sc-mock-body" (click)="openKey('home')" title="Sửa trang chủ">
+                                    <div class="sc-mock-lines"><i></i><i></i><i></i></div>
+                                    <span class="sc-mock-tag"><i class="fas fa-pen"></i> Trang chủ</span>
+                                </div>
+                                <div class="sc-mock-footer" (click)="openKey('footer')" title="Sửa chân trang"
+                                    [style.background]="value('header', 'COLOR', 'Value2') || '#3c8dbc'">
+                                    <div><i class="fas fa-map-marker-alt"></i> {{ value('footer', 'ADDRESS') || 'Chưa có địa chỉ' }}</div>
+                                    <div><i class="fas fa-phone"></i> {{ value('footer', 'PHONE') || '---' }}
+                                        <span class="ml-2"><i class="fas fa-envelope"></i> {{ value('footer', 'EMAIL') || '---' }}</span></div>
+                                    <span class="sc-mock-tag"><i class="fas fa-pen"></i> Chân trang</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Các mục cấu hình -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="sc-tiles" [class.is-loading]="loadingData">
+                        @for (section of sections; track section.Key) {
+                            <button type="button" class="sc-tile" (click)="open(section)">
+                                <span class="sc-tile-icon" [style.background]="section.Color"><i [class]="section.Icon"></i></span>
+                                <span class="sc-tile-body">
+                                    <span class="sc-tile-title">{{ section.Title }}</span>
+                                    <span class="sc-tile-desc">{{ section.Description }}</span>
+                                    @if (progress(section); as p) {
+                                        @if (p.total) {
+                                            <span class="sc-progress">
+                                                <span class="sc-progress-bar"><i [style.width.%]="p.percent" [style.background]="section.Color"></i></span>
+                                                <span class="sc-progress-text">{{ p.done }}/{{ p.total }} mục đã nhập</span>
+                                            </span>
+                                        }
+                                    }
+                                    @if (switches(section).length) {
+                                        <span class="sc-switch-chips">
+                                            @for (f of switches(section); track f.Key) {
+                                                <span class="sc-chip" [class.on]="hasValue(f)">
+                                                    <i class="fas" [class.fa-check-circle]="hasValue(f)" [class.fa-minus-circle]="!hasValue(f)"></i>{{ f.Label }}
+                                                </span>
+                                            }
+                                        </span>
+                                    }
+                                </span>
+                                <span class="sc-tile-go"><i class="fas fa-chevron-right"></i></span>
+                            </button>
+                        }
+
+                        @if (others.length) {
+                            <button type="button" class="sc-tile sc-tile-other" (click)="openOldParams()">
+                                <span class="sc-tile-icon" style="background:#6c757d"><i class="fas fa-sliders-h"></i></span>
+                                <span class="sc-tile-body">
+                                    <span class="sc-tile-title">Tham số khác ({{ others.length }})</span>
+                                    <span class="sc-tile-desc">Các tham số chưa có trên màn hình này: {{ othersSummary }}. Sửa tại "Tham số hệ thống".</span>
+                                </span>
+                                <span class="sc-tile-go"><i class="fas fa-external-link-alt"></i></span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Khung chỉnh sửa -->
+<p-drawer [(visible)]="drawerVisible" position="right" [modal]="true" [dismissible]="false" [closeOnEscape]="false"
+    [showCloseIcon]="false" styleClass="sc-drawer" [blockScroll]="true">
+    <ng-template #header>
+        @if (editing) {
+            <div class="sc-drawer-head">
+                <span class="sc-tile-icon" [style.background]="editing.Color"><i [class]="editing.Icon"></i></span>
+                <div>
+                    <div class="sc-drawer-title">{{ editing.Title }}</div>
+                    <div class="sc-drawer-sub">{{ portal?.Name }} · {{ unitCode }}</div>
+                </div>
+                <button type="button" class="sc-drawer-close" (click)="requestClose()" title="Đóng"><i class="fas fa-times"></i></button>
+            </div>
+        }
+    </ng-template>
+
+    @if (editing) {
+        <div class="sc-form">
+            @for (group of groups(editing); track group.name) {
+                <div class="sc-group">
+                    @if (group.name) {
+                        <div class="sc-group-title">{{ group.name }}</div>
+                    }
+                    <div class="sc-grid">
+                        @for (f of group.fields; track f.Key) {
+                            <div class="sc-field" [class.wide]="f.Wide || f.Type === 'textarea' || f.Type === 'imageList' || f.Type === 'mapEmbed'">
+                                @if (f.Type !== 'switch') {
+                                    <label class="sc-label">{{ f.Label }}
+                                        @if (f.Optional) { <span class="sc-optional" title="Chỉ dùng cho một số giao diện / cổng">Tùy giao diện</span> }
+                                    </label>
+                                }
+
+                                @switch (f.Type) {
+                                    @case ('textarea') {
+                                        <textarea class="form-control" rows="2" [(ngModel)]="draft[f.Key]" [placeholder]="f.Placeholder || ''"></textarea>
+                                    }
+                                    @case ('number') {
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" [(ngModel)]="draft[f.Key]" [placeholder]="f.Placeholder || ''" />
+                                            @if (f.Suffix) {
+                                                <div class="input-group-append"><span class="input-group-text">{{ f.Suffix }}</span></div>
+                                            }
+                                        </div>
+                                    }
+                                    @case ('switch') {
+                                        <label class="sc-switch">
+                                            <p-toggleswitch [(ngModel)]="draft[f.Key]"></p-toggleswitch>
+                                            <span>{{ f.Label }}</span>
+                                            <b class="sc-switch-state" [class.on]="draft[f.Key]">{{ draft[f.Key] ? 'Đang bật' : 'Đang tắt' }}</b>
+                                        </label>
+                                    }
+                                    @case ('color') {
+                                        <div class="sc-color">
+                                            <input type="color" [ngModel]="draft[f.Key] || '#3C8DBC'" (ngModelChange)="draft[f.Key] = $event.toUpperCase()" />
+                                            <input type="text" class="form-control" [ngModel]="draft[f.Key]" (ngModelChange)="onColorText(f, $event)" placeholder="#0E427E" maxlength="7" />
+                                            <span class="sc-color-sample" [style.background]="draft[f.Key] || '#3C8DBC'">Menu mẫu</span>
+                                        </div>
+                                    }
+                                    @case ('image') {
+                                        <div class="sc-image">
+                                            <div class="sc-image-box" (click)="pickImage(f)" title="Bấm để chọn ảnh">
+                                                @if (draft[f.Key]) {
+                                                    <img [src]="draft[f.Key] | imageUrlPipe" alt="" />
+                                                } @else {
+                                                    <span><i class="fas fa-image"></i> Chưa có ảnh</span>
+                                                }
+                                            </div>
+                                            <div class="sc-image-actions">
+                                                <button type="button" class="btn btn-sm btn-info" (click)="pickImage(f)"><i class="fas fa-folder-open mr-1"></i>Chọn ảnh</button>
+                                                @if (draft[f.Key]) {
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="clearValue(f)"><i class="fas fa-times mr-1"></i>Bỏ ảnh</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                    @case ('imageList') {
+                                        <div class="sc-gallery">
+                                            @for (item of draftLists[f.Key]; track $index; let i = $index; let last = $last) {
+                                                <div class="sc-gallery-item">
+                                                    <img [src]="item.Value2 | imageUrlPipe" alt="" />
+                                                    <span class="sc-gallery-no">{{ i + 1 }}</span>
+                                                    <div class="sc-gallery-tools">
+                                                        <button type="button" (click)="moveItem(f, i, -1)" [disabled]="i === 0" title="Lên trước"><i class="fas fa-arrow-left"></i></button>
+                                                        <button type="button" (click)="moveItem(f, i, 1)" [disabled]="last" title="Ra sau"><i class="fas fa-arrow-right"></i></button>
+                                                        <button type="button" class="danger" (click)="removeItem(f, i)" title="Xoá ảnh"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <button type="button" class="sc-gallery-add" (click)="pickImage(f)">
+                                                <i class="fas fa-plus"></i><span>Thêm ảnh</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    @case ('mapEmbed') {
+                                        <textarea class="form-control sc-mono" rows="2" [ngModel]="draft[f.Key]" (ngModelChange)="onMapInput(f, $event)"
+                                            placeholder='Dán mã <iframe src="https://www.google.com/maps/embed?..."> hoặc đường dẫn nhúng'></textarea>
+                                        @if (mapPreview(draft[f.Key]); as map) {
+                                            <iframe class="sc-map" [src]="map" loading="lazy"></iframe>
+                                        }
+                                    }
+                                    @case ('secret') {
+                                        <div class="input-group">
+                                            <input [type]="showSecret[f.Key] ? 'text' : 'password'" class="form-control" [(ngModel)]="draft[f.Key]" autocomplete="off" />
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-secondary" (click)="showSecret[f.Key] = !showSecret[f.Key]"
+                                                    [title]="showSecret[f.Key] ? 'Ẩn' : 'Hiện'"><i class="fas" [class.fa-eye]="!showSecret[f.Key]" [class.fa-eye-slash]="showSecret[f.Key]"></i></button>
+                                            </div>
+                                        </div>
+                                    }
+                                    @default {
+                                        <div class="sc-input-icon">
+                                            @if (f.Type === 'url') { <i class="fas fa-link"></i> }
+                                            @if (f.Type === 'email') { <i class="fas fa-envelope"></i> }
+                                            @if (f.Type === 'phone') { <i class="fas fa-phone"></i> }
+                                            <input [type]="f.Type === 'email' ? 'email' : (f.Type === 'url' ? 'url' : 'text')" class="form-control"
+                                                [class.has-icon]="f.Type === 'url' || f.Type === 'email' || f.Type === 'phone'"
+                                                [(ngModel)]="draft[f.Key]" [placeholder]="f.Placeholder || ''" />
+                                        </div>
+                                    }
+                                }
+
+                                @if (f.Hint) {
+                                    <div class="sc-hint"><i class="fas fa-info-circle"></i> {{ f.Hint }}</div>
+                                }
+                                @if (f.UsedIn) {
+                                    <div class="sc-used"><i class="fas fa-map-pin"></i> Hiển thị ở: {{ f.UsedIn }}</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <ng-template #footer>
+        <div class="sc-drawer-foot">
+            <span class="sc-dirty" [class.show]="dirty"><i class="fas fa-circle"></i> Có thay đổi chưa lưu</span>
+            <button type="button" class="btn btn-outline-secondary" (click)="requestClose()">Đóng</button>
+            <button type="button" class="btn btn-primary" (click)="save()" [disabled]="saving || !dirty">
+                @if (saving) { <i class="fas fa-spinner fa-spin mr-1"></i> } @else { <i class="fas fa-save mr-1"></i> }
+                Lưu thay đổi
+            </button>
+        </div>
+    </ng-template>
+</p-drawer>
+
+<p-confirmDialog header="Xác nhận" icon="pi pi-exclamation-triangle"></p-confirmDialog>

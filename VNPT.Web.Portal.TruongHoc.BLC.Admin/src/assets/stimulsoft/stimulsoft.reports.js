@@ -137609,9 +137609,14 @@ t.StiError = r
 }))
 }(Stimulsoft || (Stimulsoft = {
 })),
-String.prototype.replaceAll = function (e, t) {
+String.prototype.replaceAll = (function (nativeReplaceAll) {
+// [Angular 21 upgrade] Stimulsoft ghi de replaceAll bang split/join, lam hong replaceAll(regex, callback)
+// ma PrimeNG >= 18 (@primeuix/styled) dung de sinh CSS theme. Goi ban native khi tham so thay the la ham.
+return function (e, t) {
+if (typeof t === "function" && nativeReplaceAll) return nativeReplaceAll.call(this, e, t);
 return this.split(e).join(t)
-},
+}
+})(String.prototype.replaceAll),
 String.prototype.sti_as = function (e) {
 if (this.sti_is(e)) return this.toString();
 return null

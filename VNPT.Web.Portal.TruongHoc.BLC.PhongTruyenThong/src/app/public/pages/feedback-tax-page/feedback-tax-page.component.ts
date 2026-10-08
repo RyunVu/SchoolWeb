@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { ViewAnswerModal } from './view-answer.modal';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'feedback-tax-page',
   templateUrl: './feedback-tax-page.component.html',
@@ -212,7 +213,7 @@ export class FeedbackTaxPageComponent implements OnInit {
       this.loadData();
     }, 100);
   }
-  validateCustomMaxlength(item: string, maxLength: Number, name: string) {
+  validateCustomMaxlength(item: string, maxLength: number, name: string) {
     if (item.length > maxLength) {
       this.toastr.error(name + ' quá dài', 'Cảnh báo', {
         timeOut: 3000,
@@ -243,7 +244,7 @@ export class FeedbackTaxPageComponent implements OnInit {
         },
         header: 'Câu hỏi - trả lời',
         width: '55%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();

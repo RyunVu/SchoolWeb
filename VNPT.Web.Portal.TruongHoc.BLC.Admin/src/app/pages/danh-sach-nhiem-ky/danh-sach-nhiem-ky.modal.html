@@ -16,9 +16,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="Name">Cơ quan nhiệm kỳ <span class="text-danger">(*)</span></label>
-                    <p-dropdown [options]="itemLoaiNhiemKys" [(ngModel)]="item.TypeId" optionLabel="Name"
+                    <p-select [options]="itemLoaiNhiemKys" [(ngModel)]="item.TypeId" optionLabel="Name"
                         optionValue="Id" [filter]="true" filterBy="Name" appendTo="body" placeholder="Cơ quan nhiệm kỳ">
-                    </p-dropdown>
+                    </p-select>
                 </div>
             </div>
             <div class="col-md-2">
@@ -54,10 +54,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <p-dropdown [options]="itemChucVus" [(ngModel)]="chucvu.ChucVuId" optionLabel="Name"
+                                    <p-select [options]="itemChucVus" [(ngModel)]="chucvu.ChucVuId" optionLabel="Name"
                                         optionValue="Id" [filter]="true" filterBy="Name" appendTo="body"
                                         placeholder="Chọn chức vụ">
-                                    </p-dropdown>
+                                    </p-select>
                                 </div>
                             </td>
                             <td>

@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "qr-otp-modal",
     templateUrl: 'qr-otp.modal.html',
     encapsulation: ViewEncapsulation.None,

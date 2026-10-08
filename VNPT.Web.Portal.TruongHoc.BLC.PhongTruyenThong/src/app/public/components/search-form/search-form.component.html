@@ -28,11 +28,11 @@
     </div>
     <div *ngIf="showConstructionStatus" class="form-group col-6 col-md-2">
         <label>Tình trạng xây</label>
-        <p-dropdown [options]="constructionStatuses" styleClass="w-100" formControlName="constructionStatus" optionValue="Id" optionLabel="Name" placeholder="Xây dựng" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="constructionStatuses" styleClass="w-100" formControlName="constructionStatus" optionValue="Id" optionLabel="Name" placeholder="Xây dựng" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div *ngIf="showFeeStatus" class="form-group col-6 col-md-2">
         <label>Tình trạng nộp thuế</label>
-        <p-dropdown [options]="feeStatuses" styleClass="w-100" formControlName="feeStatus" optionValue="value" optionLabel="label" placeholder="Nộp thuế" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-dropdown>
+        <p-select [options]="feeStatuses" styleClass="w-100" formControlName="feeStatus" optionValue="value" optionLabel="label" placeholder="Nộp thuế" emptyMessage="Không có dữ liệu" emptyFilterMessage="Không có dữ liệu"></p-select>
     </div>
     <div [ngClass]="showConstructionStatus ? 'col-md-2' : 'col-md-4'" class="form-group text-right col-12 d-flex align-items-end">
         <!-- <button type="button" (click)="reset()" class="btn btn-secondary mr-1">

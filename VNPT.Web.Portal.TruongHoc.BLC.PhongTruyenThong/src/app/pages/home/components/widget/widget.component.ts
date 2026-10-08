@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'widget',
   templateUrl: './widget.component.html',

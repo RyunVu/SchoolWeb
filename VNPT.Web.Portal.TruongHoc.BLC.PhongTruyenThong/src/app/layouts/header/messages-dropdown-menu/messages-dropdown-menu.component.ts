@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'app-messages-dropdown-menu',
   templateUrl: './messages-dropdown-menu.component.html',
   styleUrls: ['./messages-dropdown-menu.component.scss'],

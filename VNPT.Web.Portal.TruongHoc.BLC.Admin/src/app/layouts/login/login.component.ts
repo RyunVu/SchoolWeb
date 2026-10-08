@@ -22,13 +22,14 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { environment } from 'src/environments/environment';
 
 @Component({
+    standalone: false,
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent implements OnInit, OnDestroy {
-    @HostBinding('class') class = 'login-box';
+    @HostBinding('class') class = 'login-portal-host login-box';
     public loginForm: FormGroup;
     public otpForm: FormGroup;
     public isAuthLoading = false;
@@ -37,6 +38,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     public returnUrl: any = '';
     public phoneError = "";
     showPassword: boolean = false;
+
+    backToLogin(): void {
+        this.isLoginOtp = false;
+        this.phoneError = '';
+        this.otpForm.reset();
+    }
     constructor(
         private router: Router,
         private renderer: Renderer2,
@@ -121,12 +128,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
                     }
                 },
-                () => {
+                (error: any) => {
                     this.isAuthLoading = false;
+                    this.phoneError = (error && error.error && (error.error.Message || error.error.message || error.error.error_description))
+                        ? (error.error.Message || error.error.message || error.error.error_description)
+                        : "Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại kết nối mạng.";
                 }
             );
         } catch (error: any) {
-            this.toastr.error(error.message);
+            this.isAuthLoading = false;
+            this.phoneError = error?.message || "Đã xảy ra lỗi trong quá trình xử lý.";
+            this.toastr.error(error?.message || "Đã xảy ra lỗi");
         }
     }
     showLoginError(time: any) {

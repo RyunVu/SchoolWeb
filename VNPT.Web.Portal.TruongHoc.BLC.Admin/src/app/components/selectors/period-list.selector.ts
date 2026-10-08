@@ -16,10 +16,11 @@ import { generatePeriodList } from 'src/app/utils';
  * Custom selector for Status List
  */
 @Component({
+    standalone: false,
     // tslint:disable-next-line: component-selector
     selector: 'period-list-selector',
     template: `
-      <p-dropdown
+      <p-select
         [options]="list"
         styleClass="w-100"
         [(ngModel)]="selectedValue"
@@ -31,7 +32,6 @@ import { generatePeriodList } from 'src/app/utils';
         [placeholder]="placeholder"
         [appendTo]="appendTo"
         [inputId]="inputId"
-        [autoDisplayFirst]="false"
         emptyMessage="Không có dữ liệu"
         emptyFilterMessage="Không có dữ liệu"
       >
@@ -41,7 +41,7 @@ import { generatePeriodList } from 'src/app/utils';
         <ng-template let-item pTemplate="item">
           <div>{{ item.Name }}</div>
         </ng-template>
-      </p-dropdown>
+      </p-select>
     `,
     providers: [
         {

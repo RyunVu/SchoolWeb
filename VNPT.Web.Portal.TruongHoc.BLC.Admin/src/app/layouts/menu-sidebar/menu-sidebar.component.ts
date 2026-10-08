@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { MenuSidebarService } from './menu-sidebar.service';
 
 @Component({
+    standalone: false,
     selector: 'app-menu-sidebar',
     templateUrl: './menu-sidebar.component.html',
     styleUrls: ['./menu-sidebar.component.scss'],
@@ -77,11 +78,14 @@ export class MenuSidebarComponent implements OnInit, AfterViewInit, OnDestroy {
             if (result.Code == ResultCode.Success) {
                 this.menus = result.Result;
 
-                this.menus.forEach((element: any) => {
-                    if (element.Children.length > 0) {
-                        element.CountNewsApprove = element.Children.reduce((sum: any, child: { CountNewsApprove: any; }) => sum + child.CountNewsApprove, 0);
+                const calculateApproveCount = (menu: any): number => {
+                    if (menu.Children && menu.Children.length > 0) {
+                        const childrenSum = menu.Children.reduce((sum: number, child: any) => sum + calculateApproveCount(child), 0);
+                        menu.CountNewsApprove = (menu.CountNewsApprove || 0) + childrenSum;
                     }
-                });
+                    return menu.CountNewsApprove || 0;
+                };
+                this.menus.forEach((element: any) => calculateApproveCount(element));
             }
         }, () => {
         });

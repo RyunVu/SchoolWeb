@@ -8,6 +8,7 @@ import { HttpService } from "src/app/services";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "menu-modal",
     templateUrl: 'menu.modal.html',
     encapsulation: ViewEncapsulation.None,

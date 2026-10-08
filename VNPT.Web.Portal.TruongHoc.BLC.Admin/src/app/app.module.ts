@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 
@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppButtonComponent, OptionSelector, PeriodListSelector, PeriodTypeSelector, TableGroupSelector, TableTypeSelector, UnitSelector } from './components';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { HeaderComponent } from './layouts/header/header.component';
@@ -26,10 +25,10 @@ import { SharedModule } from './services/shared.module';
 import { HomeComponent } from './pages/home/home.component';
 
 import localeVi from '@angular/common/locales/vi';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DefaultPageComponent } from './pages/default-page/default-page.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ChartModule } from 'primeng/chart';
+import { appPrimeNGProviders } from './primeng-theme';
 import { CongThongTinComponent } from './pages/cong-thong-tin/cong-thong-tin.component';
 import { CongThongTinModal } from './pages/cong-thong-tin/cong-thong-tin.modal';
 import { SysPortalAliasModal } from './pages/cong-thong-tin/sys-portal-alias.modal';
@@ -42,6 +41,7 @@ import { QuanLyVanBanComponent } from './pages/quan-ly-van-ban/quan-ly-van-ban.c
 import { UploadMediaComponent } from './pages/upload-media/upload-media.component';
 import { ChangePasswordModal } from './layouts/header/change-password/change-password.modal';
 import { UploadFileModal } from './pages/cong-thong-tin/upload-file.modal';
+import { ChangeThemeModal } from './pages/cong-thong-tin/change-theme.modal';
 import { QuanLyVanBanModal } from './pages/quan-ly-van-ban/quan-ly-van-ban.modal';
 import { UploadMediaModal } from './pages/upload-media/upload-media.modal';
 import { ForgotPasswordComponent } from './layouts/forgot-password/forgot-password.component';
@@ -53,12 +53,6 @@ import { ChiTietDiemModal } from './pages/tra-cuu-diem/chi-tiet-diem.modal';
 
 registerLocaleData(localeVi, 'vi');
 
-declare module '@angular/core' {
-  interface ModuleWithProviders<T = any> {
-    ngModule: Type<T>;
-    providers?: Provider[];
-  }
-}
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,6 +83,7 @@ declare module '@angular/core' {
     UploadMediaComponent,
     UploadMediaModal,
     UploadFileModal,
+    ChangeThemeModal,
     UploadFileDiemModal,
     ChiTietDiemModal,
     QuanLyVanBanModal,
@@ -114,23 +109,14 @@ declare module '@angular/core' {
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule,
-    FontAwesomeModule,
     SharedModule,
     ChartModule,
     ToastrModule.forRoot()
   ],
-  entryComponents: [
-    CongThongTinModal, 
-    SysPortalAliasModal,
-    SysPortalAliasAddModal,
-    SysPortalSiteURLModal,
-    SysPortalSiteURLAddModal,
-    SysPortalReviewModal,
-    ChangePasswordModal,
-    UploadFileModal
-  ],
   providers: [
+    // Angular 21: bootstrapModule mặc định là zoneless; ứng dụng này vẫn dựa vào zone.js
+    provideZoneChangeDetection(),
+    appPrimeNGProviders,
     AuthGuardService,
     NonAuthGuardService,
     AuthService,

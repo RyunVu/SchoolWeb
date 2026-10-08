@@ -950,10 +950,6 @@ namespace VNPT.Web.Portal.Api.Controllers
                         Result = systemParameter,
                     });
                 }
-                return Json(new ResultModel()
-                {
-                    Code = ResultCode.UnknowError,
-                });
             }
             catch (Exception e)
             {

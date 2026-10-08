@@ -25,16 +25,16 @@
                             <div *ngIf="isSuperAdminSystem" class="col-md-2">
                                 <div class="form-group">
                                     <label for="Name">Đơn vị</label>
-                                    <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" 
+                                    <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" 
                                     [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body">
-                                    </p-dropdown>
+                                    </p-select>
                                 </div>
                             </div>
                             <!-- <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="Name">Loại Menu</label>
-                                    <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type" [options]="menuTypes" appendTo="body">
-                                    </p-dropdown>
+                                    <p-select optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type" [options]="menuTypes" appendTo="body">
+                                    </p-select>
                                 </div>
                             </div> -->
                             
@@ -42,9 +42,9 @@
                                 <div class="form-group" >
                                     <label for="DayOfBirth">Vị trí menu</label>
                                     <div>
-                                        <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="menuPosition" [options]="menuPositions"
+                                        <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="menuPosition" [options]="menuPositions"
                                             appendTo="body">
-                                        </p-dropdown>
+                                        </p-select>
                                     </div>
                                 </div>
                             </div>

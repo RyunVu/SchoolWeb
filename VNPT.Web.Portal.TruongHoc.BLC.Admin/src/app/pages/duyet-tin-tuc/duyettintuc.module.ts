@@ -20,7 +20,6 @@ import { DuyetTinTucModal } from "./duyet-tin-tuc.modal";
     DuyetTinTucRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DuyetTinTucModal],
   providers: [ToastrService],
 })
 export class DuyetTinTucModule {}

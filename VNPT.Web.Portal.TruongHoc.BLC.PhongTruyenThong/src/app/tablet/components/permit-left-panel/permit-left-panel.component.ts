@@ -9,6 +9,7 @@ import {
 } from 'src/app/shared';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'permit-left-panel',
   templateUrl: './permit-left-panel.component.html',

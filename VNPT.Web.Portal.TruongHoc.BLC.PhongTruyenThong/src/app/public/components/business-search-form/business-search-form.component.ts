@@ -13,6 +13,7 @@ import { SearchEntity } from 'src/app/shared';
 import { hkdStatuses, loaiHinhs } from 'src/app/shared/constants';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-search-form',
   templateUrl: './business-search-form.component.html',

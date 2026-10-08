@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { AuthService, BaseService, HttpService } from 'src/app/services';
 
 @Component({
+    standalone: false,
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],

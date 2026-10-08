@@ -6,11 +6,12 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { HttpService } from "src/app/services";
 import { ResultCode, ResultModel } from "src/app/models";
-import * as moment from 'moment';
+import moment from 'moment';
 import { LocationModal } from "./location.modal";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "user-modal",
     templateUrl: 'user.modal.html',
     encapsulation: ViewEncapsulation.None,
@@ -217,7 +218,7 @@ export class UserModal {
             },
             header: 'Khu vực quản lý',
             width: '30%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 var checExist = this.checkExist(data.ProvinceId, data.DistrictId, data.WardId);
                 if (checExist >= 0) {

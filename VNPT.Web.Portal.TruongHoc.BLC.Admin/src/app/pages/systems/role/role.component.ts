@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService, ShowDialogService } from 'src/app/services';
@@ -8,6 +9,7 @@ import { RoleMenuModal } from './role-menu.modal';
 import { RoleModal } from './role.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-role',
     templateUrl: './role.component.html',
     styleUrls: ['./role.component.scss']

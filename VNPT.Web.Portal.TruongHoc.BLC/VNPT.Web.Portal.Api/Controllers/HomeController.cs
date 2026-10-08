@@ -134,11 +134,6 @@ namespace VNPT.Web.Portal.Api.Controllers
 
                 // query string
 
-                var dict = Request.QueryString;
-                ViewBag.QueryString = JsonConvert.SerializeObject(
-                    dict.AllKeys.ToDictionary(k => k, k => dict[k])
-                );
-
                 //todo: lấy tham số
                 // ViewBag.GoogleMapKey = SystemParameterDto.GetParameter("GOOGLE_KEY_API", null, information.PortalCode.ToUpper()).Value2;
                 // ViewBag.GoogleAnalytics = SystemParameterDto.GetParameter("ANALYTICS", null, information.PortalCode.ToUpper()).Value2;

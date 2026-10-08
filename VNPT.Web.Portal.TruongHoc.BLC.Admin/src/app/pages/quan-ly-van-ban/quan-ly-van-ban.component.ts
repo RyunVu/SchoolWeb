@@ -1,11 +1,8 @@
 import { Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import {
-    ConfirmationService,
-    LazyLoadEvent,
-    MessageService,
-} from "primeng/api";
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from "primeng/dynamicdialog";
 import { ResultCode, ResultModel } from "src/app/models";
 import { BasePage, BaseService, HttpService } from "src/app/services";
@@ -13,6 +10,7 @@ import { QuanLyVanBanModal } from "./quan-ly-van-ban.modal";
 
 declare var $: any;
 @Component({
+    standalone: false,
     selector: 'app-quan-ly-van-ban',
     templateUrl: './quan-ly-van-ban.component.html',
     styleUrls: ['./quan-ly-van-ban.component.scss'],
@@ -125,7 +123,7 @@ export class QuanLyVanBanComponent extends BasePage {
                             },
                             header: "Cập nhật",
                             width: "70%",
-                        })
+                        })!
                         .onClose.subscribe((data: any) => {
                             if (data) {
                                 this.loadData();
@@ -148,7 +146,7 @@ export class QuanLyVanBanComponent extends BasePage {
             },
             header: 'Thêm mới văn bản',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadData();
             }
@@ -192,7 +190,7 @@ export class QuanLyVanBanComponent extends BasePage {
         this.dt.first = 0;
     }
 
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -203,7 +201,7 @@ export class QuanLyVanBanComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();

@@ -6,7 +6,7 @@
                 <p-checkbox [(ngModel)]="isAllLinhVuc" [binary]="true" (onChange)="onAllLvChange($event)"></p-checkbox> Tất cả LV
             </div>
             <div class="col-3">
-                <p-dropdown [options]="yearOptions" [(ngModel)]="year" styleClass="w-100" optionValue="value" optionLabel="label" placeholder="Chọn trạng thái" (onChange)="onYearChange($event)"></p-dropdown>
+                <p-select [options]="yearOptions" [(ngModel)]="year" styleClass="w-100" optionValue="value" optionLabel="label" placeholder="Chọn trạng thái" (onChange)="onYearChange($event)"></p-select>
             </div>
         </div>
     </div>

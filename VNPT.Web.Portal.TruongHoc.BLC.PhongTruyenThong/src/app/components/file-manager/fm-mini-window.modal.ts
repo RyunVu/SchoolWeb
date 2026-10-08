@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 declare var $:any;
 
 @Component({
+    standalone: false,
     selector: "fm-mini-window-modal",
     templateUrl: 'fm-mini-window.modal.html',
     styleUrls: ['./fm-mini-window.modal.scss'],

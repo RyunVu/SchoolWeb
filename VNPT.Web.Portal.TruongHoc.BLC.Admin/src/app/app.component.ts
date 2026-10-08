@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { CookieService } from "ngx-cookie-service";
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

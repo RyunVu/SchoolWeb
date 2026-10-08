@@ -8,6 +8,7 @@ import { BasePage, BaseService, HttpService } from "src/app/services";
 import { SystemParamsModal } from "./system-params.modal";
 
 @Component({
+  standalone: false,
   selector: "app-system-params",
   templateUrl: "./system-params.component.html",
   styleUrls: ["./system-params.component.scss"],
@@ -65,7 +66,7 @@ export class SystemParamsComponent extends BasePage {
         },
         header: "Thêm mới tham số hệ thống",
         width: "70%",
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();
@@ -105,7 +106,7 @@ export class SystemParamsComponent extends BasePage {
     this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
     this.sortOrder = event.sortOrder == 1 ? true : false;
-    this.sortField = event.sortField ?? "";
+    this.sortField = (event.sortField as string) ?? "";
     this.filters = event.filters;
     setTimeout(() => {
       this.loadData();
@@ -120,7 +121,7 @@ export class SystemParamsComponent extends BasePage {
         },
         header: "Cập nhật tham số hệ thống " + item.Id,
         width: "70%",
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();

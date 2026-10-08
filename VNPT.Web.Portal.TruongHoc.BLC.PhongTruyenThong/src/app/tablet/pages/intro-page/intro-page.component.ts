@@ -3,29 +3,35 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 import { HomePageService } from '../../services';
 import { CarouselModule } from 'primeng/carousel';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
-import SwiperCore, { Autoplay, SwiperOptions, EffectFade } from "swiper";
+import { register } from 'swiper/element/bundle';
+import type { SwiperOptions } from 'swiper/types';
 import { BaseService, HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 
-// install Swiper components
-SwiperCore.use([
-  Autoplay,
-  EffectFade
-]);
+// Đăng ký <swiper-container>/<swiper-slide> (Swiper Element, đã gồm Autoplay/EffectFade)
+register();
 
 @Component({
+  standalone: false,
   selector: 'app-intro-page',
   templateUrl: './intro-page.component.html',
   styleUrls: ['./intro-page.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class InTroPageComponent implements OnInit, OnDestroy {
+
+  /** Khởi tạo Swiper khi slide đã render (thay cho [config] của swiper/angular). */
+  @ViewChild('swiper') set swiperEl(el: ElementRef | undefined) {
+    if (el) {
+      Object.assign(el.nativeElement, this.config);
+      el.nativeElement.initialize();
+    }
+  }
 
   config: SwiperOptions = {
     // slidesPerView: 1,
@@ -98,7 +104,6 @@ export class InTroPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     private router: Router,
     public spinner: NgxSpinnerService,
     public http: HttpService,

@@ -7,7 +7,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Chart } from 'chart.js';
 
 const monthLabels = [
   'Tháng 1',
@@ -31,6 +30,7 @@ const yearOptions = [
 ];
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'line-chart',
   templateUrl: './line-chart.component.html',
@@ -65,56 +65,50 @@ export class LineChartComponent implements OnInit, OnChanges {
         }
       }
     };
+    // Chart.js 4: legend/title/tooltip nằm trong "plugins" (Chart.js 2 để ở cấp gốc).
     this.pieOPtions = {
-      tooltips: {
-        enabled: true
-      },
-      plugins: this.pluginsOfflineOnline,
-      responsive: true,
-      legend: {
-        position: 'bottom',
-        display: true,
-        labels: {
-          // This more specific font property overrides the global property
-          font: {
-              size: "24px"
+      plugins: {
+        ...this.pluginsOfflineOnline,
+        tooltip: {
+          enabled: true
+        },
+        legend: {
+          position: 'bottom',
+          display: true,
+          labels: {
+            // This more specific font property overrides the global property
+            font: {
+              size: 24
+            }
           }
-      }
+        },
+        title: {
+          display: true,
+          text: this.title
+        }
       },
-      title: {
-        display: true,
-        text: this.title
-      },
+      responsive: true,
       animation: {
         duration: 500,
         easing: "easeOutQuart",
         onComplete: function (e: any) {
-          var ctx = e.chart.ctx;
-          ctx.font = 'bold 15px "Helvetica Neue", "Helvetica", "Arial", sans-serif';//Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+          const chart = e.chart;
+          const ctx = chart.ctx;
+          ctx.font = 'bold 15px "Helvetica Neue", "Helvetica", "Arial", sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
 
-          e.chart.tooltip._data.datasets.forEach(function (dataset: any) {
-
-            for (var i = 0; i < dataset.data.length; i++) {
-              var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
-                start_angle = model.startAngle,
-                end_angle = model.endAngle,
-                mid_angle = start_angle + (end_angle - start_angle) / 2;
-
-              var x = mid_radius * Math.cos(mid_angle);
-              var y = mid_radius * Math.sin(mid_angle);
-
+          chart.data.datasets.forEach(function (dataset: any, datasetIndex: number) {
+            const total = dataset.data.reduce((partialSum: any, a: any) => partialSum + a, 0);
+            // tooltipPosition() = điểm giữa cung (bán kính giữa, góc giữa) như cách tính cũ
+            chart.getDatasetMeta(datasetIndex).data.forEach(function (arc: any, i: number) {
+              const { x, y } = arc.tooltipPosition();
               ctx.fillStyle = '#fff';
-              var total = dataset.data.reduce((partialSum: any, a: any) => partialSum + a, 0);
-              var percent = "(" + String(Math.round(dataset.data[i] / total * 10000) / 100) + ")%";
-              // var pcent = Math.round(dataset.data[0] / dataset.data[1] * 10000) / 100;
-              ctx.fillText(dataset.data[i].toLocaleString('en', { maximumSignificantDigits: 21 }), model.x + x, model.y + y);
-              ctx.fillText(percent, model.x + x + 5, model.y + y + 20);
+              const percent = "(" + String(Math.round(dataset.data[i] / total * 10000) / 100) + ")%";
+              ctx.fillText(dataset.data[i].toLocaleString('en', { maximumSignificantDigits: 21 }), x, y);
               // Display percent in another line, line break doesn't work for fillText
-            }
+              ctx.fillText(percent, x + 5, y + 20);
+            });
           });
         }
       }
@@ -125,8 +119,8 @@ export class LineChartComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.chartData = changes.data.currentValue;//this.populateChartData(changes.data.currentValue);
-      if (this.pieOPtions.legend)
-        this.pieOPtions.legend.display = this.chartData.labels.length < 20;
+      if (this.pieOPtions.plugins?.legend)
+        this.pieOPtions.plugins.legend.display = this.chartData.labels.length < 20;
 
     }
   }

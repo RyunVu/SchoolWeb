@@ -20,7 +20,6 @@ import { DanhMucModal } from "./danh-muc.modal";
     DanhMucRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [DanhMucModal],
   providers: [ToastrService],
 })
 export class DanhMucModule {}

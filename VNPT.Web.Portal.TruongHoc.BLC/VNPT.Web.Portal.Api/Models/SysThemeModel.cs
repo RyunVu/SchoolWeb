@@ -19,6 +19,9 @@ namespace VNPT.Web.Portal.Api.Models
         {
             Id = theme.Id;
             Name = theme.Name;
+            Url = theme.Url;
+            Image = theme.Image;
+            Description = theme.Description;
         }
     }
 }

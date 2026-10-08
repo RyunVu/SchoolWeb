@@ -1,9 +1,10 @@
 import { environment } from '../../environments/environment';
+import { RuntimeConfig } from "./runtime-config";
 
 export class BaseService {
 
   get unitCode(): string {
-    return environment.unitCode;
+    return (environment as any).unitCode;
   }
 
   get apiUrl(): string {
@@ -13,9 +14,8 @@ export class BaseService {
   }
 
   get mediaUrl(): string {
-    return environment.mediaUrl;
-    //return "https://localhost:44381/";
-    // return "/Hub/";
+    // Ưu tiên DomainMedia trong Web.config của API (tải lúc khởi động), environment chỉ là dự phòng
+    return RuntimeConfig.mediaUrl || (environment as any).mediaUrl;
   }
 
   get serverUrlImobile(): string {

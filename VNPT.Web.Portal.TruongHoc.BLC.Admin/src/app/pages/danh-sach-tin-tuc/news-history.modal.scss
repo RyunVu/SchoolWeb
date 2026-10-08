@@ -1,0 +1,131 @@
+news-history-modal {
+    .news-history-title {
+        padding: 6px 4px 10px;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 8px;
+    }
+
+    .news-history-body {
+        min-height: 360px;
+    }
+
+    .version-list {
+        border-right: 1px solid #dee2e6;
+        max-height: 65vh;
+        overflow-y: auto;
+    }
+
+    .version-list-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        padding: 6px 10px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: 600;
+    }
+
+    .version-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 8px 10px;
+        border: 0;
+        border-bottom: 1px solid #eef0f2;
+        background: #fff;
+        cursor: pointer;
+
+        &:hover {
+            background: #f1f7fb;
+        }
+
+        &.active {
+            background: #e3f0f8;
+            border-left: 3px solid #3c8dbc;
+        }
+    }
+
+    .version-time,
+    .version-user {
+        font-size: 13px;
+        margin-top: 2px;
+    }
+
+    .version-note {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 2px;
+        font-style: italic;
+    }
+
+    .version-detail {
+        max-height: 65vh;
+        overflow-y: auto;
+        padding: 0 12px;
+    }
+
+    .detail-meta {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #fff;
+        padding: 6px 0 8px;
+        border-bottom: 1px solid #eef0f2;
+        margin-bottom: 8px;
+    }
+
+    .detail-hint {
+        padding: 6px 10px;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .change-item {
+        margin-bottom: 14px;
+    }
+
+    .change-label {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .diff-text,
+    .value-change,
+    .rendered {
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 8px 10px;
+        background: #fcfcfd;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 320px;
+        overflow-y: auto;
+    }
+
+    .rendered {
+        white-space: normal;
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    .side-label {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    del {
+        background: #fde2e1;
+        color: #a52a2a;
+        text-decoration: line-through;
+    }
+
+    ins {
+        background: #d9f5dd;
+        color: #1e6b2f;
+        text-decoration: none;
+    }
+}

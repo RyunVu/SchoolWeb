@@ -38,8 +38,8 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Đơn vị</label>
-                                        <p-dropdown optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput" placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true" filterBy="Name">
-                                        </p-dropdown>
+                                        <p-select optionLabel="Name" optionValue="Id" [(ngModel)]="unitInput" placeholder="Chọn đơn vị" [options]="units" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -70,7 +70,7 @@
                     </div>
                     <div class="card-body p-0">
                         <p-table #dt [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} đến {last} trong tổng số {totalRecords} mục" [value]="items" [lazy]="true" (onLazyLoad)="paginate($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRow"
-                            [loading]="loading" [autoLayout]="true">
+                            [loading]="loading">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Tên

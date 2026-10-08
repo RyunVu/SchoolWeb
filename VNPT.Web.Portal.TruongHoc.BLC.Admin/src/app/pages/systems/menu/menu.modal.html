@@ -4,18 +4,18 @@
     <div class="col-md-2">
         <div class="form-group">
             <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
-            <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
+            <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Code" [filter]="true"
                 filterBy="Name" placeholder="Chọn đơn vị" appendTo="body" (onChange)="loadmenus()">
-            </p-dropdown>
+            </p-select>
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group">
             <label for="menuTypes">Loại Menu <span class="text-danger">(*)</span></label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type"
+                <p-select optionLabel="Name" optionValue="Value" [filter]="true" [(ngModel)]="type"
                     [options]="menuTypes" appendTo="body" (onChange)="loadmenus()">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>
@@ -23,9 +23,9 @@
         <div class="form-group">
             <label for="DayOfBirth">Menu cha</label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"  
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="parent" [options]="menus"  
                     appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>
@@ -34,9 +34,9 @@
         <div class="form-group" >
             <label for="DayOfBirth">Vị trí menu</label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuPosition" [options]="menuPositions"(onChange)="changeLoaiMenu()"
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuPosition" [options]="menuPositions"(onChange)="changeLoaiMenu()"
                     appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>
@@ -44,9 +44,9 @@
         <div class="form-group" >
             <label for="DayOfBirth">Loại menu</label>
             <div>
-                <p-dropdown optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuType" [options]="menuDocTypes"
+                <p-select optionLabel="Name" optionValue="Id" [filter]="true" [(ngModel)]="item.MenuType" [options]="menuDocTypes"
                     appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
         </div>
     </div>

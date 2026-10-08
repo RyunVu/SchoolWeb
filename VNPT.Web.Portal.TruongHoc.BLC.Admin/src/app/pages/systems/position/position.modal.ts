@@ -10,6 +10,7 @@ import { s } from "src/app/services/s.service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "position-modal",
     templateUrl: 'position.modal.html',
     styleUrls: ['./position.modal.scss'],

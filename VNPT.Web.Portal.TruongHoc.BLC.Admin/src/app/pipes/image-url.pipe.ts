@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { BaseService } from '../services';
 
 @Pipe({
+    standalone: false,
     name: 'imageUrlPipe',
 })
 export class imageUrlPipe implements PipeTransform {

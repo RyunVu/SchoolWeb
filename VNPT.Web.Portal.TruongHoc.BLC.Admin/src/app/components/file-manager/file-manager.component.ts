@@ -1,15 +1,16 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BaseService, HttpService } from 'src/app/services';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { FMMiniWindowModal } from './fm-mini-window.modal';
 
 declare var $: any;
 
 @Component({
+    standalone: false,
     selector: 'app-file-manager',
     templateUrl: './file-manager.component.html',
     styleUrls: ['./file-manager.component.scss'],
@@ -20,6 +21,7 @@ export class FileManagerModal {
     currentFolder: any;
 
     treeView: TreeNode[] = [];
+    selectedNode: TreeNode | any = null;
 
     selectedfolder: any;
     selectedfiles: any[] = [];
@@ -30,12 +32,6 @@ export class FileManagerModal {
 
     keyword = "";
     defaultFolder: any = {};
-    size: any = {
-        ProjectCurrentStorage: 0,
-        ProjectMaximumStorage: 0,
-        UserCurrentStorage: 0,
-        UserMaximumStorage: 0,
-    };
     constructor(
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
@@ -47,18 +43,24 @@ export class FileManagerModal {
         public dialogService: DialogService,
     ) {
         this.selectedfolder = {
-            ChildrenFolders: []
-        }
-        this.filetype = config.data.filetype;
-        this.multipleselect = config.data.multipleselect;
-        this.isGetFullImageInfo = config.data.isGetFullImageInfo;
-        this.defaultFolder = config.data.DefaultFolder;
+            ChildrenFolders: [],
+            Files: []
+        };
+        this.filetype = config.data?.filetype;
+        this.multipleselect = config.data?.multipleselect;
+        this.isGetFullImageInfo = config.data?.isGetFullImageInfo;
+        this.defaultFolder = config.data?.DefaultFolder;
         if (this.isGetFullImageInfo == null) {
             this.isGetFullImageInfo = false;
         }
 
-        this.loadViews();
-        this.loadFolders(this.selectedfolder);
+        // Get initial folder: priority config.data.folderId > localStorage > root
+        const initialFolderId = config.data?.folderId !== undefined && config.data?.folderId !== null
+            ? config.data.folderId
+            : (localStorage.getItem('fm_last_folder_id') || "");
+
+        this.loadViews(initialFolderId);
+        this.loadFolders({ Id: initialFolderId });
     }
 
     onInit(): void {
@@ -69,7 +71,7 @@ export class FileManagerModal {
 
     }
 
-    loadViews() {
+    loadViews(targetFolderId: string = "") {
         this.treeView = [];
         if (this.defaultFolder && this.defaultFolder.Name) {
             this.treeView.push({
@@ -77,16 +79,13 @@ export class FileManagerModal {
                     IsNotLoadApi: true,
                     Children: this.defaultFolder.Images
                 },
-                // leaf: element.Children?.length > 0 ? false : true,
                 label: this.defaultFolder.Name,
                 expanded: false,
                 children: []
             });
         }
-        this.http.post("media/FoldersByUser", {
-
-        }, (result: ResultModel) => {
-            if (result.Code == ResultCode.Success) {
+        this.http.post("media/FoldersByUser", {}, (result: ResultModel) => {
+            if (result.Code == ResultCode.Success && result.Result) {
                 result.Result.forEach((element: any) => {
                     var add = {
                         data: {
@@ -94,24 +93,23 @@ export class FileManagerModal {
                             Name: element.Name,
                             ParentId: element.ParentId
                         },
-                        // leaf: element.Children?.length > 0 ? false : true,
                         label: element.Name,
+                        expandedIcon: "pi pi-folder-open",
+                        collapsedIcon: "pi pi-folder",
                         expanded: false,
                         children: this.getChildrenNode(element.ChildrenFolders)
                     };
                     this.treeView.push(add);
-
-                    this.expandAll();
                 });
-            }
-        }, () => {
-        });
-        this.http.post("media/SizeByUser", {
 
-        }, (result: ResultModel) => {
-            if (result.Code == ResultCode.Success) {
-                this.size = result.Result;
-                this.size.Percent = Math.round(this.size.UserMaximumStorage == 0 ? 0 : this.size.UserCurrentStorage / this.size.UserMaximumStorage * 100);
+                this.expandAll();
+
+                const selectId = targetFolderId !== undefined && targetFolderId !== null
+                    ? targetFolderId
+                    : (this.selectedfolder ? (this.selectedfolder.Id || "") : "");
+                if (selectId !== "") {
+                    this.selectNodeById(selectId);
+                }
             }
         }, () => {
         });
@@ -121,10 +119,10 @@ export class FileManagerModal {
         this.loadFolders(this.selectedfolder);
     }
 
-    loadFolders(folder: any = null) {
-        if (folder.IsNotLoadApi == true) {
+    loadFolders(folder: any = null, uploadedFilesToSelect: any = null) {
+        if (folder && folder.IsNotLoadApi == true) {
             this.selectedfolder = {
-                Files: folder.Children
+                Files: folder.Children || []
             };
             this.selectedfolder.Files.forEach((element: any) => {
                 element.FullThumbUrl = this.baseService.mediaUrl + element.ThumbUrl;
@@ -133,25 +131,81 @@ export class FileManagerModal {
 
             this.setSelectedFile(null);
         } else {
+            const folderId = folder == null ? "" : (folder.Id || "");
             this.http.post("media/GetItemInFolder", {
-                "Id": folder == null ? "" : folder.Id,
+                "Id": folderId,
                 "FileType": this.filetype,
                 "Keyword": this.keyword
             }, (result: ResultModel) => {
-                if (result.Code == ResultCode.Success) {
+                if (result.Code == ResultCode.Success && result.Result) {
                     this.selectedfolder = result.Result;
 
-                    this.selectedfolder.Files.forEach((element: any) => {
-                        element.FullThumbUrl = result.Domain + element.ThumbUrl;
-                        element.FullUrl = result.Domain + element.Url;
-                    });
+                    if (this.selectedfolder.Files) {
+                        this.selectedfolder.Files.forEach((element: any) => {
+                            element.FullThumbUrl = result.Domain + element.ThumbUrl;
+                            element.FullUrl = result.Domain + element.Url;
+                        });
+                    }
 
-                    this.setSelectedFile(null);
+                    if (uploadedFilesToSelect && uploadedFilesToSelect.length > 0 && this.selectedfolder.Files && this.selectedfolder.Files.length > 0) {
+                        this.selectedfiles = [];
+                        this.selectedfolder.Files.forEach((file: any) => {
+                            file.selected = false;
+                        });
+
+                        const uploadIds = uploadedFilesToSelect.map((x: any) => String(x.Id || x.id || ''));
+                        const uploadUrls = uploadedFilesToSelect.map((x: any) => x.Url || x.url || '');
+
+                        let matchedFiles: any[] = [];
+                        for (const file of this.selectedfolder.Files) {
+                            const fileId = String(file.Id || '');
+                            const fileUrl = file.Url || '';
+                            if ((fileId && uploadIds.includes(fileId)) || (fileUrl && uploadUrls.includes(fileUrl))) {
+                                matchedFiles.push(file);
+                            }
+                        }
+
+                        if (matchedFiles.length === 0) {
+                            matchedFiles = [this.selectedfolder.Files[0]];
+                        }
+
+                        if (!this.multipleselect) {
+                            const targetFile = matchedFiles[0];
+                            targetFile.selected = true;
+                            this.selectedfiles = [targetFile];
+                        } else {
+                            matchedFiles.forEach(f => {
+                                f.selected = true;
+                                this.selectedfiles.push(f);
+                            });
+                        }
+                    } else {
+                        this.setSelectedFile(null);
+                    }
+
+                    // Save last working folder in localStorage
+                    if (this.selectedfolder) {
+                        const currentId = this.selectedfolder.Id || "";
+                        localStorage.setItem('fm_last_folder_id', currentId);
+                        if (this.selectedfolder.Name) {
+                            localStorage.setItem('fm_last_folder_name', this.selectedfolder.Name);
+                        }
+                    }
+
+                    // Sync tree node selection
+                    if (this.treeView && this.treeView.length > 0) {
+                        const targetId = this.selectedfolder.Id || "";
+                        this.selectNodeById(targetId);
+                    }
+                } else if (folderId !== "") {
+                    // Fallback to root if the saved folder no longer exists
+                    localStorage.removeItem('fm_last_folder_id');
+                    localStorage.removeItem('fm_last_folder_name');
+                    this.loadFolders(null);
                 }
             }, () => {
             });
         }
-
     }
 
     getChildrenNode(children: any[]): any {
@@ -162,22 +216,49 @@ export class FileManagerModal {
                     data: {
                         Name: element.Name,
                         Id: element.Id,
-                        ParentId: element.Id
+                        ParentId: element.ParentId || element.Id
                     },
-                    // leaf: element.Children?.length > 0 ? false : true,
                     label: element.Name,
                     expandedIcon: "pi pi-folder-open",
                     collapsedIcon: "pi pi-folder",
                     expanded: false,
                     children: this.getChildrenNode(element.ChildrenFolders)
-
-                }
+                };
                 childs.push(add);
             });
             return childs;
         } else {
             return [];
         }
+    }
+
+    selectNodeById(id: string) {
+        if (id === undefined || id === null) return;
+        const node = this.findNodeById(this.treeView, id);
+        if (node) {
+            this.selectedNode = node;
+            this.expandParents(node);
+        } else {
+            this.selectedNode = null;
+        }
+    }
+
+    findNodeById(nodes: TreeNode[], id: string): TreeNode | null {
+        if (!nodes || nodes.length === 0) return null;
+        for (const node of nodes) {
+            if (node.data && String(node.data.Id) === String(id)) {
+                return node;
+            }
+            if (node.children && node.children.length > 0) {
+                const found = this.findNodeById(node.children, id);
+                if (found) return found;
+            }
+        }
+        return null;
+    }
+
+    expandParents(node: TreeNode) {
+        node.expanded = true;
     }
 
     selectFile() {
@@ -188,7 +269,9 @@ export class FileManagerModal {
                     selectedUrls.push({
                         Id: element.Id,
                         Url: element.Url,
-                        ThumbUrl: element.ThumbUrl
+                        ThumbUrl: element.ThumbUrl,
+                        FullUrl: element.FullUrl,
+                        FullThumbUrl: element.FullThumbUrl
                     });
                 });
                 this.ref.close({ urls: selectedUrls });
@@ -214,9 +297,11 @@ export class FileManagerModal {
 
     setSelectedFile(file: any) {
         if (file == null) {
-            this.selectedfolder.Files.forEach((element: any) => {
-                element.selected = false;
-            });
+            if (this.selectedfolder && this.selectedfolder.Files) {
+                this.selectedfolder.Files.forEach((element: any) => {
+                    element.selected = false;
+                });
+            }
             this.selectedfiles = [];
             return;
         }
@@ -244,33 +329,88 @@ export class FileManagerModal {
     }
 
     newFolder() {
+        const baseZ = (this.config?.baseZIndex || 20000) + 1000;
         const ref = this.dialogService.open(FMMiniWindowModal, {
             data: {
                 objectType: "folder",
-                folderId: this.selectedfolder.Id
+                folderId: this.selectedfolder ? (this.selectedfolder.Id || "") : ""
             },
             header: 'Thư mục',
-            width: '50%'
-        }).onClose.subscribe((data: any) => {
+            width: '45%',
+            baseZIndex: baseZ
+        });
+        ref?.onClose.subscribe((data: any) => {
             if (data) {
-                this.loadViews();
+                this.loadViews(this.selectedfolder ? (this.selectedfolder.Id || "") : "");
                 this.loadFolders(this.selectedfolder);
             }
         });
     }
 
-    newFile() {
+    @HostListener('window:paste', ['$event'])
+    onWindowPaste(event: ClipboardEvent) {
+        const target = event.target as HTMLElement;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+            return;
+        }
+
+        const clipboardData = event.clipboardData || (window as any).clipboardData;
+        if (!clipboardData || !clipboardData.items) return;
+
+        for (let i = 0; i < clipboardData.items.length; i++) {
+            const item = clipboardData.items[i];
+            if (item.type && item.type.startsWith('image/')) {
+                const blob = item.getAsFile();
+                if (blob) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const ext = item.type === 'image/png' ? 'png' : (item.type === 'image/webp' ? 'webp' : 'jpg');
+                    const fileName = `pasted_${moment().format('YYYYMMDD_HHmmss')}.${ext}`;
+                    const file = new File([blob], fileName, { type: item.type });
+                    this.newFileWithPastedImage(file);
+                    return;
+                }
+            }
+        }
+    }
+
+    newFileWithPastedImage(file: File) {
+        const baseZ = (this.config?.baseZIndex || 20000) + 1000;
         const ref = this.dialogService.open(FMMiniWindowModal, {
             data: {
                 objectType: "file",
-                folderId: this.selectedfolder.Id,
+                folderId: this.selectedfolder ? (this.selectedfolder.Id || "") : "",
+                type: this.filetype,
+                initialFile: file
+            },
+            header: 'Tải tập tin & Chỉnh sửa ảnh',
+            width: '75%',
+            contentStyle: { 'max-height': '92vh', 'overflow': 'auto' },
+            baseZIndex: baseZ
+        });
+        ref?.onClose.subscribe((data: any) => {
+            if (data) {
+                this.loadFolders(this.selectedfolder, data.uploadedFiles);
+            }
+        });
+    }
+
+    newFile() {
+        const baseZ = (this.config?.baseZIndex || 20000) + 1000;
+        const ref = this.dialogService.open(FMMiniWindowModal, {
+            data: {
+                objectType: "file",
+                folderId: this.selectedfolder ? (this.selectedfolder.Id || "") : "",
                 type: this.filetype
             },
-            header: 'Tập tin',
-            width: '50%'
-        }).onClose.subscribe((data: any) => {
+            header: 'Tải tập tin & Chỉnh sửa ảnh',
+            width: '75%',
+            contentStyle: { 'max-height': '92vh', 'overflow': 'auto' },
+            baseZIndex: baseZ
+        });
+        ref?.onClose.subscribe((data: any) => {
             if (data) {
-                this.loadFolders(this.selectedfolder);
+                this.loadFolders(this.selectedfolder, data.uploadedFiles);
             }
         });
     }
@@ -283,7 +423,12 @@ export class FileManagerModal {
                     "Id": folder.Id
                 }, (result: ResultModel) => {
                     if (result.Code == ResultCode.Success) {
-                        this.loadViews();
+                        if (this.selectedfolder && this.selectedfolder.Id === folder.Id) {
+                            localStorage.removeItem('fm_last_folder_id');
+                            localStorage.removeItem('fm_last_folder_name');
+                            this.selectedfolder = { Id: "" };
+                        }
+                        this.loadViews(this.selectedfolder ? (this.selectedfolder.Id || "") : "");
                         this.loadFolders(this.selectedfolder);
                     }
                 }, () => {
@@ -306,11 +451,11 @@ export class FileManagerModal {
                 });
             }
         });
-
     }
 
     nodeSelect(event: any) {
         this.keyword = "";
+        this.selectedNode = event.node;
         this.loadFolders(event.node.data);
     }
 
@@ -323,6 +468,7 @@ export class FileManagerModal {
             this.expandRecursive(node, true);
         });
     }
+
     private expandRecursive(node: TreeNode, isExpand: boolean) {
         node.expanded = isExpand;
         if (node.children) {
@@ -331,5 +477,4 @@ export class FileManagerModal {
             });
         }
     }
-
 }

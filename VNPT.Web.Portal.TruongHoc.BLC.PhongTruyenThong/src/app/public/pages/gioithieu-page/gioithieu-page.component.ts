@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 
 import {
   gmDefaultStyles,
@@ -17,6 +16,7 @@ import { HomePageService } from '../../services';
 import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
+  standalone: false,
   selector: 'app-gioithieu-page',
   templateUrl: './gioithieu-page.component.html',
   styleUrls: ['./gioithieu-page.component.scss'],
@@ -30,7 +30,6 @@ export class GioiThieuPageComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
 
     private router: Router,

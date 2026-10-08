@@ -3,22 +3,22 @@
     <div class="col-md-12">
         <div class="form-group">
             <label for="Name">Khu vực <span class="text-danger">(*)</span></label>
-            <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="UnitCode" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
-            </p-dropdown>
+            <p-select [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="UnitCode" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
+            </p-select>
         </div>
     </div>
     <div class="col-md-12">
         <div class="form-group">
             <label for="Name">Đơn vị <span class="text-danger">(*)</span></label>
-            <p-dropdown [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body" (onChange)="selectUnit($event)">
-            </p-dropdown>
+            <p-select [options]="units" [(ngModel)]="unit" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn đơn vị" appendTo="body" (onChange)="selectUnit($event)">
+            </p-select>
         </div>
     </div>
     <div class="col-md-12">
         <div class="form-group">
             <label for="Name">Cán bộ <span class="text-danger">(*)</span></label>
-            <p-dropdown [options]="users" [(ngModel)]="user" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn cán bộ" appendTo="body">
-            </p-dropdown>
+            <p-select [options]="users" [(ngModel)]="user" optionLabel="Name" optionValue="Id" [filter]="true" filterBy="Name" placeholder="Chọn cán bộ" appendTo="body">
+            </p-select>
         </div>
     </div>
     <div class="col-md-12">

@@ -9,16 +9,16 @@
 
             <div class="form-group">
                 <label for="Name">Giao thức</label>
-                <p-dropdown [options]="giaoThucs" [(ngModel)]="giaoThuc" optionLabel="Name" optionValue="Id"
+                <p-select [options]="giaoThucs" [(ngModel)]="giaoThuc" optionLabel="Name" optionValue="Id"
                     [filter]="true" filterBy="Name" appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
 
             <div class="form-group">
                 <label for="Name">Đơn vị</label>
-                <p-dropdown [options]="donVis" [(ngModel)]="donVi" optionLabel="Name" optionValue="Id" [filter]="true"
+                <p-select [options]="donVis" [(ngModel)]="donVi" optionLabel="Name" optionValue="Id" [filter]="true"
                     filterBy="Name" appendTo="body">
-                </p-dropdown>
+                </p-select>
             </div>
 
             <div class="form-group">

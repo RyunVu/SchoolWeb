@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { Parameter } from "src/app/services/staticparameters.service";
 
 @Component({
+    standalone: false,
     selector: "location-modal",
     templateUrl: 'location.modal.html',
     encapsulation: ViewEncapsulation.None,

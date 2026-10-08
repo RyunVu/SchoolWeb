@@ -12,6 +12,7 @@ import { FileManagerModal } from "src/app/components/file-manager/file-manager.c
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
+    standalone: false,
     selector: "sys-portal-alias-add-modal",
     templateUrl: 'sys-portal-alias-add.modal.html',
     styleUrls: ['./sys-portal-alias-add.modal.scss'],

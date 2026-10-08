@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -58,6 +58,87 @@ namespace VNPT.Web.Portal.Api.Controllers
 							.Translate<int>(reader)
 							.ToList();
 						connection.Close();
+
+						try
+						{
+							var themeIds = resultTemp.Where(x => x.ThemeId.HasValue).Select(x => x.ThemeId.Value).Distinct().ToList();
+							if (themeIds.Any())
+							{
+								var themeDict = context.SysThemes.Where(t => themeIds.Contains(t.Id))
+									.Select(t => new { t.Id, t.Name })
+									.ToDictionary(t => t.Id, t => t.Name);
+								foreach (var item in resultTemp)
+								{
+									if (item.ThemeId.HasValue && themeDict.TryGetValue(item.ThemeId.Value, out var themeName))
+									{
+										item.ThemeName = themeName;
+									}
+								}
+							}
+
+							var portalIds = resultTemp.Select(x => x.Id).ToList();
+							if (portalIds.Any())
+							{
+								var aliases = context.SysPortalAlias
+									.Where(a => portalIds.Contains(a.PortalId) && a.Status != StatusEnum.Deleted && !string.IsNullOrEmpty(a.Domain))
+									.Select(a => new
+									{
+										a.PortalId,
+										a.Domain,
+										a.Protocol,
+										a.IsMain
+									})
+									.ToList();
+
+								var aliasGrouped = aliases.GroupBy(a => a.PortalId).ToDictionary(g => g.Key, g => g.ToList());
+
+								foreach (var item in resultTemp)
+								{
+									var domainList = new List<SysPortalDomainItem>();
+									if (aliasGrouped.TryGetValue(item.Id, out var portalAliases))
+									{
+										foreach (var a in portalAliases.OrderByDescending(x => x.IsMain).ThenBy(x => x.Domain))
+										{
+											var cleanDomain = a.Domain?.Trim() ?? "";
+											if (!string.IsNullOrEmpty(cleanDomain))
+											{
+												var protoStr = a.Protocol == ProtocolWeb.Http ? "http" : "https";
+												var url = cleanDomain.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || cleanDomain.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+													? cleanDomain
+													: $"{protoStr}://{cleanDomain}";
+												domainList.Add(new SysPortalDomainItem
+												{
+													Domain = cleanDomain,
+													Protocol = protoStr,
+													Url = url,
+													IsMain = a.IsMain
+												});
+											}
+										}
+									}
+
+									if (!domainList.Any() && !string.IsNullOrWhiteSpace(item.Domain))
+									{
+										var cleanDomain = item.Domain.Trim();
+										var url = cleanDomain.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || cleanDomain.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+											? cleanDomain
+											: $"https://{cleanDomain}";
+										domainList.Add(new SysPortalDomainItem
+										{
+											Domain = cleanDomain,
+											Protocol = "https",
+											Url = url,
+											IsMain = true
+										});
+									}
+
+									item.Domains = domainList;
+								}
+							}
+						}
+						catch
+						{
+						}
 
 						return Json(new ResultModel
 						{
@@ -149,7 +230,7 @@ namespace VNPT.Web.Portal.Api.Controllers
 						input.UnitCode = User.Identity.UnitCode();
 					}
 
-					var sysThemes = db.SysThemes.Where(x => x.Status != StatusEnum.Deleted && x.UnitCode.ToLower() == input.UnitCode.ToLower()).ToList()
+					var sysThemes = db.SysThemes.Where(x => x.Status != StatusEnum.Deleted && (x.UnitCode.ToLower() == input.UnitCode.ToLower() || x.UnitCode.ToLower() == "ldg")).ToList()
 						.Select(s => new SysThemeModel(s)).ToList();
 
 					return Json(new ResultModel
@@ -476,6 +557,9 @@ namespace VNPT.Web.Portal.Api.Controllers
 							// Thêm GeneraCategori
 							var listGeneralCategory = db.GeneralCategories.Where(x => x.Status != StatusEnum.Deleted && x.Code == "NewsType" && x.UnitCode == input.UnitCodeClone).ToList();
 
+							// Id loại tin cũ -> mới, để sửa lại tham số menu ("thong-bao.{Id}") trỏ đúng loại tin của đơn vị mới
+							var categoryIdMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
 							foreach (var itemGeneralCategory in listGeneralCategory)
 							{
 								var item = new GeneralCategory()
@@ -498,9 +582,13 @@ namespace VNPT.Web.Portal.Api.Controllers
 								};
 								db.GeneralCategories.Add(item);
 								db.SaveChanges();
+								categoryIdMap[itemGeneralCategory.Id.ToString()] = item.Id.ToString();
 
-								// Copy News
-								var listNewsClone = db.News.Where(x => x.Status != StatusEnum.Deleted && x.NewTypeId == itemGeneralCategory.Id && x.UnitCode == input.UnitCodeClone).ToList();
+								// Copy News: chỉ khi người tạo chọn "Sao chép cả bài viết" – mặc định cổng mới chỉ nhận cấu trúc
+								// (tránh việc website mới hiện hàng nghìn tin của trường mẫu như tin của mình)
+								var listNewsClone = !input.CopyNews
+									? new List<News>()
+									: db.News.Where(x => x.Status != StatusEnum.Deleted && x.NewTypeId == itemGeneralCategory.Id && x.UnitCode == input.UnitCodeClone).ToList();
 
 								foreach (var itemNews in listNewsClone)
 								{
@@ -532,6 +620,18 @@ namespace VNPT.Web.Portal.Api.Controllers
 									db.News.Add(newsItem);
 									db.SaveChanges();
 								}
+							}
+
+							// Menu được chép trước khi có loại tin mới nên Parameter vẫn chứa Id loại tin của đơn vị nguồn
+							// (VD "thong-bao.{Id cũ}") -> trang chủ/sidebar không lấy được tin. Đổi sang Id loại tin của đơn vị mới.
+							if (categoryIdMap.Count > 0)
+							{
+								var newMenus = db.SystemMenus.Where(x => x.UnitCode == input.UnitCode && x.Parameter != null && x.Parameter.Contains(".")).ToList();
+								foreach (var menu in newMenus)
+								{
+									menu.Parameter = PortalThemeService.RemapCategoryIds(menu.Parameter, categoryIdMap);
+								}
+								db.SaveChanges();
 							}
 
 							// Copy folder portals từ đơn vị clone
@@ -566,6 +666,20 @@ namespace VNPT.Web.Portal.Api.Controllers
 					else
 					{
 						var unitCodeOld = sysPortal.UnitCode;
+
+						// Đổi chủ đề trong form sửa: làm giống chức năng "Đổi giao diện" (sao lưu + chép thư mục, đổi layout các trang)
+						if (input.ThemeId.HasValue && input.ThemeId != sysPortal.ThemeId)
+						{
+							var newTheme = db.SysThemes.FirstOrDefault(x => x.Id == input.ThemeId.Value && x.Status != StatusEnum.Deleted);
+							try
+							{
+								PortalThemeService.Apply(db, sysPortal, newTheme);
+							}
+							catch (InvalidOperationException ex)
+							{
+								return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = ex.Message });
+							}
+						}
 
 						sysPortal.AdministratorId = input.AdministratorId;
 						sysPortal.ThemeId = input.ThemeId;
@@ -670,6 +784,136 @@ namespace VNPT.Web.Portal.Api.Controllers
 				});
 			}
 		}
+
+        /// <summary>
+        /// Đổi giao diện cho cổng: tạo/sao lưu thư mục Views/Shared/Portals/{UnitCode}, chép Default/{Theme} vào,
+        /// đổi ThemeId của cổng và layout của mọi trang.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult ChangeTheme(SysPortalModel input)
+        {
+            try
+            {
+                using (var db = new WebDbContext())
+                {
+                    var sysPortal = db.SysPortals.FirstOrDefault(x => x.Id == input.Id && x.Status != StatusEnum.Deleted);
+                    if (sysPortal == null)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.NotFoundData, Message = "Cổng thông tin không tồn tại!" });
+                    }
+
+                    if (!User.IsInRole(RoleCode.SuperAdminSystem) && sysPortal.AdministratorId != User.Identity.GetUserId())
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Bạn không có quyền đổi giao diện của cổng này!" });
+                    }
+
+                    if (!input.ThemeId.HasValue)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.DataNotEnough, Message = "Vui lòng chọn giao diện!" });
+                    }
+
+                    var theme = db.SysThemes.FirstOrDefault(x => x.Id == input.ThemeId.Value && x.Status != StatusEnum.Deleted);
+
+                    PortalThemeService.ChangeThemeResult applied;
+                    try
+                    {
+                        applied = PortalThemeService.Apply(db, sysPortal, theme);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = ex.Message });
+                    }
+
+                    sysPortal.UpdateDate = DateTime.Now;
+                    sysPortal.UpdateUserId = User.Identity.GetUserId();
+                    db.SaveChanges();
+
+                    return Json(new ResultModel
+                    {
+                        Code = ResultCode.Success,
+                        Message = "Đã đổi giao diện",
+                        Result = new
+                        {
+                            ThemeName = theme.Name,
+                            UnitFolder = PortalThemeService.ToDisplayPath(applied.UnitFolder),
+                            BackupFolder = PortalThemeService.ToDisplayPath(applied.BackupFolder),
+                            applied.CreatedUnitFolder,
+                            applied.SiteCount
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel { Code = ResultCode.Exception, Message = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật lại template: chép lại Default/{giao diện đang dùng} vào Views/Shared/Portals/{UnitCode}
+        /// (sao lưu thư mục cũ vào {UnitCode}/backup trước) – dùng khi template mặc định đã sửa nhưng cổng vẫn chạy bản cũ.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult RefreshTemplate(SysPortalModel input)
+        {
+            try
+            {
+                using (var db = new WebDbContext())
+                {
+                    var sysPortal = db.SysPortals.FirstOrDefault(x => x.Id == input.Id && x.Status != StatusEnum.Deleted);
+                    if (sysPortal == null)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.NotFoundData, Message = "Cổng thông tin không tồn tại!" });
+                    }
+
+                    if (!User.IsInRole(RoleCode.SuperAdminSystem) && sysPortal.AdministratorId != User.Identity.GetUserId())
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Bạn không có quyền cập nhật template của cổng này!" });
+                    }
+
+                    var theme = sysPortal.ThemeId.HasValue
+                        ? db.SysThemes.FirstOrDefault(x => x.Id == sysPortal.ThemeId.Value && x.Status != StatusEnum.Deleted)
+                        : null;
+                    if (theme == null)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Cổng chưa chọn giao diện. Vui lòng dùng chức năng Đổi giao diện." });
+                    }
+
+                    PortalThemeService.ChangeThemeResult applied;
+                    try
+                    {
+                        applied = PortalThemeService.Apply(db, sysPortal, theme);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = ex.Message });
+                    }
+
+                    sysPortal.UpdateDate = DateTime.Now;
+                    sysPortal.UpdateUserId = User.Identity.GetUserId();
+                    db.SaveChanges();
+
+                    return Json(new ResultModel
+                    {
+                        Code = ResultCode.Success,
+                        Message = "Đã cập nhật lại template",
+                        Result = new
+                        {
+                            ThemeName = theme.Name,
+                            ThemeUrl = theme.Url,
+                            UnitFolder = PortalThemeService.ToDisplayPath(applied.UnitFolder),
+                            BackupFolder = PortalThemeService.ToDisplayPath(applied.BackupFolder),
+                            applied.CreatedUnitFolder,
+                            applied.SiteCount
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel { Code = ResultCode.Exception, Message = e.Message });
+            }
+        }
 
         [HttpPost]
         public IHttpActionResult Delete(SysPortalModel input)

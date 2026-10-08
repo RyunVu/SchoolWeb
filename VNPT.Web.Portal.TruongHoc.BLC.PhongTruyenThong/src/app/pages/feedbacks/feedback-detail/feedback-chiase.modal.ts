@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "feedback-chiase-modal",
     templateUrl: 'feedback-chiase.modal.html',
     styleUrls: ['./feedback-chiase.modal.scss'],

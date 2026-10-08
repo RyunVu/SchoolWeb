@@ -1,68 +1,252 @@
-<div class="card card-outline card-primary" style="width: 450px;">
-    <div class="card-header text-center">
-        <a [routerLink]="['/']" class="h1"><b>WEBSITE<br>TRƯỜNG HỌC</b></a>
+<div class="login-container-card">
+  <!-- Left Side: Brand & Hero Showcase (Desktop) -->
+  <div class="login-brand-side">
+    <div class="brand-bg-decorations">
+      <div class="decor-circle circle-1"></div>
+      <div class="decor-circle circle-2"></div>
+      <div class="decor-grid-pattern"></div>
     </div>
-    <div class="card-body">
-        <p class="login-box-msg">Trang Quản Trị Thông Tin</p>
 
-        <form [formGroup]="loginForm" (ngSubmit)="login()" *ngIf="!isLoginOtp">
-            <div class="input-group mb-3">
-                <input formControlName="username" type="text" class="form-control" placeholder="Username" />
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-user"></span>
-                    </div>
-                </div>
-                <validation-msg [control]="loginForm.controls.username"> </validation-msg>
-            </div>
-            <div class="input-group mb-3">
-                <input
-                    formControlName="password"
-                    [type]="showPassword ? 'text' : 'password'"
-                    class="form-control"
-                    placeholder="Password"
-                />
-                <div class="input-group-append">
-                    <div class="input-group-text" (click)="togglePasswordVisibility()">
-                      <span class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></span>
-                    </div>
-                  </div>
-                <validation-msg [control]="loginForm.controls.password"> </validation-msg>
-            </div>
-            <p *ngIf="phoneError" class="text-danger text-center">{{phoneError}}</p>
-            <div class="row">
-                <div class="col-5">
-                    <app-button [type]="'submit'" [block]="true" [loading]="isAuthLoading" *ngIf="enablePhone">
-                        Đăng Nhập
-                    </app-button>
-                </div>
-                <!-- /.col -->
-            </div>
-        </form>
-        <form [formGroup]="otpForm" (ngSubmit)="login()" *ngIf="isLoginOtp">
-            <div class="input-group mb-3">
-                <input formControlName="otp" type="text" class="form-control" placeholder="OTP 6 số" minlength="6" maxlength="6"/>
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
-                    </div>
-                </div>
-                <validation-msg [control]="otpForm.controls.otp"> </validation-msg>
-            </div>
-            <p *ngIf="phoneError" class="text-danger text-center">{{phoneError}}</p>
-            <div class="row">
-                <div class="col-5">
-                    <app-button [type]="'submit'" [block]="true" [loading]="isAuthLoading" *ngIf="enablePhone">
-                        Đăng Nhập
-                    </app-button>
-                </div>
-                <!-- /.col -->
-            </div>
-        </form>
-        
-        <p class="mb-1" style="text-align: right;">
-            <a routerLink="/quen-mat-khau">Quên mật khẩu</a>
-        </p>
+    <div class="brand-inner-content">
+      <!-- Brand Top Header -->
+      <div class="brand-header-block">
+        <div class="brand-emblem-wrap">
+          <img src="assets/template/images/logoub.png" alt="Sở Giáo dục và Đào tạo" class="brand-emblem-img" />
+        </div>
+        <div class="brand-text-wrap">
+          <div class="brand-badge-tag">CỔNG THÔNG TIN ĐIỆN TỬ</div>
+          <h1 class="brand-title">WEBSITE TRƯỜNG HỌC</h1>
+          <p class="brand-subtitle">Hệ thống Quản trị & Điều hành Thông tin Giáo dục</p>
+        </div>
+      </div>
+
+      <!-- Center Visual Illustration -->
+      <div class="brand-visual-box">
+        <div class="visual-img-container">
+          <img src="assets/img/logologin.png" alt="Portal Login" class="visual-hero-img" />
+          <div class="visual-glow-ring"></div>
+        </div>
+      </div>
+
+      <!-- Feature Highlights -->
+      <div class="brand-features-list">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fas fa-university"></i>
+          </div>
+          <div class="feature-details">
+            <h4 class="feature-name">Quản trị toàn diện</h4>
+            <p class="feature-desc">Tin tức, hoạt động, thông báo & nhiệm kỳ nhà trường</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="feature-details">
+            <h4 class="feature-name">Bảo mật nâng cao</h4>
+            <p class="feature-desc">Xác thực 2 lớp mã OTP, phân quyền người dùng chặt chẽ</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fas fa-landmark"></i>
+          </div>
+          <div class="feature-details">
+            <h4 class="feature-name">Phòng truyền thống số</h4>
+            <p class="feature-desc">Bảo tồn tư liệu, hiện vật và bảng vàng danh dự trực tuyến</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Bottom Footer -->
+      <div class="brand-bottom-note">
+        <span class="vnpt-tag">
+          <i class="fas fa-check-circle mr-1"></i> Phát triển & vận hành bởi <strong>VNPT</strong>
+        </span>
+      </div>
     </div>
-    <!-- /.login-card-body -->
+  </div>
+
+  <!-- Right Side: Login Form -->
+  <div class="login-form-side">
+    <div class="form-wrapper-inner">
+      <!-- Mobile Brand Header (visible on < 992px) -->
+      <div class="mobile-brand-box d-lg-none">
+        <img src="assets/template/images/logoub.png" alt="Logo" class="mobile-logo-img" />
+        <div class="mobile-brand-info">
+          <span class="mobile-tag">HỆ THỐNG TRƯỜNG HỌC</span>
+          <h2 class="mobile-heading">CỔNG THÔNG TIN ĐIỆN TỬ</h2>
+        </div>
+      </div>
+
+      <!-- Form Section Header -->
+      <div class="form-heading-area">
+        <div class="section-tag-badge">
+          <i class="fas" [ngClass]="isLoginOtp ? 'fa-key' : 'fa-user-lock'"></i>
+          <span>{{ isLoginOtp ? 'Xác thực OTP 2 lớp' : 'Trang Quản trị Hệ thống' }}</span>
+        </div>
+        <h2 class="main-form-title">
+          {{ isLoginOtp ? 'Xác thực bảo mật' : 'Đăng nhập tài khoản' }}
+        </h2>
+        <p class="main-form-desc">
+          {{ isLoginOtp 
+            ? 'Vui lòng nhập mã OTP gồm 6 chữ số đã được gửi tới thiết bị của bạn để hoàn tất.' 
+            : 'Chào mừng quay trở lại! Vui lòng nhập thông tin xác thực để truy cập hệ thống.' }}
+        </p>
+      </div>
+
+      <!-- Error / Notification Alert -->
+      <div class="custom-alert-box alert-error" *ngIf="phoneError">
+        <div class="alert-icon-wrap">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="alert-text-wrap">
+          {{ phoneError }}
+        </div>
+      </div>
+
+      <!-- Form 1: Username & Password Login -->
+      <form [formGroup]="loginForm" (ngSubmit)="login()" *ngIf="!isLoginOtp" class="auth-form" novalidate>
+        <!-- Username input -->
+        <div class="custom-form-field">
+          <label class="field-label" for="txtUsername">
+            Tên đăng nhập / Tài khoản <span class="req-star">*</span>
+          </label>
+          <div class="field-control-wrap" [class.field-has-error]="loginForm.controls.username.invalid && loginForm.controls.username.touched">
+            <span class="field-prefix-icon">
+              <i class="fas fa-user"></i>
+            </span>
+            <input
+              id="txtUsername"
+              formControlName="username"
+              type="text"
+              class="field-input"
+              placeholder="Nhập tên đăng nhập"
+              autocomplete="username"
+            />
+          </div>
+          <validation-msg [control]="loginForm.controls.username"></validation-msg>
+        </div>
+
+        <!-- Password input -->
+        <div class="custom-form-field">
+          <div class="field-label-row">
+            <label class="field-label mb-0" for="txtPassword">
+              Mật khẩu <span class="req-star">*</span>
+            </label>
+            <a routerLink="/quen-mat-khau" class="forgot-link">
+              Quên mật khẩu?
+            </a>
+          </div>
+          <div class="field-control-wrap" [class.field-has-error]="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+            <span class="field-prefix-icon">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input
+              id="txtPassword"
+              formControlName="password"
+              [type]="showPassword ? 'text' : 'password'"
+              class="field-input"
+              placeholder="Nhập mật khẩu"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="field-toggle-pwd"
+              (click)="togglePasswordVisibility()"
+              [title]="showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'"
+              tabindex="-1"
+            >
+              <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+          </div>
+          <validation-msg [control]="loginForm.controls.password"></validation-msg>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-submit-row">
+          <button
+            type="submit"
+            class="btn-modern-primary"
+            [disabled]="isAuthLoading || !enablePhone"
+          >
+            <span *ngIf="isAuthLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+            <span class="btn-caption">{{ isAuthLoading ? 'Đang kiểm tra xác thực...' : 'Đăng nhập ngay' }}</span>
+            <i *ngIf="!isAuthLoading" class="fas fa-arrow-right btn-arrow-icon ml-2"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Form 2: OTP Login -->
+      <form [formGroup]="otpForm" (ngSubmit)="login()" *ngIf="isLoginOtp" class="auth-form" novalidate>
+        <div class="otp-instruction-banner">
+          <div class="otp-info-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="otp-info-text">
+            Mã OTP xác thực 6 số đã được phát hành. Vui lòng kiểm tra tin nhắn và nhập mã bên dưới:
+          </div>
+        </div>
+
+        <!-- OTP Input -->
+        <div class="custom-form-field">
+          <label class="field-label text-center d-block" for="txtOtp">
+            Mã OTP xác thực (6 số) <span class="req-star">*</span>
+          </label>
+          <div class="field-control-wrap otp-control-wrap" [class.field-has-error]="otpForm.controls.otp.invalid && otpForm.controls.otp.touched">
+            <span class="field-prefix-icon">
+              <i class="fas fa-key"></i>
+            </span>
+            <input
+              id="txtOtp"
+              formControlName="otp"
+              type="text"
+              class="field-input text-center otp-input"
+              placeholder="0 0 0 0 0 0"
+              minlength="6"
+              maxlength="6"
+              autocomplete="one-time-code"
+              inputmode="numeric"
+            />
+          </div>
+          <validation-msg [control]="otpForm.controls.otp"></validation-msg>
+        </div>
+
+        <!-- Submit OTP & Back Action -->
+        <div class="form-submit-row">
+          <button
+            type="submit"
+            class="btn-modern-primary mb-3"
+            [disabled]="isAuthLoading || !enablePhone"
+          >
+            <span *ngIf="isAuthLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+            <span class="btn-caption">{{ isAuthLoading ? 'Đang xác thực OTP...' : 'Xác thực & Đăng nhập' }}</span>
+            <i *ngIf="!isAuthLoading" class="fas fa-check-circle ml-2"></i>
+          </button>
+
+          <button
+            type="button"
+            class="btn-modern-secondary"
+            (click)="backToLogin()"
+            [disabled]="isAuthLoading"
+          >
+            <i class="fas fa-arrow-left mr-2"></i> Quay lại đăng nhập tài khoản
+          </button>
+        </div>
+      </form>
+
+      <!-- Form Footer Security Info -->
+      <div class="form-security-footer">
+        <div class="sec-item">
+          <i class="fas fa-shield-virus mr-1"></i> Kết nối mã hóa SSL an toàn 256-bit
+        </div>
+        <div class="sec-help">
+          Cần hỗ trợ? Vui lòng liên hệ <span class="text-primary font-weight-bold">Quản trị viên</span> hệ thống
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

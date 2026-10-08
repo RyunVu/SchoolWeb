@@ -22,24 +22,24 @@
                 </div>
                 <!-- <div class="form-group col-md-3">
                     <label for="permitDate">Ngày cấp phép </label>
-                    <p-calendar inputId="permitDate" formControlName="permitDate" appendTo="body" dateFormat="dd/mm/yy"></p-calendar>
+                    <p-datepicker inputId="permitDate" formControlName="permitDate" appendTo="body" dateFormat="dd/mm/yy"></p-datepicker>
                     <validation-msg [control]="entityForm.controls.permitDate">
                     </validation-msg>
                 </div> -->
 
                 <div class="form-group col-md-3">
                     <label for="MaQuanHuyen">Huyện/TP <span class="text-danger">*</span></label>
-                    <p-dropdown [options]="districts" formControlName="MaQuanHuyen" appendTo="body"
+                    <p-select [options]="districts" formControlName="MaQuanHuyen" appendTo="body"
                         (onChange)="loadWards()" optionValue="Id" optionLabel="Name">
-                    </p-dropdown>
+                    </p-select>
 
                     <validation-msg [control]="entityForm.controls.MaQuanHuyen"></validation-msg>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="MaPhuongXa">Xã/Phường <span class="text-danger">*</span></label>
-                    <p-dropdown [options]="wards" formControlName="MaPhuongXa" appendTo="body" optionValue="Id"
+                    <p-select [options]="wards" formControlName="MaPhuongXa" appendTo="body" optionValue="Id"
                         optionLabel="Name">
-                    </p-dropdown>
+                    </p-select>
                     <validation-msg [control]="entityForm.controls.MaPhuongXa"></validation-msg>
                 </div>
 
@@ -68,24 +68,24 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="CapQuanLyId">Cấp quản lý <span class="text-danger">*</span></label>
-                    <p-dropdown [options]="capQls" formControlName="CapQuanLyId" appendTo="body" optionValue="Id"
+                    <p-select [options]="capQls" formControlName="CapQuanLyId" appendTo="body" optionValue="Id"
                         optionLabel="Name">
-                    </p-dropdown>
+                    </p-select>
                     <validation-msg [control]="entityForm.controls.CapQuanLyId"></validation-msg>
                 </div>
 
                 <div class="form-group col-md-3">
                     <label for="DonViQuanLyId">Cơ quan quản lý <span class="text-danger">*</span></label>
-                    <p-dropdown [options]="coQuans" formControlName="DonViQuanLyId" appendTo="body" optionValue="Id"
+                    <p-select [options]="coQuans" formControlName="DonViQuanLyId" appendTo="body" optionValue="Id"
                         optionLabel="Name">
-                    </p-dropdown>
+                    </p-select>
                     <validation-msg [control]="entityForm.controls.DonViQuanLyId"></validation-msg>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="CanBoQuanLyId">Cán bộ quản lý</label>
-                    <p-dropdown [options]="canBos" formControlName="CanBoQuanLyId" appendTo="body" optionValue="Id"
+                    <p-select [options]="canBos" formControlName="CanBoQuanLyId" appendTo="body" optionValue="Id"
                         optionLabel="Name">
-                    </p-dropdown>
+                    </p-select>
                     <validation-msg [control]="entityForm.controls.CanBoQuanLyId"></validation-msg>
                 </div>
             </div>

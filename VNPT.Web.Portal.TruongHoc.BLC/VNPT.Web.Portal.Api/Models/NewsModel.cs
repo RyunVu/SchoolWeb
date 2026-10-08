@@ -43,7 +43,7 @@ namespace VNPT.Web.Portal.Api.Models
         public string LanguageId { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public string UnitCode { get; set; }
+        public new string UnitCode { get; set; }
         public string CodeName { get; set; }
         public string OtherUrl { get; set; }
         public bool IsNewsImage { get; set; }
@@ -142,5 +142,10 @@ namespace VNPT.Web.Portal.Api.Models
         public string Message { get; set; }
         public T Result { get; set; }
         public int TotalRow { get; set; }
+    }
+    /// <summary>Id bài viết (News/Histories) hoặc Id phiên bản (News/HistoryDetail)</summary>
+    public class NewsHistoryInput
+    {
+        public Guid Id { get; set; }
     }
 }

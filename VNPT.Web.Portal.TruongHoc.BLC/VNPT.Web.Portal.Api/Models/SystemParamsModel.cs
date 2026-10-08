@@ -27,7 +27,7 @@ namespace VNPT.Web.Portal.Api.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Description { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string UnitCode { get; set; }
+        public new string UnitCode { get; set; }
         public SystemParamsModel(SystemParameter ut)
         {
             Id = ut.Id;

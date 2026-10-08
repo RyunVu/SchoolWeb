@@ -6,6 +6,7 @@ import {
 } from 'src/app/shared';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-tiny-detail',
   templateUrl: './business-tiny-detail.component.html',

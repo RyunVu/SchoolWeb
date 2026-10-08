@@ -12,8 +12,8 @@
         </div>
         <div class="form-group" *ngIf="col.Type == 'Combobox'">
             <label for="Name">{{col.Label}}<span *ngIf="col.Required" class="required"> *</span>:</label>
-            <p-dropdown [options]="col['data']" styleClass="w-100" [(ngModel)]="item[col.Name]"
-                [optionValue]="col['id']" [optionLabel]="col['label']" appendTo="body"></p-dropdown>
+            <p-select [options]="col['data']" styleClass="w-100" [(ngModel)]="item[col.Name]"
+                [optionValue]="col['id']" [optionLabel]="col['label']" appendTo="body"></p-select>
         </div>
         <div class="form-group" *ngIf="col.Type == 'MultiLine'">
             <label for="Name">{{col.Label}}<span *ngIf="col.Required" class="required"> *</span>:</label>
@@ -49,13 +49,13 @@
         <div class="form-group" *ngIf="col.Type == 'Time'">
             <label for="Name">{{col.Label}}<span *ngIf="col.Required" class="required"> *</span>:</label>
             <div>
-                <p-calendar [(ngModel)]="item[col.Name]" [timeOnly]="true" hourFormat="24" appendTo="body"></p-calendar>
+                <p-datepicker [(ngModel)]="item[col.Name]" [timeOnly]="true" hourFormat="24" appendTo="body"></p-datepicker>
             </div>
         </div>
         <div class="form-group" *ngIf="col.Type == 'Date'">
             <label for="Name">{{col.Label}}<span *ngIf="col.Required" class="required"> *</span>:</label>
             <div>
-                <p-calendar [(ngModel)]="item[col.Name]" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                <p-datepicker [(ngModel)]="item[col.Name]" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
             </div>
         </div>
         <div class="form-group" *ngIf="col.Type == 'CkEditor'">

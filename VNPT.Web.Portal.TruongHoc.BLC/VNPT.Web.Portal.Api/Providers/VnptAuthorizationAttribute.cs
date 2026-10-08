@@ -73,7 +73,7 @@ namespace VNPT.Web.Portal.Api.Providers
                     return;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 HandlePermissionRequest(actionContext, "Lỗi xác nhận đăng nhập!");
                 return;

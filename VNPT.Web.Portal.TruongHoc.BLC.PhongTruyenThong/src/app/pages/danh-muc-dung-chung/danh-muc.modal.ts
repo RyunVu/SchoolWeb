@@ -6,11 +6,12 @@ import { DynamicDialogConfig } from "primeng/dynamicdialog";
 import { MessageService } from "primeng/api";
 import { ToastrService } from "ngx-toastr";
 import { HttpService } from "src/app/services";
-import * as moment from "moment";
+import moment from 'moment';
 import { ResultCode, ResultModel } from "src/app/models";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
 @Component({
+    standalone: false,
     selector: "danh-muc-modal",
     templateUrl: "danh-muc.modal.html",
     styleUrls: ["./danh-muc.modal.scss"],
@@ -135,7 +136,7 @@ export class DanhMucModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;

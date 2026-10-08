@@ -110,7 +110,7 @@ namespace VNPT.Web.Portal.Api.Controllers
                     {
                         images = JsonConvert.DeserializeObject<List<FileModelV2>>(news.Description);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         images = new List<FileModelV2>();
                     }

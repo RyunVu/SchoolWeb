@@ -16,7 +16,7 @@ export class ValidationMessagesModule {
    * @param config Config object with custom global configurations.
    *  E.g. { defaultErrorMessages: { required: 'Default Custom Required Message'}}
    */
-  static config(config?: ValidationMessagesConfig): ModuleWithProviders {
+  static config(config?: ValidationMessagesConfig): ModuleWithProviders<any> {
     return {
       ngModule: ValidationMessagesModule,
       providers: [

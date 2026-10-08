@@ -9,9 +9,10 @@ import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
 import { FileManagerModal } from 'src/app/components/file-manager/file-manager.component';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
+  standalone: false,
   selector: 'danh-sach-nhiem-ky-modal',
   templateUrl: 'danh-sach-nhiem-ky.modal.html',
   styleUrls: ['./danh-sach-nhiem-ky.modal.scss'],

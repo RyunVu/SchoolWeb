@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
+    standalone: false,
     selector: "menu-modal",
     templateUrl: 'menu.modal.html',
     encapsulation: ViewEncapsulation.None,

@@ -3,6 +3,7 @@ import { BaseService } from 'src/app/services';
 declare var Stimulsoft: any;
 
 @Component({
+  standalone: false,
   selector: 'app-report-viewer',
   templateUrl: './report-viewer.component.html',
   styleUrls: ['./report-viewer.component.scss']

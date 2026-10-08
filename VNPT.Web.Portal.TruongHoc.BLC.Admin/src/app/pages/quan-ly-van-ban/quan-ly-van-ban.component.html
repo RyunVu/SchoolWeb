@@ -24,7 +24,7 @@
               <div *ngIf="isSuperAdminSystem" class="col-md-2">
                 <div class="form-group">
                   <label class="d-block" for="Name">Đơn vị: </label>
-                  <p-dropdown
+                  <p-select
                     [options]="units"
                     [(ngModel)]="unit"
                     optionLabel="Name"
@@ -35,13 +35,13 @@
                     appendTo="body" 
                     (onChange)="search()"
                   >
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label class="d-block" for="Name">Loại văn bản: </label>
-                  <p-dropdown
+                  <p-select
                     [options]="docTypes"
                     [(ngModel)]="loaiVanBan"
                     optionLabel="Name"
@@ -52,13 +52,13 @@
                     appendTo="body"
                     (onChange)="search()"
                   >
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                   <label class="d-block" for="Name">Tình trạng: </label>
-                  <p-dropdown
+                  <p-select
                     [options]="status"
                     [(ngModel)]="statusId"
                     optionLabel="Name"
@@ -69,7 +69,7 @@
                     appendTo="body"
                     (onChange)="search()"
                   >
-                  </p-dropdown>
+                  </p-select>
                 </div>
               </div>
               <div [ngClass]="isSuperAdminSystem ? 'col-md-4' : 'col-md-6'">
@@ -108,7 +108,6 @@
         <div class="card-body p-0">
           <p-table
             #dt
-            [responsive]="true"
             [value]="items"
             [lazy]="true"
             (onLazyLoad)="paginate($event)"

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -258,13 +258,19 @@ namespace VNPT.Web.Portal.Api.Controllers
                 {
                     var cmd = context.Database.Connection.CreateCommand();
 
-                    DateTime? fromDate, toDate;
+                    DateTime? fromDate = null;
+                    DateTime? toDate = null;
 
-                    string fromDateStr = model.FromDate.Value.ToLocalTime().ToString("dd/MM/yyyy");
-                    string toDateStr = model.ToDate.Value.ToLocalTime().ToString("dd/MM/yyyy") + " 23:59:59";
-
-                    fromDate = fromDateStr.ParseDate("dd/MM/yyyy");
-                    toDate = toDateStr.ParseDate("dd/MM/yyyy HH:mm:ss");
+                    if (model.FromDate.HasValue)
+                    {
+                        string fromDateStr = model.FromDate.Value.ToLocalTime().ToString("dd/MM/yyyy");
+                        fromDate = fromDateStr.ParseDate("dd/MM/yyyy");
+                    }
+                    if (model.ToDate.HasValue)
+                    {
+                        string toDateStr = model.ToDate.Value.ToLocalTime().ToString("dd/MM/yyyy") + " 23:59:59";
+                        toDate = toDateStr.ParseDate("dd/MM/yyyy HH:mm:ss");
+                    }
 
                     var codes = model.Code.Split('.');
                     var code = codes[0];
@@ -307,8 +313,8 @@ namespace VNPT.Web.Portal.Api.Controllers
                     cmd.Parameters.Add(new SqlParameter("@p_code", model.Code));
                     cmd.Parameters.Add(new SqlParameter("@p_type", type));
                     cmd.Parameters.Add(new SqlParameter("@p_unitcode", user.UnitCode));
-                    cmd.Parameters.Add(new SqlParameter("@p_date_from", fromDate));
-                    cmd.Parameters.Add(new SqlParameter("@p_date_to", toDate));
+                    cmd.Parameters.Add(new SqlParameter("@p_date_from", (object)fromDate ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@p_date_to", (object)toDate ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@p_keyword", model.Keyword));
                     cmd.Parameters.Add(new SqlParameter("@p_page_index", model.PageIndex ?? 1));
                     cmd.Parameters.Add(new SqlParameter("@p_page_size", model.PageSize ?? 10));
@@ -354,13 +360,19 @@ namespace VNPT.Web.Portal.Api.Controllers
                 {
                     var cmd = context.Database.Connection.CreateCommand();
 
-                    DateTime? fromDate, toDate;
+                    DateTime? fromDate = null;
+                    DateTime? toDate = null;
 
-                    string fromDateStr = model.FromDate.Value.ToLocalTime().ToString("dd/MM/yyyy");
-                    string toDateStr = model.ToDate.Value.ToLocalTime().ToString("dd/MM/yyyy") + " 23:59:59";
-
-                    fromDate = fromDateStr.ParseDate("dd/MM/yyyy");
-                    toDate = toDateStr.ParseDate("dd/MM/yyyy HH:mm:ss");
+                    if (model.FromDate.HasValue)
+                    {
+                        string fromDateStr = model.FromDate.Value.ToLocalTime().ToString("dd/MM/yyyy");
+                        fromDate = fromDateStr.ParseDate("dd/MM/yyyy");
+                    }
+                    if (model.ToDate.HasValue)
+                    {
+                        string toDateStr = model.ToDate.Value.ToLocalTime().ToString("dd/MM/yyyy") + " 23:59:59";
+                        toDate = toDateStr.ParseDate("dd/MM/yyyy HH:mm:ss");
+                    }
 
                     //var codes = model.Code.Split('.');
                     //var code = codes[0];
@@ -386,8 +398,8 @@ namespace VNPT.Web.Portal.Api.Controllers
                     cmd.Parameters.Add(new SqlParameter("@p_code", code));
                     cmd.Parameters.Add(new SqlParameter("@p_type", type));
                     cmd.Parameters.Add(new SqlParameter("@p_unitcode", user.UnitCode));
-                    cmd.Parameters.Add(new SqlParameter("@p_date_from", fromDate));
-                    cmd.Parameters.Add(new SqlParameter("@p_date_to", toDate));
+                    cmd.Parameters.Add(new SqlParameter("@p_date_from", (object)fromDate ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@p_date_to", (object)toDate ?? DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@p_keyword", model.Keyword));
                     cmd.Parameters.Add(new SqlParameter("@p_page_index", model.PageIndex ?? 1));
                     cmd.Parameters.Add(new SqlParameter("@p_page_size", model.PageSize ?? 10));
@@ -450,7 +462,6 @@ namespace VNPT.Web.Portal.Api.Controllers
                 }
 
                 input.Code = code;
-                var defaultLanguage = "vi";
 
                 using (var context = new WebDbContext())
                 {
@@ -900,6 +911,200 @@ namespace VNPT.Web.Portal.Api.Controllers
                     Code = ResultCode.UnSuccess,
                     Message = e.Message
                 });
+            }
+        }
+
+        /// <summary>
+        /// Danh sách phiên bản (lịch sử dữ liệu) của một bài viết, đọc từ bảng Histories. Chỉ SuperAdminSystem.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult Histories(NewsHistoryInput model)
+        {
+            try
+            {
+                if (!User.IsInRole(RoleCode.SuperAdminSystem))
+                {
+                    return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Bạn không có quyền xem lịch sử dữ liệu" });
+                }
+                using (var context = new WebDbContext())
+                {
+                    var items = (from h in context.Histories
+                                 where h.TableName == "News" && h.ItemId == model.Id
+                                 join u in context.Users on h.CreateUserId equals u.Id into users
+                                 from u in users.DefaultIfEmpty()
+                                 orderby h.CreateDate descending
+                                 select new
+                                 {
+                                     h.Id,
+                                     h.Action,
+                                     h.CreateDate,
+                                     h.CurrentIp,
+                                     h.Description,
+                                     UserName = u.UserName,
+                                     FirstName = u.FirstName,
+                                     LastName = u.LastName
+                                 }).ToList()
+                        .Select(h => new
+                        {
+                            h.Id,
+                            Action = (int)h.Action,
+                            CreateDate = h.CreateDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                            h.CurrentIp,
+                            Note = ReadHistoryNote(h.Description),
+                            UserName = h.UserName,
+                            FullName = $"{h.LastName} {h.FirstName}".Trim()
+                        })
+                        .ToList();
+
+                    return Json(new ResultModel { Code = ResultCode.Success, Result = items, TotalRow = items.Count });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel { Code = ResultCode.UnknowError, Message = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// Dữ liệu trước/sau của một phiên bản. Nếu phiên bản không lưu dữ liệu cũ (thêm mới, đổi trạng thái...)
+        /// thì so với phiên bản liền trước của cùng bài viết. Chỉ SuperAdminSystem.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult HistoryDetail(NewsHistoryInput model)
+        {
+            try
+            {
+                if (!User.IsInRole(RoleCode.SuperAdminSystem))
+                {
+                    return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Bạn không có quyền xem lịch sử dữ liệu" });
+                }
+                using (var context = new WebDbContext())
+                {
+                    var history = context.Histories.FirstOrDefault(s => s.Id == model.Id && s.TableName == "News");
+                    if (history == null)
+                    {
+                        return Json(new ResultModel { Code = ResultCode.UnSuccess, Message = "Không tìm thấy phiên bản" });
+                    }
+
+                    var oldVersion = history.OldVersion;
+                    var comparedWithPrevious = false;
+                    if (IsEmptyVersion(oldVersion))
+                    {
+                        oldVersion = context.Histories
+                            .Where(s => s.TableName == "News" && s.ItemId == history.ItemId && s.CreateDate < history.CreateDate
+                                        && s.NewVersion != null && s.NewVersion != "null")
+                            .OrderByDescending(s => s.CreateDate)
+                            .Select(s => s.NewVersion)
+                            .FirstOrDefault();
+                        comparedWithPrevious = !IsEmptyVersion(oldVersion);
+                    }
+
+                    return Json(new ResultModel
+                    {
+                        Code = ResultCode.Success,
+                        Result = new
+                        {
+                            history.Id,
+                            Action = (int)history.Action,
+                            OldVersion = IsEmptyVersion(oldVersion) ? null : oldVersion,
+                            NewVersion = IsEmptyVersion(history.NewVersion) ? null : history.NewVersion,
+                            ComparedWithPrevious = comparedWithPrevious
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel { Code = ResultCode.UnknowError, Message = e.Message });
+            }
+        }
+
+        private static bool IsEmptyVersion(string version)
+        {
+            return string.IsNullOrWhiteSpace(version) || version == "null" || version == "{}";
+        }
+
+        private static string ReadHistoryNote(string description)
+        {
+            if (IsEmptyVersion(description))
+            {
+                return null;
+            }
+            try
+            {
+                return Newtonsoft.Json.Linq.JObject.Parse(description).Value<string>("Description");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Tìm bài viết theo alias (lấy từ link ngoài portal) để mở đúng menu quản trị và bài viết.
+        /// UnitCode: mã cổng trong link; SuperAdminSystem tìm được mọi đơn vị, tài khoản khác chỉ đơn vị của mình.
+        /// </summary>
+        [HttpPost]
+        public IHttpActionResult FindByAlias(NewsModel model)
+        {
+            try
+            {
+                var alias = (model.Alias ?? "").Trim();
+                if (string.IsNullOrEmpty(alias))
+                {
+                    return Json(new ResultModel { Code = ResultCode.DataNotEnough, Message = "Thiếu đường dẫn bài viết" });
+                }
+                using (var context = new WebDbContext())
+                {
+                    string userId = User.Identity.GetUserId();
+                    var user = context.Users.FirstOrDefault(s => s.Id == userId && s.Status == StatusEnum.Used);
+                    var isSuperAdmin = User.IsInRole(RoleCode.SuperAdminSystem);
+                    var userUnitCode = user?.UnitCode;
+                    if (!isSuperAdmin && string.IsNullOrEmpty(userUnitCode) && user != null)
+                    {
+                        userUnitCode = context.Units.FirstOrDefault(s => s.Id == user.UnitId && s.Status == StatusEnum.Used)?.Code;
+                    }
+
+                    var news = context.News.Where(s => s.Status != StatusEnum.Deleted && s.Alias == alias);
+                    if (!string.IsNullOrEmpty(model.UnitCode))
+                    {
+                        var portalCode = model.UnitCode.ToLower();
+                        news = news.Where(s => s.UnitCode.ToLower() == portalCode);
+                    }
+                    if (!isSuperAdmin)
+                    {
+                        var unitCode = (userUnitCode ?? "").ToLower();
+                        news = news.Where(s => s.UnitCode.ToLower() == unitCode);
+                    }
+
+                    var item = news.OrderByDescending(s => s.CreateDate).FirstOrDefault();
+                    if (item == null)
+                    {
+                        return Json(new ResultModel
+                        {
+                            Code = ResultCode.UnSuccess,
+                            Message = "Không tìm thấy bài viết hoặc bài viết thuộc đơn vị khác"
+                        });
+                    }
+
+                    return Json(new ResultModel
+                    {
+                        Code = ResultCode.Success,
+                        Result = new
+                        {
+                            item.Id,
+                            item.Code,
+                            item.NewTypeId,
+                            item.UnitCode,
+                            item.Title,
+                            item.CreateDate
+                        }
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new ResultModel { Code = ResultCode.UnknowError, Message = e.Message });
             }
         }
 

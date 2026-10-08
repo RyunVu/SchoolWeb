@@ -12,6 +12,7 @@ import { FileManagerModal } from "src/app/components/file-manager/file-manager.c
 import { UnitModal } from "../systems/units/units.modal";
 
 @Component({
+    standalone: false,
     selector: "cong-thong-tin-modal",
     templateUrl: 'cong-thong-tin.modal.html',
     styleUrls: ['./cong-thong-tin.modal.scss'],
@@ -36,6 +37,8 @@ export class CongThongTinModal {
     unit: any;
     portals: any[] = [];
     portal: any;
+    /** Khi tạo cổng: có chép cả bài viết của cổng mẫu không (mặc định không, chỉ chép cấu trúc) */
+    copyNews = false;
 
     defaultTenCong: any;
     defaultTag: any;
@@ -211,7 +214,7 @@ export class CongThongTinModal {
                 },
                 header: "Quản lý file",
                 width: "70%",
-            })
+            })!
             .onClose.subscribe((data: any) => {
                 if (data) {
                     var fileUrls = data.urls;
@@ -276,7 +279,8 @@ export class CongThongTinModal {
                 Tag: this.defaultTag,
                 Domain: this.defaultTenMien,
                 Description: this.defaultMoTa,
-                UnitCodeClone: this.portal
+                UnitCodeClone: this.portal,
+                CopyNews: this.copyNews
             },
             (result: ResultModel) => {
                 this.isLoading = false;
@@ -297,7 +301,7 @@ export class CongThongTinModal {
             },
             header: 'Thêm mới đơn vị',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 this.loadUnits();
             }

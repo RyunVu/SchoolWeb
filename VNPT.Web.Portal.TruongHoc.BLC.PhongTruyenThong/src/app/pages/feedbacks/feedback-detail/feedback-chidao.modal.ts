@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { ResultCode, ResultModel } from "src/app/models";
 
 @Component({
+    standalone: false,
     selector: "feedback-chidao-modal",
     templateUrl: 'feedback-chidao.modal.html',
     styleUrls: ['./feedback-chidao.modal.scss'],

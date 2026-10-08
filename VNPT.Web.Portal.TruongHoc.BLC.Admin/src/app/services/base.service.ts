@@ -1,4 +1,5 @@
 import { environment } from "src/environments/environment";
+import { RuntimeConfig } from "./runtime-config";
 
 export class BaseService {
 
@@ -12,10 +13,8 @@ export class BaseService {
     }
 
     get mediaUrl(): string {
-        //return "https://media.dalat.vn/";
-        return environment.mediaUrl;
-        //return "https://localhost:44381/";
-        // return "/Hub/";
+        // Ưu tiên DomainMedia trong Web.config của API (tải lúc khởi động), environment chỉ là dự phòng
+        return RuntimeConfig.mediaUrl || (environment as any).mediaUrl;
     }
 
     public static convertToUnsignChar(text: string): string {

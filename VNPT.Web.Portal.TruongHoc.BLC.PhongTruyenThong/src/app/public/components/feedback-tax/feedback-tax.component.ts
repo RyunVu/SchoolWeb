@@ -7,6 +7,7 @@ import {
 } from 'src/app/shared';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'feedback-tax',
   templateUrl: './feedback-tax.component.html',

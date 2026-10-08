@@ -15,6 +15,7 @@ import {
 import { MessageProvider } from './message-provider';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'validation-msg',
   encapsulation: ViewEncapsulation.None,

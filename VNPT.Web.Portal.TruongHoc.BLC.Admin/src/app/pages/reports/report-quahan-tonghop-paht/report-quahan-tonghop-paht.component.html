@@ -36,27 +36,27 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Từ ngày</label>
-                                        <p-calendar [(ngModel)]="startDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                        <p-datepicker [(ngModel)]="startDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Đến ngày</label>
-                                        <p-calendar [(ngModel)]="endDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+                                        <p-datepicker [(ngModel)]="endDateInput" [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-datepicker>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Khu vực</label>
-                                        <p-dropdown [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="UnitCode" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
-                                        </p-dropdown>
+                                        <p-select [options]="locations" [(ngModel)]="location" optionLabel="Name" optionValue="UnitCode" [filter]="true" filterBy="Name" placeholder="Chọn khu vực" appendTo="body" (onChange)="selectLocation($event)">
+                                        </p-select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Name">Đơn vị</label>
-                                        <p-dropdown [options]="units" [(ngModel)]="unitInput" optionLabel="Name" optionValue="Id" placeholder="Chọn đơn vị" appendTo="body" [filter]="true" filterBy="Name">
-                                        </p-dropdown>
+                                        <p-select [options]="units" [(ngModel)]="unitInput" optionLabel="Name" optionValue="Id" placeholder="Chọn đơn vị" appendTo="body" [filter]="true" filterBy="Name">
+                                        </p-select>
                                     </div>
                                 </div>
                             </div>

@@ -31,7 +31,6 @@ import { ReportQuaHanChiTietPAHTComponent } from './report-quahan-chitiet-patht/
     ReportsRoutingModule,
     ToastrModule.forRoot(),
   ],
-  entryComponents: [],
   providers: [
     ToastrService
   ]

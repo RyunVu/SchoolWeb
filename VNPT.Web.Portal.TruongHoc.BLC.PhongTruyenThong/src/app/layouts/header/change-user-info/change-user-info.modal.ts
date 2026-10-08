@@ -9,6 +9,7 @@ import { ResultCode, ResultModel } from "src/app/models";
 declare var $: any;
 
 @Component({
+    standalone: false,
     selector: "change-user-info",
     templateUrl: './change-user-info.modal.html',
     encapsulation: ViewEncapsulation.None,

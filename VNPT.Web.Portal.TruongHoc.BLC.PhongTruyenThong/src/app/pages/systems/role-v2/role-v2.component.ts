@@ -9,6 +9,7 @@ import { RoleV2Modal } from './role-v2.modal';
 import { ToastrService } from 'ngx-toastr';
 import { RoleV2UserModal } from './role-v2-user.modal';
 @Component({
+  standalone: false,
   selector: 'app-role-v2',
   templateUrl: './role-v2.component.html',
   styleUrls: ['./role-v2.component.scss'],
@@ -98,7 +99,7 @@ export class RoleV2Component extends BasePage {
         header: 'Cập nhật: ' + item.Description,
         width: '40%',
         styleClass: 'nofooter',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         this.loadData();
       });
@@ -120,7 +121,7 @@ export class RoleV2Component extends BasePage {
         header: 'Thêm mới',
         width: '40%',
         styleClass: 'nofooter',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         this.loadData();
       });
@@ -208,7 +209,7 @@ export class RoleV2Component extends BasePage {
         header: 'Cập nhật quyền - ' + item.Name + ' - ' + item.Description,
         width: '70%',
         styleClass: 'nofooter',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         this.loadData();
       });
@@ -220,7 +221,7 @@ export class RoleV2Component extends BasePage {
         header: 'Tài khoản quyền - ' + item.Name,
         width: '70%',
         styleClass: 'nofooter',
-      })
+      })!
       .onClose.subscribe((data: any) => {});
   }
   //div right

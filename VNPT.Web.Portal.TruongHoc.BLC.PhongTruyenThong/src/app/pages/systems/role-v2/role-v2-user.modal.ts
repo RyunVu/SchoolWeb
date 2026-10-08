@@ -1,16 +1,14 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import {
-  ConfirmationService,
-  MessageService,
-  LazyLoadEvent,
-} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { HttpService } from 'src/app/services';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
+  standalone: false,
   selector: 'role-v2-user-modal',
   templateUrl: 'role-v2-user.modal.html',
   encapsulation: ViewEncapsulation.None,
@@ -36,7 +34,7 @@ export class RoleV2UserModal {
     this.item = this.config.data;
   }
   ngAfterViewInit(): void {}
-  paginate(event: LazyLoadEvent) {
+  paginate(event: TableLazyLoadEvent) {
     this.pageSize = event.rows ?? 10;
     var first = event.first ?? 0;
     this.pageIndex = Math.floor(first / this.pageSize) + 1;

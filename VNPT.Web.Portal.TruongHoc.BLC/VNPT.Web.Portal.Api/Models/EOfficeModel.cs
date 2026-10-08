@@ -35,7 +35,7 @@ namespace VNPT.Web.Portal.Api.Models
         public string LanguageId { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public string UnitCode { get; set; }
+        public new string UnitCode { get; set; }
         public EOfficeModel()
         {
 

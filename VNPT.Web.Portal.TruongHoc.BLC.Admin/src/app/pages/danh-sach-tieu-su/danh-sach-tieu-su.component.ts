@@ -1,20 +1,18 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ConfirmationService,
-  LazyLoadEvent,
-  MessageService,
-} from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, BaseService, HttpService } from 'src/app/services';
 import { OTPCheckModal } from '../systems/user/otpcheck.modal';
 import { UserModal } from '../systems/user/user.modal';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { DanhSachTieuSuModal } from './danh-sach-tieu-su.modal';
 
 @Component({
+  standalone: false,
   selector: 'app-danh-sach-tieu-su',
   templateUrl: './danh-sach-tieu-su.component.html',
   styleUrls: ['./danh-sach-tieu-su.component.scss'],
@@ -48,7 +46,7 @@ export class DanhSachTieuSuComponent extends BasePage {
     super(router, route, http, message);
   }
 
-  paginate(event: LazyLoadEvent) {
+  paginate(event: TableLazyLoadEvent) {
     if (this.oldEvent == null || event == this.oldEvent) {
       this.oldEvent = event;
       return;
@@ -59,7 +57,7 @@ export class DanhSachTieuSuComponent extends BasePage {
     this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
     this.sortOrder = event.sortOrder == 1 ? true : false;
-    this.sortField = event.sortField ?? '';
+    this.sortField = (event.sortField as string) ?? '';
     this.filters = event.filters;
     setTimeout(() => {
       this.loadData();
@@ -77,7 +75,7 @@ export class DanhSachTieuSuComponent extends BasePage {
         },
         header: 'Thêm mới tiểu sử',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();
@@ -95,7 +93,7 @@ export class DanhSachTieuSuComponent extends BasePage {
         },
         header: 'Cập nhật tiểu sử',
         width: '70%',
-      })
+      })!
       .onClose.subscribe((data: any) => {
         if (data) {
           this.loadData();

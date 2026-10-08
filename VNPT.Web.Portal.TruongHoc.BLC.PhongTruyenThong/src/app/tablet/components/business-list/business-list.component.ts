@@ -13,6 +13,7 @@ import {
 } from 'src/app/shared';
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: 'business-list',
   templateUrl: './business-list.component.html',

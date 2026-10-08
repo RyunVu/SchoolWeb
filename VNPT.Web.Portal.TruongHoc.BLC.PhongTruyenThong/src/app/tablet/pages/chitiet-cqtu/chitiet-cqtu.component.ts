@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AgmGeocoder } from '@agm/core';
 import { Location } from '@angular/common';
 
 import {
@@ -22,6 +21,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
+  standalone: false,
   selector: 'app-chitiet-cqtu',
   templateUrl: './chitiet-cqtu.component.html',
   styleUrls: ['./chitiet-cqtu.component.scss'],
@@ -37,7 +37,6 @@ export class ChiTietCoQuanTinhUyComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private hpService: HomePageService,
     private route: ActivatedRoute,
-    private agmGeocoder: AgmGeocoder,
     public dialogService: DialogService,
     public sanitizer: DomSanitizer,
     private router: Router,

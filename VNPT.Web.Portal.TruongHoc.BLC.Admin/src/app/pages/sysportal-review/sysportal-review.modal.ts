@@ -9,11 +9,12 @@ import { ResultCode, ResultModel } from "src/app/models";
 import { ToastrService } from "ngx-toastr";
 import { FileManagerModal } from "src/app/components/file-manager/file-manager.component";
 
-import * as moment from 'moment';
+import moment from 'moment';
 import * as _ from "lodash";
 declare var $: any;
 
 @Component({
+    standalone: false,
     selector: "sysportal-review-modal",
     templateUrl: "sysportal-review.modal.html",
     styleUrls: ["./sysportal-review.modal.scss"],

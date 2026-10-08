@@ -1,0 +1,75 @@
+﻿@using VNPT.Web.Portal.Api.DTO
+@using VNPT.Web.Portal.Api.Helper
+@using VNPT.Web.Portal.Api.Models
+@{
+    var infomation = Session["PortalInformation"] as PortalInformation;
+    var code = infomation.PortalCode.ToUpper();
+    var banners = SystemParameterDto.GetParameters("BANNER_HEADER", code).ToList();
+    var logo = SystemParameterDto.GetParameter("FOOTER", "LOGO", code).Value2;
+    var schoolName = SystemParameterDto.GetParameter("FOOTER", "NAME", code).Value2;
+    var phone = SystemParameterDto.GetParameter("FOOTER", "PHONE", code).Value2;
+    var email = SystemParameterDto.GetParameter("FOOTER", "EMAIL", code).Value2;
+    var isHome = string.IsNullOrEmpty(ViewBag.CurrentSite as string) || ViewBag.CurrentSite == "/" || ViewBag.CurrentSite == "home";
+}
+
+<nav id="menu-mobile" class="mm-menu mm-offcanvas mm-pagedim-black">
+    <ul>
+        <li class="active"><a href="/" title="">Trang chủ</a></li>
+        @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+    </ul>
+</nav>
+
+<div class="hd-topbar">
+    <div class="container hd-topbar-inner">
+        <span class="hd-topbar-item"><i class="fa fa-calendar-o"></i><span id="timeCurrent"></span></span>
+        @if (!string.IsNullOrEmpty(phone))
+        {
+            <a class="hd-topbar-item hidden-xs" href="tel:@phone"><i class="fa fa-phone"></i>@phone</a>
+        }
+        @if (!string.IsNullOrEmpty(email))
+        {
+            <a class="hd-topbar-item hidden-xs" href="mailto:@email"><i class="fa fa-envelope-o"></i>@email</a>
+        }
+        <form class="hd-search-form hd-topbar-search" role="search">
+            <input type="search" name="th-keyword" placeholder="Tìm kiếm tin bài..." aria-label="Tìm kiếm" />
+            <button type="submit" aria-label="Tìm"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div class="hd-header">
+    <div class="container hd-header-inner">
+        <a class="hd-brand" href="/" title="@schoolName">
+            <img class="hd-brand-logo" src="@Url.Image(logo)" alt="Logo" />
+            <span class="hd-brand-text">
+                <small>Cổng thông tin điện tử</small>
+                <strong>@schoolName</strong>
+            </span>
+        </a>
+        <a href="#menu-mobile" class="hd-burger" aria-label="Mở menu">
+            <span></span><span></span><span></span>
+        </a>
+    </div>
+    <nav class="hd-nav" id="menu-pc">
+        <div class="container">
+            <ul id="menu-list">
+                <li class="isHomePc @(isHome ? "is-active" : "")"><a class="menu-a" href="/" title="Trang chủ"><i class="fa fa-home"></i></a></li>
+                @Html.Action("GetMenu", "NewsHome", new { area = "Modules" })
+            </ul>
+        </div>
+    </nav>
+</div>
+
+@if (isHome && banners.Any())
+{
+    <section class="container hd-hero">
+        <div id="hd-hero" class="owl-carousel">
+            @foreach (var banner in banners)
+            {
+                <div class="hd-hero-item">
+                    <img src="@Url.Image(banner.Value2)" alt="@schoolName" />
+                </div>
+            }
+        </div>
+    </section>
+}

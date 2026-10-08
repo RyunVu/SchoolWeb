@@ -6,6 +6,7 @@ declare var CKEDITOR: any;
 declare var jQuery: any;
 declare var $: any;
 @Component({
+    standalone: false,
     selector: 'ckeditor',
     templateUrl: './ckeditor.component.html'
 })
@@ -65,7 +66,7 @@ export class CkEditorComponent implements AfterViewInit, OnDestroy, OnChanges {
             },
             header: 'Quản lý file',
             width: '70%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 var fileUrls = data.urls;
                 for (var i = 0; i < fileUrls.length; i++) {
@@ -106,7 +107,7 @@ export class CkEditorComponent implements AfterViewInit, OnDestroy, OnChanges {
             },
             header: 'Quản lý file',
             width: '70%',
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
             if (data) {
                 var fileUrls = data.urls;
                 for (var i = 0; i < fileUrls.length; i++) {

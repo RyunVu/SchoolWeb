@@ -1,16 +1,18 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ResultCode, ResultModel } from 'src/app/models';
 import { BasePage, HttpService } from 'src/app/services';
 import { OTPCheckModal } from '../../systems/user/otpcheck.modal';
 import { UserModal } from '../../systems/user/user.modal';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { PopupImageModal } from '../feedback/popupImage.modal';
 
 @Component({
+    standalone: false,
     selector: 'app-feedback-approved',
     templateUrl: './feedback-approved.component.html',
     styleUrls: ['./feedback-approved.component.scss'],
@@ -75,7 +77,7 @@ export class FeedbackApprovedComponent extends BasePage {
             this.routeSub.unsubscribe();
         }
     }
-    paginate(event: LazyLoadEvent) {
+    paginate(event: TableLazyLoadEvent) {
         if (this.oldEvent == null || event == this.oldEvent) {
             this.oldEvent = event;
             return;
@@ -86,7 +88,7 @@ export class FeedbackApprovedComponent extends BasePage {
         this.pageIndex = Math.floor(first / this.pageSize) + 1;
 
         this.sortOrder = event.sortOrder == 1 ? true : false;
-        this.sortField = event.sortField ?? "";
+        this.sortField = (event.sortField as string) ?? "";
         this.filters = event.filters;
         setTimeout(() => {
             this.loadData();
@@ -226,7 +228,7 @@ export class FeedbackApprovedComponent extends BasePage {
             },
             header: 'Slideshow',
             width: '70%'
-        }).onClose.subscribe((data: any) => {
+        })!.onClose.subscribe((data: any) => {
 
         });
     }
